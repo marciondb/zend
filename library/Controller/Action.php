@@ -1,6 +1,6 @@
 <?php
 
-abstract class SON_Controller_Action extends Zend_Controller_Action {
+abstract class Controller_Action extends Zend_Controller_Action {
 
     protected $userId;
     protected $userNome;
