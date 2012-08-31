@@ -1,0 +1,157 @@
+/* 
+    Document   : estilo
+    Created on : 31/08/2012, 14:43:59
+    Author     : marcio
+    Description:
+        css do default
+*/
+
+* {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	outline:none;
+	outline-style:none;
+}
+
+body {
+	overflow:hidden;
+	margin:0;
+	background-color:#000;
+	background-position:center;
+	background-image:url(/pinho/public/images/default/splashscreen.jpg);
+	background-position:center -100px;
+	background-repeat:no-repeat;
+	padding:30px;
+}
+
+#splashscreen {
+	width:100%;
+	height:600px;
+	position:absolute;
+	top:50%;
+	margin-top:-300px;
+	background-color:#000000;
+	background-image:url(/pinho/public/images/default/splashscreen.jpg);
+	background-position:center center;
+	background-repeat:no-repeat;
+}
+
+#controle {
+	position:relative;
+	width:600px;
+	margin:auto;
+	top:20px;
+	padding-left:80px;
+}
+
+.carrega {
+	font-size:22px;
+	text-align:left;
+	text-decoration:none;
+	text-transform:uppercase;
+	margin-left:200px;
+	margin-top:100px;
+	padding-left:50px;
+	background-image:url(/pinho/public/images/default/load.gif);
+	background-repeat:no-repeat;
+	color:#FFFFFF;  font-family:'LeagueGothicRegular', Arial, sans-serif;letter-spacing: 0;
+}
+
+a {
+	text-decoration:none;
+	display:inline-block;
+	padding:10px 30px;
+	background:#000;
+	color:#FFF;
+	font-family:Arial, Helvetica, sans-serif;
+	text-transform:uppercase;
+	margin:0 30px;
+	font-size:14px;
+	font-weight:bold;
+	-webkit-border-radius:19px;
+	-moz-border-radius:19px;
+	border-radius:19px;
+}
+
+a:hover {
+	background:#F00;
+}
+
+#overlay {
+	position:absolute;
+	width:9999px;
+	height:9999px;
+	top:0;
+	left:0;
+	z-index:9999;
+	background-color:#222222;
+}
+
+#preloade-master {
+  text-align:center;
+  vertical-align:bottom;
+  position:fixed;
+  font-family:Arial, Helvetica, sans-serif;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:88;
+  color:#FFF;
+}
+
+#preloader {
+  text-align:center;
+  vertical-align:bottom;
+  background:#191b54;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:50%;
+  z-index:99;
+}
+
+#preloader span {
+  width: 300px;
+  height: 75px;
+  position: absolute;
+	text-transform:uppercase;
+	font-size:10px;
+	font-weight:bold;
+  left: 50%;
+  bottom: 0;
+  margin-left: -150px;
+  margin-top: -150px;
+}
+
+#preloader-carrega {
+  background:#191b54;
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:50%;
+  z-index:99;
+}
+
+#preloader-carrega span {
+	text-align:center;
+  width: 300px;
+	height: 75px;
+  position: absolute;
+  left: 50%;
+  bottom: 50px;
+  margin-left: -150px;
+}
+
+.load {
+	font-family:Arial, Helvetica, sans-serif;
+	text-transform:uppercase;
+	font-size:10px;
+	color:#FFF;
+}
+

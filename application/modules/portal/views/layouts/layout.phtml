@@ -1,2 +1,278 @@
-<h1>oi</h1>
-<?php echo $this->Layout()->content; ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>PINHONLINE</title>
+
+        <link href="<?php echo $this->baseUrl()."/public/styles/portal/estilo.css"; ?>" type="text/css" rel="stylesheet" />
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/jquery.js"; ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/font.js"; ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/load.js"; ?>"></script>
+
+        <!-- datapicker -->
+
+        <link rel="stylesheet" href="<?php echo $this->baseUrl()."/public/scripts/portal/ui/development-bundle/themes/base/jquery.ui.all.css"; ?>">
+
+        <script src="<?php echo $this->baseUrl()."/public/scripts/portal/ui/development-bundle/ui/jquery.ui.datepicker.js"; ?>"></script>
+        <script src="<?php echo $this->baseUrl()."/public/scripts/portal/ui/development-bundle/ui/i18n/jquery.ui.datepicker-pt-BR.js"; ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/browserDetect.js"; ?>"></script>
+
+        <script src="<?php echo $this->baseUrl()."/public/scripts/portal/jquery.nyroModal.custom.min.js"; ?>"></script>
+        <script src="<?php echo $this->baseUrl()."/public/scripts/portal/jquery.nyroModal-ie6.min.js"; ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/valida.js"; ?>"></script>
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/valida.config.js"; ?>"></script>
+
+        <script>
+        $(function() {
+        $("#datepicker").datepicker({ firstDay: 1 , showWeek: true });
+        });
+        </script>
+
+        <script>
+        jQuery(document).ready(function(){jQuery("#formCadastro").validationEngine(); });
+        </script>
+
+    </head>
+    <body class="<?php
+    $link   = $_GET['link'];							 
+    $padrao = "portal";
+    if($link == "contato" ) { echo $link; } 
+    elseif($link == "solucoes" ) { echo $link; }
+    elseif($link == "pinhonline" ) { echo $padrao; }
+    elseif($link == "inicio" ) { echo $padrao; }
+    elseif($link == "servicos" ) { echo $link; }
+    else  { echo $padrao; }
+    ?>">
+
+        <?php
+
+            function linkAtivo1() { if(isset ($_GET['link']) && ($_GET['link'] == 'pinhonline'))    echo 'linkAtivo'; }
+            function linkAtivo2() { if(isset ($_GET['link']) && ($_GET['link'] == 'solucoes'))  echo 'linkAtivo'; }
+            function linkAtivo3() { if(isset ($_GET['link']) && ($_GET['link'] == 'servicos'))  echo 'linkAtivo'; }
+            function linkAtivo5() { if(isset ($_GET['link']) && ($_GET['link'] == 'quemsomos'))  echo 'linkAtivo'; }
+            function linkAtivo6() { if(isset ($_GET['link']) && ($_GET['link'] == 'contato'))  echo 'linkAtivo'; }
+            function linkAtivo7() { if(isset ($_GET['link']) && ($_GET['link'] == 'utilitarios'))  echo 'linkAtivo'; }
+        ?>
+
+        <div id="preloader"></div>
+
+        <div class="documento">
+            <div class="menu">
+                <div><a href="index.php" class="logo linkAtivoLogo">&nbsp;</a></div>
+                <div><a class=" <?php linkAtivo1(); ?> " href="index.php?link=pinhonline">inicio</a></div>
+                <div><a class=" <?php linkAtivo5(); ?> " href="index.php?link=quemsomos">quem somos</a></div>
+                <div><a class=" <?php linkAtivo2(); ?> " href="index.php?link=solucoes">soluções</a></div>
+                <div><a class=" <?php linkAtivo3(); ?> " href="index.php?link=servicos">serviços</a></div>
+                <div><a class=" <?php linkAtivo6(); ?> " href="index.php?link=contato">contato</a></div>
+                <div><a class=" <?php linkAtivo7(); ?> " href="index.php?link=utilitarios">extras</a></div>       
+            </div>
+            <div class="gadget">
+                <div class="item login">
+                    <div class="gadgetTopo">
+                        <h5>login</h5>
+                    </div>
+                    <div class="section">
+                        <br />
+
+                        <!-- caro programador, a validação já está funcionando,
+                        os input's obrigatóriamente deverão ter um ID, todas páginas deverão ser estáticas, 
+                        ou seja, sem modal, para evitar problemas crossbrowzer, thanks :) -->
+
+                        <form id="formCadastro" action="index.php?logar=1" method="post" name="formCadastro">
+                            <table cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td>usuário</td>
+                                </tr>
+                                <tr>
+                                    <td><input id="login" name="login" class="login validate[required],minSize[2]" type="text" /></td>
+                                </tr>
+                                <tr class="base">
+                                    <td>senha</td>
+                                </tr>
+                                <tr>
+                                    <td><input id="senha" name="senha" class="login validate[required],minSize[6]" type="password" /></td>
+                                </tr>
+                                <tr class="base">
+                                    <td><button class="full" type="submit">acessar</button></td>
+                                </tr>
+                                <tr class="base">
+                                    <td><div id="recuperarSenha"><a href="index.php?link=recuperarSenha">recuperar senha</a></div></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <div class="item social">
+                    <div class="gadgetTopo">
+                        <h5>Redes Sociais</h5>
+                    </div>
+                    <div class="section">
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="#help" class="modal" onMouseOver="$('#i1').show();" onMouseOut="$('#i1').hide();">
+                                        <img src="<?php echo $this->baseUrl()."/public/images/portal/icone/msn.png"; ?>" />
+                                    </a>
+                                </td>	
+                                <td>
+                                    <a href="#help2" class="modal" onMouseOver="$('#i2').show();" onMouseOut="$('#i2').hide();">
+                                        <img src="<?php echo $this->baseUrl()."/public/images/portal/icone/skype.png"; ?>" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="http://twitter.com/#!/fandopinho" target="_blank" onMouseOver="$('#i3').show();" onMouseOut="$('#i3').hide();">
+                                        <img src="<?php echo $this->baseUrl()."/public/images/portal/icone/twitter.png"; ?>" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="http://twitter.com/#!/pinhoshow" target="_blank" onMouseOver="$('#i4').show();" onMouseOut="$('#i4').hide();">
+                                        <img src="<?php echo $this->baseUrl()."/public/images/portal/icone/twitter.png"; ?>" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#help3" class="modal" onMouseOver="$('#i5').show();" onMouseOut="$('#i5').hide();">
+                                        <img src="<?php echo $this->baseUrl()."/public/images/portal/icone/facebook.png"; ?>" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#help4" class="modal" onMouseOver="$('#i6').show();" onMouseOut="$('#i6').hide();">
+                                        <img src="<?php echo $this->baseUrl()."/public/images/portal/icone/orkut.png"; ?>" />
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="legenda">
+                            <tr>
+                                <td id="i1">MSN</td> 
+                                <td id="i2">Skype</td>
+                                <td id="i3">Twitter FandoPinho</td>
+                                <td id="i4">Twitter Pinhoshow</td>
+                                <td id="i5">Facebook</td>
+                                <td id="i6">Orkut</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="item calendario">
+                    <div class="gadgetTopo">
+                        <h5>calendário</h5>
+                    </div>
+                    <div class="section2">
+                        <div id="datepicker"></div>
+                    </div>
+                </div>
+                <div class="item social">
+                    <div class="gadgetTopo" style="background-image:none;">
+                    </div>
+                    <div class="section">
+                        <a href="http://www.criweb.com.br" target="_blank">Desenvolvimento <strong>Criweb</strong></a>
+                    </div>
+                </div>
+            </div>
+            <div class="conteudo <?php
+                $link = $_GET['link'];
+                if($link == "contato") { echo "contato"; }
+                if($link == "servicos") { echo "servicos"; }
+                ?>">
+
+                <?php
+                /*
+                * 
+                * aqui vai o content mano
+                * 
+                * 
+                */
+                echo 'conteudis';
+                ?>
+            </div>
+            <div class="rodape">
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div id="help" style="display:none;"> 
+            <div class="helpTable">
+                <span class='helpHead'></span>
+                <span class="helpBox">
+                    <img src="<?php echo $this->baseUrl()."/public/images/portal/geral/pinhonet.png"; ?>" style="float:left;"/> 
+                    <div class="msgNyro">
+                        <p>
+                            Entre em contato com seu Pinhonet!
+                        </p>
+                        <p>
+                            <br /><br />
+                            <a href="#" class="button nyroModalCloseButton nyroModalClose" style="margin-left:50px;">continuar</a>
+                        </p>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+
+        <div id="help2" style="display:none;"> 
+            <div class="helpTable">
+                <span class='helpHead'></span>
+                <span class="helpBox">
+                    <img src="<?php echo $this->baseUrl()."/public/images/portal/geral/pinhonet.png"; ?>" style="float:left;"/> 
+                    <div class="msgNyro">
+                        <p>
+                            Entre em contato com seu Pinhonet!
+                        </p>
+                        <p>
+                            <br /><br />
+                            <a href="#" class="button nyroModalCloseButton nyroModalClose" style="margin-left:50px;">continuar</a>
+                        </p>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+
+        <div id="help3" style="display:none;"> 
+            <div class="helpTable">
+                <span class='helpHead'></span>
+                <span class="helpBox">
+                    <img src="<?php echo $this->baseUrl()."/public/images/portal/geral/pinhonet.png"; ?>" style="float:left;"/> 
+                    <div class="msgNyro">
+                        <p>
+                            Entre em contato com seu Pinhonet!
+                        </p>
+                        <p>
+                            <br /><br />
+                            <a href="#" class="button nyroModalCloseButton nyroModalClose" style="margin-left:50px;">continuar</a>
+                        </p>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+
+        <div id="help4" style="display:none;"> 
+            <div class="helpTable">
+                <span class='helpHead'></span>
+                <span class="helpBox">
+                    <img src="<?php echo $this->baseUrl()."/public/images/portal/geral/pinhonet.png"; ?>" style="float:left;"/> 
+                    <div class="msgNyro">
+                        <p>
+                            Entre em contato com seu Pinhonet!
+                        </p>
+                        <p>
+                            <br /><br />
+                            <a href="#" class="button nyroModalCloseButton nyroModalClose" style="margin-left:50px;">continuar</a>
+                        </p>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+            $(function() {
+                $('.modal').nyroModal({
+                    closeButton: '<a href="#" class="nyroModalClose nyroModalCloseButton nmReposition" title="close">Fechar</a>'
+                });
+            });
+        </script>
+
+    </body>
+</html>
