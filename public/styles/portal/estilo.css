@@ -1,0 +1,945 @@
+@charset "utf-8";
+/* CSS Document */
+img {
+	border:none;
+}
+
+.artes img {
+	-webkit-border-radius:4px;
+	-moz-border-radius:4px;
+	border-radius:4px;	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+}
+
+body {
+	font-family:Arial, Helvetica, sans-serif;
+	background:#000024;
+	color:#FFF;
+	padding:0;
+	margin:0;
+}
+
+body.portal {
+	background:#000024 url(/pinho/public/images/portal/fundo/portal.jpg) no-repeat top center;
+}
+
+body.contato {
+	background:#000024 url(/pinho/public/images/portal/fundo/contato.jpg) no-repeat top center;
+}
+
+body.solucoes {
+	background:#000024 url(/pinho/public/images/portal/fundo/mundo.jpg) no-repeat top center;
+}
+
+body.servicos {
+	background:#000024 url(/pinho/public/images/portal/fundo/servicos.jpg) no-repeat top center;
+}
+
+a {	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	color:#FFF;
+	text-decoration:none;
+}
+
+a:hover {
+	color:#a6e1ff;
+}
+
+h1 { font-size:20px; text-transform:uppercase; }
+h2 { font-size:18px; text-transform:uppercase; }
+h3 { font-size:16px; text-transform:uppercase; }
+h4 { font-size:14px; text-transform:uppercase; }
+h5 { font-size:12px; text-transform:uppercase; }
+h6 { font-size:11px; text-transform:uppercase; }
+
+h1, h2, h3 {
+	padding:5px 0;
+	margin:0;
+}
+
+h4, h5, h6 {
+	padding:0;
+	margin:0;
+}
+
+p cufon {
+	padding-bottom:2px;
+}
+
+p {
+	margin:0;
+	font-size:14px;
+}
+
+.documento {
+	display:block;
+	width:1000px;
+	margin:auto;
+}
+
+.tabela td {
+	padding:7px;
+}
+
+.menu {
+	float:left;
+	width:900px;
+	height:120px;
+	background:url(/pinho/public/images/portal/geral/menu.png) center 0px no-repeat;
+	padding:19px 50px 10px 50px;
+}
+
+.gadget {
+	float:left;
+	width:250px;
+	padding:20px 0 0 0;
+}
+
+.gadgetTopo {
+	position:relative;
+	top:-20px;
+	width:250px;
+	text-align:center;
+	float:left;
+	height:60px;
+	padding:20px 0 0 0;
+	background:url(/pinho/public/images/portal/geral/gadgetTopo.png) top center;
+}
+
+.gadget .item {
+	float:left;
+	width:250px;
+	background:url(/pinho/public/images/portal/fundo/overlay.png) top center repeat;
+	border:1px solid #134ac7;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	margin:0 0 40px 0;
+}
+
+tr.base td{
+	padding:14px 0 0 0;
+}
+
+.gadget .section {
+	position:relative;
+	top:-30px;
+	left:30px;
+	float:left;
+	text-transform:uppercase;
+	font-size:12px;
+}
+
+.gadget .section2 {
+	position:relative;
+	top:-30px;
+	left:2px;
+	float:left;
+	text-transform:uppercase;
+	font-size:12px;
+}
+
+.gadget input.login {
+	height:auto;
+	width:170px;
+	border:1px solid #134ac7;
+	background:#003;
+	color:#FFF;
+	padding:3px 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+		font-size:13px;
+}
+
+a.button {
+	position:relative;
+	color:#FFF;
+	border:1px solid #2a63f7;
+	background:url(/pinho/public/images/portal/geral/button.png) top center repeat-x;
+	padding:8px 40px 8px 40px;
+	cursor:pointer;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	font-size:12px;
+	text-transform:uppercase;
+}
+
+button {
+	position:relative;
+	color:#FFF;
+	border:1px solid #2a63f7;
+	background:url(/pinho/public/images/portal/geral/button.png) top center repeat-x;
+	padding:8px 40px 8px 40px;
+	cursor:pointer;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	font-size:12px;
+	text-transform:uppercase;
+}
+
+button.full {
+	width:100%;
+}
+
+button:hover {
+	color:#FFF;
+	background:url(/pinho/public/images/portal/geral/buttonh.png) top center repeat-x;
+}
+
+button:active {
+	color:#FFF;
+	background:url(/pinho/public/images/portal/geral/buttonp.png) top center repeat-x;
+}
+
+.item h6 {
+	text-align:center;
+}
+
+.login {
+	height:250px;
+}
+
+.login a {
+	font-size:11px;
+	display:table;
+	margin:auto;
+}
+
+#recuperarSenha {
+}
+
+.calendario {
+	height:300px;
+}
+
+.social {
+	height:130px;
+}
+
+.browserIE .social {
+	height:120px;
+}
+
+.conteudo {
+	position:relative;
+	float:right;
+	width:600px;
+	background:url(/pinho/public/images/portal/fundo/overlay.png) center center repeat;
+	padding:0 50px 30px 50px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.rodape {
+	float:left;
+	width:1000px;
+	padding:30px 0;
+}
+
+.rodapeConteudo {
+	position:relative;
+	float:right;
+	width:600px;
+	background:url(/pinho/public/images/portal/fundo/overlay.png) center center repeat;
+	padding:20px 50px 20px 50px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;	
+}
+
+.clear {
+	display:block;
+	clear:both;
+}
+
+/* estrutura */
+
+.duplo {
+	float:left;
+	width:50%;
+}
+
+.centro {
+	text-align:center;
+	margin:auto;
+	display:table;
+}
+
+.grupoLista {
+	padding:50px 0 0 0;
+	float:left;
+}
+
+.right {
+	float:right;
+}
+
+.lista {
+	background:url(/pinho/public/images/portal/geral/lista.png) no-repeat top left;
+	height:43px;
+	width:600px;
+	float:left;
+	text-align:center;
+	padding:18px 0 40px 0;
+}
+
+.listaUtil {
+	background:url(/pinho/public/images/portal/geral/utilitario.png) no-repeat top left;
+	height:47px;
+	width:600px;
+	float:left;
+	text-align:center;
+	padding:18px 0 40px 0;
+}
+
+.listaSolucoes {
+	background:url(/pinho/public/images/portal/fundo/listaSolucoes.jpg) no-repeat center left;
+	width:525px;
+	float:left;
+	text-align:left;
+	padding:30px 30px 30px 40px;
+	margin:20px 0;
+	-webkit-border-radius: 4px 10px 10px 4px;
+	-moz-border-radius: 4px 10px 10px 4px;
+	border-radius: 4px 10px 10px 4px;
+}
+
+.lista2 {
+	background:url(/pinho/public/images/portal/geral/lista2.png) no-repeat top left;
+	height:100px;
+	width:600px;
+	float:left;
+	text-align:center;
+	padding:18px 0 40px 0;
+}
+
+.lista3 {
+	background:url(/pinho/public/images/portal/geral/lista3.png) no-repeat top left;
+	height:120px;
+	width:700px;
+	float:left;
+	padding:18px 0 40px 110px;
+}
+
+.lista p, .lista2 p, .lista3 p {
+	font-size:14px;
+}
+
+.lista p cufon, .lista2 p cufon, .lista3 p cufon {
+	padding-bottom:27px;
+}
+
+p.linha2 {
+	padding-left:120px;
+}
+
+p.linha3 {
+	padding-left:120px;
+}
+
+/* pinhonline */
+
+.fotoPinhonet {
+	position:absolute;
+	right:0;
+	top:90px;
+}
+
+.fotoServicos {
+	position:absolute;
+	right:0;
+	top:40px;
+}
+
+.fotoSolucoes {
+	position:absolute;
+	right:-120px;
+	top:-60px;
+}
+
+/* menu */
+
+.menu div {
+	float:left;
+}
+
+.menu a {
+	font-size:11px;
+	text-transform:uppercase;
+	font-weight:bold;
+	float:left;
+	display:block;
+	padding:61px 9px 25px 28px;
+	color:#FFF;
+	position:relative;
+	top:10px;
+}
+
+.menu a:hover {
+	background:url(/pinho/public/images/portal/geral/menuh.png) center 45px no-repeat;
+}
+
+.menu a.logo {
+	width:220px;
+}
+
+
+		.menuLink, .menuLink:link, .menuLink:visited, .menuLink:hover, .menuLink:active {
+			display:block;
+			font-size:12px;
+			text-transform:uppercase;
+			font-weight:bold;
+			text-align:center;
+			letter-spacing:4px;
+			color:#bbb;
+			background:#000;
+			border:2px solid #000;
+			width:182px;
+			padding:5px 7px;
+			margin-bottom:5px;
+			text-decoration:none;
+			overflow:hidden;
+		}
+
+.legenda div {
+	text-align:center;
+	display:block;
+	padding:10px 0;
+	text-transform:capitalize;
+}
+
+.social td {
+	width:29px;
+	padding:0;
+	text-align:left;
+}
+
+.social .legenda {
+	position:relative;
+	top:-20px;
+}
+.browserIE .social .legenda {
+	position:relative;
+	top:-10px;
+}
+
+.social .legenda td {
+	width:190px;
+	padding:0;
+	text-align:center;
+}
+
+.legenda {
+	margin:0;
+	padding:0;
+	display:block;
+	text-align:center;
+}
+
+.social .legenda div {
+	padding:0;
+}
+
+#i1 {	display:none; }
+#i2 {	display:none; }
+#i3 {	display:none; }
+#i4 {	display:none; }
+#i5 {	display:none; }
+#i6 {	display:none; }
+
+#contato {
+	position:relative;
+	float:left;
+	top:-50px;
+	width:800px;
+	left:-100px;
+	height:500px;
+	background:url(/pinho/public/images/portal/geral/contato.png) no-repeat top left;
+}
+
+#contato table.left {
+	position:relative;
+	float:left;
+	left:120px;
+	top:60px;
+}
+
+#contato table.right {
+	position:relative;
+	float:left;
+	left:170px;
+	top:60px;
+}
+
+#contato table.left2 {
+	position:relative;
+	float:left;
+	clear:left;
+	left:53px;
+	top:90px;
+}
+
+#contato table.right2 {
+	position:relative;
+	float:left;
+	left:140px;
+	top:90px;
+}
+
+.top-10 {
+	position:relative;
+	top:-10px;
+}
+
+.top-20 {
+	position:relative;
+	top:-20px;
+}
+
+.top10 {
+	position:relative;
+	top:10px;
+}
+
+.top20 {
+	position:relative;
+	top:20px;
+}
+
+#contato table tds {
+	border:0.1px solid #00C;
+}
+
+#contato table td.espaco {
+	padding:0 0 30px 0;
+}
+
+input[type="text"] {
+	height:auto;
+	width:200px;
+	border:1px solid #134ac7;
+	background:#003;
+	color:#FFF;
+	font-size:12px;
+	padding:3px 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+textarea {
+	height:auto;
+	width:200px;	
+	border:1px solid #134ac7;
+	background:#003;
+	color:#FFF;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	padding:3px 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+div.contato {
+	background:none;
+	border:none;
+}
+
+div.servicos {
+	background:url(/pinho/public/images/portal/fundo/servicos.jpg) center center;
+	border:none;
+}
+
+
+
+/* select box */
+
+/* Drop down styles*/
+div.selectbox-wrapper {
+  position:absolute;
+  width:230px;
+  margin:0px;
+	text-indent:5px;
+	font-weight:bold;
+  text-align:left;
+  max-height:150px;
+  overflow:auto;
+	background:#0c007c url(/pinho/public/images/portal/fundo/overlay.png) repeat-x bottom center;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	-webkit-border-radius: 0 0 6px 6px;
+	-moz-border-radius:0 0 6px 6px;
+	border-radius: 0 0 6px 6px;
+	color:#FFF;
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	z-index:99;
+}
+
+/*Drop down list styles*/
+div.selectbox-wrapper ul {
+  list-style-type:none;
+  margin:0px;
+  padding:0px;
+	font-weight:normal;
+	position:relative;
+	z-index:99;
+}
+/* Selected item in dropdown list*/
+div.selectbox-wrapper ul li.selected {
+	color:#0CF;
+}
+
+/* Hover state for dropdown list */
+div.selectbox-wrapper ul li.current { 
+  background-color: #0d84fd;
+	color:#FFF;
+}
+
+/* Drop down list items style*/
+div.selectbox-wrapper ul li {
+  list-style-type:none;
+  display:block;
+  margin:0;
+  padding:5px 0 5px 10px;
+  cursor:pointer;
+}
+
+/* Look and feel of select box */
+.selectbox 
+{
+	text-indent:10px;
+  display : block;
+  text-align:left;
+	border:1px solid #134ac7;
+	background:#003;
+	color:#FFF;
+  cursor: pointer;
+	position:relative;
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;	
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	z-index:90;
+}
+
+.selectbox:hover {
+	color:#FFF;
+}
+
+.texto {
+	padding:50px 0 0 0;
+	display:block;
+	float:left;
+}
+
+
+.formError {
+	position: absolute;
+	top: 300px;
+	left: 300px;
+	display: block;
+	z-index: 5000;
+	cursor: pointer;
+}
+
+.ajaxSubmit {
+	padding: 20px;
+	background: #0634b5;
+	display: none;
+}
+
+.formError .formErrorContent {
+	width: 100%;
+	background: #0634b5;
+	position:relative;
+	font-weight:bold;
+	z-index:5001;
+	color: #fff;
+	text-transform:uppercase;
+	width: 150px;
+	font-family: Arial;
+	font-size: 10px;
+	padding: 4px 10px 4px 10px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.greenPopup .formErrorContent {
+	background: #0634b5;
+}
+
+.blackPopup .formErrorContent {
+	background: #0634b5;
+	color: #FFF;
+}
+
+.formError .formErrorArrow {
+	width: 15px;
+	margin: -2px 0 0 13px;
+  position:relative;
+  z-index: 5006;
+}
+
+.formError .formErrorArrowBottom {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+	margin: 0px 0 0 12px;
+  top:2px;
+}
+
+.formError .formErrorArrow div {
+	font-size: 0px;
+	height: 1px;
+	background: #0634b5;
+	margin: 0 auto;
+	border:0;
+	line-height: 0;
+	font-size: 0;
+	display: block;
+}
+
+.formError .formErrorArrowBottom div {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.greenPopup .formErrorArrow div {
+	background: #0634b5;
+}
+
+.blackPopup .formErrorArrow div {
+	background: #0634b5;
+	color: #FFF;
+}
+
+.formError .formErrorArrow .line10 {
+	width: 15px;
+	border: none;
+}
+
+.formError .formErrorArrow .line9 {
+	width: 13px;
+	border: none;
+}
+
+.formError .formErrorArrow .line8 {
+	width: 11px;
+}
+
+.formError .formErrorArrow .line7 {
+	width: 9px;
+}
+
+.formError .formErrorArrow .line6 {
+	width: 7px;
+}
+
+.formError .formErrorArrow .line5 {
+	width: 5px;
+}
+
+.formError .formErrorArrow .line4 {
+	width: 3px;
+}
+
+.formError .formErrorArrow .line3 {
+	width: 1px;
+}
+
+.formError .formErrorArrow .line2 {
+	width: 2px;
+	border: none;
+	background: transparent;
+}
+
+.formError .formErrorArrow .line1 {
+	width: 1px;
+	border: none;
+	background: transparent;
+}
+
+#preloader {
+	color:#FFF;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:9999;
+	width:100%;
+	height:100%;
+	background:#00207d url(/pinho/public/images/portal/geral/load.gif) no-repeat center center;
+}
+
+
+
+
+
+/* nyro modal */
+
+.nyroModalBg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: #000;
+	opacity: 0.7;
+	z-index:100;
+}
+
+.nmReposition {
+	position: absolute;
+}
+
+.nyroModalCloseButton {
+	top: 7px;
+	right: 20px;
+	width: 20px;
+	height: 20px;
+	z-index:9999;
+	cursor:pointer;
+	text-indent: -9999em;
+	background: url(/pinho/public/images/portal/nyro/close.png);
+}
+.nyroModalTitle {
+	z-index:950;
+	top: -26px;
+	left: 0;
+	margin: 0;
+  font-size: 1.1em;
+	color: #ddd;
+}
+.nyroModalCont {
+	z-index:960;
+	color:#FFF;
+	position: absolute;
+	-webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+	margin: 25px;
+	padding:40px;
+	background:url(/pinho/public/images/portal/fundo/overlay.png) top center repeat;
+}
+.nyroModalCont iframe {
+	z-index:970;
+	width: 600px;
+	height: 300px;
+}
+.nyroModalError {
+	color:#FFF;
+	width: 250px;
+	height: 250px;
+	-webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+.nyroModalError div {
+	min-width: 0;
+	min-height: 0;
+}
+.nyroModalLink, .nyroModalDom, .nyroModalForm, .nyroModalFormFile {
+	position: relative;
+	padding: 10px;
+	min-height: 250px;
+	min-width: 250px;
+	max-width: 1000px;
+}
+.nyroModalImage, .nyroModalSwf, .nyroModalIframe, .nyroModalIframeForm {
+	position: relative;
+	overflow:scroll;
+	z-index:980;
+}
+.nyroModalImage img {
+  vertical-align: top;
+}
+.nyroModalHidden {
+	left: -9999em;
+	top: -9999em;
+}
+.nyroModalLoad {
+	position: absolute;
+	width: 100px;
+	height: 100px;
+	background: #fff url(/pinho/public/images/portal/nyro/ajaxLoader.gif) no-repeat center;
+	padding: 0;
+}
+.nyroModalPrev, .nyroModalNext {
+	outline: none;
+	position: absolute;
+	top: 0;
+	height: 60%;
+	width: 150px;
+	min-height: 50px;
+	max-height: 300px;
+	cursor: pointer;
+	text-indent: -9999em;
+	background: transparent url('data:image/gif;base64,AAAA') left 20% no-repeat;
+}
+.nyroModalImage .nyroModalPrev, .nyroModalImage .nyroModalNext {
+	height: 100%;
+	width: 40%;
+	max-height: none;
+}
+.nyroModalPrev {
+	left: 0;
+}
+.nyroModalPrev:hover {
+	background-image: url(/pinho/public/images/portal/nyro/prev.gif);
+}
+.nyroModalNext {
+	right: 0;
+	background-position: right 20%;
+}
+.nyroModalNext:hover {
+	background-position: right 20%;
+	background-image: url(/pinho/public/images/portal/nyro/next.gif);
+}
+
+.msgNyro {
+	float:left;
+	padding:100px 10px 10px 10px;
+}
+
+.msgNyro2 {
+	float:left;
+	padding:30px 10px 10px 0px;
+}
+
+strong {
+	color:#09F;
+}
+
+.artes {
+	width:200px;
+	padding:20px 45px;
+	display:block;
+	float:left;
+}
+
+a.linkAtivo {
+	background:url(/pinho/public/images/portal/geral/menuh.png) center 55px no-repeat;
+}
+a.linkAtivo:hover {
+	background:url(/pinho/public/images/portal/geral/menuh.png) center 55px no-repeat;
+}
+a.linkAtivoLogo:hover {
+	background:none;
+}

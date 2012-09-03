@@ -1,0 +1,41 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Pinho Online</title>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()."/public/styles/default/estilo.css"; ?>" />
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+
+        // preloader; creditos https://developer.mozilla.org/en-US/docs/DOM/window.setTimeout
+        
+        $(window).load(function() { $('#preloader-master').fadeOut(300, function() {$('body').css('overflow','visible');$(this).remove();});
+        
+        window.setTimeout(function() {
+             window.location = "<?php echo $this->url(array('module'=>'default', 'controller'=>'slide','action'=>'index'),null,1); ?>";
+        }, 10000);
+
+    });
+
+
+
+    </script>
+
+</head>
+
+<body>
+
+    <div id="preloader-master">
+        <div id="preloader"> 
+            <span class="helvetica load">carregando...</span>
+        </div>
+        <div id="preloader-carrega"> 
+        </div>
+    </div>
+
+    <div id="controle">
+        <a href="portal">acessar portal</a>
+        <a href="<?php echo $this->url(array('module'=>'default', 'controller'=>'slide','action'=>'index'),null,1); ?>">ver apresentação</a>
+    </div>
+
+</body>
