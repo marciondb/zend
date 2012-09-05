@@ -9,6 +9,9 @@
         <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/font.js"; ?>"></script>
         <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/load.js"; ?>"></script>
 
+        <script src="<?php echo $this->baseUrl()."/public/scripts/portal/ui/jquery.selectbox.js"; ?>"></script>
+        <script src="<?php echo $this->baseUrl()."/public/scripts/portal/ui/jquery.maskedinput-1.3.min.js"; ?>"></script>
+                
         <!-- datapicker -->
 
         <link rel="stylesheet" href="<?php echo $this->baseUrl()."/public/scripts/portal/ui/development-bundle/themes/base/jquery.ui.all.css"; ?>">
@@ -24,7 +27,7 @@
 
         <script>
         $(function() {
-        $("#datepicker").datepicker({ firstDay: 1 , showWeek: true });
+            $("#datepicker").datepicker({ firstDay: 1 , showWeek: true });
         });
         </script>
 
@@ -33,38 +36,39 @@
         </script>
 
     </head>
+    <?php
+        
+        if( $this->linkAtivo == 'index')     $linkAtivo1 = 'linkAtivo'; else $linkAtivo1 = '';
+        if( $this->linkAtivo == 'quemsomos') $linkAtivo2 = 'linkAtivo'; else $linkAtivo2 = '';
+        if( $this->linkAtivo == 'solucoes')  $linkAtivo3 = 'linkAtivo'; else $linkAtivo3 = '';
+        if( $this->linkAtivo == 'servicos')   $linkAtivo4 = 'linkAtivo'; else $linkAtivo4 = '';
+        if( $this->linkAtivo == 'contato')   $linkAtivo5 = 'linkAtivo'; else $linkAtivo5 = '';
+        if( $this->linkAtivo == 'extras')    $linkAtivo6 = 'linkAtivo'; else $linkAtivo6 = '';
+            
+    ?>
+    
     <body class="<?php
-    $link   = $_GET['link'];							 
-    $padrao = "portal";
-    if($link == "contato" ) { echo $link; } 
-    elseif($link == "solucoes" ) { echo $link; }
-    elseif($link == "pinhonline" ) { echo $padrao; }
-    elseif($link == "inicio" ) { echo $padrao; }
-    elseif($link == "servicos" ) { echo $link; }
-    else  { echo $padrao; }
+        $link = $this->linkAtivo;
+        
+        if($link == "contato" ) { echo $link; } 
+        elseif($link == "solucoes" ) { echo $link; }
+        elseif($link == "servicos" ) { echo $link; }
+        else  { echo 'portal'; }
+        
     ?>">
-
-        <?php
-
-            function linkAtivo1() { if(isset ($_GET['link']) && ($_GET['link'] == 'pinhonline'))    echo 'linkAtivo'; }
-            function linkAtivo2() { if(isset ($_GET['link']) && ($_GET['link'] == 'solucoes'))  echo 'linkAtivo'; }
-            function linkAtivo3() { if(isset ($_GET['link']) && ($_GET['link'] == 'servicos'))  echo 'linkAtivo'; }
-            function linkAtivo5() { if(isset ($_GET['link']) && ($_GET['link'] == 'quemsomos'))  echo 'linkAtivo'; }
-            function linkAtivo6() { if(isset ($_GET['link']) && ($_GET['link'] == 'contato'))  echo 'linkAtivo'; }
-            function linkAtivo7() { if(isset ($_GET['link']) && ($_GET['link'] == 'utilitarios'))  echo 'linkAtivo'; }
-        ?>
+       
 
         <div id="preloader"></div>
 
         <div class="documento">
             <div class="menu">
                 <div><a href="index.php" class="logo linkAtivoLogo">&nbsp;</a></div>
-                <div><a class=" <?php linkAtivo1(); ?> " href="index.php?link=pinhonline">inicio</a></div>
-                <div><a class=" <?php linkAtivo5(); ?> " href="index.php?link=quemsomos">quem somos</a></div>
-                <div><a class=" <?php linkAtivo2(); ?> " href="index.php?link=solucoes">soluções</a></div>
-                <div><a class=" <?php linkAtivo3(); ?> " href="index.php?link=servicos">serviços</a></div>
-                <div><a class=" <?php linkAtivo6(); ?> " href="index.php?link=contato">contato</a></div>
-                <div><a class=" <?php linkAtivo7(); ?> " href="index.php?link=utilitarios">extras</a></div>       
+                <div><a class=" <?php echo $linkAtivo1; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'index'),null,1); ?>">inicio</a></div>
+                <div><a class=" <?php echo $linkAtivo2; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'quemsomos'),null,1); ?>">quem somos</a></div>
+                <div><a class=" <?php echo $linkAtivo3; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'solucoes'),null,1); ?>">soluções</a></div>
+                <div><a class=" <?php echo $linkAtivo4; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'servicos'),null,1); ?>">serviços</a></div>
+                <div><a class=" <?php echo $linkAtivo5; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'contato'),null,1); ?>">contato</a></div>
+                <div><a class=" <?php echo $linkAtivo6; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'extras'),null,1); ?>">extras</a></div>       
             </div>
             <div class="gadget">
                 <div class="item login">
@@ -93,10 +97,10 @@
                                     <td><input id="senha" name="senha" class="login validate[required],minSize[6]" type="password" /></td>
                                 </tr>
                                 <tr class="base">
-                                    <td><button class="full" type="submit">acessar</button></td>
+                                    <td><button class="full" type="submit">Acessar</button></td>
                                 </tr>
                                 <tr class="base">
-                                    <td><div id="recuperarSenha"><a href="index.php?link=recuperarSenha">recuperar senha</a></div></td>
+                                    <td><div id="recuperarSenha"><a href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'recuperarsenha'),null,1); ?>">Recuperar Senha ou Usuário</a></div></td>
                                 </tr>
                             </table>
                         </form>
@@ -170,20 +174,13 @@
                 </div>
             </div>
             <div class="conteudo <?php
-                $link = $_GET['link'];
+                
                 if($link == "contato") { echo "contato"; }
                 if($link == "servicos") { echo "servicos"; }
                 ?>">
 
-                <?php
-                /*
-                * 
-                * aqui vai o content mano
-                * 
-                * 
-                */
-                echo 'conteudis';
-                ?>
+                <?php echo $this->layout()->content; ?>
+                
             </div>
             <div class="rodape">
             </div>
