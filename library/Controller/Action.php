@@ -20,7 +20,10 @@ abstract class Controller_Action extends Zend_Controller_Action {
             
             if(!$this->_usuario->efetuarLogin($this->userEmail, $this->senha))
             {
-                ZendUtils::transmissorMsg("Login ou senha incorretos!",  ZendUtils::MENSAGEM_ERRO,0);
+                //ZendUtils::transmissorMsg("Login ou senha incorretos!",  ZendUtils::MENSAGEM_ERRO,0);
+                echo $this->senha;
+                die();
+                
             }
             $this->_redirect("index");                
         }
