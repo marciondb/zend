@@ -1,0 +1,23 @@
+<form name="formulario" action="<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logar'),null,1); ?>" method="post">
+    <table bgcolor="#CCCCCC" style="border:1px solid #666; margin-top:20px;" width="300" align="center">
+        <th colspan="2" bgcolor="#999999" style="color:#FFF;" align="center">Administração</th>
+        <tr>
+            <td align="right" width="30%"></td>
+            <td width="70%"></td>
+        </tr>
+        <tr>
+            <td align="right">Login</td>
+            <td><input name="login" type="text" id="login" value="<?php if (isset($_POST['login'])) echo $_POST['login']; ?>" /></td>
+        </tr>
+        <tr>
+            <td align="right">Senha</td>
+            <td><input name="senha" type="password" id="senha" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center"><a href="index.php?link=recuperarSenha" class="recupera">Esqueceu usuário ou senha?</a></td>
+        </tr>
+        <tr>
+            <td align="center" colspan="2"><input name="logar" type="submit" id="logar" value="Entrar" />&nbsp;<input name="" type="reset" value="Redefinir" /></td>
+        </tr>
+    </table>	
+</form>

@@ -1,0 +1,86 @@
+@charset "utf-8"; 
+
+html, body {
+	margin:0px;
+	padding:0px;
+	background-color:#DDD;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:16px;
+}
+div#topo {
+	font-size:0px;
+	padding:10px;
+
+	background:url(/pinho/public/images/sistema/titulo.jpg) no-repeat top center;
+}
+div#conteudo
+{
+	padding-bottom:10px;
+	background-color:#FFF;
+	min-height:500px;
+	height:auto !important;
+	height:500px;
+	width:820px;
+	
+	background-repeat:no-repeat;
+	text-align:left;
+}
+div#interface
+{
+	width:800px;
+	padding:10px;
+	float:right;
+	text-align:left;
+}
+
+h3 {
+	color:#666;
+	font-family:Tahoma, Geneva, sans-serif;
+}
+
+.t_acende {
+	background:#DDD;
+}
+
+a:hover {
+	text-decoration:underline;
+}
+
+input[type="reset"], input[type="submit"], input[type="button"] {
+	outline:none; 
+	border:0;
+	padding:6px;
+	margin:0;
+	background-image:url(/pinho/public/images/sistema/verde.png);
+	background-repeat:repeat-x;
+	color:#FFF;
+	font-weight:bold;
+	border:1px solid #090;
+	cursor:pointer;
+	font-family:Tahoma, Geneva, sans-serif;
+}
+
+input[type="reset"] {
+	outline:none; 
+	border:0;
+	padding:6px;
+	margin:0;
+	background-image:url(/pinho/public/images/sistema/azul.png);
+	background-repeat:repeat-x;
+	color:#FFF;
+	font-weight:bold;
+	border:1px solid #06C;
+	cursor:pointer;
+	font-family:Tahoma, Geneva, sans-serif;
+}
+
+input[type="button"]:hover , input[type="submit"]:hover{
+	background-image:none;
+	background-color:#0C3;
+}
+
+input[type="reset"]:hover {
+	background-image:none;
+	background-color:#09F;
+}
+
