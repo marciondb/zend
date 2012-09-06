@@ -1,12 +1,12 @@
 <?php
 
-class Portal_IndexController extends Zend_Controller_Action
+class Portal_IndexController extends Controller_Action
 {
 
     public function init()
     {
         /* Initialize action controller here */
-        
+        parent::init();
         //utilizado no layout.phtml
         $linkAtivo = $this->getRequest()->getActionName();
         $this->view->linkAtivo = $linkAtivo;

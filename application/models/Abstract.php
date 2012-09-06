@@ -78,4 +78,5 @@ abstract class Application_Model_Abstract {
     abstract public function _insert(array $data);
 
     abstract public function _update(array $data);
+    
 }

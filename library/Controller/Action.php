@@ -1,33 +1,35 @@
 <?php
 
 abstract class Controller_Action extends Zend_Controller_Action {
+    //protected $userEmail;
+    protected $senha;
+    protected $_usuario;
 
-    protected $userId;
-    protected $userNome;
-    protected $userEmail;
-    protected $data;
-    protected $authStatus = false;
-
-    public function init() {
-        $this->flashMessenger = $this->_helper->FlashMessenger;
-        $this->view->messages = $this->flashMessenger->getMessages();
-        
-        if ($this->_request->isPost()) {
-            $this->data = $this->_request->getPost();
-            if (isset($this->data['submit']))
-                unset($this->data['submit']);
-        }
-        
-        $auth = Zend_Auth::getInstance();
-        $auth->setStorage(new Zend_Auth_Storage_Session($this->_request->getModuleName()));
-        if ($auth->hasIdentity()) {
-            $this->authStatus = true;
-            $this->userId = $auth->getIdentity()->id;
-            $this->userNome = $auth->getIdentity()->nome;
-            $this->userEmail = $auth->getIdentity()->email;
-        }
-
-        $this->view->userNome = $this->userNome;
-        $this->view->authStatus = $this->authStatus;
+        public function init()
+    {
+            
+        $this->_usuario = new Application_Model_Usuario();
     }
+
+    public function logarAction()
+    {
+        if($this->getRequest()->isPost())
+        {
+            $this->userEmail = $this->getRequest()->getParam("login");
+            $this->senha = $this->getRequest()->getParam("senha");
+            
+            if(!$this->_usuario->efetuarLogin($this->userEmail, $this->senha))
+            {
+                ZendUtils::transmissorMsg("Login ou senha incorretos!",  ZendUtils::MENSAGEM_ERRO,0);
+            }
+            $this->_redirect("index");                
+        }
+
+    }
+
+    public function logoutAction()
+    {
+        $this->_usuario->efetuarLogoff();
+        $this->_redirect("index");
+    }   
 }

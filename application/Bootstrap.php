@@ -7,6 +7,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Registry::set("config",$config);
         
     }
+    
+    public function _initAutoLoader()
+    {
+        Zend_Loader_Autoloader::getInstance()->setFallbackAutoloader(true);
+        
+    }
 
 }
 
