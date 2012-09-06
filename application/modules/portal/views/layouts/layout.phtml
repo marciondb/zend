@@ -62,7 +62,7 @@
 
         <div class="documento">
             <div class="menu">
-                <div><a href="index.php" class="logo linkAtivoLogo">&nbsp;</a></div>
+                <div><a href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'index'),null,1); ?>" class="logo linkAtivoLogo">&nbsp;</a></div>
                 <div><a class=" <?php echo $linkAtivo1; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'index'),null,1); ?>">inicio</a></div>
                 <div><a class=" <?php echo $linkAtivo2; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'quemsomos'),null,1); ?>">quem somos</a></div>
                 <div><a class=" <?php echo $linkAtivo3; ?> " href="<?php echo $this->url(array('module'=>'portal', 'controller'=>'index','action'=>'solucoes'),null,1); ?>">soluções</a></div>
