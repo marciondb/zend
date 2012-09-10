@@ -1,0 +1,24 @@
+<?php
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+    class CarregaMenu {
+
+        public $usuario;
+        public $login;
+
+        function __construct() 
+        {
+            $this->usuario = new Application_Model_Usuario();
+            $this->login=$this->usuario->find(1);
+            
+        }
+
+    } 
+
+    $menu = new CarregaMenu();
+    echo $menu->login['login'];
+    //echo print_r($menu);

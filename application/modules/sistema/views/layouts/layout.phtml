@@ -10,13 +10,29 @@
     <body>
         <div id="araiz" align="center">
             <div id="topo">
-                <img src="<?php echo $this->baseUrl()."/public/images/sistema/logoMarca.png"; ?>" alt="Painel de Controle">
-
+                <img src="<?php echo $this->baseUrl()."/public/images/sistema/logoMarca.png"; ?>" alt="Painel de Controle">               
             </div>
             <div id="conteudo">
-                <?php echo $this->layout()->content; ?>
-                
-            </div>
+                <div id="interface">
+                    <?php
+                        if (Zend_Auth::getInstance()->hasIdentity())
+                        {
+                           
+                    ?>
+                            <div id="menui">          
+                                <?php 
+                                    include("/application/modules/sistema/views/layouts/carregamenu.phtml");
+                                ?>
+                            </div>
+                            <div>
+                                &nbsp;
+                            </div>
+                    <?php } ?>
+                    
+                    
+                    <?php echo $this->layout()->content; ?>
+            
+                </div>
         </div>
     </body>
 </html>

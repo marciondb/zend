@@ -14,4 +14,5 @@ class Sistema_LogadoController extends Controller_Action
     {
         
     }
+    
 }

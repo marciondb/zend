@@ -10,7 +10,6 @@ abstract class Controller_Action extends Zend_Controller_Action {
         
         $this->_usuario = new Application_Model_Usuario();
         
-        
         // Verifica em todas as páginas se o usuário está logado ou não, permitindo o acesso de acordo com a situação
         $redirect = $this->getRequest()->getModuleName();
         
