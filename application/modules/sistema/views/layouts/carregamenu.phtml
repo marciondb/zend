@@ -1,24 +1,37 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/***
+ * Carrega o menu baseado nas permissoes do usuario
  */
-
-    class CarregaMenu {
-
-        public $usuario;
-        public $login;
-
-        function __construct() 
-        {
-            $this->usuario = new Application_Model_Usuario();
-            $this->login=$this->usuario->find(1);
-            
-        }
-
-    } 
-
-    $menu = new CarregaMenu();
-    echo $menu->login['login'];
-    //echo print_r($menu);
+    $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+    
+    $usuario = new Application_Model_Usuario();
+    $resultado=$usuario->getPermissao();
+    
+    echo print_r($resultado);
+    $cont = 0;
+    $menu =  '<ul>';
+    
+    while($cont < count($resultado))
+    {
+        echo $resultado[$cont]['login'];
+        
+        //if()
+        
+        $cont++;
+    }
+    
+    $menu .= '</ul>';
+    ?>
+    
+    <p align="right"><?php echo $arrayIdentity->login;?> | <a href="<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logout'),null,1); ?>">sair</a></p>
+    
+    <ul>
+        <li>marcio
+            <ul>
+                <li>dias</li>
+                <li>raaaa</li>
+            </ul>
+        </li>
+        <li>sobre</li>
+    </ul>

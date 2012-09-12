@@ -47,6 +47,26 @@ class Application_Model_Usuario extends Application_Model_Abstract
             return true;
         }
     }
+    
+    public function getPermissao()
+    {
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        
+        $select = $this->_dbTable->
+                  select()->
+                  setIntegrityCheck(false)->
+                  from('ferramenta', array('nome','eh_ferramenta'))->
+                  join('funcionalidade', 'ferramenta.id_ferramenta = funcionalidade.id_ferramenta',array('pertencente_submenu', 'titulo', 'nome_action'))->
+                  join('permissao','funcionalidade.id_funcionalidade = permissao.id_funcionalidade')->
+                  join('usuario_permissao','permissao.id_permissao = usuario_permissao.id_permissao')->
+                  join('usuario','usuario.id_usuario = usuario_permissao.id_usuario')->
+                  where('usuario.id_usuario = ?', $arrayIdentity->id_usuario)->
+                  order('funcionalidade.pertencente_submenu ASC')->
+                  order('ferramenta.nome ASC')->
+                  order('ferramenta.eh_ferramenta DESC');
+        
+        return $select->query()->fetchAll();
+    }
 
 }
 

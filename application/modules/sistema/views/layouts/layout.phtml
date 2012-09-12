@@ -10,29 +10,38 @@
     <body>
         <div id="araiz" align="center">
             <div id="topo">
-                <img src="<?php echo $this->baseUrl()."/public/images/sistema/logoMarca.png"; ?>" alt="Painel de Controle">               
+                <img src="<?php echo $this->baseUrl()."/public/images/sistema/logoMarca.png"; ?>" alt="Painel de Controle">
+                <?php
+                    if (Zend_Auth::getInstance()->hasIdentity())
+                    {
+                        //Se ja esta logado, não deve ser exibido o formulario para login, logo ser redirecionado para /logado
+                        //caso tente acessar sistema/index diretamente
+                        $controller = $this->controller;
+
+                        if($controller == "index")
+                        {
+                            ?>
+                            <script>
+                                window.location.pathname = '/pinho/sistema/logado';
+                            </script>
+                            <?php
+                        }
+
+                ?>
+                        <div id="menu">          
+                            <?php 
+                                include("/application/modules/sistema/views/layouts/carregamenu.phtml");
+                            ?>
+                        </div>
+                        <div>
+                            &nbsp;
+                        </div>
+                <?php
+                    }                        
+                ?>
             </div>
             <div id="conteudo">
-                <div id="interface">
-                    <?php
-                        if (Zend_Auth::getInstance()->hasIdentity())
-                        {
-                           
-                    ?>
-                            <div id="menui">          
-                                <?php 
-                                    include("/application/modules/sistema/views/layouts/carregamenu.phtml");
-                                ?>
-                            </div>
-                            <div>
-                                &nbsp;
-                            </div>
-                    <?php } ?>
-                    
-                    
-                    <?php echo $this->layout()->content; ?>
-            
-                </div>
+                <?php echo $this->layout()->content; ?>
         </div>
     </body>
 </html>
