@@ -1,6 +1,3 @@
-<?php
-
-?>
 <form name="formulario" action="<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logar'),null,1); ?>" method="post">
     <table bgcolor="#CCCCCC" style="border:1px solid #666; margin-top:20px;" width="300" align="center">
         <th colspan="2" bgcolor="#999999" style="color:#FFF;" align="center">Administração</th>
@@ -9,18 +6,28 @@
             <td width="70%"></td>
         </tr>
         <tr>
-            <td align="right">Login</td>
-            <td><input name="login" type="text" id="login" value="<?php if (isset($_POST['login'])) echo $_POST['login']; ?>" /></td>
+            <td>
+                <div class="input-prepend">
+                    <span class="add-on">Usuário</span><input class="span2" id="login" name="login" type="text" placeholder="email">
+                </div>
+            </td>
         </tr>
         <tr>
-            <td align="right">Senha</td>
-            <td><input name="senha" type="password" id="senha" /></td>
+            <td>
+                <div class="input-prepend">
+                    <span class="add-on">Senha</span><input class="span2" id="senha" name="senha" type="password" placeholder="senha">
+                </div>
+            </td>
         </tr>
         <tr>
-            <td colspan="2" align="center"><a href="index.php?link=recuperarSenha" class="recupera">Esqueceu usuário ou senha?</a></td>
+            <td colspan="2" align="center"><a href="index.php?link=recuperarSenha" class="recupera"><i class="icon-wrench"></i>&nbsp;Esqueceu usuário ou senha?</a></td>
         </tr>
         <tr>
-            <td align="center" colspan="2"><input name="logar" type="submit" id="logar" value="Entrar" />&nbsp;<input name="" type="reset" value="Redefinir" /></td>
+            <td align="center" colspan="2"><input class="btn btn-primary" name="logar" type="submit" id="logar" value="Entrar" />&nbsp;<input name="" class="btn btn-danger" type="reset" value="Redefinir" /></td>
         </tr>
     </table>	
 </form>
+
+
+
+

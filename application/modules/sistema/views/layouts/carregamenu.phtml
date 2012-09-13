@@ -1,37 +1,103 @@
 <?php
-
-/***
- * Carrega o menu baseado nas permissoes do usuario
- */
+    /* * *
+    * Carrega o menu baseado nas permissoes do usuario
+    */
     $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
-    
+
     $usuario = new Application_Model_Usuario();
-    $resultado=$usuario->getPermissao();
-    
-    echo print_r($resultado);
-    $cont = 0;
-    $menu =  '<ul>';
-    
-    while($cont < count($resultado))
+    $resultado = $usuario->getPermissao();
+
+    //echo print_r($resultado);
+    $registro = 0;
+    $flagNovaColuna = 1; //adciona uma nova coluna no menu
+    $flag = 1;           //para fazer o menu coluna Ferramenta
+    $flag1=1;            //para imprimir os itens da coluna ferramenta um unica fez cada um  
+    $flag2=1;            //para saber a 1º vez q entra no else (banco de dados, campo [eh_ferramenta] == 1 da tabela funcionalidade )
+    $flagIdFerramenta = 0;
+    $arrayActionsPermitidas = '';
+    $menu = '<ul id="nav">'."\n".'
+                <li class="current"><a href="/pinho/sistema/logado">Home</a></li>'."\n";
+
+    while ($registro < count($resultado)) 
     {
-        echo $resultado[$cont]['login'];
+        $arrayActionsPermitidas .= $resultado[$registro]['action'].';';
         
-        //if()
+        if ($resultado[$registro]['eh_ferramenta'] == 0) 
+        {
+            
+            if ($flagNovaColuna == 1) 
+            {
+                $flagNovaColuna = 0;
+
+                $menu .= "<li><a href='#'>".$resultado[$registro]['nomeFerramenta']."</a>\n";
+                    $menu .= "<ul>\n";
+            }
+                            
+                        $menu .= '<li><a href="'.$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => $resultado[$registro]['action']), null, 1).'">'.$resultado[$registro]['titulo'].'</a></li>'."\n";
+            
+            if (($flagIdFerramenta == 0 || $flagIdFerramenta == $resultado[$registro]['idFerramenta']))  
+            {
+                    $menu .= "</ul>\n";
+                $menu .= "</li>\n";
+                $flagNovaColuna = 1;
+            }
+        }
+        else
+        { 
+            if ($flag == 1) 
+            {
+                $flag = 0;
+
+                $menu .= "<li><a href='#'>Ferramenta</a>\n";
+                    $menu .= "<ul>\n";
+            }
+            
+            if ( ($flagIdFerramenta != $resultado[$registro]['idFerramenta']))  
+            {
+                if ($flag2 == 1) 
+                {
+                    $flag2 = 0;
+                }
+                else
+                {
+                        $menu .= "</ul>\n";
+                    $menu .= "</li>\n";
+                    $flag1 = 1;
+                }                      
+            }
+           
+            if ($flag1 == 1)  
+            {
+                $flag1=0;
+                $menu .= "<li><a href='#'>".$resultado[$registro]['nomeFerramenta']."</a>\n";
+                    $menu .= "<ul>\n";
+            }
+            
+                    if($resultado[$registro]['pertencente_submenu']==1)
+                        $menu .= '<li><a href="'.$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => $resultado[$registro]['action']), null, 1).'">Cadastrar</a></li>'."\n";
+                    else
+                        $menu .= '<li><a href="'.$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => $resultado[$registro]['action']), null, 1).'">Gerenciar</a></li>'."\n";
         
-        $cont++;
+            //para fechar a coluna Ferramenta e o ultima item do menu da coluna ferramenta
+            if($registro == (count($resultado)-1) )
+            {
+                    $menu .= "</ul>\n";
+                $menu .= "</li>\n";
+                            $menu .= "</ul>\n";//fecha o ul da ferramenta
+                        $menu .= "</li>\n";//fecha o li da ferramenta
+            }
+        }
+        
+        $flagIdFerramenta = $resultado[$registro]['idFerramenta'];
+        $registro++;
     }
     
+    
     $menu .= '</ul>';
+    
     ?>
+
+    <p align="right"><?php echo $arrayIdentity->login; ?> | <a href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'index', 'action' => 'logout'), null, 1); ?>">sair</a></p>
     
-    <p align="right"><?php echo $arrayIdentity->login;?> | <a href="<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logout'),null,1); ?>">sair</a></p>
-    
-    <ul>
-        <li>marcio
-            <ul>
-                <li>dias</li>
-                <li>raaaa</li>
-            </ul>
-        </li>
-        <li>sobre</li>
-    </ul>
+    <?php echo $menu; ?>
+
