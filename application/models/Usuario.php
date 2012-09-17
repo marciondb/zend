@@ -56,14 +56,14 @@ class Application_Model_Usuario extends Application_Model_Abstract
                   select()->
                   setIntegrityCheck(false)->
                   from('ferramenta', array('nomeFerramenta'=>'nome','eh_ferramenta'))->
-                  join('funcionalidade', 'ferramenta.id_ferramenta = funcionalidade.id_ferramenta',array('pertencente_submenu', 'titulo','action' =>'nome_action','idFerramenta'=>'id_ferramenta'))->
+                  join('funcionalidade', 'ferramenta.id_ferramenta = funcionalidade.id_ferramenta',array('id_funcionalidade','id_funcionalidade_pai', 'titulo','action' =>'nome_action','idFerramenta'=>'id_ferramenta'))->
                   join('permissao','funcionalidade.id_funcionalidade = permissao.id_funcionalidade',null)->
                   join('usuario_permissao','permissao.id_permissao = usuario_permissao.id_permissao',null)->
                   join('usuario','usuario.id_usuario = usuario_permissao.id_usuario',null)->
                   where('usuario.id_usuario = ?', $arrayIdentity->id_usuario)->
                   order('ferramenta.eh_ferramenta ASC')->
                   order('ferramenta.nome ASC')->
-                  order('funcionalidade.pertencente_submenu ASC');
+                  order('funcionalidade.id_funcionalidade_pai ASC');
         
         return $select->query()->fetchAll();
     }
