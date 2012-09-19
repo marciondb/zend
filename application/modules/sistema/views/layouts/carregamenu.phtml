@@ -3,19 +3,25 @@
     /* * *
     * Carrega o menu baseado nas permissoes do usuario
     */
+
+    $_SESSION['menu'] = null;
+    unset($_SESSION['menu']);
+    
     $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
 
     $usuario = new Application_Model_Usuario();
     $resultado = $usuario->getPermissao();
+    //print_r($resultado);
 ?>
 
 <p align="right"><?php echo $arrayIdentity->login; ?> | <a href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'index', 'action' => 'logout'), null, 1); ?>">sair</a></p>
 
 <?php
-    echo '<ul id="nav">'."\n".'
+    $_SESSION['menu'] = '';
+    $_SESSION['menu'] .= '<ul id="nav">'."\n".'
                 <li class="current"><a href="/pinho/sistema/logado">Home</a></li>'."\n";
     
-    function montaMenu($id_funcionalidade,$resultado)
+    function montaMenu($id_funcionalidade,$resultado,$url)
     {
         foreach ($resultado as $value) 
         {
@@ -25,34 +31,35 @@
                 
                 if($value['action']=='')
                 {
-                    echo "<li><a href='#'>".$value['titulo']."</a>\n";
-                        echo  "<ul>\n";
+                    $_SESSION['menu'] .= "<li><a href='#'>".$value['titulo']."</a>\n";
+                        $_SESSION['menu'] .=  "<ul>\n";
                 }
                 else
-                {
-                    echo "<li><a href='#'>".$value['titulo']."</a></li>\n";
+                {                    
+                    $_SESSION['menu'] .= "<li><a href='".$url.$value['action']."'>".$value['titulo']."</a></li>\n";
                 }
                 
                 //echo $value['titulo']." ".$value['action']."\n";
                 
-                montaMenu($value['id_funcionalidade'],$resultado);//,$menu);
+                montaMenu($value['id_funcionalidade'],$resultado,$url);//,$menu);
                 
                 if($value['action']=='')
                 {
-                    echo "</ul>\n";
-                    echo "</li>\n";
+                    $_SESSION['menu'] .= "</ul>\n";
+                    $_SESSION['menu'] .= "</li>\n";
                 }
             }
         }
         
     }
     
-    //$menu = 
-    montaMenu(0,$resultado);
+    montaMenu(0,$resultado,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1));
     
-    echo '</ul>';
-    ?>
+    $_SESSION['menu'] .= '</ul>';
     
     
+    echo $_SESSION['menu'];
     
-
+    $_SESSION['menu'] = null;
+    unset($_SESSION['menu']);
+ 

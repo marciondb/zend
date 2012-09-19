@@ -62,7 +62,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
                   join('usuario','usuario.id_usuario = usuario_permissao.id_usuario',null)->
                   where('usuario.id_usuario = ?', $arrayIdentity->id_usuario)->
                   order('ferramenta.eh_ferramenta ASC')->
-                  order('ferramenta.nome ASC')->
+                  order('funcionalidade.titulo ASC')->
                   order('funcionalidade.id_funcionalidade_pai ASC');
         
         return $select->query()->fetchAll();

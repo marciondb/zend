@@ -17,7 +17,8 @@ abstract class Controller_Action extends Zend_Controller_Action {
         {
             if(!(Zend_Auth::getInstance()->hasIdentity()))
                 $this->_redirect($redirect);
-        }  
+        }
+                
     }
 
     /***

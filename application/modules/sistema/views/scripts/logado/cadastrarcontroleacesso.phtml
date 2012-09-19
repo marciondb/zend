@@ -1,0 +1,7 @@
+<div id="container">
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+        $('#container').load('<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa'), null, 1); ?>');
+  });
+</script>
