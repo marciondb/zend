@@ -2,7 +2,7 @@
 <hr />
 <form name="formulario" id="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarempresa'), null, 1); ?>" method="post">
 
-    <input type="hidden" name="idMatriz" id="idMatriz" value="0" />
+    <input type="hidden" name="id_matriz" id="id_matriz" value="0" />
     <table  width="100%" height="1318" align="center">
         <tr>
             <td width="30%" align="left">
@@ -302,7 +302,7 @@
                 Pessoa de Contato 1: 
             </td>
             <td align="left">
-                <input type="text" type="hidden" name="idFuncionario1" id="idFuncionario1" value="" />
+                &nbsp;
 
             </td>                
         </tr>
@@ -338,6 +338,16 @@
             </td>
         </tr>
         <tr>
+            <td align="left">
+                <label for="dddTelTemp1">Email</label>
+                :
+            </td>
+            <td align="left">
+                <input name="email_contato_1" type="email" id="email_contato_1" value="" />
+
+            </td>
+        </tr>
+        <tr>
             <td>&nbsp;</td>
         </tr>
         <tr>
@@ -345,21 +355,7 @@
                 Pessoa de Contato 2: 
             </td>
             <td align="left">
-                <input type="hidden" name="idFuncionario2" id="idFuncionario2" value="" />
-
-                <select tabindex="31" name="idFuncionario2select" id="idFuncionario2select" style="width:337px" >
-                    <option value="">::.. Selecione um Setor / Unidade de Negócios ..::</option>
-
-
-                </select>
-                <!-- Div do AJAX´s-->
-
-                <div id="div_Funcionarios2" class="modal2">
-
-                    <!-- Resultado do retorno do AJAX-->                      
-
-                </div>
-                <!-- FM da Div do AJAX´s-->
+                &nbsp;
             </td>
         </tr>
         <tr>
@@ -391,6 +387,16 @@
 
                 &nbsp;Operadora:
                 <input name="id_operadora_celular_contato_2" type="text" id="id_operadora_celular_contato_2" value=""  />
+
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddTelTemp1">Email</label>
+                :
+            </td>
+            <td align="left">
+                <input name="email_contato_2" type="email" id="email_contato_2" value="" />
 
             </td>
         </tr>

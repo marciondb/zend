@@ -13,6 +13,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Loader_Autoloader::getInstance()->setFallbackAutoloader(true);
         
     }
+    
+    public static function _initSessao(){
+        
+         Zend_Session::start();
+         
+         Zend_Registry::set("session", new Zend_Session_Namespace());
+        
+    }
 
 }
 

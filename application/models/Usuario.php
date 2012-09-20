@@ -68,5 +68,14 @@ class Application_Model_Usuario extends Application_Model_Abstract
         return $select->query()->fetchAll();
     }
 
+    
+        public function _validarDados(array $data){
+        // Validação
+        //$erros = "";
+        
+        
+        return true;
+    }
+    
 }
 

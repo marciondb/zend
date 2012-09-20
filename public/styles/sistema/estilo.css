@@ -188,3 +188,53 @@ html[xmlns] #nav {
 * html #nav {
 	height: 1%;
 }
+
+/* 
+    Document   : zendutils
+    Created on : 14/06/2012, 10:51:50
+    Author     : marcus
+    Description:
+        Purpose of the stylesheet follows.
+*/
+#mensagem
+{
+    display: table;
+    background-color: #FCC;
+    margin:80px  auto -30px auto; 
+    width: 550px;
+    text-align: center;
+    display: none;
+}
+.mensagem_acerto
+{
+	border:1px solid #030;
+	 background-color:#CFC;
+	  color:#030;
+	  padding:10px;
+	  margin:5px;
+	  font-size:12px;
+	  text-align:center;
+          font-size: 20px;
+	  
+}
+
+.mensagem_erro
+{
+	border:1px solid #300;
+	 background-color:#FCC;
+	 color:#300;
+	 padding:10px;
+	  margin:5px;
+	  font-size:12px;
+	  text-align:center;
+           font-size: 20px;
+}
+
+#btnfechardiv
+{
+    text-decoration: none;
+    text-align: left;
+    float: right;
+    font-size: 20px;
+    
+}

@@ -8,11 +8,18 @@ abstract class Application_Model_Abstract {
         return $this->_dbTable->find($id)->current()->toArray();
     }
 
-    public function save(array $data) {
-        if (isset($data['id'])) {
-            return $this->_update($data);
-        } else {
-            return $this->_insert($data);
+    public function save(array $data, $update = FALSE) {
+
+        $validacao = $this->_validarDados($data);
+
+        if (is_string($validacao))
+            throw new Exception($validacao);
+        else {
+            if ($update) {
+                return $this->_update($data);
+            } else {
+                return $this->_insert($data);
+            }
         }
     }
 
@@ -78,5 +85,7 @@ abstract class Application_Model_Abstract {
     abstract public function _insert(array $data);
 
     abstract public function _update(array $data);
+    
+    abstract public function _validarDados(array $data);
     
 }
