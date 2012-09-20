@@ -9,12 +9,12 @@
                 <strong>Tipo de empresa:</strong>
             </td>
             <td width="70%" align="left">
-                Matriz <input tabindex="1" type="radio" name="tipoEmpresa" id="tipoEmpresa">
+                Matriz <input tabindex="1" type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0">
                 Filial <input tabindex="2" type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1">
 
                 <!-- Div do AJAX´s-->
 
-                <div id="div_tipoEmpresa" class="modal">
+                <div id="div_tipoEmpresa" class="">
 
                     <!-- Resultado do retorno do AJAX-->                      
 
@@ -27,7 +27,7 @@
                 Nome Fantasia da Empresa:
             </td>
             <td align="left">
-                <input tabindex="3" name="nomeFantasia" id="nomeFantasia" value="" maxlength="100" size="50">
+                <input tabindex="3" type="text" name="nome_fantasia" id="nome_fantasia" value="" maxlength="100" size="50">
 
             </td>
         </tr>
@@ -36,21 +36,21 @@
                 Razão Social:
             </td>
             <td align="left">
-                <input tabindex="4" name="razaoSocial" id="razaoSocial" value="" maxlength="100" size="50">
+                <input tabindex="4" type="text" name="razao_social" id="razao_social" value="" maxlength="100" size="50">
             </td>
         </tr>
         <tr>
             <td align="left">
                 <div id="nomeMatrizDiv">Nome da Matriz:</div></td>
             <td align="left">
-                <div id="nomeMatrizDiv1"><input name="nomeMatriz" id="nomeMatriz" tabindex="5" value="" size="50" maxlength="100"></div>
+                <div id="nomeMatrizDiv1"><input type="text" name="nomeMatriz" id="nomeMatriz" tabindex="5" value="" size="50" maxlength="100"></div>
             </td>
         </tr>            
         <tr>
             <td align="left">
                 Apelido:</td>
             <td align="left">
-                <input tabindex="6" name="apelido" id="apelido" value="" maxlength="100" size="50">
+                <input type="text" tabindex="6" name="apelido" id="apelido" value="" maxlength="100" size="50">
             </td>
         </tr>
         <tr>
@@ -59,7 +59,7 @@
             </td>
             <td align="left">
                 
-                <select tabindex="7" name="idRamoAtuacao" id="idRamoAtuacao" style="width:337px">
+                <select tabindex="7" name="id_ramo_empresa" id="id_ramo_empresa" style="width:337px">
                     <option value="">::.. Selecione um Ramo de atuação ..::</option>
                    
 
@@ -67,13 +67,7 @@
             </td>
         </tr>
         <tr>
-            <td align="left"><label for="numFiliais" id="cpfCnpj">Quantidade de Filiais:</label></td>
-            <td align="left">
-                <input value="" tabindex="8" name="numFiliais" type="text" id="numFiliais" apelido size="50" maxlength="4"  />
-            </td>
-        </tr>
-        <tr>
-            <td align="left"><label for="numFiliais" id="cpfCnpj">CNPJ.:</label></td>
+            <td align="left"><label for="cnpj" id="cnpj">CNPJ.:</label></td>
             <td align="left">
                 <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" apelido size="50" maxlength="18" />
             </td>
@@ -81,7 +75,7 @@
         <tr>
             <td align="left"><label for="ie" id="ie">Inscrição Estadual:</label></td>
             <td align="left">
-                <input value="" tabindex="10" name="ie" type="text" id="ie" apelido size="50" maxlength="15" />
+                <input value="" tabindex="10" name="inscricao_estadual" type="text" id="inscricao_estadual" apelido size="50" maxlength="15" />
             </td>
         </tr>
         <tr><td></td></tr>
@@ -103,7 +97,7 @@
                 <label for="endereco">Endereço</label>
             </td>
             <td align="left">
-                <input tabindex="11" name="endereco" type="text" id="endereco" maxlength="100" size="28" value="" />                <label for="numero">Número </label>
+                <input tabindex="11" name="rua_av" type="text" id="rua_av" maxlength="100" size="28" value="" />                <label for="numero">Número </label>
                 <input tabindex="12" name="numero" type="text" id="numero" value="" size="8" maxlength="10" />
             </td>
         </tr>
@@ -166,7 +160,7 @@
                 <label for="dddTel">Telefone 1</label>
             </td>
             <td align="left">
-                <input tabindex="18" name="dddTel1" id="dddTel1" size="1" maxlength="2" value="" /><input name="telefone1" type="text" id="telefone1" value="" size="13" maxlength="9" />
+                <input type="text" tabindex="18" name="dddTel1" id="dddTel1" size="1" maxlength="2" value="" /><input name="telefone_1" type="text" id="telefone_1" value="" size="13" maxlength="9" />
                 <script>// coloar no editar xD selectHabilita('telefone1')</script>
                 &nbsp;
             </td>
@@ -176,7 +170,7 @@
                 <label for="dddTel2">Telefone  2</label>
             </td>
             <td align="left">
-                <input name="dddTel2" id="dddTel2" tabindex="19" value="" size="1" maxlength="2" /><input name="telefone2" type="text" id="telefone2" value="" size="13" maxlength="9" />
+                <input type="text" name="dddTel2" id="dddTel2" tabindex="19" value="" size="1" maxlength="2" /><input name="telefone_2" type="text" id="telefone_2" value="" size="13" maxlength="9" />
                 &nbsp;</td>
         </tr>
         <tr>
@@ -184,11 +178,11 @@
                 <label for="dddTelTemp1">Celular 1</label>
             </td>
             <td align="left">
-                <input tabindex="20" name="dddCel1" id="dddCel1" size="1" maxlength="2" value="" /><input name="celular1" type="text" id="celular1" value="" size="13" maxlength="9"/>
+                <input type="text" tabindex="20" name="dddCel1" id="dddCel1" size="1" maxlength="2" value="" /><input name="celular_1" type="text" id="celular_1" value="" size="13" maxlength="9"/>
                 <script>// coloar no editar xD selectHabilita('celular1')</script>
                 &nbsp;Operadora:
 
-                <select name="idOperadora1" id="idOperadora1" style="width:220px;">
+                <select name="id_operadora_celular" id="id_operadora_celular" style="width:220px;">
                     <option value="">::.. Selecione uma Operadora ..::</option>
 
 
@@ -201,11 +195,11 @@
                 <label for="dddCel2">Celular 2</label>
             </td>
             <td align="left">
-                <input tabindex="21" name="dddCel2" id="dddCel2" size="1" maxlength="2" value="" /><input name="celular2" type="text" id="celular2" value="" size="13" maxlength="9" />
+                <input type="text" tabindex="21" name="dddCel2" id="dddCel2" size="1" maxlength="2" value="" /><input name="celular_2" type="text" id="celular_2" value="" size="13" maxlength="9" />
                 <script>// coloar no editar xD selectHabilita('celular2')</script>
                 &nbsp;Operadora:
 
-                <select name="idOperadora2" id="idOperadora2" style="width:220px;">
+                <select name="id_operadora_celular2" id="id_operadora_celular2" style="width:220px;">
                     <option value="">::.. Selecione uma Operadora ..::</option>
                 
 
@@ -218,7 +212,7 @@
                 <label for="dddFax1">Fax1</label>
             </td>
             <td align="left">
-                <input tabindex="22" name="dddFax1" id="dddFax1" size="1" maxlength="2" value="" /><input name="fax1" type="text" id="fax1" value="" size="13" maxlength="9" />
+                <input type="text" tabindex="22" name="dddFax1" id="dddFax1" size="1" maxlength="2" value="" /><input name="fax_1" type="text" id="fax_1" value="" size="13" maxlength="9" />
                 <script>// coloar no editar xD selectHabilita('fax1')</script>
                 &nbsp;
             </td>
@@ -228,7 +222,7 @@
                 <label for="dddFax1">Fax 2</label>
             </td>
             <td align="left">
-                <input tabindex="23" name="dddFax2" id="dddFax2" size="1" maxlength="2" value="" /><input name="fax2" type="text" id="fax2" value="" size="13" maxlength="9"  />
+                <input type="text" tabindex="23" name="dddFax2" id="dddFax2" size="1" maxlength="2" value="" /><input name="fax_2" type="text" id="fax_2" value="" size="13" maxlength="9"  />
                 <script>// coloar no editar xD selectHabilita('fax2')</script>
                 &nbsp;
             </td>
@@ -238,7 +232,7 @@
                 <label for="email">E-mail</label>
             </td>
             <td align="left">
-                <input tabindex="24" name="email" onBlur="ValidaEmail(this);" type="text" id="email" maxlength="100" size="50" value="" />
+                <input type="email" tabindex="24" name="email" id="email" maxlength="100" size="50" value="" />
             </td>
         </tr>
         <tr><td></td></tr>
@@ -269,7 +263,7 @@
                 <label for="site">MSN</label>
             </td>
             <td align="left">
-                <input tabindex="27" name="msn" onBlur="ValidaEmail(this);" type="text" id="msn" maxlength="100" size="50" value="" />
+                <input tabindex="27" name="msn" type="email" id="msn" maxlength="100" size="50" value="" />
             </td>
         </tr>
         <tr>
@@ -308,20 +302,7 @@
                 Pessoa de Contato 1: 
             </td>
             <td align="left">
-                <input type="hidden" name="idFuncionario1" id="idFuncionario1" value="" />
-
-                <select tabindex="30" name="idFuncionario1select" id="idFuncionario1select" style="width:337px" onchange="showHint(this.value,'ajax_funcionariosSetor.php?opcao=1','div_Funcionarios1','&');toggleDiv('div_Funcionarios1',1);">
-                    <option value="">::.. Selecione um Setor / Unidade de Negócios ..::</option>
-                
-                </select>
-                <!-- Div do AJAX´s-->
-
-                <div id="div_Funcionarios1" class="modal2">
-
-                    <!-- Resultado do retorno do AJAX-->                      
-
-                </div>
-                <!-- FM da Div do AJAX´s-->
+                <input type="text" type="hidden" name="idFuncionario1" id="idFuncionario1" value="" />
 
             </td>                
         </tr>
@@ -331,7 +312,7 @@
                 :
             </td>
             <td align="left">
-                <input name="nomeTemp1" id="nomeTemp1" value="" size="50" readonly="readonly" style="background-color:#E9E9E9"/>
+                <input type="text" name="nome_contato_1" id="nome_contato_1" value="" size="50" />
             </td>
         </tr>
         <tr>
@@ -340,7 +321,7 @@
                 :
             </td>
             <td align="left">
-                <input name="dddTelTemp1" id="dddTelTemp1" value="" size="1" maxlength="2" readonly="readonly" style="background-color:#E9E9E9"/><input name="telefone1Temp" type="text" id="telefone1Temp" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9"/>
+                <input type="text" name="dddTelTemp1" id="dddTelTemp1" value="" size="1" maxlength="2" /><input name="tels_contato_1" type="text" id="tels_contato_1" value="" size="13" maxlength="9" />
 
             </td>
         </tr>
@@ -350,9 +331,9 @@
                 :
             </td>
             <td align="left">
-                <input name="dddCelTemp1" id="dddCelTemp1" value="" size="1" maxlength="2" readonly="readonly" style="background-color:#E9E9E9"/><input name="celularTemp1" type="text" id="celularTemp1" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9"/>
+                <input type="text" name="dddCelTemp1" id="dddCelTemp1" value="" size="1" maxlength="2" /><input name="cel_contato_1" type="text" id="cel_contato_1" value="" size="13" maxlength="9" />
                 &nbsp;Operadora:
-                <input name="operadoraTemp1" type="text" id="operadoraTemp1" value="" readonly="readonly" style="background-color:#E9E9E9" />
+                <input name="id_operadora_celular_contato_1" type="text" id="id_operadora_celular_contato_1" value="" />
 
             </td>
         </tr>
@@ -366,7 +347,7 @@
             <td align="left">
                 <input type="hidden" name="idFuncionario2" id="idFuncionario2" value="" />
 
-                <select tabindex="31" name="idFuncionario2select" id="idFuncionario2select" style="width:337px" onchange="showHint(this.value,'ajax_funcionariosSetor.php?opcao=2','div_Funcionarios2','&');toggleDiv('div_Funcionarios2',1);">
+                <select tabindex="31" name="idFuncionario2select" id="idFuncionario2select" style="width:337px" >
                     <option value="">::.. Selecione um Setor / Unidade de Negócios ..::</option>
 
 
@@ -387,7 +368,7 @@
                 :
             </td>
             <td align="left">
-                <input name="nomeTemp2" id="nomeTemp2" value="" size="50" readonly="readonly" style="background-color:#E9E9E9"/>
+                <input type="text" name="nome_contato_2" id="nome_contato_2" value="" size="50" />
             </td>
         </tr>
         <tr>
@@ -396,7 +377,7 @@
                 :
             </td>
             <td align="left">
-                <input name="dddTelTemp2" id="dddTelTemp2" value="" size="1" maxlength="2" readonly="readonly" style="background-color:#E9E9E9"/><input name="telefone2Temp" type="text" id="telefone2Temp" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9"/>
+                <input type="text" name="dddTelTemp2" id="dddTelTemp2" value="" size="1" maxlength="2" /><input name="tels_contato_2" type="text" id="tels_contato_2" value="" size="13" maxlength="9" />
 
             </td>
         </tr>
@@ -406,10 +387,10 @@
                 :
             </td>
             <td align="left">
-                <input name="dddCelTemp2" id="dddCelTemp2" value="" size="1" maxlength="2" readonly="readonly" style="background-color:#E9E9E9"/><input name="celularTemp2" type="text" id="celularTemp2" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9"/>
+                <input type="text" name="dddCelTemp2" id="dddCelTemp2" value="" size="1" maxlength="2" /><input name="cel_contato_2" type="text" id="cel_contato_2" value="" size="13" maxlength="9" />
 
                 &nbsp;Operadora:
-                <input name="operadoraTemp2" type="text" id="operadoraTemp2" value="" readonly="readonly" style="background-color:#E9E9E9" />
+                <input name="id_operadora_celular_contato_2" type="text" id="id_operadora_celular_contato_2" value=""  />
 
             </td>
         </tr>
@@ -420,7 +401,7 @@
             <td align="left">
                 <label for="facebook">Número de Funcionários:</label></td>
             <td align="left">
-                <select tabindex="32" onchange="document.getElementById('idCategoria_cliente').focus();" name="numFuncionarios" id="numFuncionarios" style="width:337px">
+                <select tabindex="32" name="numero_de_funcionario" id="numero_de_funcionario" style="width:337px">
                     <option value="-1">::.. Selecione ..::</option>
                     <option value="0">até 10</option>
                     <option value="1">20</option>
@@ -441,7 +422,7 @@
             </td>
             <td align="left">
 
-                <select tabindex="33" onchange="document.getElementById('status').focus();" name="idCategoria_cliente" id="idCategoria_cliente" style="width:337px">
+                <select tabindex="33" name="id_categoria_empresa" id="id_categoria_empresa" style="width:337px">
                     <option value="">::.. Selecione uma Categoria ..::</option>
 
                 </select>
@@ -452,7 +433,7 @@
                 Status: 
             </td>
             <td align="left">
-                <input tabindex="34" type="radio" name="status" id="status" value="1" maxlength="1" />&nbsp;ATIVO<input type="radio" name="status" id="status" value="0" maxlength="1" />&nbsp;INATIVO
+                <input tabindex="34" type="radio" name="ativo" id="ativo" value="1" maxlength="1" />&nbsp;ATIVO<input type="radio" name="ativo" id="ativopree" value="0" maxlength="1" />&nbsp;INATIVO
             </td>
         </tr>
         <tr>
@@ -467,7 +448,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input name="btnCadastrar" type="submit" id="btnCadastrar" value="Cadastrar" onclick="javascript:verifica_tds_campos('formulario')" />&nbsp;</td>
+                <input name="btnCadastrar" type="submit" id="btnCadastrar" value="Cadastrar" />&nbsp;</td>
         </tr>
         <tr>
             <td colspan="2" align="center">&nbsp;
@@ -489,9 +470,6 @@
 
             </td>
         </tr>
-
-
-
 
     </table>
 </form>

@@ -37,7 +37,8 @@ class Sistema_LogadoController extends Controller_Action
     {
         if($this->_request->isPost())
         {
-            $this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarempresa'), null, 1));
+            
+            //$this->_redirect("sistema/logado/index");
         }    
     
     }
