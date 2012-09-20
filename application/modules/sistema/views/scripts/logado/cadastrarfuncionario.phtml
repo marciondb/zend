@@ -1,0 +1,588 @@
+
+	<h3>Cadastro de Funcionário</h3>
+	<hr />
+	<form name="formulario" id="formulario" action="" method="post">
+        <table  width="100%" height="1318" align="center">
+        	<tr>
+                <td width="30%" align="left">
+                	<strong>Tipo de empresa:</strong>
+                </td>
+                <td width="70%" align="left">
+                	Matriz <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" >
+                    Filial <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" >
+                    
+                    <!-- Div do AJAX´s-->
+					                              
+                    <div id="div_tipoEmpresa" >
+                        
+						<!-- Resultado do retorno do AJAX-->                      
+                        
+                    </div>
+                    <!-- FM da Div do AJAX´s-->
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	Nome Fantasia da Empresa:
+                </td>
+                <td align="left">
+                	<input name="nomeFantasia" id="nomeFantasia" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50" >
+                    <input type="hidden" name="idEmpresa" id="idEmpresa" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	Nome Completo:
+                </td>
+                <td align="left">
+                	<input tabindex="1" name="nomeCompleto" id="nomeCompleto" value="" maxlength="100" size="50">
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	Conhecido por:
+                </td>
+                <td align="left">
+                	<input tabindex="2" name="apelido" id="apelido" value="" maxlength="100" size="50">
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	Setor / Unidade de Negócios: 
+                </td>
+                <td align="left">
+					
+                    <select tabindex="3" name="idSetorUniNeg" id="idSetorUniNeg" style="width:337px">
+                    <option value="">::.. Selecione um Setor / Unidade de Negócios ..::</option>
+
+							<option value="" ></option>
+
+                    
+                    </select>
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+                	Cargo: 
+                </td>
+                <td align="left">
+					
+                    <select tabindex="4" name="idCargo" id="idCargo" style="width:337px">
+                    <option value="">::.. Selecione um Cargo ..::</option>
+      
+							<option value="" ></option>
+
+                    
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	Tipo: 
+                </td>
+                <td align="left">
+					
+                    <select tabindex="5" name="idTipo" id="idTipo" style="width:337px">
+                    <option value="">::.. Selecione um Tipo ..::</option>
+                   
+							<option value="" ></option>
+
+                    
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+    	            <label for="cnpjCpf" id="cpfCnpj">CPF</label>
+                </td>
+                <td align="left">
+	                <input tabindex="6" name="cnpjCpf" type="text" id="cnpjCpf" value="" size="50" maxlength="14" />
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+    	            Data de Admissão:
+                </td>
+                <td align="left">
+	                <input tabindex="7" type="text" name="dataAdmissao" id="calendario" />
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+    	            Data no Setor:
+                </td>
+                <td align="left">
+	                <input tabindex="8" type="text" name="dataSetor" id="calendario2" />
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+    	            Data de Nascimento:
+                </td>
+                <td align="left">
+	                <input tabindex="9" type="text" name="dataNascimento" id="calendario3" />
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+    	            AVISAR PINHO E MÁRCIA?
+                </td>
+                <td align="left">
+	                <input tabindex="10" type="radio" name="avisarPM" id="avisarPM" value="1" maxlength="1"/>&nbsp;SIM<input type="radio" name="avisarPM" id="avisarPM" value="0"  maxlength="1"/>&nbsp;NÃO
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+    	            Sexo:
+                </td>
+                <td align="left">
+	                <input tabindex="10" type="radio" name="sexo" id="sexo" value="0"  maxlength="1"/>&nbsp;M<input type="radio" name="sexo" id="sexo" value="1" maxlength="1"/>&nbsp;F
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+                	<label for="dddTel">Telefone Residêncial 1</label>
+                </td>
+                <td align="left">
+                	<input tabindex="11" name="dddTelRes1" id="dddTelRes1"  /><input name="telefoneRes1" type="text" id="telefoneRes1"  value="" size="13" maxlength="9" />
+				&nbsp; </td>
+            </tr>
+            <tr>
+                <td align="left">
+               	  <label for="dddTel2">Telefone Residêncial 2</label>
+                </td>
+                <td align="left">
+                	<input name="dddTelRes2" id="dddTelRes2" tabindex="12"  value="" size="1" maxlength="2" /><input name="telefoneRes2" type="text" id="telefoneRes2"  value="" size="13" maxlength="9" />
+              &nbsp; </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="dddCel1">Celular 1</label>
+                </td>
+                <td align="left">
+                	<input tabindex="13" name="dddCel1" id="dddCel1"  size="1" maxlength="2" value="" /><input name="celular1" type="text" id="celular1" value="" size="13" maxlength="9" />
+                    &nbsp;Operadora:
+
+                    <select  name="idOperadora3" id="idOperadora3" style="width:220px">
+                        <option value="">::.. Selecione uma Operadora ..::</option>
+
+                                <option value="">
+                        </option>
+
+                    
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="dddCel2">Celular 2</label>
+                </td>
+                <td align="left">
+                	<input tabindex="14" name="dddCel2" id="dddCel2" o size="1" maxlength="2" value="" /><input name="celular2" type="text" id="celular2"  value="" size="13" maxlength="9"/>
+                    &nbsp;Operadora:
+
+                    <select  name="idOperadora4" id="idOperadora4" style="width:220px">
+                        <option value="">::.. Selecione uma Operadora ..::</option>
+
+                                <option value="" >
+                        </option>
+						
+                    
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="dddCel3">Celular 3</label>
+                </td>
+            <td align="left">
+                	<input tabindex="15" name="dddCel3" id="dddCel3"  size="1" maxlength="2" value="" /><input name="celular3" type="text" id="celular3" value="" size="13" maxlength="9" />
+                    &nbsp;Operadora:
+
+                    <select name="idOperadora5" id="idOperadora5" >
+                        <option value="">::.. Selecione uma Operadora ..::</option>
+
+                                <option value="" >
+                        </option>
+						
+                    
+                    </select>
+              </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="email2">E-mail
+              da Empresa</label></td>
+                <td align="left">
+                	<input tabindex="16" name="email" type="text" id="email" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+    <tr>
+                <td align="left">
+                	<label for="email2">E-mail
+            Pessoal</label></td>
+                <td align="left">
+                	<input tabindex="16" name="email2" type="text" id="email2" maxlength="100" size="50" value="" />
+            </td>
+          </tr>
+            <tr>
+              <td align="left">
+               	<label for="email2">E-mail
+                	Pessoal</label></td>
+                <td align="left">
+                	<input tabindex="16" name="email3"  type="text" id="email3" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+                <td align="left" bgcolor="#BBBBBB">
+                	<b>Redes Sociais</b>
+                </td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+                <td align="left">
+                	<label for="msn">MSN</label>
+                </td>
+                <td align="left">
+                	<input tabindex="17" name="msn" type="text" id="msn" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="skype">Skype</label>
+                </td>
+                <td align="left">
+                	<input name="skype" tabindex="18" type="text" id="skype" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="orkut">Orkut</label>
+                </td>
+                <td align="left">
+                	<input name="orkut" tabindex="19" type="text" id="orkut" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="facebook">Facebook</label>
+                </td>
+                <td align="left">
+                	<input name="facebook" tabindex="20" type="text" id="facebook" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="twitter">Twitter</label>
+                </td>
+                <td align="left">
+                	<input name="twitter" tabindex="21" type="text" id="twitter" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+                <td align="left" bgcolor="#BBBBBB">
+                	<b>Endereço</b>
+                </td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+                <td height="26" align="left">
+                	<label for="cep">CEP</label>
+                </td>
+            <td align="left">
+                    <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" />&nbsp;<input type="button" value="Pesquisar Endereço" id="busend" /></td>
+            </tr>
+            <tr>
+                <td height="26" align="left">
+                	<label for="endereco">Endereço</label>
+                </td>
+                <td align="left">
+                    <input tabindex="22" name="endereco" type="text" id="endereco" maxlength="100" size="28" value="" />                <label for="numero">Número </label>
+                    <input tabindex="23" name="numero" type="text" id="numero" value="" size="8" maxlength="10" />
+                </td>
+            </tr>
+            <tr>
+                <td height="28" align="left">
+                	<label for="complemento">Complemento</label>
+                </td>
+                <td align="left">
+                    <input tabindex="24" name="complemento" type="text" id="complemento" maxlength="100" size="15" value="" />         
+                    <label for="bairro">Bairro</label>
+                    <input tabindex="25" name="bairro" type="text" id="bairro" value="" size="23" maxlength="100" />
+                </td>
+            </tr>
+            <tr>
+            	<td height="26" align="left">
+                	<label for="cidade">Cidade</label>
+            	</td>
+                <td align="left">
+                    <input tabindex="26" name="cidade" type="text" id="cidade" maxlength="100" size="34" value="" />        
+                    <label for="estado">Estado</label>
+                    <label for="estado"></label>
+                    <select tabindex="27" name="estado" id="estado" >
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AP">AP</option>
+                        <option value="AM">AM</option>
+                        <option value="BA">BA</option>
+                        <option value="DF">DF</option>
+                        <option value="CE">CE</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MT">MT</option>
+                        <option value="MS">MS</option>
+                        <option value="MG">MG</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PR">PR</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="RJ" selected="selected">RJ</option>
+                        <option value="RS">RS</option>
+                        <option value="RN">RN</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="SC">SC</option>
+                        <option value="SP">SP</option>
+                        <option value="SE">SE</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td height="26" align="left">Referência</td>
+                <td align="left"><input tabindex="29" name="referencia" type="text" id="referencia" value="" size="23" maxlength="100" />
+                </td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+                <td align="left" bgcolor="#BBBBBB">
+                	<b>Detalhes</b>
+                </td>
+            </tr>
+            <tr><td></td></tr>
+            <tr>
+                <td align="left">
+    	            Serviço Correio:
+                </td>
+                <td align="left">
+	                <input tabindex="30" type="radio" name="servicoCorreio" id="servicoCorreio" value="1"  maxlength="1"/>&nbsp;SIM<input type="radio" name="servicoCorreio" id="servicoCorreio" value="0" maxlength="1" />
+	                &nbsp;NÃO
+                </td>
+			</tr>
+            <tr>
+                  <td align="left">
+                  	<label for="estadoCivil">Estado Civil</label>
+                  </td>
+                  <td align="left">
+                  
+                    <select tabindex="31" name="estadoCivil" > 
+                        <option value="" >::.. SELECIONE ..::</option> 
+                        <option value="0" > CASADO </option>
+                        <OPTION VALUE="2" > DIVORCIADO </OPTION>
+                        <OPTION VALUE="4"> JUNTADO </OPTION>
+                        <OPTION VALUE="5"> OUTROS </OPTION> 
+                        <option value="1"> SOLTEIRO </option>                      
+                        <OPTION VALUE="3"> VIUVO </OPTION> 
+                    </select> 
+                  </td>
+              </tr>
+              <tr>
+                <td align="left">
+                	<label for="nomeConjuge">Nome do Cônjuge (companheiro(a)):</label>
+                </td>
+                <td align="left">
+                	<input tabindex="37" name="nomeConjuge" type="text" id="nomeConjuge" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+              <tr>
+                <td align="left">
+    	            Tem filhos:
+                </td>
+                <td align="left">
+	                <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" />&nbsp;SIM<input type="radio" name="temFilho" id="temFilho" value="0"  />&nbsp;NÃO
+                  &nbsp;&nbsp;<label for="qtoFilhos">Quantos:</label>&nbsp;
+                    <input tabindex="33" name="qtoFilhos" type="text" id="qtoFilhos"  maxlength="2" size="25" value="" />
+                </td>
+			</tr>
+            <tr>
+                  <td align="left">
+                  	<label for="escolaridade">Escolaridade:</label>
+                  </td>
+                  <td align="left">
+                  
+                    <select tabindex="34" name="escolaridade"  > 
+                        <OPTION VALUE="" >::.. SELECIONE ..::</OPTION> 
+                        <OPTION VALUE="0" >ENSINO FUNDAMENTAL </OPTION> 
+                        <OPTION VALUE="1">ENSINO MÉDIO </OPTION> 
+                        <OPTION VALUE="2" >ENSINO SUPERIOR </OPTION>
+                    </select> 
+                  </td>
+              </tr>
+              <tr>
+                  <td align="left">
+                  	<label for="situcao">Situação:</label>
+                  </td>
+                  <td align="left">
+                    <select disabled tabindex="35" name="situcao" id="situcao"  > 
+                        <OPTION VALUE="" >::.. SELECIONE ..::</OPTION> 
+                        <OPTION VALUE="0" >COMPLETO</OPTION>
+                        <OPTION VALUE="2" >EM CURSO</OPTION> 
+                        <OPTION VALUE="1">INCOMPLETO</OPTION> 
+                    </select> 
+                </td>
+              </tr>
+              <tr>
+                <td align="left">
+                	<label for="formacaoProfi">Formação Profissional:</label>
+                </td>
+                <td align="left">
+                	<input tabindex="36" name="formacaoProfi" type="text" id="formacaoProfi" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            
+            <tr>
+                <td align="left">
+    	            Possui Computador: 
+                </td>
+                <td align="left">
+	                <input tabindex="38" type="radio" name="temPc" id="temPc" value="1" maxlength="1"/>&nbsp;SIM<input type="radio" name="temPc" id="temPc" value="0" maxlength="1" />&nbsp;NÃO
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+    	            Conhecimento prático em informática: 
+                </td>
+                <td align="left">
+	                <input tabindex="39" type="radio" name="sabeInfo" id="sabeInfo" value="1" maxlength="1"/>&nbsp;SIM<input type="radio" name="sabeInfo" id="sabeInfo" value="0" maxlength="1" />&nbsp;NÃO
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+                	<label for="religiao">Religião:</label>
+                </td>
+                <td align="left">
+                	<input tabindex="40" name="religiao" type="text" id="religiao" maxlength="100" size="50" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+    	            Possui Bíblia: 
+                </td>
+                <td align="left">
+	                <input tabindex="41" type="radio" name="temBiblia" id="temBiblia" value="1" maxlength="1"/>&nbsp;SIM<input type="radio" name="temBiblia" id="temBiblia" value="0" maxlength="1" />&nbsp;NÃO
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+    	            Se não, Gostaria de Ganhar uma Bíblia? 
+                </td>
+                <td align="left">
+	                <input tabindex="42" type="radio" name="querBiblia" id="querBiblia" value="1"  maxlength="1"/>&nbsp;SIM<input type="radio" name="querBiblia" id="querBiblia" value="0"  maxlength="1" />&nbsp;NÃO
+                </td>
+			</tr>
+            <tr>
+                <td align="left">
+                	<label for="lazer">O que você gosta de fazer no seu Lazer?</label>
+                </td>
+                <td align="left">
+                	<textarea tabindex="43" name="lazer" id="lazer" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="lazer">Quais são os seus Talentos/ Aptidões?</label>
+                </td>
+                <td align="left">
+                	<textarea tabindex="44" name="talentos" id="talentos" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight2"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="dons">Quais os seus Dons Artísticos?</label>
+                </td>
+                <td align="left">
+                	<textarea tabindex="45" name="dons" id="dons" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight3"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="sonhos">Qual o seu Sonho?</label>
+                </td>
+                <td align="left">
+                	<textarea tabindex="46" name="sonhos" id="sonhos" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight4"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	<label for="sonhos">Brindes já recebidos da Pinho & Consultores:</label>
+                </td>
+                <td align="left">
+                	<textarea tabindex="47" name="brindes" id="brindes" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight5"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                	Categoria: 
+                </td>
+                <td align="left">
+					
+                    <select tabindex="48" name="idCategoria_cliente" id="idCategoria_cliente" style="width:337px">
+                        <option value="">::.. Selecione uma Categoria ..::</option>
+                        
+                                <option value="">
+                                
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+    	            Status: 
+                </td>
+                <td align="left">
+	                <input tabindex="49" type="radio" name="status" id="status" value="1" maxlength="1"/>&nbsp;ATIVO<input type="radio" name="status" id="status" value="0" maxlength="1" />&nbsp;INATIVO
+                </td>
+			</tr>
+            <tr>
+                <td colspan="2" align="center">&nbsp;
+                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">&nbsp;
+                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input name="btnCadastrar" type="submit" id="btnCadastrar" value="Cadastrar" />&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">&nbsp;
+                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">&nbsp;
+                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">&nbsp;
+                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">&nbsp;
+                    
+                </td>
+            </tr>
+            
+                
+            
+            
+        </table>
+    </form>

@@ -42,6 +42,15 @@ class Sistema_LogadoController extends Controller_Action
         }    
     
     }
+    
+        public function cadastrarfuncionarioAction()
+    {
+        if($this->_request->isPost())
+        {
+            $this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
+        }    
+    
+    }
 }
 
 
