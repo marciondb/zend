@@ -5,26 +5,46 @@ abstract class Controller_Action extends Zend_Controller_Action {
     protected $senha;
     protected $permissoes;
     protected $_usuario;
+    protected $baseUrl;
 
     public function init()
     {
         
         $this->_usuario = new Application_Model_Usuario();
+        $this->baseUrl = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], "/"));
         
         // Verifica em todas as páginas se o usuário está logado ou não, permitindo o acesso de acordo com a situação
         $redirect = $this->getRequest()->getModuleName();
-        
-        //echo "...............".array_search($nomeDaAcao, $permissoes);
-        //print_r($permissoes);
-        
+                        
         if (!($this->getRequest()->getControllerName() == "index"))
         {
             if(!(Zend_Auth::getInstance()->hasIdentity()))
                 $this->_redirect($redirect);
-            else{
+            else
+            {
+                $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+                $this->view->nomeUsuario = $arrayIdentity->login;
+                
                 $nomeDaAcao = $this->getRequest()->getActionName();
                 $permissoes = $this->_usuario->getPermissao();
                 $this->view->resultado = $permissoes;
+                //print_r($permissoes);
+                
+                if($permissoes)
+                {    
+                    $flag=0;
+                    foreach ($permissoes as $value) 
+                        if(($value['action']==$nomeDaAcao))
+                            $flag = 1;
+                    
+                    if($flag==0 && $nomeDaAcao != 'index')
+                        $this->_redirect($redirect);
+                }
+                else
+                {
+                    //echo "<script>alert('Consulte o seu PinhoNet, você não possui acesso.');</script>";
+                    $this->logoutAction();
+                }
             }
         }
                 
@@ -44,13 +64,11 @@ abstract class Controller_Action extends Zend_Controller_Action {
             
             if(!$this->_usuario->efetuarLogin($this->userEmail, $this->senha))
             {
-                //ZendUtils::transmissorMsg("Login ou senha incorretos!",  ZendUtils::MENSAGEM_ERRO,0);
-                
                 ?>
                     <script>
                         if(alert('Login ou senha incorretos!')==undefined)
                         {
-                            window.location.pathname = '/pinho/<?php echo $redirect; ?>';
+                            window.location.pathname = '<?php echo $this->baseUrl;?>/<?php echo $redirect; ?>';
                         }
                     </script>
                 <?php

@@ -6,15 +6,10 @@
 
     $_SESSION['menu'] = null;
     unset($_SESSION['menu']);
-    
-    $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
 
-    //$usuario = new Application_Model_Usuario();
-    //$resultado = $usuario->getPermissao();
-    //print_r($this->resultado);
 ?>
 
-<p align="right"><?php echo $arrayIdentity->login; ?> | <a href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'index', 'action' => 'logout'), null, 1); ?>">sair</a></p>
+<p align="right"><?php echo $this->nomeUsuario; ?> | <a href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'index', 'action' => 'logout'), null, 1); ?>">sair</a></p>
 
 <?php
     $_SESSION['menu'] = '';

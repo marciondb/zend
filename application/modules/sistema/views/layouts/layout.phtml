@@ -27,7 +27,7 @@
                 <?php
                     if (Zend_Auth::getInstance()->hasIdentity())
                     {
-                        //Se ja esta logado, não deve ser exibido o formulario para login, logo ser redirecionado para /logado
+                        //Se ja esta logado, não deve ser exibido o formulario para login, logo deve ser redirecionado para /logado
                         //caso tente acessar sistema/index diretamente
                         $controller = $this->controller;
 
@@ -35,7 +35,7 @@
                         {
                             ?>
                             <script>
-                                window.location.pathname = '/sistema/logado';
+                                window.location.pathname = '<?php echo $this->baseUrl(); ?>/sistema/logado';
                             </script>
                             <?php
                         }

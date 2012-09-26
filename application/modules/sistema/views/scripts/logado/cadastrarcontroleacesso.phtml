@@ -1,7 +1,14 @@
-<div id="container">
+<h3>Cadastro de Controle de Acesso</h3>
+<hr>
+CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18"  />
+                        <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ" />
+                        &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setTodos();deselecionaTodos();setAjaxFuncionarios();" checked="checked" /> 
+                        <b>Exibir todas as empresas</b>
+<div id="container" class="modal_ajax">
+    <script type="text/javascript">
+    $(document).ready(function() {
+            $('#container').load('<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa'), null, 1); ?>');
+    });
+    </script>
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-        $('#container').load('<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa'), null, 1); ?>');
-  });
-</script>

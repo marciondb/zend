@@ -23,16 +23,9 @@ class Sistema_LogadoController extends Controller_Action
         //*******************************************************************
         //  FIM Instanciando os models, para pode utilizar os metodos relacionado 
         // a banco de dados
-        //*******************************************************************
+        //*******************************************************************     
         
-        /*http://blog.jtclark.ca/2010/03/zend-framework-and-ajax/*/       
-        /*$ajaxContext = $this->_helper->getHelper('AjaxContext');
-        $ajaxContext->addActionContext('ajaxempresa', 'html')
-            ->initContext();*/
-        
-        
-    }
-    
+    }    
 
     public function indexAction()
     {
@@ -118,6 +111,15 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     public function cadastrarfuncionarioAction()
+    {
+        if($this->_request->isPost())
+        {
+            //$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
+        }    
+    
+    }
+    
+    public function testeAction()
     {
         if($this->_request->isPost())
         {
