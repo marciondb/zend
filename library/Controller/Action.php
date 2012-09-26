@@ -3,6 +3,7 @@
 abstract class Controller_Action extends Zend_Controller_Action {
     //protected $userEmail;
     protected $senha;
+    protected $permissoes;
     protected $_usuario;
 
     public function init()
@@ -13,10 +14,18 @@ abstract class Controller_Action extends Zend_Controller_Action {
         // Verifica em todas as páginas se o usuário está logado ou não, permitindo o acesso de acordo com a situação
         $redirect = $this->getRequest()->getModuleName();
         
+        //echo "...............".array_search($nomeDaAcao, $permissoes);
+        //print_r($permissoes);
+        
         if (!($this->getRequest()->getControllerName() == "index"))
         {
             if(!(Zend_Auth::getInstance()->hasIdentity()))
                 $this->_redirect($redirect);
+            else{
+                $nomeDaAcao = $this->getRequest()->getActionName();
+                $permissoes = $this->_usuario->getPermissao();
+                $this->view->resultado = $permissoes;
+            }
         }
                 
     }

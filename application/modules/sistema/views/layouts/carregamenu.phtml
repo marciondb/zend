@@ -9,9 +9,9 @@
     
     $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
 
-    $usuario = new Application_Model_Usuario();
-    $resultado = $usuario->getPermissao();
-    //print_r($resultado);
+    //$usuario = new Application_Model_Usuario();
+    //$resultado = $usuario->getPermissao();
+    //print_r($this->resultado);
 ?>
 
 <p align="right"><?php echo $arrayIdentity->login; ?> | <a href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'index', 'action' => 'logout'), null, 1); ?>">sair</a></p>
@@ -53,7 +53,7 @@
         
     }
     
-    montaMenu(0,$resultado,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1));
+    montaMenu(0,$this->resultado,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1));
     
     $_SESSION['menu'] .= '</ul>';
     
