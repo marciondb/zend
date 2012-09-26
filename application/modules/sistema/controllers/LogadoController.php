@@ -117,7 +117,7 @@ class Sistema_LogadoController extends Controller_Action
     
     }
     
-        public function cadastrarfuncionarioAction()
+    public function cadastrarfuncionarioAction()
     {
         if($this->_request->isPost())
         {

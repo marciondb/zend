@@ -1,5 +1,6 @@
 @charset "utf-8"; 
 
+
 html, body {
 	margin:0px;
 	padding:0px;
@@ -9,7 +10,7 @@ html, body {
 }
 div#topo {
 	padding:10px;
-	background:url(/pinho/public/images/sistema/titulo.jpg) no-repeat top center;
+	background:url("/pinho/public/images/sistema/titulo.jpg") no-repeat top center;
 }
 div#conteudo
 {

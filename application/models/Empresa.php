@@ -15,7 +15,6 @@ class Application_Model_Empresa extends Application_Model_Abstract
     }
     
     
-    
     public function _validarDados(array $data){
         // Validação
         //$erros = "";
