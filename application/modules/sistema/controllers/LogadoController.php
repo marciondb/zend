@@ -3,9 +3,22 @@
 class Sistema_LogadoController extends Controller_Action
 {
 
-    protected $_empresa;
+    protected $_empresa;    
+    protected $_endereco; 
+    protected $_funcionario;
+    protected $_funcionario_tipo;
+    protected $_funcionalidade;
+    protected $_grupo_funcionalidade;
+    protected $_grupo_de_acesso;
+    protected $_usuario_funcionalidade;
+    protected $_usuario_grupo;    
+    protected $_cargo;
+    protected $_cliente_empresa;
+    protected $_empresa_visivel;
+    protected $_lotacao;
+    protected $_setor;
+    protected $_time;
     
-    protected $_endereco;
     
     public function init()
     {
@@ -19,6 +32,9 @@ class Sistema_LogadoController extends Controller_Action
         
         $this->_empresa = new Application_Model_Empresa();
         $this->_endereco = new Application_Model_Endereco();
+        $this->_empresa_visivel = new Application_Model_EmpresaVisivel();
+        $this->_grupo_de_acesso = new Application_Model_GrupoDeAcesso();
+        $this->_usuario_grupo = new Application_Model_Usuariogrupo();
         
         //*******************************************************************
         //  FIM Instanciando os models, para pode utilizar os metodos relacionado 
@@ -34,8 +50,12 @@ class Sistema_LogadoController extends Controller_Action
         
     public function ajaxempresaAction()
     {
+        if(!$this->getRequest()->isXmlHttpRequest())
+            $this->_redirect ("sistema/logado");
+        
         $this->_helper->layout->disableLayout();
-        $this->view->valor1 = 'deu certo';
+        
+        $this->view->arrayEmpresa = $this->_empresa->exibir();
     }
     
     public function cadastrarcontroleacessoAction()
@@ -47,65 +67,12 @@ class Sistema_LogadoController extends Controller_Action
     {
         if($this->_request->isPost())
         {
-            $parametros = $this->_getAllParams();
+            /*$parametros = $this->_getAllParams();
             
-            $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
-                        "nome_fantasia" => $parametros['nome_fantasia'],
-                        "razao_social" => $parametros['razao_social'],
-                        "apelido" => $parametros['apelido'],
-                        "cnpj" => $parametros['cnpj'],
-                        "inscricao_estadual" => $parametros['inscricao_estadual'],
-                        "telefone_1" => $parametros['dddTel1'].$parametros['telefone_1'],
-                        "telefone_2" => $parametros['dddTel2'].$parametros['telefone_2'],
-                        "celular_1" => $parametros['dddCel1'].$parametros['celular_1'],
-                        "celular_2" => $parametros['dddCel2'].$parametros['celular_2'],
-                        "fax_1" => $parametros['dddFax1'].$parametros['fax_1'],
-                        "fax_2" => $parametros['dddFax2'].$parametros['fax_2'],
-                        "email" => $parametros['email'],
-                        "site" => $parametros['site'],
-                        "orkut" => $parametros['orkut'],
-                        "msn" => $parametros['msn'],
-                        "twitter" => $parametros['twitter'],
-                        "facebook" => $parametros['facebook'],
-                        "skype" => $parametros['skype'],
-                        "nome_contato_1" => $parametros['nome_contato_1'],
-                        "tels_contato_1" => $parametros['dddTelTemp1'].$parametros['tels_contato_1'],
-                        "cel_contato_1" => $parametros['dddCelTemp1'].$parametros['cel_contato_1'],
-                        "id_operadora_celular_contato_1" => $parametros['id_operadora_celular_contato_1'],
-                        "email_contato_1" => $parametros['email_contato_1'],
-                        "nome_contato_2" => $parametros['nome_contato_2'],
-                        "tels_contato_2" => $parametros['dddTelTemp2'].$parametros['tels_contato_2'],
-                        "cel_contato_2" => $parametros['dddCelTemp2'].$parametros['cel_contato_2'],
-                        "id_operadora_celular_contato_2" => $parametros['id_operadora_celular_contato_2'],
-                        "email_contato_2" => $parametros['email_contato_2'],
-                        "numero_de_funcionario" => $parametros['numero_de_funcionario'],
-                        "ativo" => $parametros['ativo']
-                        );
-            
-            try
-            {
-                $id_empresa = $this->_empresa->save($dataEmpresa);
-            
-            
-                $dataEndereco = array("id_empresa" => $id_empresa,
-                            "cep" => $parametros['cep'],
-                            "rua_av" => $parametros['rua_av'],
-                            "numero" => $parametros['numero'],
-                            "complemento" => $parametros['complemento'],
-                            "bairro" => $parametros['bairro'],
-                            "cidade" => $parametros['cidade'],
-                            "estado" => $parametros['estado'],
-                            "referencia" => $parametros['referencia']);
-
-                $this->_endereco->save($dataEndereco);   
-                
-                ZendUtils::transmissorMsg('Inserido com sucesso!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-            //$this->_redirect("sistema/logado/index");
-            }
-            catch(Exception $e)
-            {
-                ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-            }
+            $array_id_empresa = array($this->_empresa->gravar($parametros,$this->_endereco));
+            $id_grupo = 1; //Grupo dos administradores
+            $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($idGrupo);
+            $this->_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa);*/
         }    
     
     }

@@ -1,3 +1,28 @@
-<?php
+<table align="center" cellspacing="1">
+    <th class="barra_titulo">id</th>
+    <th class="barra_titulo">Razão Social</th>
+    <th class="barra_titulo">Nome Fantasia</th>
+    <th class="barra_titulo">Apelido</th>
+    <th class="barra_titulo">CNPJ</th>
+    <th class="barra_titulo">Telefone 1</th>
+    <th class="barra_titulo">Selecione</th>
+    
+    <?php
+    print_r($this->arrayEmpresa);
 
-    echo $this->valor1;
+    while($linha = mysql_fetch_array($rs))
+		{
+	?>
+            <tr class="t_acende">
+                <td align="center"><?php echo $linha['id']; ?></td>
+                <td align="center"><?php echo $linha['razaoSocial']; ?></td>
+                <td align="center"><?php echo $linha['nomeFantasia']; ?></td>
+                <td align="center"><?php echo $linha['apelido']; ?></td>
+                <td align="center"><?php echo montaMascara($linha['cnpj'],'##.###.###/####-##'); ?></td>
+                <td align="center"><?php echo "(".substr($linha['telefone1'],0,2).") ".montaMascara(substr($linha['telefone1'],2,8),'####-####'); ?></td>
+                <td align="center" width="16%"><input type="checkbox" name="idEmpresaTmp[]" id="idEmpresaTmp" onclick="getEmpresa();" value="<?php echo $linha['id']; ?>"/></td>
+            </tr>
+    <?php
+    	}
+    ?>
+</table>

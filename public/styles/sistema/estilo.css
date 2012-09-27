@@ -31,8 +31,21 @@ h3 {
 	font-family:Tahoma, Geneva, sans-serif;
 }
 
+.t_confere {
+	background:#0C6;
+}
+
 .t_acende {
 	background:#DDD;
+}
+.t_acende:hover {
+	color:#FFF;
+	background:#0C3;
+}
+
+.barra_titulo {
+	background-color:#0099ff;
+	color:#FFF;
 }
 
 a:hover {

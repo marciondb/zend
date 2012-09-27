@@ -23,7 +23,8 @@ abstract class Controller_Action extends Zend_Controller_Action {
             else
             {
                 $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
-                $this->view->nomeUsuario = $arrayIdentity->login;
+                $this->view->nome_usuario = $arrayIdentity->login;
+                $this->view->id_usuario = $arrayIdentity->id_usuario;
                 
                 $nomeDaAcao = $this->getRequest()->getActionName();
                 $permissoes = $this->_usuario->getPermissao();

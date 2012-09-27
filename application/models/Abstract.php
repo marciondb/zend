@@ -3,7 +3,7 @@
 abstract class Application_Model_Abstract {
 
     protected $_dbTable;
-
+    
     public function find($id) {
         return $this->_dbTable->find($id)->current()->toArray();
     }
@@ -21,6 +21,14 @@ abstract class Application_Model_Abstract {
                 return $this->_insert($data);
             }
         }
+    }
+    
+    public function _insert(array $data) {
+        return $this->_dbTable->insert($data);
+    }
+
+    public function _update(array $data) {
+        return $this->_dbTable->update($data);
     }
 
     public function delete($id) {
@@ -81,11 +89,7 @@ abstract class Application_Model_Abstract {
 
         return $this->_dbTable->getDefaultAdapter()->fetchPairs( $select );
     }
-
-    abstract public function _insert(array $data);
-
-    abstract public function _update(array $data);
     
-    abstract public function _validarDados(array $data);
+    abstract protected function _validarDados(array $data);
     
 }
