@@ -68,7 +68,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
     }
     
     /**
-       * Exibe tds as empresas, de acordo com as permissoes      
+       * Exibe tds as empresas visiveis.      
        * @return Array retorna query()->fetchAll()
        * @param  Boolean $selecionar  : coloca um elemento checkbox para selecionar a empresa
        * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
@@ -76,27 +76,37 @@ class Application_Model_Empresa extends Application_Model_Abstract
        * @version 1.0
        * @author Márcio & Marco
      */
-    public function exibir($selecionar=false,$editar=false,$deletar=false)
-    {   
+    public function exibir($pagina)
+    {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $retorna = '';
+        $perPage = 30;
+        
+        /*$page = isset($params['page']) ? (int) $params['page'] : 1;*/
+        
+        $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
         
         try{
             $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('empresa',array('id_empresa','razao_social','nome_fantasia','apelido','cnpj','telefone_1'))->
+                    from('empresa',array('id_empresa','razao_social','nome_fantasia','apelido','cnpj','telefone_1','telefone_2'))->
                     join('usuario_empresa_visivel', 'empresa.id_empresa = usuario_empresa_visivel.id_empresa',null)->
                     where('usuario_empresa_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
 
-            $retorna = $select->query()->fetchAll();
+            //$retorna = $select->query()->fetchAll();
+            $paginator = Zend_Paginator::factory( $select );
+            $paginator->setCurrentPageNumber($pagina);
+            $paginator->setItemCountPerPage($perPage);
         }
         catch(Exception $e)
         {
             ZendUtils::transmissorMsg('Erro ao selecionar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
-        return $retorna;
+        
+        return $paginator;
+        
     }
 
 

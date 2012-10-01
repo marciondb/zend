@@ -5,10 +5,20 @@ CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
                         <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ" />
                         &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setTodos();deselecionaTodos();setAjaxFuncionarios();" checked="checked" /> 
                         <b>Exibir todas as empresas</b>
-<div id="container" class="modal_ajax">
-    <script type="text/javascript">
-    $(document).ready(function() {
-            $('#container').load('<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa',), null, 1); ?>');
-    });
-    </script>
+<div id="ajax_empresa" class="modal_ajax">
+    
 </div>
+                        
+<script type="text/javascript">
+    
+    function setPaginator(pagina,query)
+    {  
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE), null, 1); ?>'+'/pagina/'+pagina+query;
+        ajax(url,'ajax_empresa');
+    }
+    
+    
+    
+    url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE), null, 1); ?>';
+    ajax(url,'ajax_empresa');
+</script>                       

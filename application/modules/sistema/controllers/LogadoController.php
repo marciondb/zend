@@ -14,7 +14,7 @@ class Sistema_LogadoController extends Controller_Action
     protected $_usuario_grupo;    
     protected $_cargo;
     protected $_cliente_empresa;
-    protected $_empresa_visivel;
+    protected $_usuario_empresa_visivel;
     protected $_lotacao;
     protected $_setor;
     protected $_time;
@@ -32,9 +32,9 @@ class Sistema_LogadoController extends Controller_Action
         
         $this->_empresa = new Application_Model_Empresa();
         $this->_endereco = new Application_Model_Endereco();
-        $this->_empresa_visivel = new Application_Model_EmpresaVisivel();
+        $this->_usuario_empresa_visivel = new Application_Model_UsuarioEmpresaVisivel();
         $this->_grupo_de_acesso = new Application_Model_GrupoDeAcesso();
-        $this->_usuario_grupo = new Application_Model_Usuariogrupo();
+        $this->_usuario_grupo = new Application_Model_UsuarioGrupo();
         
         //*******************************************************************
         //  FIM Instanciando os models, para pode utilizar os metodos relacionado 
@@ -50,12 +50,15 @@ class Sistema_LogadoController extends Controller_Action
         
     public function ajaxempresaAction()
     {
-        if(!$this->getRequest()->isXmlHttpRequest())
-            $this->_redirect ("sistema/logado");
-        
+        /*if(!$this->getRequest()->isXmlHttpRequest())
+            $this->_redirect ("sistema/logado");*/
         $this->_helper->layout->disableLayout();
         
-        $this->view->arrayEmpresa = $this->_empresa->exibir();
+        $this->view->selecionar = $this->_request->getParam('selecionar', false);
+        $this->view->editar     = $this->_request->getParam('editar', false);
+        $this->view->deletar    = $this->_request->getParam('deletar', false);
+        
+        $this->view->arrayEmpresa = $this->_empresa->exibir($this->_request->getParam('pagina', 1));
     }
     
     public function cadastrarcontroleacessoAction()
@@ -67,12 +70,17 @@ class Sistema_LogadoController extends Controller_Action
     {
         if($this->_request->isPost())
         {
-            /*$parametros = $this->_getAllParams();
+            $parametros = $this->_getAllParams();
             
+            //salva a empresa e pega o id
             $array_id_empresa = array($this->_empresa->gravar($parametros,$this->_endereco));
+            
+            //pega tds os id´s de td´s os usuarios que pertecem ao grupo dos administradores
             $id_grupo = 1; //Grupo dos administradores
-            $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($idGrupo);
-            $this->_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa);*/
+            $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($id_grupo);
+            
+            //para colocar a empresa salva na lista de empresas visiveis do grupo administrador
+            $this->_usuario_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa);
         }    
     
     }

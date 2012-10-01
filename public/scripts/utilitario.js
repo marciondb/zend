@@ -247,7 +247,7 @@ function ExibirMsg(id, msg, tipo,tempo)
 {
 
     if(tempo <= 0)
-    {       jQuery(id).html(jQuery(id).html()+msg).removeClass().addClass(tipo).fadeIn("fast");
+    {jQuery(id).html(jQuery(id).html()+msg).removeClass().addClass(tipo).fadeIn("fast");
     }
     else
     {
@@ -277,4 +277,80 @@ function campoNumeros(ie, ff) {
     else {
         return false;
     }
+}
+
+
+function extraiScript(texto)
+{//para poder executar JS denro de um ajax
+    //Maravilhosa função feita pelo SkyWalker.TO do imasters/forum
+    //http://forum.imasters.com.br/index.php?showtopic=165277
+    // inicializa o inicio ><
+    var ini = 0;
+    // loop enquanto achar um script
+    while (ini!=-1){
+        // procura uma tag de script
+        ini = texto.indexOf('<script', ini);
+        // se encontrar
+        if (ini >=0){
+            // define o inicio para depois do fechamento dessa tag
+            ini = texto.indexOf('>', ini) + 1;
+            // procura o final do script
+            var fim = texto.indexOf('</script>', ini);
+            // extrai apenas o script
+            codigo = texto.substring(ini,fim);
+            // executa o script
+            //eval(codigo);
+            /**********************
+							* Alterado por Micox - micoxjcg@yahoo.com.br
+							* Alterei pois com o eval não executava funções.
+							***********************/
+            novo = document.createElement("script")
+            novo.text = codigo;
+            document.body.appendChild(novo);
+        }
+    }
+}
+
+function carregando(CampoDiv)
+{
+    pathArray = window.location.pathname.split( '/' );
+    host = pathArray[1];
+    
+    document.getElementById(CampoDiv).innerHTML='<div id="loading" class="loading"><img src="/'+host+'/public/images/ajax_carregando.gif" width="16" height="16" />&nbsp;Aguarde...</div>';
+}
+	
+// Funcao para mostrar resultados obtidos no AJAX - nova função
+	
+function ajax(url,CampoDiv)
+{
+		
+    carregando(CampoDiv);
+				
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            //document.getElementById(CampoDiv).innerHTML=xmlhttp.responseText;
+				
+            //para executar JS dentro do ajax
+            // coloca o valor no objeto requisitado
+            texto=unescape(xmlhttp.responseText.replace(/\+/g," "));
+            document.getElementById(CampoDiv).innerHTML=texto;
+            // executa scripts
+            extraiScript(texto);/**/
+				
+				
+        }
+    }
+		
+    xmlhttp.open("GET",url,false);
+    xmlhttp.send();
 }

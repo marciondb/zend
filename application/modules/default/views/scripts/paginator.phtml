@@ -1,0 +1,86 @@
+<div id="paginacao" class="pagination pull-right">
+    <ul>
+        <?php
+            $query = null;
+            
+            if( count( $_GET ) > 0 )
+                $query = '?' . http_build_query( $_GET ); 
+        ?>
+        <!-- Link para a primeira página -->
+        <?php if (isset($this->previous)): ?>
+            <li>
+                <a href="#" onclick="setPaginator('<?php echo $this->first; ?>','<?php echo $query; ?>')">
+                    &laquo; Primeira
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">
+                    &laquo; Primeira
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <!-- Link para a página anterior -->
+        <?php if (isset($this->previous)): ?>
+            <li>
+                <a href="#" onclick="setPaginator('<?php echo $this->previous; ?>','<?php echo $query; ?>')">
+                    Anterior
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">
+                    Anterior
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <!-- Links numerados -->
+        <?php foreach ($this->pagesInRange as $page): ?>
+            <?php if ($page != $this->current): ?>
+                <li>
+                    <a href="#" onclick="setPaginator('<?php echo $page; ?>','<?php echo $query; ?>')">
+                        <?php echo $page; ?>
+                    </a>
+                </li>
+             <?php else: ?>
+                <li class="active">
+                    <a href="#" onclick="setPaginator('<?php echo $page; ?>','<?php echo $query; ?>')">
+                        <?php echo $page; ?>
+                    </a>
+                </li>
+             <?php endif; ?>
+        <?php endforeach; ?>
+
+        <!-- Link para a Próxima página -->
+        <?php if (isset($this->next)): ?>
+            <li>
+                <a href="#" onclick="setPaginator('<?php echo $this->next; ?>','<?php echo $query; ?>')">
+                    Próxima
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">
+                    Próxima
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <!-- Última página -->
+        <?php if (isset($this->next)): ?>
+            <li>
+                <a href="#" onclick="setPaginator('<?php echo $this->last; ?>','<?php echo $query; ?>');">
+                    Última &raquo;
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <a href="#">
+                    Última &raquo;
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>

@@ -5,24 +5,45 @@
     <th class="barra_titulo">Apelido</th>
     <th class="barra_titulo">CNPJ</th>
     <th class="barra_titulo">Telefone 1</th>
-    <th class="barra_titulo">Selecione</th>
+    <th class="barra_titulo">Telefone 2</th>
     
     <?php
-    print_r($this->arrayEmpresa);
+    //print_r($this->arrayEmpresa);
+    
+    if($this->selecionar)
+        echo '<th class="barra_titulo">Selecione</th>';
 
-    while($linha = mysql_fetch_array($rs))
-		{
-	?>
+    foreach ($this->arrayEmpresa as $empresa): ?>
             <tr class="t_acende">
-                <td align="center"><?php echo $linha['id']; ?></td>
-                <td align="center"><?php echo $linha['razaoSocial']; ?></td>
-                <td align="center"><?php echo $linha['nomeFantasia']; ?></td>
-                <td align="center"><?php echo $linha['apelido']; ?></td>
-                <td align="center"><?php echo montaMascara($linha['cnpj'],'##.###.###/####-##'); ?></td>
-                <td align="center"><?php echo "(".substr($linha['telefone1'],0,2).") ".montaMascara(substr($linha['telefone1'],2,8),'####-####'); ?></td>
-                <td align="center" width="16%"><input type="checkbox" name="idEmpresaTmp[]" id="idEmpresaTmp" onclick="getEmpresa();" value="<?php echo $linha['id']; ?>"/></td>
+                <td align="center"><?php echo $empresa['id_empresa']; ?></td>
+                <td align="center"><?php echo $empresa['razao_social']; ?></td>
+                <td align="center"><?php echo $empresa['nome_fantasia']; ?></td>
+                <td align="center"><?php echo $empresa['apelido']; ?></td>
+                <td align="center"><?php echo $empresa['cnpj']; ?></td>
+                <td align="center"><?php echo $empresa['telefone_1']; ?></td>
+                <td align="center"><?php echo $empresa['telefone_2']; ?></td>
+            
+                <?php
+                    if($this->selecionar)
+                    {    
+                        ?>
+                        <td align="center" width="16%"><input type="checkbox" name="idEmpresaTmp[]" id="idEmpresaTmp" onclick="setEmpresa();" value="<?php echo $linha['id']; ?>"/></td>
+                        <?php
+                    }
+                ?>
             </tr>
-    <?php
-    	}
-    ?>
+        <?php endforeach; ?>
+
+        <?php if( $this->arrayEmpresa->count() == 0 ): ?>
+            <tr>
+                <td colspan="2">Nenhum item encontrado</td>
+            </tr>
+        <?php endif ?>
 </table>
+<?php 
+    echo $this->paginationControl(
+                $this->arrayEmpresa,
+                'Sliding',
+                'paginator.phtml'
+        );
+?>
