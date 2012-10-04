@@ -2,20 +2,20 @@
     <ul>
         <?php
             $query = null;
-            
             if( count( $_GET ) > 0 )
                 $query = '?' . http_build_query( $_GET ); 
         ?>
         <!-- Link para a primeira página -->
         <?php if (isset($this->previous)): ?>
             <li>
-                <a href="#" onclick="setPaginator('<?php echo $this->first; ?>','<?php echo $query; ?>')">
+                <!-- credito do 'href="javascript:;"' : http://forum.imasters.com.br/topic/184280-link-sem-href/ -->
+                <a href="javascript:;" onclick="setPaginator('<?php echo $this->first; ?>','<?php echo $query; ?>')">
                     &laquo; Primeira
                 </a>
             </li>
         <?php else: ?>
             <li class="disabled">
-                <a href="#">
+                <a href="javascript:;">
                     &laquo; Primeira
                 </a>
             </li>
@@ -24,13 +24,13 @@
         <!-- Link para a página anterior -->
         <?php if (isset($this->previous)): ?>
             <li>
-                <a href="#" onclick="setPaginator('<?php echo $this->previous; ?>','<?php echo $query; ?>')">
+                <a href="javascript:;" onclick="setPaginator('<?php echo $this->previous; ?>','<?php echo $query; ?>')">
                     Anterior
                 </a>
             </li>
         <?php else: ?>
             <li class="disabled">
-                <a href="#">
+                <a href="javascript:;">
                     Anterior
                 </a>
             </li>
@@ -40,13 +40,13 @@
         <?php foreach ($this->pagesInRange as $page): ?>
             <?php if ($page != $this->current): ?>
                 <li>
-                    <a href="#" onclick="setPaginator('<?php echo $page; ?>','<?php echo $query; ?>')">
+                    <a href="javascript:;" onclick="setPaginator('<?php echo $page; ?>','<?php echo $query; ?>')">
                         <?php echo $page; ?>
                     </a>
                 </li>
              <?php else: ?>
                 <li class="active">
-                    <a href="#" onclick="setPaginator('<?php echo $page; ?>','<?php echo $query; ?>')">
+                    <a href="javascript:;" onclick="setPaginator('<?php echo $page; ?>','<?php echo $query; ?>')">
                         <?php echo $page; ?>
                     </a>
                 </li>
@@ -56,7 +56,7 @@
         <!-- Link para a Próxima página -->
         <?php if (isset($this->next)): ?>
             <li>
-                <a href="#" onclick="setPaginator('<?php echo $this->next; ?>','<?php echo $query; ?>')">
+                <a href="javascript:;" onclick="setPaginator('<?php echo $this->next; ?>','<?php echo $query; ?>')">
                     Próxima
                 </a>
             </li>
@@ -71,7 +71,7 @@
         <!-- Última página -->
         <?php if (isset($this->next)): ?>
             <li>
-                <a href="#" onclick="setPaginator('<?php echo $this->last; ?>','<?php echo $query; ?>');">
+                <a href="javascript:;" onclick="setPaginator('<?php echo $this->last; ?>','<?php echo $query; ?>');">
                     Última &raquo;
                 </a>
             </li>

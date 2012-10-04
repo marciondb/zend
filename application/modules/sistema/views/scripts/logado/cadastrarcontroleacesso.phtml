@@ -1,24 +1,124 @@
+
 <h3>Cadastro de Controle de Acesso</h3>
 <hr>
-CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
-                        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18"  />
-                        <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ" />
-                        &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setTodos();deselecionaTodos();setAjaxFuncionarios();" checked="checked" /> 
-                        <b>Exibir todas as empresas</b>
-<div id="ajax_empresa" class="modal_ajax">
+<form name="formulario" action="" method="post">
+    CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+    <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+    <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+    &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setTodos();deselecionaTodos();setAjaxFuncionarios();" checked="checked" /> 
+    <b>Exibir todas as empresas</b>
+    <br>
+    <h5>Selecione uma empresa</h5>
+    <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
+    </div>
+    <br>
+    <h5>Selecione um time</h5>
+    <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+    </div>
+    <hr>
+    <h4>Selecione os funcionários que receberão acessos</h4>
+    <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+    </div>
     
-</div>
-                        
-<script type="text/javascript">
+    <!-- campos hidden temporarios -->
+    <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+    <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
+    <input type="hidden" name="arrayIdTempFuncionario"    id="arrayIdTempFuncionario" value=",">
+</form>
+
     
+<?php 
+    //URL de TODOS!!!! os ajax
+    $arrayEmpresaLED = $this->arrayEmpresaLED;
+    $urlAjaxEmpresa = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE);
+    //$urlAjaxEmpresa = array_merge($urlAjaxEmpresa,$arrayEmpresaLED);
+    
+    $arrayTimeLED = $this->arrayTimeLED;
+    $urlAjaxTime = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','selecionar'=>TRUE);
+    //$urlAjaxTime = array_merge($urlAjaxTime,$arrayTimeLED);
+    
+    $arrayFuncionarioLED = $this->arrayFuncionarioLED;
+    $urlAjaxFuncionario = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxfuncionario','selecionar'=>TRUE);
+    //$urlAjaxFuncionario = array_merge($urlAjaxFuncionario,$arrayFuncionarioLED);
+?>
+<script type="text/javascript">    
+    
+    /******************************************************************************/
+    //                               INICIO FILTRO
+    /******************************************************************************/
+    
+    function setFiltroTime()
+    {
+        listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
+        
+        url = '<?php echo $this->url($urlAjaxTime, null, 1); ?>'+'/listaIdEmpresa/'+listaIdEmpresa;
+        ajax(url,'ajax_time');
+    }
+    
+    function setFiltroFuncionario()
+    {
+        
+        listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
+        listaIdTime = document.getElementById('arrayIdTempTime').value;
+        listaIdTime = listaIdTime.substr(1,listaIdTime.length-2); //retira a 1º e a ultima virgula
+        
+        url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>'+'/listaIdEmpresa/'+listaIdEmpresa+'/listaIdTime/'+listaIdTime;
+        ajax(url,'ajax_funcionario');
+    }
+    
+    /******************************************************************************/
+    //                               FIM FILTRO
+    /******************************************************************************/
+    
+    /******************************************************************************/
+    //                               INICIO AJAX
+    /******************************************************************************/
+    tabelas='';
+    /***
+    * Como existe mais de um paginator na pagina, temos que ter o controle da
+    * funcao setPaginator() para que o ajax correto seja carregado
+    * ao passar o mouse sobre cada DIV, essa variavel eh setada
+    */ 
+    function setTabela(tabela)
+    {
+        tabelas = tabela;
+    }
+    
+    //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
+    // ajax eh excudado
     function setPaginator(pagina,query)
     {  
-        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE), null, 1); ?>'+'/pagina/'+pagina+query;
-        ajax(url,'ajax_empresa');
+        if(tabelas=='empresa')
+        {    
+            url = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>'+'/pagina/'+pagina+query;
+            ajax(url,'ajax_empresa');
+        }
+        else if(tabelas=='time')
+        {
+            url = '<?php echo $this->url($urlAjaxTime, null, 1); ?>'+'/pagina/'+pagina+query;
+            ajax(url,'ajax_time');
+        }
+        else if(tabelas=='funcionario')
+        {
+            url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>'+'/pagina/'+pagina+query;
+            ajax(url,'ajax_funcionario');
+        }
     }
     
     
-    
-    url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE), null, 1); ?>';
+    url = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>';
     ajax(url,'ajax_empresa');
-</script>                       
+    
+    url = '<?php echo $this->url($urlAjaxTime, null, 1); ?>';
+    ajax(url,'ajax_time');
+    
+    url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>';
+    ajax(url,'ajax_funcionario');
+    
+    /******************************************************************************/
+    //                               FIM AJAX
+    /******************************************************************************/
+</script>      
+

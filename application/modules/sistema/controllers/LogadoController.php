@@ -18,6 +18,7 @@ class Sistema_LogadoController extends Controller_Action
     protected $_lotacao;
     protected $_setor;
     protected $_time;
+    protected $_usuario_time_visivel;
     
     
     public function init()
@@ -31,10 +32,13 @@ class Sistema_LogadoController extends Controller_Action
         //*******************************************************************
         
         $this->_empresa = new Application_Model_Empresa();
+        $this->_time = new Application_Model_Time();
+        $this->_usuario_time_visivel = new Application_Model_UsuarioTimeVisivel();
         $this->_endereco = new Application_Model_Endereco();
         $this->_usuario_empresa_visivel = new Application_Model_UsuarioEmpresaVisivel();
         $this->_grupo_de_acesso = new Application_Model_GrupoDeAcesso();
         $this->_usuario_grupo = new Application_Model_UsuarioGrupo();
+        $this->_funcionario = new Application_Model_Funcionario();
         
         //*******************************************************************
         //  FIM Instanciando os models, para pode utilizar os metodos relacionado 
@@ -57,13 +61,51 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->selecionar = $this->_request->getParam('selecionar', false);
         $this->view->editar     = $this->_request->getParam('editar', false);
         $this->view->deletar    = $this->_request->getParam('deletar', false);
+        $this->view->liberar    = $this->_request->getParam('liberar', false);
         
         $this->view->arrayEmpresa = $this->_empresa->exibir($this->_request->getParam('pagina', 1));
     }
     
+    public function ajaxtimeAction()
+    {
+        /*if(!$this->getRequest()->isXmlHttpRequest())
+            $this->_redirect ("sistema/logado");*/
+        $this->_helper->layout->disableLayout();
+        
+        $this->view->selecionar = $this->_request->getParam('selecionar', false);
+        $this->view->editar     = $this->_request->getParam('editar', false);
+        $this->view->deletar    = $this->_request->getParam('deletar', false);
+        
+        $this->view->arrayTime = $this->_time->exibir($this->_request->getParam('pagina', 1),
+                                                $this->_request->getParam('listaIdEmpresa', 0),
+                                                $this->_request->getParam('listaIdSetor', 0),
+                                                $this->_request->getParam('listaIdTime', 0),
+                                                $this->_request->getParam('add', 0));
+    }
+    
+    public function ajaxfuncionarioAction()
+    {
+        /*if(!$this->getRequest()->isXmlHttpRequest())
+            $this->_redirect ("sistema/logado");*/
+        $this->_helper->layout->disableLayout();
+        
+        $this->view->selecionar = $this->_request->getParam('selecionar', false);
+        $this->view->editar     = $this->_request->getParam('editar', false);
+        $this->view->deletar    = $this->_request->getParam('deletar', false);
+        $this->view->liberar    = $this->_request->getParam('liberar', false);
+        
+        $this->view->arrayFuncionario = $this->_funcionario->exibir($this->_request->getParam('pagina', 1),
+                                                $this->_request->getParam('listaIdEmpresa', 0),
+                                                $this->_request->getParam('listaIdFuncionario', 0),
+                                                $this->_request->getParam('listaIdTime', 1),
+                                                $this->_request->getParam('add', 0));
+    }
+    
     public function cadastrarcontroleacessoAction()
     {
-        
+        $this->view->arrayEmpresaLED     = $this->getLED('ajaxempresa');
+        $this->view->arrayTimeLED        = $this->getLED('ajaxtime');
+        $this->view->arrayFuncionarioLED = $this->getLED('ajaxfuncionario');
     }
      
     public function cadastrarempresaAction()

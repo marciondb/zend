@@ -3,10 +3,33 @@
 abstract class Controller_Action extends Zend_Controller_Action {
     //protected $userEmail;
     protected $senha;
-    protected $permissoes;
+    protected $_permissoes;
     protected $_usuario;
     protected $baseUrl;
 
+    public function possuiPermissao()
+    {
+        $nomeDaAcao = $this->getRequest()->getActionName();
+        $parametroEditar = $this->getRequest()->getParam('editar');
+        $parametroDeletar = $this->getRequest()->getParam('deletar');
+        $parametroLiberar = $this->getRequest()->getParam('liberar');
+        
+        $flag=0;
+        foreach ($this->_permissoes as $value) 
+            if(($value['action']==$nomeDaAcao))
+            {
+                $flag = 1;
+
+                if(!(($value['editar']==$parametroEditar) || (!isset($parametroEditar))))
+                    $flag = 0;
+                if(!(($value['deletar']==$parametroEditar) || (!isset($parametroDeletar))))
+                    $flag = 0;
+                if(!(($value['liberar']==$parametroEditar) || (!isset($parametroLiberar))))
+                    $flag = 0;
+            }
+         
+       return (($flag==0)&&($nomeDaAcao != 'index'))?FALSE:TRUE;
+    }
     public function init()
     {
         
@@ -25,20 +48,13 @@ abstract class Controller_Action extends Zend_Controller_Action {
                 $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
                 $this->view->nome_usuario = $arrayIdentity->login;
                 $this->view->id_usuario = $arrayIdentity->id_usuario;
-                
-                $nomeDaAcao = $this->getRequest()->getActionName();
-                $permissoes = $this->_usuario->getPermissao();
-                $this->view->resultado = $permissoes;
+                $this->_permissoes = $this->_usuario->getPermissao();
+                $this->view->permissoes = $this->_permissoes;
                 //print_r($permissoes);
                 
-                if($permissoes)
-                {    
-                    $flag=0;
-                    foreach ($permissoes as $value) 
-                        if(($value['action']==$nomeDaAcao))
-                            $flag = 1;
-                    
-                    if($flag==0 && $nomeDaAcao != 'index')
+                if($this->_permissoes)
+                {                        
+                    if(!$this->possuiPermissao())
                         $this->_redirect($redirect);
                 }
                 else
@@ -49,6 +65,23 @@ abstract class Controller_Action extends Zend_Controller_Action {
             }
         }
                 
+    }
+    
+    public function getLED($nomeDaAcao) 
+    {   
+        $returnArray = array();
+        
+        foreach ($this->_permissoes as $value) 
+            if(($value['action']==$nomeDaAcao))
+            {    
+                if($value['liberar'])
+                    $returnArray['liberar']=TRUE;
+                if($value['editar'])
+                    $returnArray['editar'] =TRUE;
+                if($value['deletar'])
+                    $returnArray['deletar']=TRUE;
+            }
+       return $returnArray;
     }
 
     /***

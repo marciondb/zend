@@ -354,3 +354,98 @@ function ajax(url,CampoDiv)
     xmlhttp.open("GET",url,false);
     xmlhttp.send();
 }
+
+/***
+ * Funcao genérica para verificar se a string "comparacao" existe no "texto"
+ * @param comparacao String que sera comparada com o campo hidden
+ * @param texto Texto que será pesquisado
+ * @example if(existeNaStr('azul','O ceu eh azul, dah')){ //Do something} 
+ *          //  retorna 1, pois "chave" pertence ao segundo parametro
+ * @return 1 se encontrado, caso contrario 0
+ */
+function existeNaStr(comparacao,texto)
+{
+    if(texto.indexOf(comparacao)!=-1)
+        return(1);
+
+    return(0);
+}
+
+/**
+ * Usado tb na view logado, do modulo sistema em cadastrocontroleacesso.phtml
+ * é chama dentro do ajax, ex de uso: ajaxempresa.phtml
+ * retira uma substring de dentro outra string
+ */
+function removeId(id,tabela,campo,index)
+{
+    temp = eval('document.forms[0].'+campo);
+    
+    if(temp.length)
+    {
+        if(!temp[index].checked)
+        {   
+            arrayId = document.getElementById('arrayIdTemp'+tabela).value;
+
+            arrayId = arrayId.replace(','+id+',',","); //ele iria procurar pelo id dentro de arrayId e trocar por ","
+
+            document.getElementById('arrayIdTemp'+tabela).value = arrayId;
+        }
+    }
+    else
+    {
+        
+        if(!document.getElementById(campo).checked)
+        {   
+            arrayId = document.getElementById('arrayIdTemp'+tabela).value;
+
+            arrayId = arrayId.replace(','+id+',',","); //ele iria procurar pelo id dentro de arrayId e trocar por ","
+
+            document.getElementById('arrayIdTemp'+tabela).value = arrayId;
+        }
+    }
+}    
+
+/***
+ * Usado tb na view logado, do modulo sistema em cadastrocontroleacesso.phtml
+ * é chama dentro do ajax, ex de uso: ajaxempresa.phtml
+ * coloca um id dentro de uma array
+ */
+function setId(id,tabela)
+{
+        tempArrayId = document.getElementById('arrayIdTemp'+tabela).value;
+        if(!existeNaStr(','+id+',',tempArrayId))
+        {
+            document.getElementById('arrayIdTemp'+tabela).value += id+',';			
+        }
+}
+
+/***
+ * Usado tb na view logado, do modulo sistema em cadastrocontroleacesso.phtml
+ * é chama dentro do ajax, ex de uso: ajaxempresa.phtml
+ * Em caso em q ha paginacao, tem q remarcar os itens anteriormentes marcados
+ */
+function remarcaId(tabela,campo)
+{
+    temp = eval('document.forms[0].'+campo);
+
+    if(temp.length)
+    {
+        for (i = 0; i < temp.length; i++)
+        {
+            tempArrayId = document.getElementById('arrayIdTemp'+tabela).value;
+            if(existeNaStr(','+temp[i].value+',',tempArrayId))
+            {
+                temp[i].checked = true;			
+            }
+        }
+    }
+    else
+    {
+        tempArrayId = document.getElementById('arrayIdTemp'+tabela).value;
+        if(existeNaStr(','+temp.value+',',tempArrayId))
+        {
+            temp.checked = true;			
+        }
+    }
+
+}

@@ -1,4 +1,4 @@
-<?php if( $this->arrayEmpresa->count() == 0 ){ ?>
+<?php if( $this->arrayFuncionario->count() == 0 ){ ?>
     <table>    
         <tr>
             <td colspan="2">Nenhum item encontrado</td>
@@ -8,12 +8,7 @@
 
 <table align="center" cellspacing="1">
     <th class="barra_titulo">id</th>
-    <th class="barra_titulo">Razão Social</th>
-    <th class="barra_titulo">Nome Fantasia</th>
-    <th class="barra_titulo">Apelido</th>
-    <th class="barra_titulo">CNPJ</th>
-    <th class="barra_titulo">Telefone 1</th>
-    <th class="barra_titulo">Telefone 2</th>
+    <th class="barra_titulo">Nome</th>
     
     <?php
     //print_r($this->arrayEmpresa);
@@ -26,28 +21,23 @@
         echo '<th class="barra_titulo">Deletar</th>';
     if($this->liberar)
         echo '<th class="barra_titulo">Liberar</th>';
-    
-    $cont =0;
-    foreach ($this->arrayEmpresa as $empresa): ?>
+
+    foreach ($this->arrayFuncionario as $funcionario): ?>
             <tr class="t_acende">
-                <td align="center"><?php echo $empresa['id_empresa']; ?></td>
-                <td align="center"><?php echo $empresa['razao_social']; ?></td>
-                <td align="center"><?php echo $empresa['nome_fantasia']; ?></td>
-                <td align="center"><?php echo $empresa['apelido']; ?></td>
-                <td align="center"><?php echo $empresa['cnpj']; ?></td>
-                <td align="center"><?php echo $empresa['telefone_1']; ?></td>
-                <td align="center"><?php echo $empresa['telefone_2']; ?></td>
+                <td align="center"><?php echo $funcionario['id_funcionario']; ?></td>
+                <td align="center"><?php echo $funcionario['nome']; ?></td>
             
                 <?php
                     if($this->selecionar)
                     {    
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
-                        <td align="center" width="16%"><input type="checkbox" name="idEmpresaTmp[]" id="idEmpresaTmp" onclick="setId(this.value,'Empresa');removeId(this.value,'Empresa',this.id,<?php echo $cont;?>);setFiltroTime();setFiltroFuncionario();" value="<?php echo $empresa['id_empresa']; ?>"/></td>
+                        <td align="center" width="16%"><input type="checkbox" name="idFuncionarioTmp[]" id="idFuncionarioTmp" onclick="setId(this.value,'Funcionario');removeId(this.value,'Funcionario',this.id);" value="<?php echo $funcionario['id_funcionario']; ?>"/></td>
                         <?php
-                        $cont++;
                     }
+                ?>
                 
+                <?php
                     if($this->editar)
                     {    
                         ?>
@@ -56,7 +46,9 @@
                         </td>
                         <?php
                     }
-                
+                ?>
+                        
+                <?php
                     if($this->deletar)
                     {    
                         ?>
@@ -65,7 +57,9 @@
                         </td>
                         <?php
                     }
-                
+                ?>
+                        
+                <?php
                     if($this->liberar)
                     {    
                         ?>
@@ -78,18 +72,16 @@
             </tr>
         <?php endforeach; ?>
 
-        
-        
 </table>
 <?php 
     echo $this->paginationControl(
-                $this->arrayEmpresa,
+                $this->arrayFuncionario,
                 'Sliding',
                 'paginator.phtml'
         );
 ?>
 <script>
-    remarcaId('Empresa','idEmpresaTmp');
-</script> 
+    remarcaId('Funcionario','idFuncionarioTmp');
+</script>    
 
 <?php } //if inicial?>
