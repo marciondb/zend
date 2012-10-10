@@ -371,6 +371,12 @@ function existeNaStr(comparacao,texto)
     return(0);
 }
 
+function removeNaStr(id,campo)
+{
+     arrayId = document.getElementById(campo).value;
+
+     document.getElementById(campo).value = arrayId.replace(','+id+',',","); //ele iria procurar pelo id dentro de arrayId e trocar por ","
+}
 /**
  * Usado tb na view logado, do modulo sistema em cadastrocontroleacesso.phtml
  * é chama dentro do ajax, ex de uso: ajaxempresa.phtml

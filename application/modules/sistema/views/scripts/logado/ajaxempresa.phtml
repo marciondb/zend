@@ -28,6 +28,7 @@
         echo '<th class="barra_titulo">Liberar</th>';
     
     $cont =0;
+    
     foreach ($this->arrayEmpresa as $empresa): ?>
             <tr class="t_acende">
                 <td align="center"><?php echo $empresa['id_empresa']; ?></td>
@@ -43,7 +44,7 @@
                     {    
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
-                        <td align="center" width="16%"><input type="checkbox" name="idEmpresaTmp[]" id="idEmpresaTmp" onclick="setId(this.value,'Empresa');removeId(this.value,'Empresa',this.id,<?php echo $cont;?>);setFiltroTime();setFiltroFuncionario();" value="<?php echo $empresa['id_empresa']; ?>"/></td>
+                        <td align="center" width="16%"><input type="checkbox" name="idEmpresaTmp[]" id="idEmpresaTmp" onclick="setId(this.value,'Empresa');removeId(this.value,'Empresa',this.id,<?php echo $cont;?>);setFiltroTime();setFiltroFuncionario();document.getElementById('todos').checked=false" value="<?php echo $empresa['id_empresa']; ?>"/></td>
                         <?php
                         $cont++;
                     }
@@ -89,7 +90,14 @@
         );
 ?>
 <script>
-    remarcaId('Empresa','idEmpresaTmp');
+    <?php
+        if($this->selecionar)
+        {
+    ?>
+            remarcaId('Empresa','idEmpresaTmp');
+    <?php
+        }
+    ?>        
 </script> 
 
 <?php } //if inicial?>

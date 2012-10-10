@@ -279,3 +279,21 @@ html[xmlns] #nav {
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 }
+
+.modal_filtro {
+	height:auto;
+	overflow:auto;
+	margin-top:-20px;
+	margin-left:170px;
+	-webkit-box-shadow: #666 0px 2px 9px;
+	-moz-box-shadow: #666 0px 2px 9px;
+	box-shadow: #666 0px 2px 9px;
+	behavior: url(PIE.htc);
+	background-color:#FFF;
+	border:1px solid #CCC;
+	margin:10px;
+	padding:10px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+}

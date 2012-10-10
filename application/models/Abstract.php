@@ -35,13 +35,21 @@ abstract class Application_Model_Abstract {
         return $this->_dbTable->delete('id='.(int) $id);
     }
 
-    public function fetchAll($conditions=null) {
+    /***
+     * @param String $order Para ter a opção de order by
+     * basta passar a string com o order desejado, ex: "order by campo ASC"
+     */
+    public function fetchAll($conditions=null,$order=null) {
         $select = $this->_dbTable->select();
 
         if (!is_null($conditions)) {
             foreach ($conditions as $key => $condition) {
                 $select->where($key, $condition);
             }
+        }
+        
+        if (!is_null($order)) {
+            $select->order($order);
         }
         
         return $select->query()->fetchAll();

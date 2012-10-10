@@ -1,9 +1,9 @@
 <?php
 
-class Application_Model_Empresa extends Application_Model_Abstract
+class Application_Model_FuncionarioTipo extends Application_Model_Abstract
 {
     public function __construct() {
-        $this->_dbTable = new Application_Model_DbTable_Empresa();
+        $this->_dbTable = new Application_Model_DbTable_FuncionarioTipo();
     }
     
     public function gravar($parametros,$_endereco, $update = FALSE)
@@ -76,7 +76,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
        * @version 1.0
        * @author Márcio & Marco
      */
-    public function exibir($pagina,$cnpj)
+    public function exibir($pagina)
     {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;

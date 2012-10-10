@@ -5,7 +5,7 @@
     CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
     <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
     <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
-    &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setTodos();deselecionaTodos();setAjaxFuncionarios();" checked="checked" /> 
+    &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');" checked="checked" /> 
     <b>Exibir todas as empresas</b>
     <br>
     <h5>Selecione uma empresa</h5>
@@ -16,29 +16,98 @@
     <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
     </div>
     <hr>
-    <h4>Selecione os funcionários que receberão acessos</h4>
-    <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+    <h4>Escolha os funcionários que receberão acessos</h4>
+    
+    <div id="div_FiltroFuncionrio" class="modal_filtro"><!-- apos selecioar a empresa, essa div aparece-->
+        <table align="center">	
+            <tr>
+                <td align="left">
+                    Setor / Unidade de Negócios: 
+                </td>
+                <td align="left">
+                    <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
+                        <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
+                        <?php
+
+                            foreach ($this->arraySetor as $linha)
+                            {	
+                        ?>
+                                <option value="<?php echo $linha['id_setor'];?>"><?php echo $linha['titulo'];?></option>
+                        <?php
+                            }
+                        ?>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    Cargo: 
+                </td>
+                <td align="left">
+                    <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
+                        <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
+                        <?php
+                            foreach ($this->arrayCargo as $linha)
+                            {	
+                        ?>
+                                <option value="<?php echo $linha['id_cargo'];?>" ><?php echo $linha['titulo'];?></option>
+                        <?php
+                            }
+                        ?>                            
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    Tipo: 
+                </td>
+                <td align="left">
+                    <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
+                        <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
+                        <?php
+                            foreach ($this->arrayFuncionario_tipo as $linha)
+                            {	
+                        ?>
+                                <option value="<?php echo $linha['id_funcionario_tipo'];?>" ><?php echo $linha['titulo'];?></option>
+                        <?php
+                            }
+                        ?>                            
+                    </select>
+                </td>
+            </tr>
+        </table>
+        
+        <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+        </div>
+    </div>
+    
+    <hr>
+    <h4>Funcionários escolhidos</h4>
+    
+    <div id="ajax_funcionario_adicionados" class="modal_ajax" onmouseover="setTabela('funcionario_adicionados');">
     </div>
     
     <!-- campos hidden temporarios -->
     <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
     <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
     <input type="hidden" name="arrayIdTempFuncionario"    id="arrayIdTempFuncionario" value=",">
+    <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
 </form>
 
     
 <?php 
     //URL de TODOS!!!! os ajax
-    $arrayEmpresaLED = $this->arrayEmpresaLED;
+    //$arrayEmpresaLED = $this->arrayEmpresaLED;
     $urlAjaxEmpresa = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE);
     //$urlAjaxEmpresa = array_merge($urlAjaxEmpresa,$arrayEmpresaLED);
     
-    $arrayTimeLED = $this->arrayTimeLED;
+    //$arrayTimeLED = $this->arrayTimeLED;
     $urlAjaxTime = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','selecionar'=>TRUE);
     //$urlAjaxTime = array_merge($urlAjaxTime,$arrayTimeLED);
     
-    $arrayFuncionarioLED = $this->arrayFuncionarioLED;
-    $urlAjaxFuncionario = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxfuncionario','selecionar'=>TRUE);
+    //$arrayFuncionarioLED = $this->arrayFuncionarioLED;
+    $urlAjaxFuncionario = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxfuncionario','adicionar'=>TRUE);
     //$urlAjaxFuncionario = array_merge($urlAjaxFuncionario,$arrayFuncionarioLED);
 ?>
 <script type="text/javascript">    
@@ -56,16 +125,59 @@
         ajax(url,'ajax_time');
     }
     
-    function setFiltroFuncionario()
+    //todos de todas as empresas
+    function setFiltroFuncionario(todos,add,pagina)
     {
         
-        listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
-        listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
-        listaIdTime = document.getElementById('arrayIdTempTime').value;
-        listaIdTime = listaIdTime.substr(1,listaIdTime.length-2); //retira a 1º e a ultima virgula
+        if (typeof(todos) == "undefined" || todos=='')
+        {    
+            
+            listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+            listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
+            listaIdTime = document.getElementById('arrayIdTempTime').value;
+            listaIdTime = listaIdTime.substr(1,listaIdTime.length-2); //retira a 1º e a ultima virgula
+            listaIdFuncionarioEscolhido = document.getElementById('arrayIdTempFuncionarioEscolhido').value;
+            listaIdFuncionarioEscolhido = listaIdFuncionarioEscolhido.substr(1,listaIdFuncionarioEscolhido.length-2); //retira a 1º e a ultima virgula
+            
+            idCargo = document.getElementById('idCargo').value;
+            idSetor = document.getElementById('idSetor').value;
+            idFuncionario_tipo  = document.getElementById('idFuncionario_tipo').value;
+            
+            url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>/listaIdEmpresa/'+listaIdEmpresa+
+                                                            '/listaIdTime/'+listaIdTime+    
+                                                            '/idCargo/'+idCargo+
+                                                            '/idSetor/'+idSetor+
+                                                            '/idFuncionario_tipo/'+idFuncionario_tipo+
+                                                            '/listaIdFuncionarioEscolhido/'+listaIdFuncionarioEscolhido;
+        }
+        else
+        {
+            url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>';
+            url2 = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>';
+            document.getElementById('arrayIdTempEmpresa').value = ',';
+            ajax(url2,'ajax_empresa');
+        }
         
-        url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>'+'/listaIdEmpresa/'+listaIdEmpresa+'/listaIdTime/'+listaIdTime;
+        if ((typeof(pagina) != "undefined")  )
+            url+='/pagina/'+pagina;
+        
         ajax(url,'ajax_funcionario');
+        
+        if ((typeof(add) != "undefined")  )
+        {   
+            url += '/add/1';
+            if(document.getElementById('arrayIdTempFuncionarioEscolhido').value != ',')
+                ajax(url,'ajax_funcionario_adicionados');
+            else
+               document.getElementById('ajax_funcionario_adicionados').innerHTML = 'Nenhum item adcionado.';
+        }
+    }
+    
+    function filtraCnpj()
+    {   
+        cnpj = document.getElementById('cnpj').value;
+        url = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>'+'/cnpj/'+cnpj;
+        ajax(url,'ajax_empresa');
     }
     
     /******************************************************************************/
@@ -78,8 +190,8 @@
     tabelas='';
     /***
     * Como existe mais de um paginator na pagina, temos que ter o controle da
-    * funcao setPaginator() para que o ajax correto seja carregado
-    * ao passar o mouse sobre cada DIV, essa variavel eh setada
+    * funcao setPaginator() para que o ajax correto seja carregado.
+    * Ao passar o mouse sobre cada DIV, essa variavel eh setada
     */ 
     function setTabela(tabela)
     {
@@ -102,8 +214,11 @@
         }
         else if(tabelas=='funcionario')
         {
-            url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>'+'/pagina/'+pagina+query;
-            ajax(url,'ajax_funcionario');
+            setFiltroFuncionario(null,null,pagina);
+        }
+        else if(tabelas=='funcionario_adicionados')
+        {
+            setFiltroFuncionario(null,1,pagina);
         }
     }
     

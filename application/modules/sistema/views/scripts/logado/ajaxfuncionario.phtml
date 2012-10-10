@@ -1,7 +1,7 @@
 <?php if( $this->arrayFuncionario->count() == 0 ){ ?>
     <table>    
         <tr>
-            <td colspan="2">Nenhum item encontrado</td>
+            <td colspan="2">Nenhum item</td>
         </tr>
     </table>
 <?php }else{ ?>
@@ -9,6 +9,11 @@
 <table align="center" cellspacing="1">
     <th class="barra_titulo">id</th>
     <th class="barra_titulo">Nome</th>
+    <th class="barra_titulo">Apelido</th>
+    <th class="barra_titulo">Nome Fantasia</th>
+    <th class="barra_titulo">CPF</th>
+    <th class="barra_titulo">Telefone 1</th>
+    <th class="barra_titulo">Celular 1</th>
     
     <?php
     //print_r($this->arrayEmpresa);
@@ -21,20 +26,32 @@
         echo '<th class="barra_titulo">Deletar</th>';
     if($this->liberar)
         echo '<th class="barra_titulo">Liberar</th>';
-
+    if(($this->adicionar) && (!$this->add) )
+        echo '<th class="barra_titulo">Adicionar</th>';
+    if($this->add)
+        echo '<th class="barra_titulo">Remover</th>';
+    
+    $cont=0;
     foreach ($this->arrayFuncionario as $funcionario): ?>
             <tr class="t_acende">
                 <td align="center"><?php echo $funcionario['id_funcionario']; ?></td>
                 <td align="center"><?php echo $funcionario['nome']; ?></td>
+                <td align="center"><?php echo $funcionario['apelido']; ?></td>
+                <td align="center"><?php echo $funcionario['nome_fantasia']; ?></td>
+                <td align="center"><?php echo $funcionario['cpf']; ?></td>
+                <td align="center"><?php echo $funcionario['tel_residencial_1']; ?></td>
+                <td align="center"><?php echo $funcionario['celular_1']; ?></td>
             
                 <?php
                     if($this->selecionar)
                     {    
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
-                        <td align="center" width="16%"><input type="checkbox" name="idFuncionarioTmp[]" id="idFuncionarioTmp" onclick="setId(this.value,'Funcionario');removeId(this.value,'Funcionario',this.id);" value="<?php echo $funcionario['id_funcionario']; ?>"/></td>
+                        <td align="center" width="16%"><input type="checkbox" name="idFuncionarioTmp[]" id="idFuncionarioTmp" onclick="setId(this.value,'Funcionario');removeId(this.value,'Funcionario',this.id,<?php echo $cont;?>);" value="<?php echo $funcionario['id_funcionario']; ?>"/></td>
                         <?php
+                        
                     }
+                    $cont++;
                 ?>
                 
                 <?php
@@ -69,19 +86,51 @@
                         <?php
                     }
                 ?>
+                        
+               <?php
+                    if($this->adicionar && (!$this->add))
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="javascript:;" onclick="setId('<?php echo $funcionario['id_funcionario']; ?>','FuncionarioEscolhido');setFiltroFuncionario('',1);"><i class="icon-plus"></i></a>
+                        </td>
+                        <?php
+                    }
+                ?>
+                        
+               <?php
+                    if($this->add)
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="javascript:;" onclick="removeNaStr('<?php echo $funcionario['id_funcionario']; ?>','arrayIdTempFuncionarioEscolhido');setFiltroFuncionario('',1);"><i class="icon-minus"></i></a>
+                        </td>
+                        <?php
+                    }
+                ?>
             </tr>
         <?php endforeach; ?>
 
 </table>
 <?php 
-    echo $this->paginationControl(
-                $this->arrayFuncionario,
-                'Sliding',
-                'paginator.phtml'
-        );
+    if(!($this->add))
+    {
+        echo $this->paginationControl(
+                    $this->arrayFuncionario,
+                    'Sliding',
+                    'paginator.phtml'
+            );
+    }
 ?>
 <script>
-    remarcaId('Funcionario','idFuncionarioTmp');
+    <?php
+        if($this->selecionar)
+        {
+    ?>
+            remarcaId('Funcionario','idFuncionarioTmp');
+    <?php
+        }
+    ?>
 </script>    
 
 <?php } //if inicial?>

@@ -76,7 +76,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
        * @version 1.0
        * @author Márcio & Marco
      */
-    public function exibir($pagina,$listaIdEmpresa,$listaIdFuncionario,$listaIdTime,$add)
+    public function exibir($pagina,$listaIdEmpresa,$listaIdFuncionario,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo,$listaIdFuncionarioEscolhido,$add)
     {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
@@ -85,26 +85,39 @@ class Application_Model_Funcionario extends Application_Model_Abstract
             $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('time',array('id_time','titulo'))->
+                    from('funcionario',array('id_funcionario','nome','apelido','cpf','tel_residencial_1','celular_1'))->
+                    join('time','funcionario.id_time = time.id_time',array('id_time','titulo'))->
                     join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
-                    join('usuario', 'usuario.id_usuario = usuario_time_visivel.id_usuario',null)->
-                    join('funcionario', 'funcionario.id_usuario = usuario.id_usuario',array('id_funcionario','nome','apelido','cpf','tel_residencial_1','celular_1'))->
+                    join('lotacao', 'funcionario.id_funcionario = lotacao.id_funcionario',array('lotacao.data_hora'))->
+                    join('empresa', 'empresa.id_empresa = lotacao.id_empresa',array('nome_fantasia'))->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
-                    where('funcionario.id_time = time.id_time');
+                    where('lotacao.atual = 1');
+                    
             
-            
-            if ($listaIdEmpresa)
-                $select->where('time.id_empresa in (' . $listaIdEmpresa . ')');
-            if ($listaIdTime)
-                $select->where('funcionario.id_time in (' . $listaIdTime . ')');
-            if ($add)
-                $select->where('funcionario.id_funcionario in not (' . $listaIdFuncionario . ')');
+            if(!$add)
+            {
+                if ($listaIdEmpresa)
+                    $select->where('time.id_empresa in (' . $listaIdEmpresa . ')');
+                if ($listaIdTime)
+                    $select->where('funcionario.id_time in (' . $listaIdTime . ')');
+                if ($idSetor)
+                    $select->where('lotacao.id_setor in (' . $idSetor . ')');
+                if ($idCargo)
+                    $select->where('lotacao.id_cargo in (' . $idCargo . ')');
+                if ($idFuncionario_tipo)
+                    $select->where('lotacao.id_funcionario_tipo in (' . $idFuncionario_tipo . ')');
+                if ($listaIdFuncionarioEscolhido && $add==0)
+                    $select->where('funcionario.id_funcionario not in (' . $listaIdFuncionarioEscolhido . ')');
+            }
+            else
+                $select->where('funcionario.id_funcionario in (' . $listaIdFuncionarioEscolhido . ')');
 
-            $select->group('usuario.id_usuario');
+            $select->order('funcionario.nome ASC');
             
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
-            $paginator->setItemCountPerPage($perPage);
+            if(!$add)
+                $paginator->setItemCountPerPage($perPage);
         }
         catch(Exception $e)
         {
