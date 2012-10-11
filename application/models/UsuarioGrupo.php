@@ -16,7 +16,17 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
        
        return $select->query()->fetchAll();
     }            
-
+    
+    public function getFuncionalidades($idUsuario){
+        $select = $this->_dbTable->
+                  select()->
+                  setIntegrityCheck(false)->
+                  from('usuario_grupo', array('id_usuario'))->
+                  join('funcionalidade','funcionalidade.id_funcionalidade = ')->
+                  where('usuario_grupo.id_grupo_de_acesso = ?', $idGrupo);
+       
+       return $select->query()->fetchAll();
+    }
 
     protected function _validarDados(array $data){
         // Validação

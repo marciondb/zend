@@ -19,11 +19,15 @@
         echo '<th class="barra_titulo">Editar</th>';
     if($this->deletar)
         echo '<th class="barra_titulo">Deletar</th>';
-    if(($this->adicionar) && (!$this->add) )
+    if($this->liberar)
+        echo '<th class="barra_titulo">Liberar</th>';
+    if(($this->adicionar) && (!$this->remover) )
         echo '<th class="barra_titulo">Adicionar</th>';
-    if($this->add)
+    if($this->remover)
         echo '<th class="barra_titulo">Remover</th>';
+    
     $cont =0;
+    
     foreach ($this->arrayTime as $time): ?>
             <tr class="t_acende">
                 <td align="center"><?php echo $time['id_time']; ?></td>
@@ -34,11 +38,12 @@
                     {    
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
-                        <td align="center" width="16%"><input type="checkbox" name="idTimeTmp[]" id="idTimeTmp" onclick="setId(this.value,'Time');removeId(this.value,'Time',this.id,<?php echo $cont;?>);setFiltroFuncionario();" value="<?php echo $time['id_time']; ?>"/></td>
+                        <td align="center" width="16%"><input type="checkbox" name="idTimeTmp[]" id="idTimeTmp" onclick="setId(this.value,'Time');removeId(this.value,'Time',this.id,<?php echo $cont;?>);setFiltroFuncionario();" value="<?php echo $time['id_time']; ?>"/></td>        
+                
                         <?php
                         $cont++;
                     }
-                    
+                
                     if($this->editar)
                     {    
                         ?>
@@ -56,27 +61,60 @@
                         </td>
                         <?php
                     }
+                
+                    if($this->liberar)
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="#"><i class="icon-ok-sign"></i></a>
+                        </td>
+                        <?php
+                    } 
+               
+                    if($this->adicionar && (!$this->remover))
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="javascript:;" onclick="setId('<?php echo $time['id_time']; ?>','TimeEscolhido');setTimesVisiveis(1,'');"><i class="icon-plus"></i></a>
+                        </td>
+                        <?php
+                    }
+                
+                    if($this->remover)
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="javascript:;" onclick="removeNaStr('<?php echo $time['id_time']; ?>','arrayIdTempTimeEscolhido');setTimesVisiveis(1,'');"><i class="icon-minus"></i></a>
+                        </td>
+                        <?php
+                    }
                 ?>
+                        
             </tr>
         <?php endforeach; ?>
 
+        
+        
 </table>
 <?php 
-    echo $this->paginationControl(
-                $this->arrayTime,
-                'Sliding',
-                'paginator.phtml'
-        );
+    if(!($this->remover))
+    {
+        echo $this->paginationControl(
+                    $this->arrayTime,
+                    'Sliding',
+                    'paginator.phtml'
+            );
+    }
 ?>
 <script>
     <?php
         if($this->selecionar)
         {
     ?>
-        remarcaId('Time','idTimeTmp');
+            remarcaId('Time','idTimeTmp');
     <?php
         }
-    ?>    
-</script>    
+    ?>        
+</script> 
 
 <?php } //if inicial?>

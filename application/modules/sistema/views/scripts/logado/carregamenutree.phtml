@@ -1,0 +1,69 @@
+
+<?php
+    /* * *
+    * Carrega o menu tree baseado nas permissoes do usuario
+    */
+
+    $_SESSION['menuTree'] = null;
+    unset($_SESSION['menuTree']);
+
+    $_SESSION['menuTree'] = '';
+    $_SESSION['menuTree'] .= '<ul id="treemenu1" class="treeview">'."\n";
+    
+    function montaMenuTree($id_funcionalidade,$resultado,$url)
+    {
+        foreach ($resultado as $value) 
+        {
+            
+            if ($value['id_funcionalidade_pai']==$id_funcionalidade)
+            {
+                
+                if($value['action']=='')
+                {
+                    $estilo = '';
+                    if($value['titulo']=='Cadastrar' || $value['titulo']=='Gerenciar')
+                        $estilo = "class='modal_auto_size'";
+                    
+                    $_SESSION['menuTree'] .= "<li>".$value['titulo']."\n";
+                        $_SESSION['menuTree'] .=  "<ul><div class='modal_auto_size'>\n";
+                }
+                else
+                {                    
+                    $editar = '';
+                    if($value['editar'])
+                      $editar = '&nbsp;&nbsp;Editar&nbsp;<input type="checkbox" id="editar" name="editar[]" value="'.$value['id_funcionalidade'].'">';
+                    $deletar = '';
+                    if($value['deletar'])
+                      $deletar = '&nbsp;&nbsp;Deletar&nbsp;<input type="checkbox" id="deletar" name="deletar[]" value="'.$value['id_funcionalidade'].'">';
+                    $liberar = '';
+                    if($value['liberar'])
+                      $liberar = '&nbsp;&nbsp;Liberar&nbsp;<input type="checkbox" id="liberar" name="liberar[]" value="'.$value['id_funcionalidade'].'">';
+                    
+                    $seta='';
+                    if($editar!='' || $deletar!='' || $liberar!='')
+                        $seta = '<i class="icon-arrow-right"></i>';
+                    
+                    $_SESSION['menuTree'] .= '<li style="clear:both;"><div class="funcionalidade"><input type="checkbox" id="id_funcionalidades" name="id_funcionalidades[]" value="'.$value['id_funcionalidade'].'">&nbsp;&nbsp;'.$value['titulo']."</div><div class='funcionalidade2'>$seta&nbsp;$editar$deletar$liberar</div></li>\n";
+                }
+                
+                //echo $value['titulo']." ".$value['action']."\n";
+                
+                montaMenuTree($value['id_funcionalidade'],$resultado,$url);//,$menu);
+                
+                if($value['action']=='')
+                {
+                    $_SESSION['menuTree'] .= "</div></ul>\n";
+                    $_SESSION['menuTree'] .= "</li>\n";
+                }
+            }
+        }
+        
+    }
+    
+    montaMenuTree(0,$this->permissoes,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1));
+    
+    $_SESSION['menuTree'] .= '</ul>';
+    
+    
+    echo $_SESSION['menuTree'];
+    

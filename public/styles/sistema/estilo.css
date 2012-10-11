@@ -297,3 +297,85 @@ html[xmlns] #nav {
 	-moz-border-radius: 8px;
 	border-radius: 8px;
 }
+
+.modal_min_auto_size {
+	height:auto;
+        min-height: 300px;
+	overflow:auto;
+	margin-top:-20px;
+	margin-left:170px;
+	-webkit-box-shadow: #666 0px 2px 9px;
+	-moz-box-shadow: #666 0px 2px 9px;
+	box-shadow: #666 0px 2px 9px;
+	behavior: url(PIE.htc);
+	background-color:#FFF;
+	border:1px solid #CCC;
+	margin:10px;
+	padding:10px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+        
+}
+
+.modal_auto_size {
+	height:auto;
+	overflow:auto;
+	margin-top:-20px;
+	margin-left:170px;
+	-webkit-box-shadow: #666 0px 2px 9px;
+	-moz-box-shadow: #666 0px 2px 9px;
+	box-shadow: #666 0px 2px 9px;
+	behavior: url(PIE.htc);
+	background-color:#FFF;
+	border:1px solid #CCC;
+	margin:10px;
+	padding:10px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+        
+}
+
+/*menu tree usado no cadastro de acesso*/
+.treeview ul{ /*CSS for Simple Tree Menu*/
+margin: 0;
+padding: 0;
+}
+
+.treeview li{ /*Style for LI elements in general (excludes an LI that contains sub lists)*/
+list-style-type: none;
+padding-left: 22px;
+margin-bottom: 3px;
+}
+
+.treeview li.submenu{ /* Style for LI that contains sub lists (other ULs). */
+background: white url(/pinho/public/images/sistema/plus.png) no-repeat left 1px;
+cursor: hand !important;
+cursor: pointer !important;
+}
+
+
+.treeview li.submenu ul{ /*Style for ULs that are children of LIs (submenu) */
+display: none; /*Hide them by default. Don't delete. */
+}
+
+.treeview .submenu ul li{ /*Style for LIs of ULs that are children of LIs (submenu) */
+cursor: default;
+}
+
+
+.funcionalidade{
+    width:200px;
+    float:left;
+}
+
+.funcionalidade input[type="checkbox"]{
+    margin: -3px 0 0 0;
+    
+}
+
+.funcionalidade2 input[type="checkbox"]{
+    margin: -3px 0 0 0;
+    
+}

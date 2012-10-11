@@ -5,7 +5,7 @@
     CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
     <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
     <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
-    &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');" checked="checked" /> 
+    &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
     <b>Exibir todas as empresas</b>
     <br>
     <h5>Selecione uma empresa</h5>
@@ -99,12 +99,44 @@
     <div id="ajax_empresas_adicionadas" class="modal_ajax" onmouseover="setTabela('empresas_adicionadas');">
     </div>
     
+    <hr>
+    <h4>Escolha os Times Visiveis</h4>
+    
+    <div id="ajax_times_visiveis" class="modal_ajax" onmouseover="setTabela('times_visiveis');">
+    </div>
+    
+    <h4>Times Escolhidos</h4>
+    
+    <div id="ajax_times_adicionados" class="modal_ajax" onmouseover="setTabela('times_adicionados');">
+    </div>
+    
+    <br>
+    
+    <div class="modal_filtro">
+        <h3>Funcionalidades</h3>
+        <hr>
+        <strong>Escolha as funcionalidades que serão liberadas para os funcionários escolhidos.<br>
+        Você tem a opção te escolher um grupo de funcionalidades ou escolher cada funcionalidade uma a uma.<br>
+        Lembrando que, ou você escolhe grupos ou diretamente as funcionalidades.<br></strong>
+        <hr>
+        <h4>Grupos</h4>
+        <div id="ajax_grupo_funcionalidades" class="modal_ajax">
+        </div>
+        <h4>Funcionalidades</h4>
+        <div id="ajax_funcionalidades" class="modal_min_auto_size">
+            <?php 
+                include("/application/modules/sistema/views/scripts/logado/carregamenutree.phtml");
+            ?>
+        </div>
+    </div>
+    
     <!-- campos hidden temporarios -->
     <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
     <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
     <input type="hidden" name="arrayIdTempFuncionario"    id="arrayIdTempFuncionario" value=",">
     <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
     <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
+    <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
 </form>
 
     
@@ -123,8 +155,18 @@
     //$urlAjaxFuncionario = array_merge($urlAjaxFuncionario,$arrayFuncionarioLED);
     
     $urlAjaxEmpresaVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','adicionar'=>TRUE);
+    $urlAjaxTimeVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','adicionar'=>TRUE);
 ?>
 <script type="text/javascript">    
+    
+    function apagaArrayIdTempTime()
+    {
+        document.getElementById('arrayIdTempTime').value=',';
+    }
+    
+    //carrega o menu tree
+    //ddtreemenu.createTree(treeid, enablepersist, opt_persist_in_days (default is 1))
+    ddtreemenu.createTree("treemenu1", false);
     
     /******************************************************************************/
     //                               INICIO FILTRO
@@ -140,9 +182,13 @@
     }
     
     //todos de todas as empresas
-    function setFiltroFuncionario(todos,add,pagina)
+    function setFiltroFuncionario(todos,remover,pagina)
     {
         
+        listaIdFuncionarioEscolhido = document.getElementById('arrayIdTempFuncionarioEscolhido').value;
+        listaIdFuncionarioEscolhido = listaIdFuncionarioEscolhido.substr(1,listaIdFuncionarioEscolhido.length-2); //retira a 1º e a ultima virgula
+        url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>'+
+                                                        '/listaIdFuncionarioEscolhido/'+listaIdFuncionarioEscolhido;
         if (typeof(todos) == "undefined" || todos=='')
         {    
             
@@ -150,23 +196,19 @@
             listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
             listaIdTime = document.getElementById('arrayIdTempTime').value;
             listaIdTime = listaIdTime.substr(1,listaIdTime.length-2); //retira a 1º e a ultima virgula
-            listaIdFuncionarioEscolhido = document.getElementById('arrayIdTempFuncionarioEscolhido').value;
-            listaIdFuncionarioEscolhido = listaIdFuncionarioEscolhido.substr(1,listaIdFuncionarioEscolhido.length-2); //retira a 1º e a ultima virgula
             
             idCargo = document.getElementById('idCargo').value;
             idSetor = document.getElementById('idSetor').value;
             idFuncionario_tipo  = document.getElementById('idFuncionario_tipo').value;
             
-            url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>/listaIdEmpresa/'+listaIdEmpresa+
+            url += '/listaIdEmpresa/'+listaIdEmpresa+
                                                             '/listaIdTime/'+listaIdTime+    
                                                             '/idCargo/'+idCargo+
                                                             '/idSetor/'+idSetor+
-                                                            '/idFuncionario_tipo/'+idFuncionario_tipo+
-                                                            '/listaIdFuncionarioEscolhido/'+listaIdFuncionarioEscolhido;
+                                                            '/idFuncionario_tipo/'+idFuncionario_tipo;
         }
         else
         {
-            url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>';
             url2 = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>';
             document.getElementById('arrayIdTempEmpresa').value = ',';
             ajax(url2,'ajax_empresa');
@@ -177,9 +219,9 @@
         
         ajax(url,'ajax_funcionario');
         
-        if ((typeof(add) != "undefined")  )
+        if ((typeof(remover) != "undefined")  )
         {   
-            url += '/add/1';
+            url += '/remover/1';
             if(document.getElementById('arrayIdTempFuncionarioEscolhido').value != ',')
                 ajax(url,'ajax_funcionario_adicionados');
             else
@@ -194,7 +236,7 @@
         ajax(url,'ajax_empresa');
     }
     
-    function setEmpresasVisiveis(add,pagina)
+    function setEmpresasVisiveis(remover,pagina)
     {
         listaIdEmpresasEscolhidas = document.getElementById('arrayIdTempEmpresaEscolhida').value;
         listaIdEmpresasEscolhidas = listaIdEmpresasEscolhidas.substr(1,listaIdEmpresasEscolhidas.length-2); //retira a 1º e a ultima virgula
@@ -203,13 +245,34 @@
                                                                     '/listaIdEmpresasEscolhidas/'+listaIdEmpresasEscolhidas;
         ajax(url,'ajax_empresas_visiveis');
         
-        if ((typeof(add) != "undefined")  )
+        if ((typeof(remover) != "undefined")  )
         {   
-            url += '/add/1';
+            url += '/remover/1';
             if(document.getElementById('arrayIdTempEmpresaEscolhida').value != ',')
                 ajax(url,'ajax_empresas_adicionadas');
             else
                document.getElementById('ajax_empresas_adicionadas').innerHTML = 'Nenhum item adcionado.';
+        }
+       
+    }
+    
+    function setTimesVisiveis(remover,pagina)
+    {
+        listaIdTimesEscolhidos = document.getElementById('arrayIdTempTimeEscolhido').value;
+        listaIdTimesEscolhidos = listaIdTimesEscolhidos.substr(1,listaIdTimesEscolhidos.length-2); //retira a 1º e a ultima virgula
+        
+        url = '<?php echo $this->url($urlAjaxTimeVisiveis, null, 1); ?>'+'/pagina/'+pagina+
+                                                                    '/listaIdTimesEscolhidos/'+listaIdTimesEscolhidos;
+        ajax(url,'ajax_times_visiveis');
+        
+        if ((typeof(remover) != "undefined")  )
+        {   
+            //alert('asd');
+            url += '/remover/1';
+            if(document.getElementById('arrayIdTempTimeEscolhido').value != ',')
+                ajax(url,'ajax_times_adicionados');
+            else
+               document.getElementById('ajax_times_adicionados').innerHTML = 'Nenhum item adcionado.';
         }
        
     }
@@ -256,12 +319,13 @@
         }
         else if(tabelas=='empresas_visiveis')
         {
-            url = '<?php echo $this->url($urlAjaxEmpresaVisiveis, null, 1); ?>'+'/pagina/'+pagina+query;
-            ajax(url,'ajax_empresas_visiveis');
+            setEmpresasVisiveis(1,pagina);
         }    
-        
-    }
-    
+        else if(tabelas=='times_visiveis')
+        {
+            setTimesVisiveis(1,pagina);
+        }
+    }    
     
     url = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>';
     ajax(url,'ajax_empresa');
@@ -275,8 +339,13 @@
     url = '<?php echo $this->url($urlAjaxEmpresaVisiveis, null, 1); ?>';
     ajax(url,'ajax_empresas_visiveis');
     
+    url = '<?php echo $this->url($urlAjaxTimeVisiveis, null, 1); ?>';
+    ajax(url,'ajax_times_visiveis');
+    
     /******************************************************************************/
     //                               FIM AJAX
     /******************************************************************************/
-</script>      
-
+    
+    
+    
+</script>

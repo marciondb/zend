@@ -76,7 +76,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
        * @version 1.0
        * @author Márcio & Marco
      */
-    public function exibir($pagina,$listaIdEmpresa,$listaIdFuncionario,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo,$listaIdFuncionarioEscolhido,$add)
+    public function exibir($pagina,$listaIdEmpresa,$listaIdFuncionario,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo,$listaIdFuncionarioEscolhido,$remover)
     {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
@@ -94,7 +94,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('lotacao.atual = 1');
                     
             
-            if(!$add)
+            if(!$remover)
             {
                 if ($listaIdEmpresa)
                     $select->where('time.id_empresa in (' . $listaIdEmpresa . ')');
@@ -106,7 +106,8 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     $select->where('lotacao.id_cargo in (' . $idCargo . ')');
                 if ($idFuncionario_tipo)
                     $select->where('lotacao.id_funcionario_tipo in (' . $idFuncionario_tipo . ')');
-                if ($listaIdFuncionarioEscolhido && $add==0)
+                
+                if ($listaIdFuncionarioEscolhido && $remover==0)
                     $select->where('funcionario.id_funcionario not in (' . $listaIdFuncionarioEscolhido . ')');
             }
             else
@@ -116,7 +117,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
             
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
-            if(!$add)
+            if(!$remover)
                 $paginator->setItemCountPerPage($perPage);
         }
         catch(Exception $e)

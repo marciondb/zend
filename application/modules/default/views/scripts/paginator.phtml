@@ -46,7 +46,7 @@
                 </li>
              <?php else: ?>
                 <li class="active">
-                    <a href="javascript:;" onclick="setPaginator('<?php echo $page; ?>','<?php echo $query; ?>')">
+                    <a href="javascript:;" >
                         <?php echo $page; ?>
                     </a>
                 </li>
@@ -62,7 +62,7 @@
             </li>
         <?php else: ?>
             <li class="disabled">
-                <a href="#">
+                <a href="javascript:;">
                     Próxima
                 </a>
             </li>
@@ -77,7 +77,7 @@
             </li>
         <?php else: ?>
             <li class="disabled">
-                <a href="#">
+                <a href="javascript:;">
                     Última &raquo;
                 </a>
             </li>

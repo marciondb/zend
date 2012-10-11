@@ -26,9 +26,9 @@
         echo '<th class="barra_titulo">Deletar</th>';
     if($this->liberar)
         echo '<th class="barra_titulo">Liberar</th>';
-    if(($this->adicionar) && (!$this->add) )
+    if(($this->adicionar) && (!$this->remover) )
         echo '<th class="barra_titulo">Adicionar</th>';
-    if($this->add)
+    if($this->remover)
         echo '<th class="barra_titulo">Remover</th>';
     
     $cont=0;
@@ -88,7 +88,7 @@
                 ?>
                         
                <?php
-                    if($this->adicionar && (!$this->add))
+                    if($this->adicionar && (!$this->remover))
                     {    
                         ?>
                         <td align="center" width="16%">
@@ -99,7 +99,7 @@
                 ?>
                         
                <?php
-                    if($this->add)
+                    if($this->remover)
                     {    
                         ?>
                         <td align="center" width="16%">
@@ -113,7 +113,7 @@
 
 </table>
 <?php 
-    if(!($this->add))
+    if(!($this->remover))
     {
         echo $this->paginationControl(
                     $this->arrayFuncionario,

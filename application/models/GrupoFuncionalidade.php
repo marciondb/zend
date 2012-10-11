@@ -1,9 +1,9 @@
 <?php
 
-class Application_Model_Time extends Application_Model_Abstract
+class Application_Model_GrupoFuncionalidade extends Application_Model_Abstract
 {
     public function __construct() {
-        $this->_dbTable = new Application_Model_DbTable_Time();
+        $this->_dbTable = new Application_Model_DbTable_Empresa();
     }
     
     public function gravar($parametros,$_endereco, $update = FALSE)
@@ -68,7 +68,7 @@ class Application_Model_Time extends Application_Model_Abstract
     }
     
     /**
-       * Exibe tds time visiveis.      
+       * Exibe tds os Grupo de Funcionalidade visiveis.      
        * @return Array retorna query()->fetchAll()
        * @param  Boolean $selecionar  : coloca um elemento checkbox para selecionar a empresa
        * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
@@ -76,30 +76,34 @@ class Application_Model_Time extends Application_Model_Abstract
        * @version 1.0
        * @author Márcio & Marco
      */
-    public function exibir($pagina,$listaIdEmpresa,$listaIdTimesEscolhidos,$remover)
+    public function exibir($pagina,$cnpj,$listaIdEmpresasEscolhidas,$remover)
     {           
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();      
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
         
         try{
             $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('time',array('id_time','titulo'))->
-                    join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
-                    where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
+                    from('empresa',array('id_empresa','razao_social','nome_fantasia','apelido','cnpj','telefone_1','telefone_2'))->
+                    join('usuario_empresa_visivel', 'empresa.id_empresa = usuario_empresa_visivel.id_empresa',null)->
+                    where('usuario_empresa_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
             
-            //filro para escolher o funcionario
-            if($listaIdEmpresa)
-                $select->where('time.id_empresa in ('.$listaIdEmpresa.')');
-            
-           if(!$remover)
+            if($cnpj)
             {
-                if ($listaIdTimesEscolhidos)
-                    $select->where('time.id_time not in (' . $listaIdTimesEscolhidos . ')');
+                $cnpj = str_replace(".","",$cnpj);
+		$cnpj = str_replace("-","",$cnpj);
+		$cnpj = str_replace("/","",$cnpj);
+                $select->where('empresa.cnpj = ? ',$cnpj);
+            }
+            
+            if(!$remover)
+            {
+                if ($listaIdEmpresasEscolhidas)
+                    $select->where('empresa.id_empresa not in (' . $listaIdEmpresasEscolhidas . ')');
             }
             else
-                $select->where('time.id_time in (' . $listaIdTimesEscolhidos . ')');
+                $select->where('empresa.id_empresa in (' . $listaIdEmpresasEscolhidas . ')');
             
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
@@ -108,7 +112,7 @@ class Application_Model_Time extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao selecionar o Time, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao selecionar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
         
