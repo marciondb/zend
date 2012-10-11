@@ -19,7 +19,10 @@
         echo '<th class="barra_titulo">Editar</th>';
     if($this->deletar)
         echo '<th class="barra_titulo">Deletar</th>';
-    
+    if(($this->adicionar) && (!$this->add) )
+        echo '<th class="barra_titulo">Adicionar</th>';
+    if($this->add)
+        echo '<th class="barra_titulo">Remover</th>';
     $cont =0;
     foreach ($this->arrayTime as $time): ?>
             <tr class="t_acende">

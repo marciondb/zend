@@ -15,6 +15,7 @@
     <th class="barra_titulo">Telefone 1</th>
     <th class="barra_titulo">Telefone 2</th>
     
+    
     <?php
     //print_r($this->arrayEmpresa);
     
@@ -26,6 +27,10 @@
         echo '<th class="barra_titulo">Deletar</th>';
     if($this->liberar)
         echo '<th class="barra_titulo">Liberar</th>';
+    if(($this->adicionar) && (!$this->add) )
+        echo '<th class="barra_titulo">Adicionar</th>';
+    if($this->add)
+        echo '<th class="barra_titulo">Remover</th>';
     
     $cont =0;
     
@@ -74,8 +79,30 @@
                             <a class="btn" href="#"><i class="icon-ok-sign"></i></a>
                         </td>
                         <?php
+                    } 
+                ?>
+                <?php
+                    if($this->adicionar && (!$this->add))
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="javascript:;" onclick="setId('<?php echo $empresa['id_empresa']; ?>','EmpresaEscolhida');setEmpresasVisiveis(1,'');"><i class="icon-plus"></i></a>
+                        </td>
+                        <?php
                     }
                 ?>
+                        
+               <?php
+                    if($this->add)
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="javascript:;" onclick="removeNaStr('<?php echo $empresa['id_empresa']; ?>','arrayIdTempEmpresaEscolhida');setEmpresasVisiveis(1,'');"><i class="icon-minus"></i></a>
+                        </td>
+                        <?php
+                    }
+                ?>
+                        
             </tr>
         <?php endforeach; ?>
 
@@ -83,11 +110,14 @@
         
 </table>
 <?php 
-    echo $this->paginationControl(
-                $this->arrayEmpresa,
-                'Sliding',
-                'paginator.phtml'
-        );
+    if(!($this->add))
+    {
+        echo $this->paginationControl(
+                    $this->arrayEmpresa,
+                    'Sliding',
+                    'paginator.phtml'
+            );
+    }
 ?>
 <script>
     <?php

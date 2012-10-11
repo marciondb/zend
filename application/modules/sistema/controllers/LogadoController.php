@@ -61,13 +61,17 @@ class Sistema_LogadoController extends Controller_Action
             $this->_redirect ("sistema/logado");*/
         $this->_helper->layout->disableLayout();
         
+        $this->view->adicionar  = $this->_request->getParam('adicionar', false);
+        $this->view->add        = $this->_request->getParam('add', false);
         $this->view->selecionar = $this->_request->getParam('selecionar', false);
         $this->view->editar     = $this->_request->getParam('editar', false);
         $this->view->deletar    = $this->_request->getParam('deletar', false);
         $this->view->liberar    = $this->_request->getParam('liberar', false);
         
         $this->view->arrayEmpresa = $this->_empresa->exibir($this->_request->getParam('pagina', 1),
-                                                            $this->_request->getParam('cnpj', 0));
+                                                            $this->_request->getParam('cnpj', 0),
+                                                            $this->_request->getParam('listaIdEmpresasEscolhidas', 0),
+                                                            $this->_request->getParam('add', 0));
     }
     
     public function ajaxtimeAction()

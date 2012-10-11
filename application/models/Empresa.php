@@ -76,7 +76,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
        * @version 1.0
        * @author Márcio & Marco
      */
-    public function exibir($pagina,$cnpj)
+    public function exibir($pagina,$cnpj,$listaIdEmpresasEscolhidas,$add)
     {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
@@ -97,9 +97,18 @@ class Application_Model_Empresa extends Application_Model_Abstract
                 $select->where('empresa.cnpj = ? ',$cnpj);
             }
             
+             if(!$add)
+            {
+                if ($listaIdEmpresasEscolhidas)
+                    $select->where('empresa.id_empresa not in (' . $listaIdEmpresasEscolhidas . ')');
+            }
+            else
+                $select->where('empresa.id_empresa in (' . $listaIdEmpresasEscolhidas . ')');
+            
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
-            $paginator->setItemCountPerPage($perPage);
+            if(!$add)
+                $paginator->setItemCountPerPage($perPage);
         }
         catch(Exception $e)
         {

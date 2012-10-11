@@ -88,11 +88,23 @@
     <div id="ajax_funcionario_adicionados" class="modal_ajax" onmouseover="setTabela('funcionario_adicionados');">
     </div>
     
+    <hr>
+    <h4>Escolha as Empresas Visiveis</h4>
+    
+    <div id="ajax_empresas_visiveis" class="modal_ajax" onmouseover="setTabela('empresas_visiveis');">
+    </div>
+    
+    <h4>Empresas Escolhidas</h4>
+    
+    <div id="ajax_empresas_adicionadas" class="modal_ajax" onmouseover="setTabela('empresas_adicionadas');">
+    </div>
+    
     <!-- campos hidden temporarios -->
     <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
     <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
     <input type="hidden" name="arrayIdTempFuncionario"    id="arrayIdTempFuncionario" value=",">
     <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
+    <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
 </form>
 
     
@@ -109,6 +121,8 @@
     //$arrayFuncionarioLED = $this->arrayFuncionarioLED;
     $urlAjaxFuncionario = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxfuncionario','adicionar'=>TRUE);
     //$urlAjaxFuncionario = array_merge($urlAjaxFuncionario,$arrayFuncionarioLED);
+    
+    $urlAjaxEmpresaVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','adicionar'=>TRUE);
 ?>
 <script type="text/javascript">    
     
@@ -180,6 +194,26 @@
         ajax(url,'ajax_empresa');
     }
     
+    function setEmpresasVisiveis(add,pagina)
+    {
+        listaIdEmpresasEscolhidas = document.getElementById('arrayIdTempEmpresaEscolhida').value;
+        listaIdEmpresasEscolhidas = listaIdEmpresasEscolhidas.substr(1,listaIdEmpresasEscolhidas.length-2); //retira a 1º e a ultima virgula
+        
+        url = '<?php echo $this->url($urlAjaxEmpresaVisiveis, null, 1); ?>'+'/pagina/'+pagina+
+                                                                    '/listaIdEmpresasEscolhidas/'+listaIdEmpresasEscolhidas;
+        ajax(url,'ajax_empresas_visiveis');
+        
+        if ((typeof(add) != "undefined")  )
+        {   
+            url += '/add/1';
+            if(document.getElementById('arrayIdTempEmpresaEscolhida').value != ',')
+                ajax(url,'ajax_empresas_adicionadas');
+            else
+               document.getElementById('ajax_empresas_adicionadas').innerHTML = 'Nenhum item adcionado.';
+        }
+       
+    }
+    
     /******************************************************************************/
     //                               FIM FILTRO
     /******************************************************************************/
@@ -220,6 +254,12 @@
         {
             setFiltroFuncionario(null,1,pagina);
         }
+        else if(tabelas=='empresas_visiveis')
+        {
+            url = '<?php echo $this->url($urlAjaxEmpresaVisiveis, null, 1); ?>'+'/pagina/'+pagina+query;
+            ajax(url,'ajax_empresas_visiveis');
+        }    
+        
     }
     
     
@@ -231,6 +271,9 @@
     
     url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>';
     ajax(url,'ajax_funcionario');
+    
+    url = '<?php echo $this->url($urlAjaxEmpresaVisiveis, null, 1); ?>';
+    ajax(url,'ajax_empresas_visiveis');
     
     /******************************************************************************/
     //                               FIM AJAX
