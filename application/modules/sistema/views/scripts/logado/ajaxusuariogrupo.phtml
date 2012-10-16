@@ -1,0 +1,77 @@
+<?php if( !$this->arrayIdFuncionalidade){ ?>
+    <?php if( $this->arrayUsuarioGrupo->count() == 0 ){ ?>
+        <table>    
+            <tr>
+                <td colspan="2">Nenhum item</td>
+            </tr>
+        </table>
+    <?php }else{ ?>
+
+    <table align="center" cellspacing="1">
+        <th class="barra_titulo">id</th>
+        <th class="barra_titulo">Nome</th>
+
+        <?php
+        //print_r($this->arrayEmpresa);
+
+        if($this->selecionar)
+            echo '<th class="barra_titulo">Selecione</th>';
+        if($this->editar)
+            echo '<th class="barra_titulo">Editar</th>';
+        if($this->deletar)
+            echo '<th class="barra_titulo">Deletar</th>';
+
+        $cont=0;
+        foreach ($this->arrayUsuarioGrupo as $usuarioGrupo): ?>
+                <tr class="t_acende">
+                    <td align="center"><?php echo $usuarioGrupo['id_grupo_de_acesso']; ?></td>
+                    <td align="center"><?php echo $usuarioGrupo['nome']; ?></td>
+
+                    <?php
+                        if($this->selecionar)
+                        {    
+                            //setId() e removeId() estao em public\scripts\utilitario.js
+                            ?>
+                            <td align="center" width="16%"><input type="checkbox" name="idGrupoTmp[]" id="idGrupoTmp" onclick="getIdFuncionalidade('<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>');" value="<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>"/></td>
+                            <?php
+
+                        }
+                        $cont++;
+                    ?>
+
+                    <?php
+                        if($this->editar)
+                        {    
+                            ?>
+                            <td align="center" width="16%">
+                                <a class="btn" href="#"><i class="icon-pencil"></i></a>
+                            </td>
+                            <?php
+                        }
+                    ?>
+
+                    <?php
+                        if($this->deletar)
+                        {    
+                            ?>
+                            <td align="center" width="16%">
+                                <a class="btn" href="#"><i class="icon-trash"></i></a>
+                            </td>
+                            <?php
+                        }
+                    ?>
+
+                </tr>
+            <?php endforeach; ?>
+
+    </table>
+
+
+    <?php } //if arrayUsuarioGrupo
+    
+    }
+    else
+    { 
+        echo $this->arrayIdFuncionalidade;
+    }//if arrayIdFuncionalidade 
+?>

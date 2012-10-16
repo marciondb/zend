@@ -120,7 +120,7 @@
         Lembrando que, ou você escolhe grupos ou diretamente as funcionalidades.<br></strong>
         <hr>
         <h4>Grupos</h4>
-        <div id="ajax_grupo_funcionalidades" class="modal_ajax">
+        <div id="ajax_grupo" class="modal_ajax">
         </div>
         <h4>Funcionalidades</h4>
         <div id="ajax_funcionalidades" class="modal_min_auto_size">
@@ -137,6 +137,7 @@
     <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
     <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
     <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
+    <div id="arrayIdTempFuncionalidade" style="display: none"></div>
 </form>
 
     
@@ -156,6 +157,7 @@
     
     $urlAjaxEmpresaVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','adicionar'=>TRUE);
     $urlAjaxTimeVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','adicionar'=>TRUE);
+    $urlAjaxGrupo = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxusuariogrupo','selecionar'=>TRUE);
 ?>
 <script type="text/javascript">    
     
@@ -284,6 +286,12 @@
     /******************************************************************************/
     //                               INICIO AJAX
     /******************************************************************************/
+    function getIdFuncionalidade(idGrupo)
+    {
+        url = '<?php echo $this->url($urlAjaxGrupo, null, 1); ?>/idGrupo/'+idGrupo;
+        ajax(url,'arrayIdTempFuncionalidade');
+    }
+    
     tabelas='';
     /***
     * Como existe mais de um paginator na pagina, temos que ter o controle da
@@ -341,6 +349,9 @@
     
     url = '<?php echo $this->url($urlAjaxTimeVisiveis, null, 1); ?>';
     ajax(url,'ajax_times_visiveis');
+    
+    url = '<?php echo $this->url($urlAjaxGrupo, null, 1); ?>';
+    ajax(url,'ajax_grupo');
     
     /******************************************************************************/
     //                               FIM AJAX

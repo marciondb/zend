@@ -5,6 +5,7 @@ abstract class Controller_Action extends Zend_Controller_Action {
     protected $senha;
     protected $_permissoes;
     protected $_usuario;
+    protected $_id_usuario;
     protected $baseUrl;
 
     public function possuiPermissao()
@@ -35,7 +36,7 @@ abstract class Controller_Action extends Zend_Controller_Action {
         
         $this->_usuario = new Application_Model_Usuario();
         $this->baseUrl = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], "/"));
-        
+         
         // Verifica em todas as páginas se o usuário está logado ou não, permitindo o acesso de acordo com a situação
         $redirect = $this->getRequest()->getModuleName();
                         
@@ -46,8 +47,9 @@ abstract class Controller_Action extends Zend_Controller_Action {
             else
             {
                 $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+                $this->_id_usuario = $arrayIdentity->id_usuario;
                 $this->view->nome_usuario = $arrayIdentity->login;
-                $this->view->id_usuario = $arrayIdentity->id_usuario;
+                $this->view->id_usuario = $this->_id_usuario;
                 $this->_permissoes = $this->_usuario->getPermissao();
                 $this->view->permissoes = $this->_permissoes;
                 //print_r($permissoes);

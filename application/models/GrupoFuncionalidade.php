@@ -119,7 +119,27 @@ class Application_Model_GrupoFuncionalidade extends Application_Model_Abstract
         return $paginator;
         
     }
-
+    
+    public function getIdFuncionalidade($idGrupo) {
+        
+        $select = $this->_dbTable->
+                  select()->
+                  setIntegrityCheck(false)->
+                  from('grupo_funcionalidade', array('id_funcionalidade'))->
+                  where('grupo_funcionalidade.id_grupo_de_acesso = ?', $idGrupo);
+       
+        
+        $arrayIdFuncionalidade = '';
+        
+        foreach ($select->query()->fetchAll() as $idFuncionalidade)
+        {
+            $arrayIdFuncionalidade .= $idFuncionalidade['id_funcionalidade'].',';
+        }    
+        
+        $arrayIdFuncionalidade = substr($arrayIdFuncionalidade,0,-1);
+        
+        return $arrayIdFuncionalidade;
+    }
 
     protected function _validarDados(array $data){
         // Validação

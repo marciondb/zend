@@ -38,6 +38,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_usuario_empresa_visivel = new Application_Model_UsuarioEmpresaVisivel();
         $this->_grupo_de_acesso = new Application_Model_GrupoDeAcesso();
         $this->_usuario_grupo = new Application_Model_UsuarioGrupo();
+        $this->_grupo_funcionalidade = new Application_Model_GrupoFuncionalidade();
         $this->_funcionario = new Application_Model_Funcionario();
         $this->_funcionario_tipo = new Application_Model_FuncionarioTipo();
         $this->_setor = new Application_Model_Setor();
@@ -114,6 +115,27 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('idFuncionario_tipo', 0),
                                                 $this->_request->getParam('listaIdFuncionarioEscolhido', 0),
                                                 $this->_request->getParam('remover', 0));
+    }
+    
+    public function ajaxusuariogrupoAction()
+    {
+        /*if(!$this->getRequest()->isXmlHttpRequest())
+            $this->_redirect ("sistema/logado");*/
+        $this->_helper->layout->disableLayout();
+        
+        if($this->_request->getParam('idGrupo'))
+            $this->view->arrayIdFuncionalidade= $this->_grupo_funcionalidade->getIdFuncionalidade($this->_request->getParam('idGrupo', false));
+        else
+        {
+            $this->view->selecionar = $this->_request->getParam('selecionar', false);
+            $this->view->editar     = $this->_request->getParam('editar', false);
+            $this->view->deletar    = $this->_request->getParam('deletar', false);
+
+            $this->view->arrayUsuarioGrupo = $this->_usuario_grupo->exibir($this->_id_usuario);
+        }
+        
+        
+        
     }
     
     public function cadastrarcontroleacessoAction()

@@ -10,11 +10,11 @@
     $_SESSION['menuTree'] = '';
     $_SESSION['menuTree'] .= '<ul id="treemenu1" class="treeview">'."\n";
     
-    function montaMenuTree($id_funcionalidade,$resultado,$url)
+    function montaMenuTree($id_funcionalidade,$resultado,$url,$cont)
     {
         foreach ($resultado as $value) 
         {
-            
+            $cont++;
             if ($value['id_funcionalidade_pai']==$id_funcionalidade)
             {
                 
@@ -25,19 +25,19 @@
                         $estilo = "class='modal_auto_size'";
                     
                     $_SESSION['menuTree'] .= "<li>".$value['titulo']."\n";
-                        $_SESSION['menuTree'] .=  "<ul><div class='modal_auto_size'>\n";
+                        $_SESSION['menuTree'] .=  "<ul><div id='tree_$cont' class='modal_auto_size'>\n";
                 }
                 else
                 {                    
                     $editar = '';
                     if($value['editar'])
-                      $editar = '&nbsp;&nbsp;Editar&nbsp;<input type="checkbox" id="editar" name="editar[]" value="'.$value['id_funcionalidade'].'">';
+                      $editar = '&nbsp;&nbsp;Editar&nbsp;<input type="checkbox" id="editar" name="editar[]" value="'.$value['editar'].'">';
                     $deletar = '';
                     if($value['deletar'])
-                      $deletar = '&nbsp;&nbsp;Deletar&nbsp;<input type="checkbox" id="deletar" name="deletar[]" value="'.$value['id_funcionalidade'].'">';
+                      $deletar = '&nbsp;&nbsp;Deletar&nbsp;<input type="checkbox" id="deletar" name="deletar[]" value="'.$value['deletar'].'">';
                     $liberar = '';
                     if($value['liberar'])
-                      $liberar = '&nbsp;&nbsp;Liberar&nbsp;<input type="checkbox" id="liberar" name="liberar[]" value="'.$value['id_funcionalidade'].'">';
+                      $liberar = '&nbsp;&nbsp;Liberar&nbsp;<input type="checkbox" id="liberar" name="liberar[]" value="'.$value['liberar'].'">';
                     
                     $seta='';
                     if($editar!='' || $deletar!='' || $liberar!='')
@@ -48,7 +48,7 @@
                 
                 //echo $value['titulo']." ".$value['action']."\n";
                 
-                montaMenuTree($value['id_funcionalidade'],$resultado,$url);//,$menu);
+                montaMenuTree($value['id_funcionalidade'],$resultado,$url,$cont);//,$menu);
                 
                 if($value['action']=='')
                 {
@@ -60,7 +60,7 @@
         
     }
     
-    montaMenuTree(0,$this->permissoes,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1));
+    montaMenuTree(0,$this->permissoes,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1),1);
     
     $_SESSION['menuTree'] .= '</ul>';
     

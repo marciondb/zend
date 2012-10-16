@@ -17,15 +17,15 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
        return $select->query()->fetchAll();
     }            
     
-    public function getFuncionalidades($idUsuario){
+    public function exibir($idUsuario){
         $select = $this->_dbTable->
                   select()->
                   setIntegrityCheck(false)->
-                  from('usuario_grupo', array('id_usuario'))->
-                  join('funcionalidade','funcionalidade.id_funcionalidade = ')->
-                  where('usuario_grupo.id_grupo_de_acesso = ?', $idGrupo);
+                  from('usuario_grupo', array('id_grupo_de_acesso'))->
+                  join('grupo_de_acesso','usuario_grupo.id_grupo_de_acesso = grupo_de_acesso.id_grupo_de_acesso',array('nome'))->
+                  where('usuario_grupo.id_usuario = ?', $idUsuario);
        
-       return $select->query()->fetchAll();
+       return Zend_Paginator::factory( $select );
     }
 
     protected function _validarDados(array $data){
