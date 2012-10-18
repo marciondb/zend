@@ -1,12 +1,12 @@
-<?php if( !$this->arrayIdFuncionalidade){ ?>
-    <?php if( $this->arrayUsuarioGrupo->count() == 0 ){ ?>
+<?php if( !$this->arrayIdFuncionalidade && $this->arrayIdFuncionalidade != "0"){ ?>
+    <?php if(count($this->arrayUsuarioGrupo) == 0){ ?>
         <table>    
             <tr>
                 <td colspan="2">Nenhum item</td>
             </tr>
         </table>
     <?php }else{ ?>
-
+    
     <table align="center" cellspacing="1">
         <th class="barra_titulo">id</th>
         <th class="barra_titulo">Nome</th>
@@ -32,7 +32,8 @@
                         {    
                             //setId() e removeId() estao em public\scripts\utilitario.js
                             ?>
-                            <td align="center" width="16%"><input type="checkbox" name="idGrupoTmp[]" id="idGrupoTmp" onclick="getIdFuncionalidade('<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>');" value="<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>"/></td>
+                            <input type="hidden" id="arrayIdTempFuncionalidade_<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>" value=",">        
+                            <td align="center" width="16%"><input class="idGrupoTmp" type="checkbox" name="idGrupoTmp[]" id="idGrupoTmp" onclick="getIdFuncionalidade('<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>');setFuncioGrupo();ddtreemenu.flatten('treemenu1', 'expand');" value="<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>"/></td>
                             <?php
 
                         }
@@ -72,6 +73,9 @@
     }
     else
     { 
-        echo $this->arrayIdFuncionalidade;
+        if($this->arrayIdFuncionalidade == "0")
+            echo '';
+        else
+            echo $this->arrayIdFuncionalidade;
     }//if arrayIdFuncionalidade 
 ?>

@@ -39,6 +39,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_grupo_de_acesso = new Application_Model_GrupoDeAcesso();
         $this->_usuario_grupo = new Application_Model_UsuarioGrupo();
         $this->_grupo_funcionalidade = new Application_Model_GrupoFuncionalidade();
+        $this->_usuario_funcionalidade = new Application_Model_UsuarioFuncionalidade();
         $this->_funcionario = new Application_Model_Funcionario();
         $this->_funcionario_tipo = new Application_Model_FuncionarioTipo();
         $this->_setor = new Application_Model_Setor();
@@ -146,6 +147,28 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
         $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
         $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
+        
+        if($this->_request->isPost())
+        {
+            $parametros = $this->_getAllParams();
+            
+            //Verifica se um grupo foi escolhido
+            $grupos = $parametros['idGrupoTmp'];
+            
+            //$this->_usuario_time_visivel->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $parametros['arrayIdTempTimeEscolhido']);
+            //$this->_usuario_empresa_visivel->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $parametros['arrayIdTempEmpresaEscolhida']);            
+
+            if(!$grupos)
+            {
+                // Inserir em usuario_funcionalidade
+                $this->_usuario_funcionalidade->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $parametros['id_funcionalidades'],$parametros['editar'],$parametros['deletar'],$parametros['liberar']);
+            } 
+            else 
+            {
+                // Inserir em usuario_grupo
+                $this->_usuario_grupo->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $grupos);
+            }
+        }
     }
      
     public function cadastrarempresaAction()

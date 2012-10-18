@@ -16,6 +16,14 @@
     </head>
 
     <body>
+        <?php 
+            if(isset($_SESSION['erro_redirect']))
+            {    
+                echo $_SESSION['erro_redirect'];
+                $_SESSION['erro_redirect'] = '';
+                unset($_SESSION['erro_redirect']);
+            }
+        ?>
         <div id="mensagem" class="mensagem_acerto">
               
             <a id="btnfechardiv" href="#" onclick="FecharDivMsg()">[Fechar]</a>  

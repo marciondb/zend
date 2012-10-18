@@ -1,7 +1,7 @@
 
 <h3>Cadastro de Controle de Acesso</h3>
 <hr>
-<form name="formulario" action="" method="post">
+<form name="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarcontroleacesso'), null, 1); ?>" method="post">
     CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
     <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
     <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
@@ -137,7 +137,11 @@
     <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
     <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
     <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
-    <div id="arrayIdTempFuncionalidade" style="display: none"></div>
+    <div id="ajax_id_funcionalidade" style="display: none"></div>
+    <br><br><br>
+    <div align="center" class="form-actions">
+        <button type="submit" class="btn btn-primary">Gravar</button>
+    </div>
 </form>
 
     
@@ -161,14 +165,57 @@
 ?>
 <script type="text/javascript">    
     
+    function setGrupoOff()
+    {
+        temp = document.forms[0].getElementsByClassName('idGrupoTmp');
+        if(temp.length)
+        { 
+            for (i = 0; i < temp.length; i++)
+            {   
+               temp[i].checked = false;
+                
+            }
+        }
+    }
+    
     function apagaArrayIdTempTime()
     {
         document.getElementById('arrayIdTempTime').value=',';
     }
     
     //carrega o menu tree
+    //http://www.dynamicdrive.com/dynamicindex1/navigate1.htm
     //ddtreemenu.createTree(treeid, enablepersist, opt_persist_in_days (default is 1))
     ddtreemenu.createTree("treemenu1", false);
+    
+    function setFuncioGrupo()
+    {
+        arrayIdFuncionalidades = '';
+        
+        temp = document.forms[0].getElementsByClassName('idGrupoTmp');
+        if(temp.length)
+        { 
+            for (i = 0; i < temp.length; i++)
+            {   
+                if(temp[i].checked)
+                    arrayIdFuncionalidades += ','+document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value+',';
+                
+            }
+        }
+        alert(arrayIdFuncionalidades);
+        temp = document.forms[0].getElementsByClassName('idFuncionalidade');
+
+        if(temp.length)
+        {
+            for (i = 0; i < temp.length; i++)
+            {//alert(temp[i].value);
+                temp[i].checked=false;
+                if(existeNaStr(','+temp[i].value+',',arrayIdFuncionalidades))
+                    temp[i].checked=true;
+                
+            }
+        }
+    }
     
     /******************************************************************************/
     //                               INICIO FILTRO
@@ -289,7 +336,8 @@
     function getIdFuncionalidade(idGrupo)
     {
         url = '<?php echo $this->url($urlAjaxGrupo, null, 1); ?>/idGrupo/'+idGrupo;
-        ajax(url,'arrayIdTempFuncionalidade');
+        ajax(url,'ajax_id_funcionalidade');
+        document.getElementById('arrayIdTempFuncionalidade_'+idGrupo).value = document.getElementById('ajax_id_funcionalidade').innerHTML;
     }
     
     tabelas='';

@@ -47,7 +47,7 @@
                     {    
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
-                        <td align="center" width="16%"><input type="checkbox" name="idFuncionarioTmp[]" id="idFuncionarioTmp" onclick="setId(this.value,'Funcionario');removeId(this.value,'Funcionario',this.id,<?php echo $cont;?>);" value="<?php echo $funcionario['id_funcionario']; ?>"/></td>
+                <td align="center" width="16%"><input type="checkbox" name="idFuncionarioTmp[]" id="idFuncionarioTmp" onclick="setId(this.value,'Funcionario');removeId(this.value,'Funcionario',this.id,<?php echo $cont;?>);setFuncioGrupo();" value="<?php echo $funcionario['id_funcionario']; ?>"/></td>
                         <?php
                         
                     }

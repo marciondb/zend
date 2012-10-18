@@ -14,7 +14,7 @@ abstract class Controller_Action extends Zend_Controller_Action {
         $parametroEditar = $this->getRequest()->getParam('editar');
         $parametroDeletar = $this->getRequest()->getParam('deletar');
         $parametroLiberar = $this->getRequest()->getParam('liberar');
-        
+      
         $flag=0;
         foreach ($this->_permissoes as $value) 
             if(($value['action']==$nomeDaAcao))
@@ -28,12 +28,12 @@ abstract class Controller_Action extends Zend_Controller_Action {
                 if(!(($value['liberar']==$parametroEditar) || (!isset($parametroLiberar))))
                     $flag = 0;
             }
-         
+            
        return (($flag==0)&&($nomeDaAcao != 'index'))?FALSE:TRUE;
     }
     public function init()
     {
-        
+       
         $this->_usuario = new Application_Model_Usuario();
         $this->baseUrl = substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], "/"));
          
@@ -43,7 +43,7 @@ abstract class Controller_Action extends Zend_Controller_Action {
         if (!($this->getRequest()->getControllerName() == "index"))
         {
             if(!(Zend_Auth::getInstance()->hasIdentity()))
-                $this->_redirect($redirect);
+            {  $_SESSION['erro_redirect']='NÃO ESTA LOGADO!'; $this->_redirect($redirect);}
             else
             {
                 $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
@@ -55,9 +55,9 @@ abstract class Controller_Action extends Zend_Controller_Action {
                 //print_r($permissoes);
                 
                 if($this->_permissoes)
-                {                        
+                {   
                     if(!$this->possuiPermissao())
-                        $this->_redirect($redirect);
+                    {  $_SESSION['erro_redirect']='SEM PERMISSÃO!'; $this->_redirect($redirect);}
                 }
                 else
                 {

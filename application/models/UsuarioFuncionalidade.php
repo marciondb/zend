@@ -1,14 +1,14 @@
 <?php
 
-class Application_Model_GrupoFuncionalidade extends Application_Model_Abstract
+class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 {
     public function __construct() {
-        $this->_dbTable = new Application_Model_DbTable_GrupoFuncionalidade();
+        $this->_dbTable = new Application_Model_DbTable_UsuarioFuncionalidade();
     }
     
     public function gravar($parametros,$_endereco, $update = FALSE)
     {
-        $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
+        /*$dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
                         "nome_fantasia" => $parametros['nome_fantasia'],
                         "razao_social" => $parametros['razao_social'],
                         "apelido" => $parametros['apelido'],
@@ -63,7 +63,7 @@ class Application_Model_GrupoFuncionalidade extends Application_Model_Abstract
             catch(Exception $e)
             {
                 ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-            }
+            }*/
         
     }
     

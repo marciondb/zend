@@ -3,7 +3,16 @@
 abstract class Application_Model_Abstract {
 
     protected $_dbTable;
+    protected $_id_usuario;
     
+    public function _init(){
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        $this->_id_usuario = $arrayIdentity->id_usuario;
+    }
+
+
+
+
     public function find($id) {
         return $this->_dbTable->find($id)->current()->toArray();
     }

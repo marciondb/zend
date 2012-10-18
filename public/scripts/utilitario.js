@@ -419,7 +419,7 @@ function removeId(id,tabela,campo,index)
 function setId(id,tabela)
 {
         tempArrayId = document.getElementById('arrayIdTemp'+tabela).value;
-        if(!existeNaStr(','+id+',',tempArrayId))
+        if(!existeNaStr(','+id+',',tempArrayId) && id!='')
         {
             document.getElementById('arrayIdTemp'+tabela).value += id+',';			
         }
