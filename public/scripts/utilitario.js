@@ -345,9 +345,7 @@ function ajax(url,CampoDiv)
             texto=unescape(xmlhttp.responseText.replace(/\+/g," "));
             document.getElementById(CampoDiv).innerHTML=texto;
             // executa scripts
-            extraiScript(texto);/**/
-				
-				
+            extraiScript(texto);/**/				
         }
     }
 		

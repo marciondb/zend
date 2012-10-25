@@ -1,132 +1,144 @@
-<div class="tabs">
-    <h3>Cadastro de Controle de Acesso</h3>
-    <hr>
-    <form name="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarcontroleacesso'), null, 1); ?>" method="post">
-        CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
-        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
-        <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
-        &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
-        <b>Exibir todas as empresas</b>
-        <br>
-        <h5>Selecione uma empresa</h5>
-        <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
-        </div>
-        <br>
-        <h5>Selecione um time</h5>
-        <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
-        </div>
-        <hr>
-        <h4>Escolha os funcionários que receberão acessos</h4>
-
-        <div id="div_FiltroFuncionrio" class="modal_filtro"><!-- apos selecioar a empresa, essa div aparece-->
-            <table align="center">	
-                <tr>
-                    <td align="left">
-                        Setor / Unidade de Negócios: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
-                            <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
-                            <?php
-
-                                foreach ($this->arraySetor as $linha)
-                                {	
-                            ?>
-                                    <option value="<?php echo $linha['id_setor'];?>"><?php echo $linha['titulo'];?></option>
-                            <?php
-                                }
-                            ?>
-
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        Cargo: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
-                            <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
-                            <?php
-                                foreach ($this->arrayCargo as $linha)
-                                {	
-                            ?>
-                                    <option value="<?php echo $linha['id_cargo'];?>" ><?php echo $linha['titulo'];?></option>
-                            <?php
-                                }
-                            ?>                            
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        Tipo: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
-                            <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
-                            <?php
-                                foreach ($this->arrayFuncionario_tipo as $linha)
-                                {	
-                            ?>
-                                    <option value="<?php echo $linha['id_funcionario_tipo'];?>" ><?php echo $linha['titulo'];?></option>
-                            <?php
-                                }
-                            ?>                            
-                        </select>
-                    </td>
-                </tr>
-            </table>
-
-            <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+<h3>Cadastro de Controle de Acesso</h3>
+<hr>
+<div id="tabs" style="width:811px;height:550px;">  
+    <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravacontroleacesso'), null, 1); ?>" method="post">
+        <ul>
+            <li><a href="#tabs-1">Empresa</a></li>
+            <li><a href="#tabs-2">Time</a></li>
+            <li><a href="#tabs-3">Funcionário</a></li>
+            <li><a href="#tabs-4">Empresas Visíveis</a></li>
+            <li><a href="#tabs-5">Times Visíveis</a></li>
+            <li><a href="#tabs-6">Funcionalidades</a></li>
+        </ul>
+        <div id="tabs-1" class="tab_content">
+            CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+            <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+            <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+            &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
+            <b>Exibir todas as empresas</b>
+            <br>
+            <h5>Selecione uma empresa</h5>
+            <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
             </div>
-        </div>
+        </div>    
+        <div id="tabs-2" class="tab_content">
+            <h5>Selecione um time</h5>
+            <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+            </div>
+        </div>    
+        <div id="tabs-3" class="tab_content">
+            <h4>Escolha os funcionários que receberão acessos</h4>
 
-        <hr>
-        <h4>Funcionários escolhidos</h4>
+            <div id="div_FiltroFuncionrio" class="modal_filtro"><!-- apos selecioar a empresa, essa div aparece-->
+                <table align="center">	
+                    <tr>
+                        <td align="left">
+                            Setor / Unidade de Negócios: 
+                        </td>
+                        <td align="left">
+                            <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
+                                <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
+                                <?php
 
-        <div id="ajax_funcionario_adicionados" class="modal_ajax" onmouseover="setTabela('funcionario_adicionados');">
-        </div>
+                                    foreach ($this->arraySetor as $linha)
+                                    {	
+                                ?>
+                                        <option value="<?php echo $linha['id_setor'];?>"><?php echo $linha['titulo'];?></option>
+                                <?php
+                                    }
+                                ?>
 
-        <hr>
-        <h4>Escolha as Empresas Visiveis</h4>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            Cargo: 
+                        </td>
+                        <td align="left">
+                            <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
+                                <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
+                                <?php
+                                    foreach ($this->arrayCargo as $linha)
+                                    {	
+                                ?>
+                                        <option value="<?php echo $linha['id_cargo'];?>" ><?php echo $linha['titulo'];?></option>
+                                <?php
+                                    }
+                                ?>                            
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left">
+                            Tipo: 
+                        </td>
+                        <td align="left">
+                            <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
+                                <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
+                                <?php
+                                    foreach ($this->arrayFuncionario_tipo as $linha)
+                                    {	
+                                ?>
+                                        <option value="<?php echo $linha['id_funcionario_tipo'];?>" ><?php echo $linha['titulo'];?></option>
+                                <?php
+                                    }
+                                ?>                            
+                            </select>
+                        </td>
+                    </tr>
+                </table>
 
-        <div id="ajax_empresas_visiveis" class="modal_ajax" onmouseover="setTabela('empresas_visiveis');">
-        </div>
+                <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+                </div>
+            </div>        
 
-        <h4>Empresas Escolhidas</h4>
-
-        <div id="ajax_empresas_adicionadas" class="modal_ajax" onmouseover="setTabela('empresas_adicionadas');">
-        </div>
-
-        <hr>
-        <h4>Escolha os Times Visiveis</h4>
-
-        <div id="ajax_times_visiveis" class="modal_ajax" onmouseover="setTabela('times_visiveis');">
-        </div>
-
-        <h4>Times Escolhidos</h4>
-
-        <div id="ajax_times_adicionados" class="modal_ajax" onmouseover="setTabela('times_adicionados');">
-        </div>
-
-        <br>
-
-        <div class="modal_filtro">
-            <h3>Funcionalidades</h3>
             <hr>
-            <strong>Escolha as funcionalidades que serão liberadas para os funcionários escolhidos.<br>
-            Você tem a opção te escolher um grupo de funcionalidades ou escolher cada funcionalidade uma a uma.<br>
-            Lembrando que, ou você escolhe grupos ou diretamente as funcionalidades.<br></strong>
-            <hr>
-            <h4>Grupos</h4>
-            <div id="ajax_grupo" class="modal_ajax">
-            </div>
-            <h4>Funcionalidades</h4>
-            <div id="ajax_funcionalidades" class="modal_min_auto_size">
+            <h4>Funcionários escolhidos</h4>
 
+            <div id="ajax_funcionario_adicionados" class="modal_ajax" onmouseover="setTabela('funcionario_adicionados');">
+            </div>
+        </div>        
+        <div id="tabs-4" class="tab_content">
+            <h4>Escolha as Empresas Visiveis</h4>
+
+            <div id="ajax_empresas_visiveis" class="modal_ajax" onmouseover="setTabela('empresas_visiveis');">
+            </div>
+
+            <h4>Empresas Escolhidas</h4>
+
+            <div id="ajax_empresas_adicionadas" class="modal_ajax" onmouseover="setTabela('empresas_adicionadas');">
+            </div>
+
+        </div>
+        <div id="tabs-5" class="tab_content">
+            <h4>Escolha os Times Visiveis</h4>
+
+            <div id="ajax_times_visiveis" class="modal_ajax" onmouseover="setTabela('times_visiveis');">
+            </div>
+
+            <h4>Times Escolhidos</h4>
+
+            <div id="ajax_times_adicionados" class="modal_ajax" onmouseover="setTabela('times_adicionados');">
             </div>
         </div>
+        <div id="tabs-6" class="tab_content">
+            <div class="modal_filtro">
+                <h3>Funcionalidades</h3>
+                <hr>
+                <strong>Escolha as funcionalidades que serão liberadas para os funcionários escolhidos.<br>
+                Você tem a opção te escolher um grupo de funcionalidades ou escolher cada funcionalidade uma a uma.<br>
+                Lembrando que, ou você escolhe grupos ou diretamente as funcionalidades.<br></strong>
+                <hr>
+                <h4>Grupos</h4>
+                <div id="ajax_grupo" class="modal_ajax">
+                </div>
+                <h4>Funcionalidades</h4>
+                <div id="ajax_funcionalidades" class="modal_min_auto_size">
+
+                </div>
+            </div>
+        </div>    
 
         <!-- campos hidden temporarios -->
         <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
@@ -135,15 +147,27 @@
         <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
         <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
         <div id="ajax_id_funcionalidade" style="display: none"></div>
-        <br><br><br>
+    
+    </div><!--<div id="tab">-->
 
+        <div id="transparente" style="visibility: hidden; width:821px; height:560px;filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; margin-top: -560px; -moz-border-radius: 10px; -webkit-border-radius: 10px;">
+            <div id="carregar" align="center" style="color: #fff;background: url(<?php echo $this->baseUrl()."/public/images/sistema/bar_ani_laranja.gif";?>) repeat-x;">Salvando...</div>
+        </div>
         <div align="center" class="form-actions">
-            <button type="button" class="btn btn-primary" onclick="valida();">Gravar</button>
+            <input type="button" class="btn btn-primary" onclick="valida();" value="Gravar">
         </div>
     </form>
-</div><!--<div class="tabs">-->
+    <p><tt id="results"></tt></p>
+</div>
 
-    
+<div class="toggler">
+    <div id="effect" class="ui-widget-content ui-corner-all">
+        <h3 class="ui-widget-header ui-corner-all">Show</h3>
+        <p>
+            Salvo com sucesso!
+        </p>
+    </div>
+</div>
 <?php 
     //URL de TODOS!!!! os ajax
     //$arrayEmpresaLED = $this->arrayEmpresaLED;
@@ -163,8 +187,76 @@
     $urlAjaxGrupo = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxusuariogrupo','selecionar'=>TRUE);
     $urlAjaxCarregaMenuTree = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxcarregamenutree');
 ?>
-<script type="text/javascript">    
+
+<script type="text/javascript">      
     
+    // run the currently selected effect
+    function runEffect() {
+        // get effect type from
+        var selectedEffect = 'drop';
+
+        // most effect types need no options passed by default
+        var options = {};
+        // some effects have required parameters
+        if ( selectedEffect === "scale" ) {
+            options = { percent: 100 };
+        } else if ( selectedEffect === "size" ) {
+            options = { to: { width: 280, height: 185 } };
+        }
+
+        // run the effect
+        $( "#effect" ).show( selectedEffect, options, 500, callback );
+    };
+
+    //callback function to bring a hidden box back
+    function callback() {
+        setTimeout(function() {
+            $( "#effect:visible" ).removeAttr( "style" ).fadeOut();
+        }, 2000 );
+    };
+
+    // set effect from select menu value
+    $( "#button" ).click(function() {
+        runEffect();
+        return false;
+    });
+
+    $( "#effect" ).hide();
+    
+    
+    $( "#carregar" ).position({
+        my: "center center",
+        at: "center center",
+        of: "#transparente"
+    });
+        
+    function habilitaDiv(opcao)
+    {
+        if(opcao)
+            document.getElementById('transparente').style.visibility = '';
+        else
+            document.getElementById('transparente').style.visibility = 'hidden';
+    }
+    
+    function carregaGravando()
+    {
+        habilitaDiv(true);
+        var frm = $('form');        
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            async: false,
+            success: function (data) {
+                runEffect();
+            },
+            error: function (request, status, error) {
+                alert('Erro ao salvar, entre em contato com a CRIWEB.');
+            }
+        });
+        habilitaDiv(false);
+        
+    }
     function marcaPai(pai)
     {
         pai = pai.substr(0,pai.indexOf(','));
@@ -192,11 +284,6 @@
         
     }
     
-    function submitform()
-    {
-        document.forms[0].submit();
-    }
-    
     function valida()
     {
         flag=1
@@ -219,7 +306,8 @@
                         marcaPai(temps[j].value);
                 }
             }
-            submitform();
+            
+            carregaGravando();
         }    
             
     }

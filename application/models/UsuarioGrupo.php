@@ -37,7 +37,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
 
                 foreach($grupos as $idGrupo){
 
-                    //$this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$grupo));
+                    $this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$grupo));
                 }
             }
         
