@@ -129,7 +129,16 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         return $paginator;
         
     }
-
+    
+    public function getIdUsuario($listaIdFuncionario)
+    {
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('usuario', array('id_usuario'))->
+                    where('usuario.id_funcionario in (' . $listaIdFuncionario . ')');
+        return $select->query()->fetchAll(); 
+    }
 
     protected function _validarDados(array $data){
         // Validação

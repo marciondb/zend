@@ -28,33 +28,24 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
        return $select->query()->fetchAll();
     }
     
-    public function gravar($funcionarios, $grupos){
+    public function gravar($arrayIdUsuario, $grupos){
         
         try
         {
-            $funcionarios = substr($funcionarios,1,-1);
-
-            $select = $this->_dbTable->
-                    select()->
-                    setIntegrityCheck(false)->
-                    from('usuario', array('id_usuario'))->
-                    where('usuario.id_funcionario in (' . $funcionarios . ')');
-
-
-            foreach ($select->query()->fetchAll() as $usuario) {
+            
+            foreach ($arrayIdUsuario as $usuario) {
 
                 foreach($grupos as $idGrupo){
 
-                    //$this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$grupo));  
-                    print_r(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$idGrupo));
+                    //$this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$grupo));
                 }
             }
         
         }
-            catch(Exception $e)
-            {
-                ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-            }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
         
     }
     

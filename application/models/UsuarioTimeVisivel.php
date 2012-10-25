@@ -6,16 +6,34 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         $this->_dbTable = new Application_Model_DbTable_UsuarioTimeVisivel();
     }
 
-    public function gravar($array_id_usuario,$array_id_empresa){
+    public function gravar($array_id_usuario,$array_id_time)
+    {
         
-        foreach ($array_id_usuario as $value) 
+        if(!is_array($array_id_time))
         {
-            foreach ($array_id_empresa as $value2) 
+            $array_id_time_aux = explode(',', $array_id_time);
+            $array_id_time = array();
+            $cont=0;
+            foreach ($array_id_time_aux as $value)
             {
-               //echo 'id_usuario'.$value['id_usuario'].'id_empresa'.$value2['id_empresa'];
-               
-                $this->save(array('id_usuario'=>$value['id_usuario'],'id_empresa'=>$value2['id_empresa']));
+                $array_id_time[$cont] = array('id_time'=>$value);
+                $cont++;
             }
+        }    
+        
+        try 
+        {
+            foreach ($array_id_usuario as $value) 
+            {
+                foreach ($array_id_time as $value2) 
+                {
+                    $this->save(array('id_usuario'=>$value['id_usuario'],'id_time'=>$value2['id_time']));
+                }
+            }
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao gravar a time visivel, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
     

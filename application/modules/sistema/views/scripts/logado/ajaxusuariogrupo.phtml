@@ -33,11 +33,11 @@
                             //setId() e removeId() estao em public\scripts\utilitario.js
                             ?>
                             <input type="hidden" id="arrayIdTempFuncionalidade_<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>" value=",">        
-                            <td align="center" width="16%"><input class="idGrupoTmp" type="checkbox" name="idGrupoTmp[]" id="idGrupoTmp" onclick="getIdFuncionalidade('<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>');setFuncioGrupo();ddtreemenu.flatten('treemenu1', 'expand');" value="<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>"/></td>
+                            <td align="center" width="16%"><input class="idGrupoTmp" type="checkbox" name="idGrupoTmp[]" id="idGrupoTmp" onclick="carregaMenuTree();getIdFuncionalidade('<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>');setFuncioGrupo();ddtreemenu.flatten('treemenu1', 'expand');disableLED();" value="<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>"/></td>
                             <?php
 
                         }
-                        $cont++;
+                        
                     ?>
 
                     <?php

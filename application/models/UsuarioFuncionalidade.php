@@ -6,64 +6,110 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         $this->_dbTable = new Application_Model_DbTable_UsuarioFuncionalidade();
     }
     
-    public function gravar($parametros,$_endereco, $update = FALSE)
-    {
-        /*$dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
-                        "nome_fantasia" => $parametros['nome_fantasia'],
-                        "razao_social" => $parametros['razao_social'],
-                        "apelido" => $parametros['apelido'],
-                        "cnpj" => $parametros['cnpj'],
-                        "inscricao_estadual" => $parametros['inscricao_estadual'],
-                        "telefone_1" => $parametros['dddTel1'].$parametros['telefone_1'],
-                        "telefone_2" => $parametros['dddTel2'].$parametros['telefone_2'],
-                        "celular_1" => $parametros['dddCel1'].$parametros['celular_1'],
-                        "celular_2" => $parametros['dddCel2'].$parametros['celular_2'],
-                        "fax_1" => $parametros['dddFax1'].$parametros['fax_1'],
-                        "fax_2" => $parametros['dddFax2'].$parametros['fax_2'],
-                        "email" => $parametros['email'],
-                        "site" => $parametros['site'],
-                        "orkut" => $parametros['orkut'],
-                        "msn" => $parametros['msn'],
-                        "twitter" => $parametros['twitter'],
-                        "facebook" => $parametros['facebook'],
-                        "skype" => $parametros['skype'],
-                        "nome_contato_1" => $parametros['nome_contato_1'],
-                        "tels_contato_1" => $parametros['dddTelTemp1'].$parametros['tels_contato_1'],
-                        "cel_contato_1" => $parametros['dddCelTemp1'].$parametros['cel_contato_1'],
-                        "id_operadora_celular_contato_1" => $parametros['id_operadora_celular_contato_1'],
-                        "email_contato_1" => $parametros['email_contato_1'],
-                        "nome_contato_2" => $parametros['nome_contato_2'],
-                        "tels_contato_2" => $parametros['dddTelTemp2'].$parametros['tels_contato_2'],
-                        "cel_contato_2" => $parametros['dddCelTemp2'].$parametros['cel_contato_2'],
-                        "id_operadora_celular_contato_2" => $parametros['id_operadora_celular_contato_2'],
-                        "email_contato_2" => $parametros['email_contato_2'],
-                        "numero_de_funcionario" => $parametros['numero_de_funcionario'],
-                        "ativo" => $parametros['ativo']
-                        );            
-            try
-            {
-                $id_empresa = $this->save($dataEmpresa);
+    public function gravar($arrayIdusuario,$id_funcionalidades,$funcionalidade_editar,$funcionalidade_deletar,$funcionalidade_liberar,$funcionalidade_pai, $update = FALSE)
+    {      
+        $editar  = '';
+        $deletar = '';
+        $liberar = '';        
+                
+        try
+        {
+            //$count=0;
             
-                $dataEndereco = array("id_empresa" => $id_empresa,
-                            "cep" => $parametros['cep'],
-                            "rua_av" => $parametros['rua_av'],
-                            "numero" => $parametros['numero'],
-                            "complemento" => $parametros['complemento'],
-                            "bairro" => $parametros['bairro'],
-                            "cidade" => $parametros['cidade'],
-                            "estado" => $parametros['estado'],
-                            "referencia" => $parametros['referencia']);
-
-                $_endereco->save($dataEndereco);   
-                
-                ZendUtils::transmissorMsg('Inserido com sucesso!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-                
-                return $id_empresa;
-            }
-            catch(Exception $e)
+            foreach ($arrayIdusuario as $key_usuario) 
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-            }*/
+                foreach ($id_funcionalidades as $key_funcionalidade) 
+                {
+                    $key_funcionalidade = substr($key_funcionalidade,strpos($key_funcionalidade, ',')+1);
+                    
+                    foreach ($funcionalidade_editar as $key_editar) 
+                    {
+                        $key_editar_aux = substr($key_editar,0,strpos($key_editar, ','));
+
+                        if($key_funcionalidade==$key_editar_aux)
+                        {    
+                            $editar = substr($key_editar,strpos($key_editar, ',')+1);
+                            break;
+                        }
+                        else
+                            $editar = '0';
+                    }
+
+                    foreach ($funcionalidade_deletar as $key_deletar) 
+                    {
+                        $key_deletar_aux = substr($key_deletar,0,strpos($key_deletar, ','));
+
+                        if($key_funcionalidade==$key_deletar_aux)
+                        {    
+                            $deletar = substr($key_deletar,strpos($key_deletar, ',')+1);
+                            break;
+                        }
+                        else
+                            $deletar = '0';
+                    }
+
+                    foreach ($funcionalidade_liberar as $key_liberar) 
+                    {
+                        $key_liberar_aux = substr($key_liberar,0,strpos($key_liberar, ','));
+
+                        if($key_funcionalidade==$key_liberar_aux)
+                        {    
+                            $liberar = substr($key_liberar,strpos($key_liberar, ',')+1);
+                            break;
+                        }
+                        else
+                            $liberar = '0';
+                    }
+
+                    //$arrayFuncionalidade[$count] = array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar);
+                    //$count++;
+                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar));
+                    
+                }
+
+                foreach ($funcionalidade_editar as $key_editar) 
+                {
+                    $key_editar = substr($key_editar,strpos($key_editar, ',')+1);                   
+
+                    //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                    //$count++;
+                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                }
+
+                foreach ($funcionalidade_deletar as $key_deletar) 
+                {
+                    $key_deletar = substr($key_deletar,strpos($key_deletar, ',')+1);
+
+                    //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                    //$count++;
+                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                }
+
+                foreach ($funcionalidade_liberar as $key_liberar) 
+                {
+                    $key_liberar = substr($key_liberar,strpos($key_liberar, ',')+1);
+
+                    //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                    //$count++;
+                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                }
+                
+                foreach ($funcionalidade_pai as $idPai) 
+                {
+                    $idPai = substr($idPai,strpos($idPai, ',')+1);
+
+                    //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$idPai,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                    //$count++;
+                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$idPai,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                }
+               // print_r($arrayFuncionalidade);
+            }
+            
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
         
     }
     

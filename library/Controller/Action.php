@@ -11,6 +11,7 @@ abstract class Controller_Action extends Zend_Controller_Action {
     public function possuiPermissao()
     {
         $nomeDaAcao = $this->getRequest()->getActionName();
+        
         $parametroEditar = $this->getRequest()->getParam('editar');
         $parametroDeletar = $this->getRequest()->getParam('deletar');
         $parametroLiberar = $this->getRequest()->getParam('liberar');
@@ -43,7 +44,10 @@ abstract class Controller_Action extends Zend_Controller_Action {
         if (!($this->getRequest()->getControllerName() == "index"))
         {
             if(!(Zend_Auth::getInstance()->hasIdentity()))
-            {  $_SESSION['erro_redirect']='NÃO ESTA LOGADO!'; $this->_redirect($redirect);}
+            {  
+                ZendUtils::transmissorMsg(' VOCÊ DEVE EFETUAR O LOGIN!',  ZendUtils::MENSAGEM_ERRO,  2000);
+                $this->_redirect($redirect);                
+             }
             else
             {
                 $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
@@ -52,16 +56,23 @@ abstract class Controller_Action extends Zend_Controller_Action {
                 $this->view->id_usuario = $this->_id_usuario;
                 $this->_permissoes = $this->_usuario->getPermissao();
                 $this->view->permissoes = $this->_permissoes;
-                //print_r($permissoes);
+                //print_r($this->_permissoes);
                 
                 if($this->_permissoes)
                 {   
                     if(!$this->possuiPermissao())
-                    {  $_SESSION['erro_redirect']='SEM PERMISSÃO!'; $this->_redirect($redirect);}
+                    {  
+                        if(strpos($this->getRequest()->getActionName(),"ajax")=== FALSE)
+                        {
+                            $this->_redirect($redirect);
+                            //ZendUtils::transmissorMsg($this->getRequest()->getActionName().' | SEM PERMISSÃO!',  ZendUtils::MENSAGEM_ERRO,  2000);
+                                                
+                        }
+                    }
                 }
                 else
                 {
-                    //echo "<script>alert('Consulte o seu PinhoNet, você não possui acesso.');</script>";
+                    ZendUtils::transmissorMsg(' VOCÊ NÃO POSSUI NENHUMA PERMISSÃO!',  ZendUtils::MENSAGEM_ERRO,  2000);
                     $this->logoutAction();
                 }
             }

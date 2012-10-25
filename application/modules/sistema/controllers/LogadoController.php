@@ -134,9 +134,11 @@ class Sistema_LogadoController extends Controller_Action
 
             $this->view->arrayUsuarioGrupo = $this->_usuario_grupo->exibir($this->_id_usuario);
         }
-        
-        
-        
+    }
+    
+    public function ajaxcarregamenutreeAction()
+    {
+       $this->_helper->layout->disableLayout();
     }
     
     public function cadastrarcontroleacessoAction()
@@ -152,22 +154,32 @@ class Sistema_LogadoController extends Controller_Action
         {
             $parametros = $this->_getAllParams();
             
-            //Verifica se um grupo foi escolhido
-            $grupos = $parametros['idGrupoTmp'];
+            $listaIdTempFuncionarioEscolhido = substr($parametros['arrayIdTempFuncionarioEscolhido'], 1,-1); 
+            $arrayIdUsuario = $this->_funcionario->getIdUsuario($listaIdTempFuncionarioEscolhido);            
             
-            //$this->_usuario_time_visivel->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $parametros['arrayIdTempTimeEscolhido']);
-            //$this->_usuario_empresa_visivel->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $parametros['arrayIdTempEmpresaEscolhida']);            
-
-            if(!$grupos)
+            if(isset($parametros['arrayIdTempTimeEscolhido']) && ($parametros['arrayIdTempTimeEscolhido']!=","))
             {
+                $this->_usuario_time_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempTimeEscolhido'],1,-1));
+            }
+            
+            if(isset($parametros['arrayIdTempEmpresaEscolhida']) && ($parametros['arrayIdTempEmpresaEscolhida']!=","))
+            {
+                $this->_usuario_empresa_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempEmpresaEscolhida'],1,-1));
+            }
+            
+            //Verifica se um grupo foi escolhido
+            if(!isset($parametros['idGrupoTmp']))
+            {   
                 // Inserir em usuario_funcionalidade
-                $this->_usuario_funcionalidade->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $parametros['id_funcionalidades'],$parametros['editar'],$parametros['deletar'],$parametros['liberar']);
+                $this->_usuario_funcionalidade->gravar($arrayIdUsuario, $parametros['id_funcionalidades'],$parametros['funcionalidade_editar'],$parametros['funcionalidade_deletar'],$parametros['funcionalidade_liberar'],$parametros['idPai']);
             } 
             else 
             {
                 // Inserir em usuario_grupo
-                $this->_usuario_grupo->gravar($parametros['arrayIdTempFuncionarioEscolhido'], $grupos);
+                $this->_usuario_grupo->gravar($arrayIdUsuario, $parametros['idGrupoTmp']);
             }
+            
+            ZendUtils::transmissorMsg(' Salvo com sucesso',  ZendUtils::MENSAGEM_ACERTO,  2000);
         }
     }
      

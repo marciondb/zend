@@ -379,3 +379,50 @@ cursor: default;
     margin: -3px 0 0 0;
     
 }
+
+
+/*Carregar pagina*/
+.tabs {  
+    min-height: 200px; /* This part sucks */
+    clear: both;
+    margin: 25px 0;
+    position:fixed;
+    width: 500px;
+}
+.tab {
+    float: left;
+}
+.tab label {
+    background: #eee; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    margin-left: -1px; 
+    position: relative;
+    left: 1px; 
+    
+}
+.tab [type=radio] {
+    display: none;   
+}
+.content {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    background: white;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    border: 1px solid #ccc; 
+}
+[type=radio]:checked ~ label {
+    background: white;
+    border-bottom: 1px solid white;
+    z-index: 2;
+}
+[type=radio]:checked ~ label ~ .content {
+    z-index: 1;
+}
+
+.transparente{
+    width:775px;height:500px; filter:alpha(opacity=80);opacity:0.8;background-color:#000000;
+}

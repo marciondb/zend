@@ -1,148 +1,147 @@
-
-<h3>Cadastro de Controle de Acesso</h3>
-<hr>
-<form name="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarcontroleacesso'), null, 1); ?>" method="post">
-    CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
-    <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
-    <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
-    &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
-    <b>Exibir todas as empresas</b>
-    <br>
-    <h5>Selecione uma empresa</h5>
-    <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
-    </div>
-    <br>
-    <h5>Selecione um time</h5>
-    <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
-    </div>
+<div class="tabs">
+    <h3>Cadastro de Controle de Acesso</h3>
     <hr>
-    <h4>Escolha os funcionários que receberão acessos</h4>
-    
-    <div id="div_FiltroFuncionrio" class="modal_filtro"><!-- apos selecioar a empresa, essa div aparece-->
-        <table align="center">	
-            <tr>
-                <td align="left">
-                    Setor / Unidade de Negócios: 
-                </td>
-                <td align="left">
-                    <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
-                        <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
-                        <?php
-
-                            foreach ($this->arraySetor as $linha)
-                            {	
-                        ?>
-                                <option value="<?php echo $linha['id_setor'];?>"><?php echo $linha['titulo'];?></option>
-                        <?php
-                            }
-                        ?>
-
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    Cargo: 
-                </td>
-                <td align="left">
-                    <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
-                        <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
-                        <?php
-                            foreach ($this->arrayCargo as $linha)
-                            {	
-                        ?>
-                                <option value="<?php echo $linha['id_cargo'];?>" ><?php echo $linha['titulo'];?></option>
-                        <?php
-                            }
-                        ?>                            
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    Tipo: 
-                </td>
-                <td align="left">
-                    <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
-                        <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
-                        <?php
-                            foreach ($this->arrayFuncionario_tipo as $linha)
-                            {	
-                        ?>
-                                <option value="<?php echo $linha['id_funcionario_tipo'];?>" ><?php echo $linha['titulo'];?></option>
-                        <?php
-                            }
-                        ?>                            
-                    </select>
-                </td>
-            </tr>
-        </table>
-        
-        <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+    <form name="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarcontroleacesso'), null, 1); ?>" method="post">
+        CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+        <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
+        <b>Exibir todas as empresas</b>
+        <br>
+        <h5>Selecione uma empresa</h5>
+        <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
         </div>
-    </div>
-    
-    <hr>
-    <h4>Funcionários escolhidos</h4>
-    
-    <div id="ajax_funcionario_adicionados" class="modal_ajax" onmouseover="setTabela('funcionario_adicionados');">
-    </div>
-    
-    <hr>
-    <h4>Escolha as Empresas Visiveis</h4>
-    
-    <div id="ajax_empresas_visiveis" class="modal_ajax" onmouseover="setTabela('empresas_visiveis');">
-    </div>
-    
-    <h4>Empresas Escolhidas</h4>
-    
-    <div id="ajax_empresas_adicionadas" class="modal_ajax" onmouseover="setTabela('empresas_adicionadas');">
-    </div>
-    
-    <hr>
-    <h4>Escolha os Times Visiveis</h4>
-    
-    <div id="ajax_times_visiveis" class="modal_ajax" onmouseover="setTabela('times_visiveis');">
-    </div>
-    
-    <h4>Times Escolhidos</h4>
-    
-    <div id="ajax_times_adicionados" class="modal_ajax" onmouseover="setTabela('times_adicionados');">
-    </div>
-    
-    <br>
-    
-    <div class="modal_filtro">
-        <h3>Funcionalidades</h3>
+        <br>
+        <h5>Selecione um time</h5>
+        <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+        </div>
         <hr>
-        <strong>Escolha as funcionalidades que serão liberadas para os funcionários escolhidos.<br>
-        Você tem a opção te escolher um grupo de funcionalidades ou escolher cada funcionalidade uma a uma.<br>
-        Lembrando que, ou você escolhe grupos ou diretamente as funcionalidades.<br></strong>
+        <h4>Escolha os funcionários que receberão acessos</h4>
+
+        <div id="div_FiltroFuncionrio" class="modal_filtro"><!-- apos selecioar a empresa, essa div aparece-->
+            <table align="center">	
+                <tr>
+                    <td align="left">
+                        Setor / Unidade de Negócios: 
+                    </td>
+                    <td align="left">
+                        <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
+                            <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
+                            <?php
+
+                                foreach ($this->arraySetor as $linha)
+                                {	
+                            ?>
+                                    <option value="<?php echo $linha['id_setor'];?>"><?php echo $linha['titulo'];?></option>
+                            <?php
+                                }
+                            ?>
+
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        Cargo: 
+                    </td>
+                    <td align="left">
+                        <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
+                            <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
+                            <?php
+                                foreach ($this->arrayCargo as $linha)
+                                {	
+                            ?>
+                                    <option value="<?php echo $linha['id_cargo'];?>" ><?php echo $linha['titulo'];?></option>
+                            <?php
+                                }
+                            ?>                            
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        Tipo: 
+                    </td>
+                    <td align="left">
+                        <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
+                            <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
+                            <?php
+                                foreach ($this->arrayFuncionario_tipo as $linha)
+                                {	
+                            ?>
+                                    <option value="<?php echo $linha['id_funcionario_tipo'];?>" ><?php echo $linha['titulo'];?></option>
+                            <?php
+                                }
+                            ?>                            
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+            </div>
+        </div>
+
         <hr>
-        <h4>Grupos</h4>
-        <div id="ajax_grupo" class="modal_ajax">
+        <h4>Funcionários escolhidos</h4>
+
+        <div id="ajax_funcionario_adicionados" class="modal_ajax" onmouseover="setTabela('funcionario_adicionados');">
         </div>
-        <h4>Funcionalidades</h4>
-        <div id="ajax_funcionalidades" class="modal_min_auto_size">
-            <?php 
-                include("/application/modules/sistema/views/scripts/logado/carregamenutree.phtml");
-            ?>
+
+        <hr>
+        <h4>Escolha as Empresas Visiveis</h4>
+
+        <div id="ajax_empresas_visiveis" class="modal_ajax" onmouseover="setTabela('empresas_visiveis');">
         </div>
-    </div>
-    
-    <!-- campos hidden temporarios -->
-    <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
-    <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
-    <input type="hidden" name="arrayIdTempFuncionario"    id="arrayIdTempFuncionario" value=",">
-    <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
-    <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
-    <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
-    <div id="ajax_id_funcionalidade" style="display: none"></div>
-    <br><br><br>
-    <div align="center" class="form-actions">
-        <button type="submit" class="btn btn-primary">Gravar</button>
-    </div>
-</form>
+
+        <h4>Empresas Escolhidas</h4>
+
+        <div id="ajax_empresas_adicionadas" class="modal_ajax" onmouseover="setTabela('empresas_adicionadas');">
+        </div>
+
+        <hr>
+        <h4>Escolha os Times Visiveis</h4>
+
+        <div id="ajax_times_visiveis" class="modal_ajax" onmouseover="setTabela('times_visiveis');">
+        </div>
+
+        <h4>Times Escolhidos</h4>
+
+        <div id="ajax_times_adicionados" class="modal_ajax" onmouseover="setTabela('times_adicionados');">
+        </div>
+
+        <br>
+
+        <div class="modal_filtro">
+            <h3>Funcionalidades</h3>
+            <hr>
+            <strong>Escolha as funcionalidades que serão liberadas para os funcionários escolhidos.<br>
+            Você tem a opção te escolher um grupo de funcionalidades ou escolher cada funcionalidade uma a uma.<br>
+            Lembrando que, ou você escolhe grupos ou diretamente as funcionalidades.<br></strong>
+            <hr>
+            <h4>Grupos</h4>
+            <div id="ajax_grupo" class="modal_ajax">
+            </div>
+            <h4>Funcionalidades</h4>
+            <div id="ajax_funcionalidades" class="modal_min_auto_size">
+
+            </div>
+        </div>
+
+        <!-- campos hidden temporarios -->
+        <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+        <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
+        <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
+        <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
+        <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
+        <div id="ajax_id_funcionalidade" style="display: none"></div>
+        <br><br><br>
+
+        <div align="center" class="form-actions">
+            <button type="button" class="btn btn-primary" onclick="valida();">Gravar</button>
+        </div>
+    </form>
+</div><!--<div class="tabs">-->
 
     
 <?php 
@@ -162,8 +161,68 @@
     $urlAjaxEmpresaVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','adicionar'=>TRUE);
     $urlAjaxTimeVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','adicionar'=>TRUE);
     $urlAjaxGrupo = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxusuariogrupo','selecionar'=>TRUE);
+    $urlAjaxCarregaMenuTree = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxcarregamenutree');
 ?>
 <script type="text/javascript">    
+    
+    function marcaPai(pai)
+    {
+        pai = pai.substr(0,pai.indexOf(','));
+        
+        if(pai==0)
+            return 1;
+                
+        temp = document.forms[0].getElementsByClassName('idPai');
+        
+        if(temp.length)
+        { 
+            for (ii = 0; ii < temp.length; ii++)
+            {   
+               paiAux = temp[ii].value;
+               paiAux2 = paiAux.substr(paiAux.indexOf(',')+1);
+               
+               if(paiAux2==pai)
+               {
+                   temp[ii].checked = true;
+                   marcaPai(paiAux);
+               }    
+                
+            }
+        }
+        
+    }
+    
+    function submitform()
+    {
+        document.forms[0].submit();
+    }
+    
+    function valida()
+    {
+        flag=1
+        
+        if(document.getElementById('arrayIdTempFuncionarioEscolhido').value == ",")
+        {   //flag = 0;
+            //alert('Não há Funcionário escolhido!');
+        }
+        
+        if(flag)
+        {
+            
+            temps = document.forms[0].getElementsByClassName('idFuncionalidade');
+            
+            if(temps.length)
+            { 
+                for (j = 0; j < temps.length; j++)
+                {   //alert(temp.length);
+                    if(temps[j].checked)
+                        marcaPai(temps[j].value);
+                }
+            }
+            submitform();
+        }    
+            
+    }
     
     function setGrupoOff()
     {
@@ -183,14 +242,10 @@
         document.getElementById('arrayIdTempTime').value=',';
     }
     
-    //carrega o menu tree
-    //http://www.dynamicdrive.com/dynamicindex1/navigate1.htm
-    //ddtreemenu.createTree(treeid, enablepersist, opt_persist_in_days (default is 1))
-    ddtreemenu.createTree("treemenu1", false);
-    
     function setFuncioGrupo()
     {
-        arrayIdFuncionalidades = '';
+        arrayIdFuncionalidades = "";
+        valor = '';
         
         temp = document.forms[0].getElementsByClassName('idGrupoTmp');
         if(temp.length)
@@ -198,21 +253,92 @@
             for (i = 0; i < temp.length; i++)
             {   
                 if(temp[i].checked)
-                    arrayIdFuncionalidades += ','+document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value+',';
-                
+                {    arrayIdFuncionalidades += ','+document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value+',';
+                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
+                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
+                }
             }
         }
-        alert(arrayIdFuncionalidades);
+        
         temp = document.forms[0].getElementsByClassName('idFuncionalidade');
-
+        
         if(temp.length)
         {
             for (i = 0; i < temp.length; i++)
-            {//alert(temp[i].value);
-                temp[i].checked=false;
-                if(existeNaStr(','+temp[i].value+',',arrayIdFuncionalidades))
-                    temp[i].checked=true;
+            {
+                valor = temp[i].value;
                 
+                if(existeNaStr(",",valor))
+                    valor = valor.substr(valor.indexOf(",")+1);
+                
+                temp[i].checked=false;                 
+                
+                if(existeNaStr(','+valor+',',arrayIdFuncionalidades))
+                {
+                    temp[i].checked=true;
+                }
+                
+            }
+        }
+    }
+    
+    function disableLED()
+    {
+        arrayIdFuncionalidades = '';
+        aux='';
+        temp = document.forms[0].getElementsByClassName('idGrupoTmp');
+        
+        if(temp.length)
+        { 
+            for (i = 0; i < temp.length; i++)
+            {   
+                if(temp[i].checked)
+                {    
+                     arrayIdFuncionalidades = document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value;
+                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
+                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
+                     arrayIdFuncionalidades = arrayIdFuncionalidades.split(',');
+                     
+                     for (i = 0; i < arrayIdFuncionalidades.length; i++)
+                     {
+                         if(!existeNaStr(arrayIdFuncionalidades[i],aux))
+                             aux +=  arrayIdFuncionalidades[i]+',';
+                     }
+                     
+                }
+            }
+        }
+        temp = aux.substr(0,aux.length-1);
+        temp = temp.split(',');
+        
+        if(temp.length)
+        {
+            for (i = 0; i < temp.length; i++)
+            {   
+                 toggleLED(temp[i]);
+            }
+        }
+    }
+    
+    function toggleLED(nomeDiv) {
+        if(document.getElementById(nomeDiv))
+            {toggleDisabled(document.getElementById(nomeDiv));}
+            
+    }
+
+    function toggleDisabled(el) {
+        try 
+        {
+            el.disabled = el.disabled ? false : true;
+            //el.checked  = el.checked ? true : false;
+            if(el.disabled)
+                el.checked  = false;
+        }
+        catch(E){}
+
+        if (el.childNodes && el.childNodes.length > 0) {
+            for (var x = 0; x < el.childNodes.length; x++) {
+                toggleDisabled(el.childNodes[x]);
             }
         }
     }
@@ -401,10 +527,21 @@
     url = '<?php echo $this->url($urlAjaxGrupo, null, 1); ?>';
     ajax(url,'ajax_grupo');
     
+    function carregaMenuTree()
+    {
+        url = '<?php echo $this->url($urlAjaxCarregaMenuTree, null, 1); ?>';
+        ajax(url,'ajax_funcionalidades');
+         //carrega o menu tree
+        //http://www.dynamicdrive.com/dynamicindex1/navigate1.htm
+        //ddtreemenu.createTree(treeid, enablepersist, opt_persist_in_days (default is 1))
+        ddtreemenu.createTree("treemenu1", false);
+    }
+    carregaMenuTree();
+    
     /******************************************************************************/
     //                               FIM AJAX
     /******************************************************************************/
     
-    
+       
     
 </script>

@@ -9,6 +9,8 @@
 
     $_SESSION['menuTree'] = '';
     $_SESSION['menuTree'] .= '<ul id="treemenu1" class="treeview">'."\n";
+    $aux_pai_zero = '';
+    $aux_pai = '';
     
     function montaMenuTree($id_funcionalidade,$resultado,$url,$cont)
     {
@@ -25,34 +27,27 @@
                         $estilo = "class='modal_auto_size'";
                     
                     $_SESSION['menuTree'] .= "<li>".$value['titulo']."\n";
-                        $_SESSION['menuTree'] .=  "<ul><div id='tree_$cont' class='modal_auto_size'>\n";
+                        $_SESSION['menuTree'] .=  "<ul><input type='checkbox' style='visibility:hidden;position:absolute' name='idPai[]' id='idPai' class='idPai' value='".$value['id_funcionalidade_pai'].",".$value['id_funcionalidade']."'><div id='tree_$cont' class='modal_auto_size'>\n";
                 }
                 else
-                {                    
-                    $style = '';
-                    
+                {                
                     $editar = '';
-                    if(!$value['editar'])
-                        $style = 'style="display:none"';
-                    $editar = '<span '.$style.'>&nbsp;&nbsp;Editar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_editar" name="funcionalidade_editar[]" value="'.$value['editar'].'" onclick="setGrupoOff();"></span>';
+                    if($value['editar'])
+                        $editar = '&nbsp;&nbsp;Editar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_editar" name="funcionalidade_editar[]" value="'.$value['id_funcionalidade'].','.$value['editar'].'" onclick="setGrupoOff();" disabled="disabled">';
                     
-                    $style = '';
                     $deletar = '';
-                    if(!$value['deletar'])
-                        $style = 'style="display:none"';
-                    $deletar = '<span '.$style.'>&nbsp;&nbsp;Deletar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_deletar" name="funcionalidade_deletar[]" value="'.$value['deletar'].'" onclick="setGrupoOff();"></span>';
+                    if($value['deletar'])
+                        $deletar = '&nbsp;&nbsp;Deletar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_deletar" name="funcionalidade_deletar[]" value="'.$value['id_funcionalidade'].','.$value['deletar'].'" onclick="setGrupoOff();" disabled="disabled">';
                     
-                    $style = '';
                     $liberar = '';
-                    if(!$value['liberar'])
-                        $style = 'style="display:none"';
-                    $liberar = '<span '.$style.'>&nbsp;&nbsp;Liberar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_liberar" name="funcionalidade_liberar[]" value="'.$value['liberar'].'" onclick="setGrupoOff();"></span>';
+                    if($value['liberar'])
+                       $liberar = '&nbsp;&nbsp;Liberar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_liberar" name="funcionalidade_liberar[]" value="'.$value['id_funcionalidade'].','.$value['liberar'].'" onclick="setGrupoOff();" disabled="disabled">';
                     
                     $seta='';
                     if($value['editar'] || $value['deletar'] || $value['liberar'])
                         $seta = '<i class="icon-arrow-right"></i>';
                     
-                    $_SESSION['menuTree'] .= '<li style="clear:both;"><div class="funcionalidade"><input class="idFuncionalidade" type="checkbox" id="id_funcionalidades" name="id_funcionalidades[]" value="'.$value['id_funcionalidade'].'" onclick="setGrupoOff();">&nbsp;&nbsp;'.$value['titulo']."</div><div class='funcionalidade2'>$seta&nbsp;$editar$deletar$liberar</div></li>\n";
+                    $_SESSION['menuTree'] .= '<li style="clear:both;"><div class="funcionalidade"><input class="idFuncionalidade" type="checkbox" id="id_funcionalidades" name="id_funcionalidades[]" value="'.$value['id_funcionalidade_pai'].','.$value['id_funcionalidade'].'" onclick="setGrupoOff();toggleLED('.$value['id_funcionalidade'].');">&nbsp;&nbsp;'.$value['titulo']."</div><div class='funcionalidade2' id='".$value['id_funcionalidade']."'>$seta&nbsp;$editar$deletar$liberar</div></li>\n";
                 }
                 
                 //echo $value['titulo']." ".$value['action']."\n";
@@ -75,4 +70,4 @@
     
     
     echo $_SESSION['menuTree'];
-    
+    ?>
