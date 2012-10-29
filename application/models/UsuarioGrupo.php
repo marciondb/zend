@@ -37,20 +37,34 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
 
                 foreach($grupos as $idGrupo){
 
-                    $this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$grupo));
+                    $this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$idGrupo));
                 }
             }
         
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            //echo "<script>setMsg('ERRO','Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>".$e->getMessage()."',1)</script>";    
+            //ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
     }
     
+    public function deletar($array_id_usuario)
+    {
+        try 
+        {
+            foreach ($array_id_usuario as $value) 
+            {
+                 $this->delete('id_usuario='.(int)$value['id_usuario']);
+            }
+        }
+        catch(Exception $e)
+        {
+            //ZendUtils::transmissorMsg('Erro ao retirar os usuarios dos grupos, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+    }
     
-
     protected function _validarDados(array $data){
         // Validação
         //$erros = "";

@@ -35,6 +35,21 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
             ZendUtils::transmissorMsg('Erro ao gravar a empresa visivel, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }    
     }
+
+    public function deletar($array_id_usuario)
+    {
+        try 
+        {
+            foreach ($array_id_usuario as $value) 
+            {
+                 $this->delete('id_usuario='.(int)$value['id_usuario']);
+            }
+        }
+        catch(Exception $e)
+        {
+            //ZendUtils::transmissorMsg('Erro ao deletar as empresas visiveis, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+    }
     
     protected function _validarDados(array $data){
         // Validação

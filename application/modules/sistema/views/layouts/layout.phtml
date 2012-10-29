@@ -38,6 +38,7 @@
             <a id="btnfechardiv" href="#" onclick="FecharDivMsg()">[Fechar]</a>  
         </div>
         <?php           ZendUtils::receptorMsg();   ?>
+        
         <div id="araiz" align="center">
             <div id="topo">
                 <img src="<?php echo $this->baseUrl()."/public/images/sistema/logoMarca.png"; ?>" alt="Painel de Controle">
@@ -71,8 +72,15 @@
                 <?php
                     }                        
                 ?>
-            
+                <div id="togglerMenssagem" class="togglerMenssagem">
+                    <div id="effectMenssagem" class="ui-widget-content ui-corner-all">
+                        <h3 class="ui-widget-header ui-corner-all"><p id="tituloMsg"></p><a id="btnfechardiv" href="javascript:;" onclick="fecharDivMsg(1,0)">[Fechar]</a></h3>
+                        <p id="conteudoMsg"></p>
+                    </div>
+                </div>
                 <?php echo $this->layout()->content; ?>
+        
+            
         </div>
     </body>
 </html>

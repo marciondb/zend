@@ -37,6 +37,21 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         }
     }
     
+    public function deletar($array_id_usuario)
+    {
+        try 
+        {
+            foreach ($array_id_usuario as $value) 
+            {
+                 $this->delete('id_usuario='.(int)$value['id_usuario']);
+            }
+        }
+        catch(Exception $e)
+        {
+            //ZendUtils::transmissorMsg('Erro ao deletar os times visiveis aos usuários, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+    }
+    
     protected function _validarDados(array $data){
         // Validação
         //$erros = "";

@@ -389,10 +389,13 @@ cursor: default;
     width:775px;height:500px; filter:alpha(opacity=80);opacity:0.8;background-color:#000000;
 }
 
-.toggler { 
+.togglerMenssagem { 
     width: 500px; 
     height: 200px; 
     position: fixed;
     top: 100px;
     right: 50px;
+    display: none;
+    z-index:1;
+    text-align: center;
 }

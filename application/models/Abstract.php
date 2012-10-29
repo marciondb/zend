@@ -40,8 +40,8 @@ abstract class Application_Model_Abstract {
         return $this->_dbTable->update($data);
     }
 
-    public function delete($id) {
-        return $this->_dbTable->delete('id='.(int) $id);
+    public function delete($arrayId) {
+        return $this->_dbTable->delete($arrayId);
     }
 
     /***

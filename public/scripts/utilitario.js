@@ -234,10 +234,9 @@ function validarSenha(senha)
     }
 }
 	
-function FecharDivMsg()
+function FecharDivMsgOld()
 {
-
-    $("#mensagem").css("display", "none");
+   
 }
         
         /**
@@ -451,5 +450,86 @@ function remarcaId(tabela,campo)
             temp.checked = true;			
         }
     }
+
+}
+
+// run the currently selected effect
+function runEffect(tipo,tempo) {
+    // get effect type from
+    var selectedEffect = 'drop';
+
+    // most effect types need no options passed by default
+    var options = {};
+    // some effects have required parameters
+    if ( selectedEffect === "scale" ) {
+        options = {percent: 100};
+    } else if ( selectedEffect === "size" ) {
+        options = {to: {width: 280, height: 185}};
+    }
+
+    // run the effect
+    $( "#togglerMenssagem" ).show();
+    $( "#effectMenssagem" ).show( selectedEffect, options, 500, fecharDivMsg(tipo,tempo) );
+};
+
+//callback function to bring a hidden box back
+function fecharDivMsg(tipo,tempo) {
+    
+    if(tipo)
+    {
+        setTimeout(function() {
+            $( "#effectMenssagem:visible" ).removeAttr( "style" ).fadeOut();
+
+        }, tempo );
+    
+    
+        setTimeout(function() {
+            document.getElementById('togglerMenssagem').style.display = 'none';
+
+        }, (tempo+500) );
+    }
+
+};
+
+function setMsg(titulo,conteudo,tipo)
+{
+    if(!tipo)
+        document.getElementById('effectMenssagem').style.background = '#f00'
+    
+    document.getElementById('tituloMsg').innerHTML   = titulo;
+    document.getElementById('conteudoMsg').innerHTML = conteudo;
+    
+    runEffect(tipo,2000);
+}
+
+function habilitaDiv(opcao)
+{
+    if(opcao)
+        document.getElementById('transparente').style.visibility = '';
+    else
+        document.getElementById('transparente').style.visibility = 'hidden';
+}
+
+function carregaGravando()
+{
+    habilitaDiv(true);
+    var frm = $('form');        
+    $.ajax({
+        type: frm.attr('method'),
+        url: frm.attr('action'),
+        data: frm.serialize(),
+        async: false,
+        success: function (request,data) {
+            if($.trim(request)!='')
+                setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!',0);
+            else
+                setMsg('Show','Salvo com sucesso!',1);
+        },
+        error: function (request, status, error) {
+            //setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!'+request.responseText,0);
+            setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!',0);
+        }
+    });
+    habilitaDiv(false);
 
 }

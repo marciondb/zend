@@ -159,15 +159,8 @@
     </form>
     <p><tt id="results"></tt></p>
 </div>
+<div id="errosSalvar"></div>
 
-<div class="toggler">
-    <div id="effect" class="ui-widget-content ui-corner-all">
-        <h3 class="ui-widget-header ui-corner-all">Show</h3>
-        <p>
-            Salvo com sucesso!
-        </p>
-    </div>
-</div>
 <?php 
     //URL de TODOS!!!! os ajax
     //$arrayEmpresaLED = $this->arrayEmpresaLED;
@@ -190,38 +183,7 @@
 
 <script type="text/javascript">      
     
-    // run the currently selected effect
-    function runEffect() {
-        // get effect type from
-        var selectedEffect = 'drop';
-
-        // most effect types need no options passed by default
-        var options = {};
-        // some effects have required parameters
-        if ( selectedEffect === "scale" ) {
-            options = { percent: 100 };
-        } else if ( selectedEffect === "size" ) {
-            options = { to: { width: 280, height: 185 } };
-        }
-
-        // run the effect
-        $( "#effect" ).show( selectedEffect, options, 500, callback );
-    };
-
-    //callback function to bring a hidden box back
-    function callback() {
-        setTimeout(function() {
-            $( "#effect:visible" ).removeAttr( "style" ).fadeOut();
-        }, 2000 );
-    };
-
-    // set effect from select menu value
-    $( "#button" ).click(function() {
-        runEffect();
-        return false;
-    });
-
-    $( "#effect" ).hide();
+    $( "#effectMenssagem" ).hide();
     
     
     $( "#carregar" ).position({
@@ -229,34 +191,7 @@
         at: "center center",
         of: "#transparente"
     });
-        
-    function habilitaDiv(opcao)
-    {
-        if(opcao)
-            document.getElementById('transparente').style.visibility = '';
-        else
-            document.getElementById('transparente').style.visibility = 'hidden';
-    }
     
-    function carregaGravando()
-    {
-        habilitaDiv(true);
-        var frm = $('form');        
-        $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-            async: false,
-            success: function (data) {
-                runEffect();
-            },
-            error: function (request, status, error) {
-                alert('Erro ao salvar, entre em contato com a CRIWEB.');
-            }
-        });
-        habilitaDiv(false);
-        
-    }
     function marcaPai(pai)
     {
         pai = pai.substr(0,pai.indexOf(','));

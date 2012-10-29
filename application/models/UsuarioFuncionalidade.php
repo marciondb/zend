@@ -197,6 +197,23 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         
         return true;
     }
-       
+    
+    public function deletar($array_id_usuario)
+    {
+        try 
+        {
+            foreach ($array_id_usuario as $value) 
+            {
+                
+                $this->delete('id_usuario='.(int)$value['id_usuario']);
+            }
+        }
+        catch(Exception $e)
+        {
+            //echo "<script>setMsg('ERRO','Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>".$e->getMessage()."',1)</script>";            
+            //ZendUtils::transmissorMsg('Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+    }
+    
 }
 
