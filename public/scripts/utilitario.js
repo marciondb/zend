@@ -520,14 +520,15 @@ function carregaGravando()
         data: frm.serialize(),
         async: false,
         success: function (request,data) {
+            //alert('ok');
             if($.trim(request)!='')
-                setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!',0);
+                setMsg('ERRO1','Erro ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
             else
                 setMsg('Show','Salvo com sucesso!',1);
         },
         error: function (request, status, error) {
             //setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!'+request.responseText,0);
-            setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!',0);
+            setMsg('ERRO2','Erro ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
         }
     });
     habilitaDiv(false);

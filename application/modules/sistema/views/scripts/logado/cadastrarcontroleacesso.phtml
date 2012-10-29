@@ -1,32 +1,31 @@
 <h3>Cadastro de Controle de Acesso</h3>
 <hr>
-<div id="tabs" style="width:811px;height:550px;">  
+<div id="tabs" style="width:811px;height:750px;">  
     <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravacontroleacesso'), null, 1); ?>" method="post">
         <ul>
-            <li><a href="#tabs-1">Empresa</a></li>
-            <li><a href="#tabs-2">Time</a></li>
             <li><a href="#tabs-3">Funcionário</a></li>
             <li><a href="#tabs-4">Empresas Visíveis</a></li>
             <li><a href="#tabs-5">Times Visíveis</a></li>
             <li><a href="#tabs-6">Funcionalidades</a></li>
         </ul>
-        <div id="tabs-1" class="tab_content">
-            CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
-            <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
-            <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
-            &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
-            <b>Exibir todas as empresas</b>
-            <br>
-            <h5>Selecione uma empresa</h5>
-            <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
-            </div>
-        </div>    
-        <div id="tabs-2" class="tab_content">
-            <h5>Selecione um time</h5>
-            <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
-            </div>
-        </div>    
         <div id="tabs-3" class="tab_content">
+            <div class="modal_min_auto_size">
+                <h4>Filtros:</h4>
+                CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+                <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+                <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+                &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
+                <b>Exibir todas as empresas</b>
+                <hr>
+                <h5>Selecione uma empresa</h5>
+                <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
+                </div>
+                <hr>
+                <h5>Selecione um time</h5>
+                <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+                </div>
+            </div>
+            <br>
             <h4>Escolha os funcionários que receberão acessos</h4>
 
             <div id="div_FiltroFuncionrio" class="modal_filtro"><!-- apos selecioar a empresa, essa div aparece-->
@@ -150,7 +149,7 @@
     
     </div><!--<div id="tab">-->
 
-        <div id="transparente" style="visibility: hidden; width:821px; height:560px;filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; margin-top: -560px; -moz-border-radius: 10px; -webkit-border-radius: 10px;">
+        <div id="transparente" style="z-index:2;visibility: hidden; width:821px; height:760px;filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; margin-top: -760px; -moz-border-radius: 10px; -webkit-border-radius: 10px;">
             <div id="carregar" align="center" style="color: #fff;background: url(<?php echo $this->baseUrl()."/public/images/sistema/bar_ani_laranja.gif";?>) repeat-x;">Salvando...</div>
         </div>
         <div align="center" class="form-actions">
@@ -224,8 +223,27 @@
         flag=1
         
         if(document.getElementById('arrayIdTempFuncionarioEscolhido').value == ",")
-        {   //flag = 0;
-            //alert('Não há Funcionário escolhido!');
+        {   flag = 0;
+            alert('Não há Funcionários escolhidos!');
+        }
+        
+        if(document.getElementById('arrayIdTempTimeEscolhido').value == ",")
+        {   flag = 0;
+            alert('Não há Times Visiveis escolhidos!');
+        }
+        
+        if(document.getElementById('arrayIdTempEmpresaEscolhida').value == ",")
+        {   flag = 0;
+            alert('Não há Empresas Visiveis escolhidas!');
+        }
+        
+        if(document.getElementById('idGrupoTmp').value == "")
+        {   flag = 0;
+            alert('Não há Grupo de Funcionalidade escolhido!');
+        }
+        else if(document.getElementById('id_funcionalidades').value == "")
+        {   flag = 0;
+            alert('Não há Funcionalidade escolhida!');
         }
         
         if(flag)

@@ -266,7 +266,7 @@ class ZendUtils {
 
                 $session->msg = array("mensagem"=>$mensagem,"tipo"=>$tipo,"tempo"=>$tempo);
                 
-                echo "<script>alert('oi');</script>";
+                echo "<script></script>";
                     
                  Zend_Registry::set('session', $session);
 

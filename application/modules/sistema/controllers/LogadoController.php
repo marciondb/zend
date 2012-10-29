@@ -144,6 +144,8 @@ class Sistema_LogadoController extends Controller_Action
     public function ajaxgravacontroleacessoAction()
     {
         $this->_helper->layout->disableLayout();
+        $this->view->erros = '';
+        $teste = '';
         
         $parametros = $this->_getAllParams();
             
@@ -156,8 +158,10 @@ class Sistema_LogadoController extends Controller_Action
         $this->_usuario_grupo->deletar($arrayIdUsuario);
         
         if(isset($parametros['arrayIdTempTimeEscolhido']) && ($parametros['arrayIdTempTimeEscolhido']!=","))
-        {
-            $this->_usuario_time_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempTimeEscolhido'],1,-1));
+        {            
+            $teste = $this->_usuario_time_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempTimeEscolhido'],1,-1));
+            if(is_string($teste))
+                $this->view->erros = $teste;    
         }
 
         if(isset($parametros['arrayIdTempEmpresaEscolhida']) && ($parametros['arrayIdTempEmpresaEscolhida']!=","))

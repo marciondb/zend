@@ -382,11 +382,11 @@ cursor: default;
 
 .tab_content{
     width:767px;
-    height:465px;
+    height:665px;
     overflow:auto;
 }
 .transparente{
-    width:775px;height:500px; filter:alpha(opacity=80);opacity:0.8;background-color:#000000;
+   
 }
 
 .togglerMenssagem { 
