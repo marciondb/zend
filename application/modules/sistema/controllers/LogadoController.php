@@ -146,7 +146,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_helper->layout->disableLayout();
         $this->view->erros = '';
         $teste = '';
-        
+                
         $parametros = $this->_getAllParams();
             
         $listaIdTempFuncionarioEscolhido = substr($parametros['arrayIdTempFuncionarioEscolhido'], 1,-1); 
@@ -161,24 +161,30 @@ class Sistema_LogadoController extends Controller_Action
         {            
             $teste = $this->_usuario_time_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempTimeEscolhido'],1,-1));
             if(is_string($teste))
-                $this->view->erros = $teste;    
+                $this->view->erros .= " ".$teste;    
         }
 
         if(isset($parametros['arrayIdTempEmpresaEscolhida']) && ($parametros['arrayIdTempEmpresaEscolhida']!=","))
         {
-            $this->_usuario_empresa_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempEmpresaEscolhida'],1,-1));
+            $teste = $this->_usuario_empresa_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempEmpresaEscolhida'],1,-1));
+            if(is_string($teste))
+                $this->view->erros .= " ".$teste;
         }
 
         //Verifica se um grupo foi escolhido
         if(!isset($parametros['idGrupoTmp']))
         {   
             // Inserir em usuario_funcionalidade
-            $this->_usuario_funcionalidade->gravar($arrayIdUsuario, $parametros['id_funcionalidades'],$parametros['funcionalidade_editar'],$parametros['funcionalidade_deletar'],$parametros['funcionalidade_liberar'],$parametros['idPai']);
+            $teste = $this->_usuario_funcionalidade->gravar($arrayIdUsuario, $parametros['id_funcionalidades'],$parametros['funcionalidade_editar'],$parametros['funcionalidade_deletar'],$parametros['funcionalidade_liberar'],$parametros['idPai'],$this->_permissoes);
+            if(is_string($teste))
+                $this->view->erros .= " ".$teste;
         } 
         else 
         {
             // Inserir em usuario_grupo
-            $this->_usuario_grupo->gravar($arrayIdUsuario, $parametros['idGrupoTmp']);
+            $teste = $this->_usuario_grupo->gravar($arrayIdUsuario, $parametros['idGrupoTmp']);
+            if(is_string($teste))
+                $this->view->erros .= " ".$teste;
         }
     }
     

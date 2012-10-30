@@ -34,8 +34,9 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao gravar a time visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            //ZendUtils::transmissorMsg('Erro ao gravar a time visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);            
             return $e->getMessage();
+            
         }
     }
     
@@ -67,7 +68,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
                     where('usuario_time_visivel.id_time = ?', $data['id_time']);
            
         if(!$select->query()->rowCount())
-            $erros = "ERRO 171";
+            $erros = "ERRO 171 - Time";
         
         return $erros;
     }

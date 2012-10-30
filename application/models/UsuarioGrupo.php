@@ -44,8 +44,8 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //echo "<script>setMsg('ERRO','Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>".$e->getMessage()."',1)</script>";    
             //ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            return $e->getMessage();
         }
         
     }
@@ -67,10 +67,20 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
     
     protected function _validarDados(array $data){
         // Validação
-        //$erros = "";
+        $erros = TRUE;        
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('usuario_grupo', 'usuario_grupo.id_grupo_de_acesso')->
+                    where('usuario_grupo.id_usuario = ?',$arrayIdentity->id_usuario)->
+                    where('usuario_grupo.id_grupo_de_acesso = ?', $data['id_grupo_de_acesso']);
+           
+        if(!$select->query()->rowCount())
+            $erros = "ERRO 171 - Grupo";
         
-        return true;
+        return $erros;
     }   
    
        

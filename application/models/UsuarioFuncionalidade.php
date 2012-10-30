@@ -2,12 +2,15 @@
 
 class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 {
+    protected $_permissao = '';
+    
     public function __construct() {
-        $this->_dbTable = new Application_Model_DbTable_UsuarioFuncionalidade();
+        $this->_dbTable = new Application_Model_DbTable_UsuarioFuncionalidade();        
     }
     
-    public function gravar($arrayIdusuario,$id_funcionalidades,$funcionalidade_editar,$funcionalidade_deletar,$funcionalidade_liberar,$funcionalidade_pai, $update = FALSE)
+    public function gravar($arrayIdusuario,$id_funcionalidades,$funcionalidade_editar,$funcionalidade_deletar,$funcionalidade_liberar,$funcionalidade_pai, $permissao,$update = FALSE)
     {      
+        $this->_permissao = $permissao;
         $editar  = '';
         $deletar = '';
         $liberar = '';        
@@ -108,7 +111,8 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            //ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            return $e->getMessage();
         }
         
     }
@@ -189,14 +193,6 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         else    
             return $arrayIdFuncionalidade;
     }
-
-    protected function _validarDados(array $data){
-        // Validação
-        //$erros = "";
-        
-        
-        return true;
-    }
     
     public function deletar($array_id_usuario)
     {
@@ -214,6 +210,23 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
             //ZendUtils::transmissorMsg('Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
-    
+        
+    protected function _validarDados(array $data){
+        // Validação
+        $erros = TRUE;
+        
+        foreach ($this->_permissao as $value) {
+            
+            if($data['id_funcionalidade'] == $value['id_funcionalidade'])
+            {    
+                $erros = true;
+                break;
+            }
+            else
+                $erros = 'ERRO 171 - Funcionalidades';
+        }
+               
+        return $erros;
+    }
 }
 

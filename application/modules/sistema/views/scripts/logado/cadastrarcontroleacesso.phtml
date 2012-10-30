@@ -1,6 +1,6 @@
 <h3>Cadastro de Controle de Acesso</h3>
 <hr>
-<div id="tabs" style="width:811px;height:750px;">  
+<div id="tabs" style="width:811px;">  
     <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravacontroleacesso'), null, 1); ?>" method="post">
         <ul>
             <li><a href="#tabs-3">Funcionário</a></li>
@@ -148,17 +148,13 @@
         <div id="ajax_id_funcionalidade" style="display: none"></div>
     
     </div><!--<div id="tab">-->
-
-        <div id="transparente" style="z-index:2;visibility: hidden; width:821px; height:760px;filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; margin-top: -760px; -moz-border-radius: 10px; -webkit-border-radius: 10px;">
-            <div id="carregar" align="center" style="color: #fff;background: url(<?php echo $this->baseUrl()."/public/images/sistema/bar_ani_laranja.gif";?>) repeat-x;">Salvando...</div>
-        </div>
-        <div align="center" class="form-actions">
-            <input type="button" class="btn btn-primary" onclick="valida();" value="Gravar">
-        </div>
+    <div align="center" class="form-actions">
+        <input type="button" class="btn btn-primary" onclick="valida();" value="Gravar">
+    </div>
+        
     </form>
     <p><tt id="results"></tt></p>
 </div>
-<div id="errosSalvar"></div>
 
 <?php 
     //URL de TODOS!!!! os ajax
@@ -185,11 +181,18 @@
     $( "#effectMenssagem" ).hide();
     
     
-    $( "#carregar" ).position({
-        my: "center center",
-        at: "center center",
-        of: "#transparente"
-    });
+    function desmarcaPai()
+    {
+        temp = document.forms[0].getElementsByClassName('idPai');
+        if(temp.length)
+        { 
+            for (i = 0; i < temp.length; i++)
+            {   
+               temp[i].checked = false;
+                
+            }
+        }
+    }
     
     function marcaPai(pai)
     {
@@ -221,35 +224,39 @@
     function valida()
     {
         flag=1
+        textoMsgErro = '';
         
         if(document.getElementById('arrayIdTempFuncionarioEscolhido').value == ",")
         {   flag = 0;
-            alert('Não há Funcionários escolhidos!');
+            textoMsgErro += 'Não há Funcionários escolhidos!<br>';
         }
         
         if(document.getElementById('arrayIdTempTimeEscolhido').value == ",")
         {   flag = 0;
-            alert('Não há Times Visiveis escolhidos!');
+            textoMsgErro += 'Não há Times Visiveis escolhidos!<br>';
         }
         
         if(document.getElementById('arrayIdTempEmpresaEscolhida').value == ",")
         {   flag = 0;
-            alert('Não há Empresas Visiveis escolhidas!');
+            textoMsgErro += 'Não há Empresas Visiveis escolhidas!<br>';
         }
         
-        if(document.getElementById('idGrupoTmp').value == "")
-        {   flag = 0;
-            alert('Não há Grupo de Funcionalidade escolhido!');
+        if ($('#idGrupoTmp')[0])
+        {    
+            if(document.getElementById('idGrupoTmp').value == "")
+            {   flag = 0;
+                textoMsgErro += 'Não há Grupo de Funcionalidade escolhido!<br>';
+            }
         }
         else if(document.getElementById('id_funcionalidades').value == "")
         {   flag = 0;
-            alert('Não há Funcionalidade escolhida!');
+            textoMsgErro += 'Não há Funcionalidade escolhida!<br>';
         }
         
         if(flag)
-        {
-            
+        {            
             temps = document.forms[0].getElementsByClassName('idFuncionalidade');
+            desmarcaPai();
             
             if(temps.length)
             { 
@@ -261,7 +268,9 @@
             }
             
             carregaGravando();
-        }    
+        }
+        else
+           showAlert('Atenção',textoMsgErro);
             
     }
     

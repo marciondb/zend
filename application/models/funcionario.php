@@ -133,11 +133,19 @@ class Application_Model_Funcionario extends Application_Model_Abstract
     
     public function getIdUsuario($listaIdFuncionario)
     {
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        
         $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('usuario', array('id_usuario'))->
-                    where('usuario.id_funcionario in (' . $listaIdFuncionario . ')');
+                    from('funcionario',array('id_usuario'))->
+                    join('time','funcionario.id_time = time.id_time',null)->
+                    join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
+                    join('lotacao', 'funcionario.id_funcionario = lotacao.id_funcionario',null)->
+                    join('empresa', 'empresa.id_empresa = lotacao.id_empresa',null)->
+                    where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
+                    where('lotacao.atual = 1')->
+                    where('funcionario.id_funcionario in (' . $listaIdFuncionario . ')');
         return $select->query()->fetchAll(); 
     }
 

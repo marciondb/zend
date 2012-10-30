@@ -32,7 +32,8 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao gravar a empresa visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            //ZendUtils::transmissorMsg('Erro ao gravar a empresa visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            return $e->getMessage();
         }    
     }
 
@@ -53,10 +54,20 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
     
     protected function _validarDados(array $data){
         // Validação
-        //$erros = "";
+        $erros = TRUE;        
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('usuario_empresa_visivel', 'usuario_empresa_visivel.id_empresa')->
+                    where('usuario_empresa_visivel.id_usuario = ?',$arrayIdentity->id_usuario)->
+                    where('usuario_empresa_visivel.id_empresa = ?', $data['id_empresa']);
+           
+        if(!$select->query()->rowCount())
+            $erros = "ERRO 171 - Empresa";
         
-        return true;
+        return $erros;
     }
     
    

@@ -502,8 +502,17 @@ function setMsg(titulo,conteudo,tipo)
     runEffect(tipo,2000);
 }
 
-function habilitaDiv(opcao)
+function habilitaDiv(opcao,divHidden)
 {
+    tamanhoDiv = document.getElementById(divHidden).clientHeight;
+    document.getElementById('transparente').style.marginTop = '-'+(tamanhoDiv+121)+'px';
+    document.getElementById('transparente').style.height = tamanhoDiv+'px';
+    $( "#carregar" ).position({
+            my: "center center",
+            at: "center center",
+            of: "#transparente"
+            });
+            
     if(opcao)
         document.getElementById('transparente').style.visibility = '';
     else
@@ -512,7 +521,7 @@ function habilitaDiv(opcao)
 
 function carregaGravando()
 {
-    habilitaDiv(true);
+    habilitaDiv(true,'tabs');
     var frm = $('form');        
     $.ajax({
         type: frm.attr('method'),
@@ -522,15 +531,38 @@ function carregaGravando()
         success: function (request,data) {
             //alert('ok');
             if($.trim(request)!='')
-                setMsg('ERRO1','Erro ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
+                setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
             else
                 setMsg('Show','Salvo com sucesso!',1);
         },
         error: function (request, status, error) {
             //setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!'+request.responseText,0);
-            setMsg('ERRO2','Erro ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
+            setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
         }
     });
-    habilitaDiv(false);
+    habilitaDiv(false,'tabs');
 
+}
+
+function showAlert(titulo,msg){
+    
+    var showAlert = document.createElement('div');
+    showAlert.id = 'showAlert';    
+    document.body.appendChild(showAlert);
+    
+    document.getElementById('showAlert').innerHTML = msg;
+    document.getElementById('showAlert').title = titulo;
+    
+    $(function() {
+        $( "#showAlert" ).dialog({
+            modal: true,
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                    
+                }
+            }
+        });
+    });
+    
 }

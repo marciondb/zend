@@ -250,8 +250,7 @@ class ZendUtils {
                  * @param  String   $tipo   O tipo de mensagem que se deseja enviar, na classe existem duas constantes contendo os possiveis tipos MENSAGEM_ACERTO e MENSAGEM_ERRO caso nenhuma seja selecionada ou o $tipo seja invalido sera atribuido o primeiro
                  * @param  Int      $tempo   O tempo que a msg ficará sendo exibida ao usuario em milisegundos   **/
             public static  function transmissorMsg($mensagem = "",$tipo = "",$tempo = 6000)
-            {
-               
+            {                
                 if($mensagem == "")
                 {return;}
 
@@ -265,8 +264,6 @@ class ZendUtils {
                 $session = Zend_Registry::get("session");
 
                 $session->msg = array("mensagem"=>$mensagem,"tipo"=>$tipo,"tempo"=>$tempo);
-                
-                echo "<script></script>";
                     
                  Zend_Registry::set('session', $session);
 

@@ -5,7 +5,7 @@ html, body {
 	padding:0px;
 	background-color:#eee;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size:16px;
+	font-size:12px;
 }
 div#topo {
 	padding:10px;
@@ -382,7 +382,7 @@ cursor: default;
 
 .tab_content{
     width:767px;
-    height:665px;
+    height:auto;
     overflow:auto;
 }
 .transparente{
@@ -399,3 +399,5 @@ cursor: default;
     z-index:1;
     text-align: center;
 }
+
+.erroSalvar{height: auto}
