@@ -528,7 +528,7 @@ function carregaGravando()
         type: frm.attr('method'),
         url: frm.attr('action'),
         data: frm.serialize(),
-        async: false,
+        async: true,
         success: function (request,data) {
             //alert('ok');
             if($.trim(request)!='')
