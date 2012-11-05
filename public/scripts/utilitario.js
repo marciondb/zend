@@ -1,3 +1,13 @@
+pathArray = window.location.pathname.split( '/' );
+host = pathArray[1];
+
+//ajax
+urlAjaxEmpresa = '/'+host+'/sistema/logado/ajaxempresa';
+urlAjaxTime = '/'+host+'/sistema/logado/ajaxtime';
+urlAjaxFuncionario = '/'+host+'/sistema/logado/ajaxfuncionario';
+urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
+urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
+
 function preencheCampos()
 {
     for (i=0; i<formulario.elements.length; i++) {  
@@ -507,16 +517,21 @@ function habilitaDiv(opcao,divHidden)
     tamanhoDiv = document.getElementById(divHidden).clientHeight;
     document.getElementById('transparente').style.marginTop = '-'+(tamanhoDiv+121)+'px';
     document.getElementById('transparente').style.height = tamanhoDiv+'px';
-    $( "#carregar" ).position({
-            my: "center center",
-            at: "center center",
-            of: "#transparente"
-            });
-            
+                
     if(opcao)
+    {
         document.getElementById('transparente').style.visibility = '';
+        $( "#transparente" ).fadeIn("fast");
+    }
+        
     else
-        document.getElementById('transparente').style.visibility = 'hidden';
+    {    $( "#transparente" ).fadeOut("slow");
+         setTimeout(function() {
+            document.getElementById('transparente').style.visibility = 'hidden';
+
+        }, (500) );
+         
+    }
 }
 
 function carregaGravando()
@@ -569,3 +584,314 @@ function showAlert(titulo,msg){
     });
     
 }
+
+function desmarcaPai()
+{
+    temp = document.forms[0].getElementsByClassName('idPai');
+    if(temp.length)
+    { 
+        for (i = 0; i < temp.length; i++)
+        {   
+            temp[i].checked = false;
+                
+        }
+    }
+}
+    
+function marcaPai(pai)
+{
+    pai = pai.substr(0,pai.indexOf(','));
+        
+    if(pai==0)
+        return 1;
+                
+    temp = document.forms[0].getElementsByClassName('idPai');
+        
+    if(temp.length)
+    { 
+        for (ii = 0; ii < temp.length; ii++)
+        {   
+            paiAux = temp[ii].value;
+            paiAux2 = paiAux.substr(paiAux.indexOf(',')+1);
+               
+            if(paiAux2==pai)
+            {
+                temp[ii].checked = true;
+                marcaPai(paiAux);
+            }    
+                
+        }
+    }
+        
+}
+    
+function setGrupoOff()
+{
+    temp = document.forms[0].getElementsByClassName('idGrupoTmp');
+    if(temp.length)
+    { 
+        for (i = 0; i < temp.length; i++)
+        {   
+            temp[i].checked = false;
+                
+        }
+    }
+}
+    
+function apagaArrayIdTempTime()
+{
+    document.getElementById('arrayIdTempTime').value=',';
+}
+    
+function setFuncioGrupo()
+{
+    arrayIdFuncionalidades = "";
+    valor = '';
+        
+    temp = document.forms[0].getElementsByClassName('idGrupoTmp');
+    if(temp.length)
+    { 
+        for (i = 0; i < temp.length; i++)
+        {   
+            if(temp[i].checked)
+            {
+                arrayIdFuncionalidades += ','+document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value+',';
+                arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
+                arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
+            }
+        }
+    }
+        
+    temp = document.forms[0].getElementsByClassName('idFuncionalidade');
+        
+    if(temp.length)
+    {
+        for (i = 0; i < temp.length; i++)
+        {
+            valor = temp[i].value;
+                
+            if(existeNaStr(",",valor))
+                valor = valor.substr(valor.indexOf(",")+1);
+                
+            temp[i].checked=false;                 
+                
+            if(existeNaStr(','+valor+',',arrayIdFuncionalidades))
+            {
+                temp[i].checked=true;
+            }
+                
+        }
+    }
+}
+    
+function disableLED()
+{
+    arrayIdFuncionalidades = '';
+    aux='';
+    temp = document.forms[0].getElementsByClassName('idGrupoTmp');
+        
+    if(temp.length)
+    { 
+        for (i = 0; i < temp.length; i++)
+        {   
+            if(temp[i].checked)
+            {    
+                arrayIdFuncionalidades = document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value;
+                arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
+                arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
+                arrayIdFuncionalidades = arrayIdFuncionalidades.split(',');
+                     
+                for (i = 0; i < arrayIdFuncionalidades.length; i++)
+                {
+                    if(!existeNaStr(arrayIdFuncionalidades[i],aux))
+                        aux +=  arrayIdFuncionalidades[i]+',';
+                }
+                     
+            }
+        }
+    }
+    temp = aux.substr(0,aux.length-1);
+    temp = temp.split(',');
+        
+    if(temp.length)
+    {
+        for (i = 0; i < temp.length; i++)
+        {   
+            toggleLED(temp[i]);
+        }
+    }
+}
+    
+function toggleLED(nomeDiv) {
+    if(document.getElementById(nomeDiv))
+    {
+        toggleDisabled(document.getElementById(nomeDiv));
+    }
+            
+}
+
+function toggleDisabled(el) {
+    try 
+    {
+        el.disabled = el.disabled ? false : true;
+        //el.checked  = el.checked ? true : false;
+        if(el.disabled)
+            el.checked  = false;
+    }
+    catch(E){}
+
+    if (el.childNodes && el.childNodes.length > 0) {
+        for (var x = 0; x < el.childNodes.length; x++) {
+            toggleDisabled(el.childNodes[x]);
+        }
+    }
+}
+    
+/******************************************************************************/
+//                               INICIO FILTRO
+/******************************************************************************/
+    
+function setFiltroTime()
+{
+    listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+    listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
+        
+    url = urlAjaxTime+'/selecionar/1/listaIdEmpresa/'+listaIdEmpresa;
+    ajax(url,'ajax_time');
+}
+    
+//todos de todas as empresas
+function setFiltroFuncionario(todos,remover,pagina)
+{
+        
+    listaIdFuncionarioEscolhido = document.getElementById('arrayIdTempFuncionarioEscolhido').value;
+    listaIdFuncionarioEscolhido = listaIdFuncionarioEscolhido.substr(1,listaIdFuncionarioEscolhido.length-2); //retira a 1º e a ultima virgula
+    url = urlAjaxFuncionario+
+    '/listaIdFuncionarioEscolhido/'+listaIdFuncionarioEscolhido;
+    if (typeof(todos) == "undefined" || todos=='')
+    {    
+            
+        listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
+        listaIdTime = document.getElementById('arrayIdTempTime').value;
+        listaIdTime = listaIdTime.substr(1,listaIdTime.length-2); //retira a 1º e a ultima virgula
+            
+        idCargo = document.getElementById('idCargo').value;
+        idSetor = document.getElementById('idSetor').value;
+        idFuncionario_tipo  = document.getElementById('idFuncionario_tipo').value;
+            
+        url += '/listaIdEmpresa/'+listaIdEmpresa+
+        '/listaIdTime/'+listaIdTime+    
+        '/idCargo/'+idCargo+
+        '/idSetor/'+idSetor+
+        '/idFuncionario_tipo/'+idFuncionario_tipo;
+    }
+    else
+    {
+        url2 = urlAjaxEmpresa+'/selecionar/1';
+        document.getElementById('arrayIdTempEmpresa').value = ',';
+        ajax(url2,'ajax_empresa');
+    }
+        
+    if ((typeof(pagina) != "undefined")  )
+        url+='/pagina/'+pagina;
+        
+    ajax(url+'/adicionar/1/','ajax_funcionario');
+        
+    if ((typeof(remover) != "undefined")  )
+    {   
+        url += '/remover/1';
+        if(document.getElementById('arrayIdTempFuncionarioEscolhido').value != ',')
+            ajax(url,'ajax_funcionario_adicionados');
+        else
+            document.getElementById('ajax_funcionario_adicionados').innerHTML = 'Nenhum item adicionado.';
+    }
+}
+    
+function filtraCnpj()
+{   
+    cnpj = document.getElementById('cnpj').value;
+    url = urlAjaxEmpresa+'/selecionar/1'+'/cnpj/'+cnpj;
+    ajax(url,'ajax_empresa');
+}
+    
+function setEmpresasVisiveis(remover,pagina)
+{
+    listaIdEmpresasEscolhidas = document.getElementById('arrayIdTempEmpresaEscolhida').value;
+    listaIdEmpresasEscolhidas = listaIdEmpresasEscolhidas.substr(1,listaIdEmpresasEscolhidas.length-2); //retira a 1º e a ultima virgula
+        
+    url = urlAjaxEmpresa+'/pagina/'+pagina+
+    '/listaIdEmpresasEscolhidas/'+listaIdEmpresasEscolhidas;
+    ajax(url+'/adicionar/1','ajax_empresas_visiveis');
+        
+    if ((typeof(remover) != "undefined")  )
+    {   
+        url += '/remover/1';
+        if(document.getElementById('arrayIdTempEmpresaEscolhida').value != ',')
+            ajax(url,'ajax_empresas_adicionadas');
+        else
+            document.getElementById('ajax_empresas_adicionadas').innerHTML = 'Nenhum item adicionado.';
+    }
+       
+}
+    
+function setTimesVisiveis(remover,pagina)
+{
+    listaIdTimesEscolhidos = document.getElementById('arrayIdTempTimeEscolhido').value;
+    listaIdTimesEscolhidos = listaIdTimesEscolhidos.substr(1,listaIdTimesEscolhidos.length-2); //retira a 1º e a ultima virgula
+        
+    url = urlAjaxTime+'/pagina/'+pagina+
+    '/listaIdTimesEscolhidos/'+listaIdTimesEscolhidos;
+    ajax(url+'/adicionar/1','ajax_times_visiveis');
+        
+    if ((typeof(remover) != "undefined")  )
+    {   
+        //alert('asd');
+        url += '/remover/1';
+        if(document.getElementById('arrayIdTempTimeEscolhido').value != ',')
+            ajax(url,'ajax_times_adicionados');
+        else
+            document.getElementById('ajax_times_adicionados').innerHTML = 'Nenhum item adicionado.';
+    }
+       
+}
+    
+/******************************************************************************/
+//                               FIM FILTRO
+/******************************************************************************/
+    
+/******************************************************************************/
+//                               INICIO AJAX
+/******************************************************************************/
+function getIdFuncionalidade(idGrupo)
+{
+    url = urlAjaxGrupo+'/selecionar/1/idGrupo/'+idGrupo;
+    ajax(url,'ajax_id_funcionalidade');
+    document.getElementById('arrayIdTempFuncionalidade_'+idGrupo).value = document.getElementById('ajax_id_funcionalidade').innerHTML;
+}
+    
+tabelas='';
+/***
+    * Como existe mais de um paginator na pagina, temos que ter o controle da
+    * funcao setPaginator() para que o ajax correto seja carregado.
+    * Ao passar o mouse sobre cada DIV, essa variavel eh setada
+    */ 
+function setTabela(tabela)
+{
+    tabelas = tabela;
+}
+    
+function carregaMenuTree()
+{
+    url = urlAjaxCarregaMenuTree;
+    ajax(url,'ajax_funcionalidades');
+    //carrega o menu tree
+    //http://www.dynamicdrive.com/dynamicindex1/navigate1.htm
+    //ddtreemenu.createTree(treeid, enablepersist, opt_persist_in_days (default is 1))
+    ddtreemenu.createTree("treemenu1", false);
+}
+    
+    
+    /******************************************************************************/
+    //                               FIM AJAX
+    /******************************************************************************/

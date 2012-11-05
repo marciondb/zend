@@ -1,0 +1,91 @@
+<h3>Genrenciar Controle de Acesso</h3>
+<hr>
+<div class="modal_min_auto_size">
+    <h4>Filtros:</h4>
+    CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+    <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+    <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+    &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
+    <b>Exibir todas as empresas</b>
+    <hr>
+    <h5>Empresa</h5>
+    <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
+    </div>
+    <hr>
+    <h5>Time</h5>
+    <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+    </div>
+
+    <div id="div_FiltroFuncionrio" class="modal_filtro">
+        <table align="center">	
+            <tr>
+                <td align="left">
+                    Setor / Unidade de Negócios: 
+                </td>
+                <td align="left">
+                    <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
+                        <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
+                        <?php
+                        foreach ($this->arraySetor as $linha) {
+                            ?>
+                            <option value="<?php echo $linha['id_setor']; ?>"><?php echo $linha['titulo']; ?></option>
+                            <?php
+                        }
+                        ?>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    Cargo: 
+                </td>
+                <td align="left">
+                    <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
+                        <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
+                        <?php
+                        foreach ($this->arrayCargo as $linha) {
+                            ?>
+                            <option value="<?php echo $linha['id_cargo']; ?>" ><?php echo $linha['titulo']; ?></option>
+                            <?php
+                        }
+                        ?>                            
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    Tipo: 
+                </td>
+                <td align="left">
+                    <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
+                        <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
+                        <?php
+                        foreach ($this->arrayFuncionario_tipo as $linha) {
+                            ?>
+                            <option value="<?php echo $linha['id_funcionario_tipo']; ?>" ><?php echo $linha['titulo']; ?></option>
+                            <?php
+                        }
+                        ?>                            
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="ajax_gerenciarAcesso" class="modal_ajax" onmouseover="setTabela('gerenciaracesso');">    
+</div>
+
+
+<?php 
+    //URL de TODOS!!!! os ajax
+    $urlAjaxEmpresa = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE);
+    
+    $urlAjaxTime = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','selecionar'=>TRUE);
+    
+    //$arrayGerenciarAcessoLED = $this->arrayFuncionarioLED;
+    $urlAjaxGerenciarAcesso = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgerenciaracesso','selecionar'=>TRUE);
+    //$urlAjaxFuncionario = array_merge($urlAjaxFuncionario,$arrayFuncionarioLED);
+    
+?>

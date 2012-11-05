@@ -233,6 +233,10 @@ class Sistema_LogadoController extends Controller_Action
     
     }
     
+    public function gerenciarcontroleacessoAction() {
+        
+    }
+    
     public function testeAction()
     {
         if($this->_request->isPost())

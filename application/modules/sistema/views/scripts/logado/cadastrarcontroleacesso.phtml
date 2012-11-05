@@ -153,111 +153,90 @@
     </div>
         
     </form>
-    <p><tt id="results"></tt></p>
+    
 </div>
 
-<?php 
-    //URL de TODOS!!!! os ajax
-    //$arrayEmpresaLED = $this->arrayEmpresaLED;
-    $urlAjaxEmpresa = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','selecionar'=>TRUE);
-    //$urlAjaxEmpresa = array_merge($urlAjaxEmpresa,$arrayEmpresaLED);
-    
-    //$arrayTimeLED = $this->arrayTimeLED;
-    $urlAjaxTime = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','selecionar'=>TRUE);
-    //$urlAjaxTime = array_merge($urlAjaxTime,$arrayTimeLED);
-    
-    //$arrayFuncionarioLED = $this->arrayFuncionarioLED;
-    $urlAjaxFuncionario = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxfuncionario','adicionar'=>TRUE);
-    //$urlAjaxFuncionario = array_merge($urlAjaxFuncionario,$arrayFuncionarioLED);
-    
-    $urlAjaxEmpresaVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxempresa','adicionar'=>TRUE);
-    $urlAjaxTimeVisiveis = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxtime','adicionar'=>TRUE);
-    $urlAjaxGrupo = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxusuariogrupo','selecionar'=>TRUE);
-    $urlAjaxCarregaMenuTree = array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxcarregamenutree');
-?>
-
 <script type="text/javascript">      
-    
-    $( "#effectMenssagem" ).hide();
-    
-    
-    function desmarcaPai()
-    {
-        temp = document.forms[0].getElementsByClassName('idPai');
-        if(temp.length)
-        { 
-            for (i = 0; i < temp.length; i++)
-            {   
-               temp[i].checked = false;
-                
-            }
-        }
-    }
-    
-    function marcaPai(pai)
-    {
-        pai = pai.substr(0,pai.indexOf(','));
-        
-        if(pai==0)
-            return 1;
-                
-        temp = document.forms[0].getElementsByClassName('idPai');
-        
-        if(temp.length)
-        { 
-            for (ii = 0; ii < temp.length; ii++)
-            {   
-               paiAux = temp[ii].value;
-               paiAux2 = paiAux.substr(paiAux.indexOf(',')+1);
-               
-               if(paiAux2==pai)
-               {
-                   temp[ii].checked = true;
-                   marcaPai(paiAux);
-               }    
-                
-            }
-        }
-        
-    }
     
     function valida()
     {
         flag=1
         textoMsgErro = '';
-        
+
         if(document.getElementById('arrayIdTempFuncionarioEscolhido').value == ",")
-        {   flag = 0;
+        {
+            flag = 0;
             textoMsgErro += 'Não há Funcionários escolhidos!<br>';
         }
-        
+
         if(document.getElementById('arrayIdTempTimeEscolhido').value == ",")
-        {   flag = 0;
+        {
+            flag = 0;
             textoMsgErro += 'Não há Times Visiveis escolhidos!<br>';
         }
-        
+
         if(document.getElementById('arrayIdTempEmpresaEscolhida').value == ",")
-        {   flag = 0;
+        {
+            flag = 0;
             textoMsgErro += 'Não há Empresas Visiveis escolhidas!<br>';
         }
-        
+
         if ($('#idGrupoTmp')[0])
         {    
-            if(document.getElementById('idGrupoTmp').value == "")
-            {   flag = 0;
-                textoMsgErro += 'Não há Grupo de Funcionalidade escolhido!<br>';
+            
+            flag1=0;
+            flag2=0;
+            
+            temps = document.forms[0].getElementsByClassName('idGrupoTmp');
+            if(temps.length)
+            { 
+                for (j = 0; j < temps.length; j++)
+                {   //alert(temp.length);
+                    if(temps[j].checked)
+                        flag1=1;
+                }
+            }
+            
+            temps = document.forms[0].getElementsByClassName('idFuncionalidade');
+            if(temps.length)
+            { 
+                for (j = 0; j < temps.length; j++)
+                {   //alert(temp.length);
+                    if(temps[j].checked)
+                        flag2=1;
+                }
+            }
+                        
+            if(flag1==0 && flag2==0)
+            {
+                flag = 0;
+                textoMsgErro += 'Não há Funcionalidades escolhidas!<br>';
             }
         }
-        else if(document.getElementById('id_funcionalidades').value == "")
-        {   flag = 0;
-            textoMsgErro += 'Não há Funcionalidade escolhida!<br>';
+        else
+        {
+            flag1=0;
+            temps = document.forms[0].getElementsByClassName('idFuncionalidade');
+            if(temps.length)
+            { 
+                for (j = 0; j < temps.length; j++)
+                {   //alert(temp.length);
+                    if(temps[j].checked)
+                        flag1 = 1;
+                }
+            }
+            if(flag1==0)
+            {
+                flag = 0;
+                textoMsgErro += 'Não há Funcionalidade escolhida!<br>';
+            }            
         }
-        
+
         if(flag)
         {            
             temps = document.forms[0].getElementsByClassName('idFuncionalidade');
             desmarcaPai();
-            
+
             if(temps.length)
             { 
                 for (j = 0; j < temps.length; j++)
@@ -266,266 +245,13 @@
                         marcaPai(temps[j].value);
                 }
             }
-            
+
             carregaGravando();
         }
         else
-           showAlert('Atenção',textoMsgErro);
-            
-    }
-    
-    function setGrupoOff()
-    {
-        temp = document.forms[0].getElementsByClassName('idGrupoTmp');
-        if(temp.length)
-        { 
-            for (i = 0; i < temp.length; i++)
-            {   
-               temp[i].checked = false;
-                
-            }
-        }
-    }
-    
-    function apagaArrayIdTempTime()
-    {
-        document.getElementById('arrayIdTempTime').value=',';
-    }
-    
-    function setFuncioGrupo()
-    {
-        arrayIdFuncionalidades = "";
-        valor = '';
-        
-        temp = document.forms[0].getElementsByClassName('idGrupoTmp');
-        if(temp.length)
-        { 
-            for (i = 0; i < temp.length; i++)
-            {   
-                if(temp[i].checked)
-                {    arrayIdFuncionalidades += ','+document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value+',';
-                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
-                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
-                }
-            }
-        }
-        
-        temp = document.forms[0].getElementsByClassName('idFuncionalidade');
-        
-        if(temp.length)
-        {
-            for (i = 0; i < temp.length; i++)
-            {
-                valor = temp[i].value;
-                
-                if(existeNaStr(",",valor))
-                    valor = valor.substr(valor.indexOf(",")+1);
-                
-                temp[i].checked=false;                 
-                
-                if(existeNaStr(','+valor+',',arrayIdFuncionalidades))
-                {
-                    temp[i].checked=true;
-                }
-                
-            }
-        }
-    }
-    
-    function disableLED()
-    {
-        arrayIdFuncionalidades = '';
-        aux='';
-        temp = document.forms[0].getElementsByClassName('idGrupoTmp');
-        
-        if(temp.length)
-        { 
-            for (i = 0; i < temp.length; i++)
-            {   
-                if(temp[i].checked)
-                {    
-                     arrayIdFuncionalidades = document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value;
-                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
-                     arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
-                     arrayIdFuncionalidades = arrayIdFuncionalidades.split(',');
-                     
-                     for (i = 0; i < arrayIdFuncionalidades.length; i++)
-                     {
-                         if(!existeNaStr(arrayIdFuncionalidades[i],aux))
-                             aux +=  arrayIdFuncionalidades[i]+',';
-                     }
-                     
-                }
-            }
-        }
-        temp = aux.substr(0,aux.length-1);
-        temp = temp.split(',');
-        
-        if(temp.length)
-        {
-            for (i = 0; i < temp.length; i++)
-            {   
-                 toggleLED(temp[i]);
-            }
-        }
-    }
-    
-    function toggleLED(nomeDiv) {
-        if(document.getElementById(nomeDiv))
-            {toggleDisabled(document.getElementById(nomeDiv));}
-            
-    }
+            showAlert('Atenção',textoMsgErro);
 
-    function toggleDisabled(el) {
-        try 
-        {
-            el.disabled = el.disabled ? false : true;
-            //el.checked  = el.checked ? true : false;
-            if(el.disabled)
-                el.checked  = false;
-        }
-        catch(E){}
-
-        if (el.childNodes && el.childNodes.length > 0) {
-            for (var x = 0; x < el.childNodes.length; x++) {
-                toggleDisabled(el.childNodes[x]);
-            }
-        }
-    }
-    
-    /******************************************************************************/
-    //                               INICIO FILTRO
-    /******************************************************************************/
-    
-    function setFiltroTime()
-    {
-        listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
-        listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
-        
-        url = '<?php echo $this->url($urlAjaxTime, null, 1); ?>'+'/listaIdEmpresa/'+listaIdEmpresa;
-        ajax(url,'ajax_time');
-    }
-    
-    //todos de todas as empresas
-    function setFiltroFuncionario(todos,remover,pagina)
-    {
-        
-        listaIdFuncionarioEscolhido = document.getElementById('arrayIdTempFuncionarioEscolhido').value;
-        listaIdFuncionarioEscolhido = listaIdFuncionarioEscolhido.substr(1,listaIdFuncionarioEscolhido.length-2); //retira a 1º e a ultima virgula
-        url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>'+
-                                                        '/listaIdFuncionarioEscolhido/'+listaIdFuncionarioEscolhido;
-        if (typeof(todos) == "undefined" || todos=='')
-        {    
-            
-            listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
-            listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
-            listaIdTime = document.getElementById('arrayIdTempTime').value;
-            listaIdTime = listaIdTime.substr(1,listaIdTime.length-2); //retira a 1º e a ultima virgula
-            
-            idCargo = document.getElementById('idCargo').value;
-            idSetor = document.getElementById('idSetor').value;
-            idFuncionario_tipo  = document.getElementById('idFuncionario_tipo').value;
-            
-            url += '/listaIdEmpresa/'+listaIdEmpresa+
-                                                            '/listaIdTime/'+listaIdTime+    
-                                                            '/idCargo/'+idCargo+
-                                                            '/idSetor/'+idSetor+
-                                                            '/idFuncionario_tipo/'+idFuncionario_tipo;
-        }
-        else
-        {
-            url2 = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>';
-            document.getElementById('arrayIdTempEmpresa').value = ',';
-            ajax(url2,'ajax_empresa');
-        }
-        
-        if ((typeof(pagina) != "undefined")  )
-            url+='/pagina/'+pagina;
-        
-        ajax(url,'ajax_funcionario');
-        
-        if ((typeof(remover) != "undefined")  )
-        {   
-            url += '/remover/1';
-            if(document.getElementById('arrayIdTempFuncionarioEscolhido').value != ',')
-                ajax(url,'ajax_funcionario_adicionados');
-            else
-               document.getElementById('ajax_funcionario_adicionados').innerHTML = 'Nenhum item adcionado.';
-        }
-    }
-    
-    function filtraCnpj()
-    {   
-        cnpj = document.getElementById('cnpj').value;
-        url = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>'+'/cnpj/'+cnpj;
-        ajax(url,'ajax_empresa');
-    }
-    
-    function setEmpresasVisiveis(remover,pagina)
-    {
-        listaIdEmpresasEscolhidas = document.getElementById('arrayIdTempEmpresaEscolhida').value;
-        listaIdEmpresasEscolhidas = listaIdEmpresasEscolhidas.substr(1,listaIdEmpresasEscolhidas.length-2); //retira a 1º e a ultima virgula
-        
-        url = '<?php echo $this->url($urlAjaxEmpresaVisiveis, null, 1); ?>'+'/pagina/'+pagina+
-                                                                    '/listaIdEmpresasEscolhidas/'+listaIdEmpresasEscolhidas;
-        ajax(url,'ajax_empresas_visiveis');
-        
-        if ((typeof(remover) != "undefined")  )
-        {   
-            url += '/remover/1';
-            if(document.getElementById('arrayIdTempEmpresaEscolhida').value != ',')
-                ajax(url,'ajax_empresas_adicionadas');
-            else
-               document.getElementById('ajax_empresas_adicionadas').innerHTML = 'Nenhum item adcionado.';
-        }
-       
-    }
-    
-    function setTimesVisiveis(remover,pagina)
-    {
-        listaIdTimesEscolhidos = document.getElementById('arrayIdTempTimeEscolhido').value;
-        listaIdTimesEscolhidos = listaIdTimesEscolhidos.substr(1,listaIdTimesEscolhidos.length-2); //retira a 1º e a ultima virgula
-        
-        url = '<?php echo $this->url($urlAjaxTimeVisiveis, null, 1); ?>'+'/pagina/'+pagina+
-                                                                    '/listaIdTimesEscolhidos/'+listaIdTimesEscolhidos;
-        ajax(url,'ajax_times_visiveis');
-        
-        if ((typeof(remover) != "undefined")  )
-        {   
-            //alert('asd');
-            url += '/remover/1';
-            if(document.getElementById('arrayIdTempTimeEscolhido').value != ',')
-                ajax(url,'ajax_times_adicionados');
-            else
-               document.getElementById('ajax_times_adicionados').innerHTML = 'Nenhum item adcionado.';
-        }
-       
-    }
-    
-    /******************************************************************************/
-    //                               FIM FILTRO
-    /******************************************************************************/
-    
-    /******************************************************************************/
-    //                               INICIO AJAX
-    /******************************************************************************/
-    function getIdFuncionalidade(idGrupo)
-    {
-        url = '<?php echo $this->url($urlAjaxGrupo, null, 1); ?>/idGrupo/'+idGrupo;
-        ajax(url,'ajax_id_funcionalidade');
-        document.getElementById('arrayIdTempFuncionalidade_'+idGrupo).value = document.getElementById('ajax_id_funcionalidade').innerHTML;
-    }
-    
-    tabelas='';
-    /***
-    * Como existe mais de um paginator na pagina, temos que ter o controle da
-    * funcao setPaginator() para que o ajax correto seja carregado.
-    * Ao passar o mouse sobre cada DIV, essa variavel eh setada
-    */ 
-    function setTabela(tabela)
-    {
-        tabelas = tabela;
-    }
+    }    
     
     //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
     // ajax eh excudado
@@ -533,12 +259,12 @@
     {  
         if(tabelas=='empresa')
         {    
-            url = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>'+'/pagina/'+pagina+query;
+            url = urlAjaxEmpresa+'/selecionar/1/pagina/'+pagina+query;
             ajax(url,'ajax_empresa');
         }
         else if(tabelas=='time')
         {
-            url = '<?php echo $this->url($urlAjaxTime, null, 1); ?>'+'/pagina/'+pagina+query;
+            url = urlAjaxTime+'/selecionar/1/pagina/'+pagina+query;
             ajax(url,'ajax_time');
         }
         else if(tabelas=='funcionario')
@@ -557,40 +283,26 @@
         {
             setTimesVisiveis(1,pagina);
         }
-    }    
-    
-    url = '<?php echo $this->url($urlAjaxEmpresa, null, 1); ?>';
+    } 
+    url = urlAjaxEmpresa+'/selecionar/1';
     ajax(url,'ajax_empresa');
     
-    url = '<?php echo $this->url($urlAjaxTime, null, 1); ?>';
+    url = urlAjaxTime+'/selecionar/1/';
     ajax(url,'ajax_time');
     
-    url = '<?php echo $this->url($urlAjaxFuncionario, null, 1); ?>';
+    url = urlAjaxFuncionario+'/adicionar/1/';
     ajax(url,'ajax_funcionario');
     
-    url = '<?php echo $this->url($urlAjaxEmpresaVisiveis, null, 1); ?>';
+    url = urlAjaxEmpresa+'/adicionar/1';
     ajax(url,'ajax_empresas_visiveis');
     
-    url = '<?php echo $this->url($urlAjaxTimeVisiveis, null, 1); ?>';
+    url = urlAjaxTime+'/adicionar/1/';
     ajax(url,'ajax_times_visiveis');
     
-    url = '<?php echo $this->url($urlAjaxGrupo, null, 1); ?>';
+    url = urlAjaxGrupo+'/selecionar/1/';
     ajax(url,'ajax_grupo');
     
-    function carregaMenuTree()
-    {
-        url = '<?php echo $this->url($urlAjaxCarregaMenuTree, null, 1); ?>';
-        ajax(url,'ajax_funcionalidades');
-         //carrega o menu tree
-        //http://www.dynamicdrive.com/dynamicindex1/navigate1.htm
-        //ddtreemenu.createTree(treeid, enablepersist, opt_persist_in_days (default is 1))
-        ddtreemenu.createTree("treemenu1", false);
-    }
     carregaMenuTree();
-    
-    /******************************************************************************/
-    //                               FIM AJAX
-    /******************************************************************************/
     
        
     
