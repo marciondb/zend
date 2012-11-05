@@ -521,13 +521,13 @@ function habilitaDiv(opcao,divHidden)
 
 function carregaGravando()
 {
-    habilitaDiv(true,'tabs');
+    
     var frm = $('form');        
     $.ajax({
         type: frm.attr('method'),
         url: frm.attr('action'),
         data: frm.serialize(),
-        async: true,
+        async: false,
         success: function (request,data) {
             //alert('ok');
             if($.trim(request)!='')
@@ -535,12 +535,18 @@ function carregaGravando()
             else
                 setMsg('Show','Salvo com sucesso!',1);
         },
+        beforeSend: function(){
+            habilitaDiv(true,'tabs');
+        },
+        complete: function(){
+             habilitaDiv(false,'tabs');
+        },
         error: function (request, status, error) {
             //setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!'+request.responseText,0);
             setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
         }
     });
-    habilitaDiv(false,'tabs');
+   
 
 }
 
