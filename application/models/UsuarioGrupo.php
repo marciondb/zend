@@ -4,6 +4,8 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
 {
     public function __construct() {
         $this->_dbTable = new Application_Model_DbTable_UsuarioGrupo();
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        $this->_id_usuario = $arrayIdentity->id_usuario;
     }
 
     public function getArrayIdUsuarioGrupo($idGrupo){
@@ -37,7 +39,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
 
                 foreach($grupos as $idGrupo){
 
-                    $this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$idGrupo));
+                    $this->save(array('id_usuario'=>$usuario['id_usuario'],'id_grupo_de_acesso'=>$idGrupo,'id_usuario_pai'=>$this->_id_usuario));
                 }
             }
         
@@ -56,7 +58,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         {
             foreach ($array_id_usuario as $value) 
             {
-                 $this->delete('id_usuario='.(int)$value['id_usuario']);
+                 $this->delete(array('id_usuario'=>(int)$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario)); 
             }
         }
         catch(Exception $e)
@@ -68,13 +70,12 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
     protected function _validarDados(array $data){
         // Validação
         $erros = TRUE;        
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         
         $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
                     from('usuario_grupo', 'usuario_grupo.id_grupo_de_acesso')->
-                    where('usuario_grupo.id_usuario = ?',$arrayIdentity->id_usuario)->
+                    where('usuario_grupo.id_usuario = ?',$this->_id_usuario)->
                     where('usuario_grupo.id_grupo_de_acesso = ?', $data['id_grupo_de_acesso']);
            
         if(!$select->query()->rowCount())

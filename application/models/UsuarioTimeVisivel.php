@@ -2,8 +2,11 @@
 
 class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
 {
+    
     public function __construct() {
         $this->_dbTable = new Application_Model_DbTable_UsuarioTimeVisivel();
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        $this->_id_usuario = $arrayIdentity->id_usuario;
     }
 
     public function gravar($array_id_usuario,$array_id_time)
@@ -27,7 +30,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
             {
                 foreach ($array_id_time as $value2) 
                 {
-                    $this->save(array('id_usuario'=>$value['id_usuario'],'id_time'=>$value2['id_time']));
+                    $this->save(array('id_usuario'=>$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario,'id_time'=>$value2['id_time']));
                 }
             }
             
@@ -46,7 +49,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         {
             foreach ($array_id_usuario as $value) 
             {
-                 $this->delete('id_usuario='.(int)$value['id_usuario']);
+                $this->delete(array('id_usuario'=>(int)$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario));                 
             }
         }
         catch(Exception $e)
@@ -58,13 +61,13 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
     protected function _validarDados(array $data){
         // Validação
         $erros = TRUE;        
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+       
         
         $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
                     from('usuario_time_visivel', 'usuario_time_visivel.id_time')->
-                    where('usuario_time_visivel.id_usuario = ?',$arrayIdentity->id_usuario)->
+                    where('usuario_time_visivel.id_usuario = ?',$this->_id_usuario)->
                     where('usuario_time_visivel.id_time = ?', $data['id_time']);
            
         if(!$select->query()->rowCount())

@@ -5,7 +5,9 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
     protected $_permissao = '';
     
     public function __construct() {
-        $this->_dbTable = new Application_Model_DbTable_UsuarioFuncionalidade();        
+        $this->_dbTable = new Application_Model_DbTable_UsuarioFuncionalidade(); 
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        $this->_id_usuario = $arrayIdentity->id_usuario;
     }
     
     public function gravar($arrayIdusuario,$id_funcionalidades,$funcionalidade_editar,$funcionalidade_deletar,$funcionalidade_liberar,$funcionalidade_pai, $permissao,$update = FALSE)
@@ -66,7 +68,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 
                     //$arrayFuncionalidade[$count] = array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar);
                     //$count++;
-                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar));
+                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar,'id_usuario_pai'=>$this->_id_usuario));
                     
                 }
 
@@ -78,7 +80,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 
                         //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0);
                         //$count++;
-                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0,'id_usuario_pai'=>$this->_id_usuario));
                     }
                 }
 
@@ -90,7 +92,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 
                         //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0);
                         //$count++;
-                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0,'id_usuario_pai'=>$this->_id_usuario));
                     }
                 }
 
@@ -102,7 +104,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 
                         //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0);
                         //$count++;
-                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0,'id_usuario_pai'=>$this->_id_usuario));
                     }
                 }
                 
@@ -112,7 +114,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 
                     //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$idPai,'editar'=>0,'deletar'=>0,'liberar'=>0);
                     //$count++;
-                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$idPai,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$idPai,'editar'=>0,'deletar'=>0,'liberar'=>0,'id_usuario_pai'=>$this->_id_usuario));
                 }
                // print_r($arrayFuncionalidade);
             }
@@ -210,7 +212,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
             foreach ($array_id_usuario as $value) 
             {
                 
-                $this->delete('id_usuario='.(int)$value['id_usuario']);
+                $this->delete(array('id_usuario'=>(int)$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario)); 
             }
         }
         catch(Exception $e)
