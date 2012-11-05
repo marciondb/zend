@@ -14,7 +14,7 @@
 <?php
     $_SESSION['menu'] = '';
     $_SESSION['menu'] .= '<ul id="nav">'."\n".'
-                <li class="current"><a href="/pinho/sistema/logado">Home</a></li>'."\n";
+                <li class="current"><a href="'.$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'index'), null, 1).'">Home</a></li>'."\n";
     
     function montaMenu($id_funcionalidade,$resultado,$url)
     {

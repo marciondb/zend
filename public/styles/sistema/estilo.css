@@ -9,7 +9,7 @@ html, body {
 }
 div#topo {
 	padding:10px;
-	background:url("/pinho/public/images/sistema/titulo.jpg") no-repeat top center;
+	background:url("../../../public/images/sistema/titulo.jpg") no-repeat top center;
 }
 div#conteudo
 {
@@ -63,7 +63,7 @@ a:hover {
 #nav {
 	margin: 0;
 	padding: 7px 6px 0;
-	background: #7d7d7d url(/pinho/public/images/sistema/gradient.png) repeat-x 0 -110px;
+	background: #7d7d7d url(../../../public/images/sistema/gradient.png) repeat-x 0 -110px;
 	line-height: 100%;
 
 	border-radius: 2em;
@@ -103,7 +103,7 @@ a:hover {
 
 /* main level link hover */
 #nav .current a, #nav li:hover > a {
-	background: #666 url(/pinho/public/images/sistema/gradient.png) repeat-x 0 -40px;
+	background: #666 url(../../../public/images/sistema/gradient.png) repeat-x 0 -40px;
 	color: #444;
 	border-top: solid 1px #f8f8f8;
 
@@ -124,7 +124,7 @@ a:hover {
 	-moz-box-shadow: none;
 }
 #nav ul a:hover {
-	background: #0078ff url(/pinho/public/images/sistema/gradient.png) repeat-x 0 -100px !important;
+	background: #0078ff url(../../../public/images/sistema/gradient.png) repeat-x 0 -100px !important;
 	color: #fff !important;
 
 	-webkit-border-radius: 0;
@@ -148,7 +148,7 @@ a:hover {
 	position: absolute;
 	top: 35px;
 	left: 0;
-	background: #ddd url(/pinho/public/images/sistema/gradient.png) repeat-x 0 0;
+	background: #ddd url(../../../public/images/sistema/gradient.png) repeat-x 0 0;
 	border: solid 1px #b4b4b4;
 
 	-webkit-border-radius: 10px;
@@ -350,7 +350,7 @@ margin-bottom: 3px;
 }
 
 .treeview li.submenu{ /* Style for LI that contains sub lists (other ULs). */
-background: white url(/pinho/public/images/sistema/plus.png) no-repeat left 1px;
+background: white url(../../../public/images/sistema/plus.png) no-repeat left 1px;
 cursor: hand !important;
 cursor: pointer !important;
 }

@@ -22,19 +22,19 @@ body {
 }
 
 body.portal {
-	background:#000024 url(/pinho/public/images/portal/fundo/portal.jpg) no-repeat top center;
+	background:#000024 url(../../../public/images/portal/fundo/portal.jpg) no-repeat top center;
 }
 
 body.contato {
-	background:#000024 url(/pinho/public/images/portal/fundo/contato.jpg) no-repeat top center;
+	background:#000024 url(../../../public/images/portal/fundo/contato.jpg) no-repeat top center;
 }
 
 body.solucoes {
-	background:#000024 url(/pinho/public/images/portal/fundo/mundo.jpg) no-repeat top center;
+	background:#000024 url(../../../public/images/portal/fundo/mundo.jpg) no-repeat top center;
 }
 
 body.servicos {
-	background:#000024 url(/pinho/public/images/portal/fundo/servicos.jpg) no-repeat top center;
+	background:#000024 url(../../../public/images/portal/fundo/servicos.jpg) no-repeat top center;
 }
 
 a {	-webkit-user-select: none;
@@ -89,7 +89,7 @@ p {
 	float:left;
 	width:900px;
 	height:120px;
-	background:url(/pinho/public/images/portal/geral/menu.png) center 0px no-repeat;
+	background:url(../../../public/images/portal/geral/menu.png) center 0px no-repeat;
 	padding:19px 50px 10px 50px;
 }
 
@@ -107,13 +107,13 @@ p {
 	float:left;
 	height:60px;
 	padding:20px 0 0 0;
-	background:url(/pinho/public/images/portal/geral/gadgetTopo.png) top center;
+	background:url(../../../public/images/portal/geral/gadgetTopo.png) top center;
 }
 
 .gadget .item {
 	float:left;
 	width:250px;
-	background:url(/pinho/public/images/portal/fundo/overlay.png) top center repeat;
+	background:url(../../../public/images/portal/fundo/overlay.png) top center repeat;
 	border:1px solid #134ac7;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -160,7 +160,7 @@ a.button {
 	position:relative;
 	color:#FFF;
 	border:1px solid #2a63f7;
-	background:url(/pinho/public/images/portal/geral/button.png) top center repeat-x;
+	background:url(../../../public/images/portal/geral/button.png) top center repeat-x;
 	padding:8px 40px 8px 40px;
 	cursor:pointer;
 	-webkit-border-radius: 4px;
@@ -174,7 +174,7 @@ button {
 	position:relative;
 	color:#FFF;
 	border:1px solid #2a63f7;
-	background:url(/pinho/public/images/portal/geral/button.png) top center repeat-x;
+	background:url(../../../public/images/portal/geral/button.png) top center repeat-x;
 	padding:8px 40px 8px 40px;
 	cursor:pointer;
 	-webkit-border-radius: 4px;
@@ -190,12 +190,12 @@ button.full {
 
 button:hover {
 	color:#FFF;
-	background:url(/pinho/public/images/portal/geral/buttonh.png) top center repeat-x;
+	background:url(../../../public/images/portal/geral/buttonh.png) top center repeat-x;
 }
 
 button:active {
 	color:#FFF;
-	background:url(/pinho/public/images/portal/geral/buttonp.png) top center repeat-x;
+	background:url(../../../public/images/portal/geral/buttonp.png) top center repeat-x;
 }
 
 .item h6 {
@@ -231,7 +231,7 @@ button:active {
 	position:relative;
 	float:right;
 	width:600px;
-	background:url(/pinho/public/images/portal/fundo/overlay.png) center center repeat;
+	background:url(../../../public/images/portal/fundo/overlay.png) center center repeat;
 	padding:0 50px 30px 50px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -248,7 +248,7 @@ button:active {
 	position:relative;
 	float:right;
 	width:600px;
-	background:url(/pinho/public/images/portal/fundo/overlay.png) center center repeat;
+	background:url(../../../public/images/portal/fundo/overlay.png) center center repeat;
 	padding:20px 50px 20px 50px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -283,7 +283,7 @@ button:active {
 }
 
 .lista {
-	background:url(/pinho/public/images/portal/geral/lista.png) no-repeat top left;
+	background:url(../../../public/images/portal/geral/lista.png) no-repeat top left;
 	height:43px;
 	width:600px;
 	float:left;
@@ -292,7 +292,7 @@ button:active {
 }
 
 .listaUtil {
-	background:url(/pinho/public/images/portal/geral/utilitario.png) no-repeat top left;
+	background:url(../../../public/images/portal/geral/utilitario.png) no-repeat top left;
 	height:47px;
 	width:600px;
 	float:left;
@@ -301,7 +301,7 @@ button:active {
 }
 
 .listaSolucoes {
-	background:url(/pinho/public/images/portal/fundo/listaSolucoes.jpg) no-repeat center left;
+	background:url(../../../public/images/portal/fundo/listaSolucoes.jpg) no-repeat center left;
 	width:525px;
 	float:left;
 	text-align:left;
@@ -313,7 +313,7 @@ button:active {
 }
 
 .lista2 {
-	background:url(/pinho/public/images/portal/geral/lista2.png) no-repeat top left;
+	background:url(../../../public/images/portal/geral/lista2.png) no-repeat top left;
 	height:100px;
 	width:600px;
 	float:left;
@@ -322,7 +322,7 @@ button:active {
 }
 
 .lista3 {
-	background:url(/pinho/public/images/portal/geral/lista3.png) no-repeat top left;
+	background:url(../../../public/images/portal/geral/lista3.png) no-repeat top left;
 	height:120px;
 	width:700px;
 	float:left;
@@ -384,7 +384,7 @@ p.linha3 {
 }
 
 .menu a:hover {
-	background:url(/pinho/public/images/portal/geral/menuh.png) center 45px no-repeat;
+	background:url(../../../public/images/portal/geral/menuh.png) center 45px no-repeat;
 }
 
 .menu a.logo {
@@ -462,7 +462,7 @@ p.linha3 {
 	width:800px;
 	left:-100px;
 	height:500px;
-	background:url(/pinho/public/images/portal/geral/contato.png) no-repeat top left;
+	background:url(../../../public/images/portal/geral/contato.png) no-repeat top left;
 }
 
 #contato table.left {
@@ -555,7 +555,7 @@ div.contato {
 }
 
 div.servicos {
-	background:url(/pinho/public/images/portal/fundo/servicos.jpg) center center;
+	background:url(../../../public/images/portal/fundo/servicos.jpg) center center;
 	border:none;
 }
 
@@ -573,7 +573,7 @@ div.selectbox-wrapper {
   text-align:left;
   max-height:150px;
   overflow:auto;
-	background:#0c007c url(/pinho/public/images/portal/fundo/overlay.png) repeat-x bottom center;
+	background:#0c007c url(../../../public/images/portal/fundo/overlay.png) repeat-x bottom center;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
@@ -785,7 +785,7 @@ div.selectbox-wrapper ul li {
 	z-index:9999;
 	width:100%;
 	height:100%;
-	background:#00207d url(/pinho/public/images/portal/geral/load.gif) no-repeat center center;
+	background:#00207d url(../../../public/images/portal/geral/load.gif) no-repeat center center;
 }
 
 
@@ -817,7 +817,7 @@ div.selectbox-wrapper ul li {
 	z-index:9999;
 	cursor:pointer;
 	text-indent: -9999em;
-	background: url(/pinho/public/images/portal/nyro/close.png);
+	background: url(../../../public/images/portal/nyro/close.png);
 }
 .nyroModalTitle {
 	z-index:950;
@@ -836,7 +836,7 @@ div.selectbox-wrapper ul li {
   border-radius: 6px;
 	margin: 25px;
 	padding:40px;
-	background:url(/pinho/public/images/portal/fundo/overlay.png) top center repeat;
+	background:url(../../../public/images/portal/fundo/overlay.png) top center repeat;
 }
 .nyroModalCont iframe {
 	z-index:970;
@@ -878,7 +878,7 @@ div.selectbox-wrapper ul li {
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	background: #fff url(/pinho/public/images/portal/nyro/ajaxLoader.gif) no-repeat center;
+	background: #fff url(../../../public/images/portal/nyro/ajaxLoader.gif) no-repeat center;
 	padding: 0;
 }
 .nyroModalPrev, .nyroModalNext {
@@ -902,7 +902,7 @@ div.selectbox-wrapper ul li {
 	left: 0;
 }
 .nyroModalPrev:hover {
-	background-image: url(/pinho/public/images/portal/nyro/prev.gif);
+	background-image: url(../../../public/images/portal/nyro/prev.gif);
 }
 .nyroModalNext {
 	right: 0;
@@ -910,7 +910,7 @@ div.selectbox-wrapper ul li {
 }
 .nyroModalNext:hover {
 	background-position: right 20%;
-	background-image: url(/pinho/public/images/portal/nyro/next.gif);
+	background-image: url(../../../public/images/portal/nyro/next.gif);
 }
 
 .msgNyro {
@@ -935,10 +935,10 @@ strong {
 }
 
 a.linkAtivo {
-	background:url(/pinho/public/images/portal/geral/menuh.png) center 55px no-repeat;
+	background:url(../../../public/images/portal/geral/menuh.png) center 55px no-repeat;
 }
 a.linkAtivo:hover {
-	background:url(/pinho/public/images/portal/geral/menuh.png) center 55px no-repeat;
+	background:url(../../../public/images/portal/geral/menuh.png) center 55px no-repeat;
 }
 a.linkAtivoLogo:hover {
 	background:none;

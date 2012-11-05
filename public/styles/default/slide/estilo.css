@@ -31,7 +31,7 @@ body {
 }
 
 #but {
-	background: url(/pinho/public/images/default/slide/but.png) no-repeat;
+	background: url(../../../../public/images/default/slide/but.png) no-repeat;
 	border:none;
 	color:#FFF;
 	width:200px;
@@ -49,7 +49,7 @@ body {
 #but2 {
 	text-decoration:none;
 	cursor:pointer;
-	background: url(/pinho/public/images/default/slide/but.png) no-repeat;
+	background: url(../../../../public/images/default/slide/but.png) no-repeat;
 	border:none;
 	color:#FFF;
 	width:200px;
@@ -67,7 +67,7 @@ body {
 #bot {
 	text-decoration:none;
 	cursor:pointer;
-	background: url(/pinho/public/images/default/slide/but.png) no-repeat;
+	background: url(../../../../public/images/default/slide/but.png) no-repeat;
 	border:none;
 	color:#FFF;
 	width:200px;
@@ -86,7 +86,7 @@ body {
 .repetir {
 	text-decoration:none;
 	cursor:pointer;
-	background: url(/pinho/public/images/default/slide/but.png) no-repeat;
+	background: url(../../../../public/images/default/slide/but.png) no-repeat;
 	border:none;
 	color:#FFF;
 	width:200px;
@@ -140,7 +140,7 @@ strong {
 	top:50%;
 	height:88px;
 	width:1600px;
-	background:url(/pinho/public/images/default/slide/esquerda.png) top right no-repeat;
+	background:url(../../../../public/images/default/slide/esquerda.png) top right no-repeat;
 }
 
 .esquerda2 {
@@ -150,7 +150,7 @@ strong {
 	top:50%;
 	height:88px;
 	width:1600px;
-	background:url(/pinho/public/images/default/slide/esquerda.png) top right no-repeat;
+	background:url(../../../../public/images/default/slide/esquerda.png) top right no-repeat;
 }
 
 .esquerda3 {
@@ -160,7 +160,7 @@ strong {
 	top:50%;
 	height:88px;
 	width:1600px;
-	background:url(/pinho/public/images/default/slide/esquerda.png) top right no-repeat;
+	background:url(../../../../public/images/default/slide/esquerda.png) top right no-repeat;
 }
 
 .direita {
@@ -170,7 +170,7 @@ strong {
 	top:50%;
 	height:88px;
 	width:1600px;
-	background:url(/pinho/public/images/default/slide/direita.png) top right no-repeat;
+	background:url(../../../../public/images/default/slide/direita.png) top right no-repeat;
 }
 
 .direita2 {
@@ -180,7 +180,7 @@ strong {
 	top:50%;
 	height:88px;
 	width:1600px;
-	background:url(/pinho/public/images/default/slide/direita.png) top right no-repeat;
+	background:url(../../../../public/images/default/slide/direita.png) top right no-repeat;
 }
 
 .direita3 {
@@ -190,7 +190,7 @@ strong {
 	top:50%;
 	height:88px;
 	width:1600px;
-	background:url(/pinho/public/images/default/slide/direita.png) top right no-repeat;
+	background:url(../../../../public/images/default/slide/direita.png) top right no-repeat;
 }
 
 .mensagem {

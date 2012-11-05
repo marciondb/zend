@@ -21,7 +21,7 @@ body {
 	margin:0;
 	background-color:#000;
 	background-position:center;
-	background-image:url(/pinho/public/images/default/splashscreen.jpg);
+	background-image:url(../../../public/images/default/splashscreen.jpg);
 	background-position:center -100px;
 	background-repeat:no-repeat;
 	padding:30px;
@@ -34,7 +34,7 @@ body {
 	top:50%;
 	margin-top:-300px;
 	background-color:#000000;
-	background-image:url(/pinho/public/images/default/splashscreen.jpg);
+	background-image:url(../../../public/images/default/splashscreen.jpg);
 	background-position:center center;
 	background-repeat:no-repeat;
 }
@@ -55,7 +55,7 @@ body {
 	margin-left:200px;
 	margin-top:100px;
 	padding-left:50px;
-	background-image:url(/pinho/public/images/default/load.gif);
+	background-image:url(../../../public/images/default/load.gif);
 	background-repeat:no-repeat;
 	color:#FFFFFF;  font-family:'LeagueGothicRegular', Arial, sans-serif;letter-spacing: 0;
 }
