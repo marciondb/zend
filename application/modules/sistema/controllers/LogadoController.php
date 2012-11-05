@@ -175,7 +175,7 @@ class Sistema_LogadoController extends Controller_Action
         if(!isset($parametros['idGrupoTmp']))
         {   
             // Inserir em usuario_funcionalidade
-            $teste = $this->_usuario_funcionalidade->gravar($arrayIdUsuario, $parametros['id_funcionalidades'],$parametros['funcionalidade_editar'],$parametros['funcionalidade_deletar'],$parametros['funcionalidade_liberar'],$parametros['idPai'],$this->_permissoes);
+            $teste = $this->_usuario_funcionalidade->gravar($arrayIdUsuario, $parametros['id_funcionalidades'],(isset($parametros['funcionalidade_editar']))?$parametros['funcionalidade_editar']:array('funcionalidade_editar'=>','),(isset($parametros['funcionalidade_deletar'])?$parametros['funcionalidade_deletar']:array('funcionalidade_deletar'=>',')),(isset($parametros['funcionalidade_liberar'])?$parametros['funcionalidade_liberar']:array('funcionalidade_liberar'=>',')),$parametros['idPai'],$this->_permissoes);
             if(is_string($teste))
                 $this->view->erros .= " ".$teste;
         } 

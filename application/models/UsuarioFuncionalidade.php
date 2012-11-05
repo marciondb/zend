@@ -72,29 +72,38 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
 
                 foreach ($funcionalidade_editar as $key_editar) 
                 {
-                    $key_editar = substr($key_editar,strpos($key_editar, ',')+1);                   
+                    if($key_editar != ",")
+                    {
+                        $key_editar = substr($key_editar,strpos($key_editar, ',')+1);                   
 
-                    //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0);
-                    //$count++;
-                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                        //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                        //$count++;
+                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                    }
                 }
 
                 foreach ($funcionalidade_deletar as $key_deletar) 
                 {
-                    $key_deletar = substr($key_deletar,strpos($key_deletar, ',')+1);
+                    if($key_deletar != ",")
+                    {
+                        $key_deletar = substr($key_deletar,strpos($key_deletar, ',')+1);
 
-                    //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0);
-                    //$count++;
-                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                        //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                        //$count++;
+                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                    }
                 }
 
                 foreach ($funcionalidade_liberar as $key_liberar) 
                 {
-                    $key_liberar = substr($key_liberar,strpos($key_liberar, ',')+1);
+                    if($key_liberar != ",")
+                    {
+                        $key_liberar = substr($key_liberar,strpos($key_liberar, ',')+1);
 
-                    //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0);
-                    //$count++;
-                    $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                        //$arrayFuncionalidade[$count]= array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                        //$count++;
+                        $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                    }
                 }
                 
                 foreach ($funcionalidade_pai as $idPai) 
