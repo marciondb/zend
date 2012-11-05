@@ -539,7 +539,7 @@ function carregaGravando()
             habilitaDiv(true,'tabs');
         },
         complete: function(){
-             habilitaDiv(false,'tabs');
+             //habilitaDiv(false,'tabs');
         },
         error: function (request, status, error) {
             //setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!'+request.responseText,0);
