@@ -31,9 +31,23 @@
                         if($this->selecionar)
                         {    
                             //setId() e removeId() estao em public\scripts\utilitario.js
+                            $check = '';
+                            
+                            if(isset($this->arrayIdGrupo))
+                            {
+                                foreach ($this->arrayIdGrupo as $IdGrupo)
+                                {
+                                    
+                                    if($usuarioGrupo['id_grupo_de_acesso']==$IdGrupo['id_grupo_de_acesso'])
+                                    {   
+                                        $check = 'checked="checked"';
+                                        break;
+                                    }                                    
+                                }                            
+                            }                            
                             ?>
                             <input type="hidden" id="arrayIdTempFuncionalidade_<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>" value=",">        
-                            <td align="center" width="16%"><input class="idGrupoTmp" type="checkbox" name="idGrupoTmp[]" id="idGrupoTmp" onclick="carregaMenuTree();getIdFuncionalidade('<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>');setFuncioGrupo();ddtreemenu.flatten('treemenu1', 'expand');disableLED();" value="<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>"/></td>
+                            <td align="center" width="16%"><input <?php echo $check;?> class="idGrupoTmp" type="checkbox" name="idGrupoTmp[]" id="idGrupoTmp" onclick="carregaMenuTree();getIdFuncionalidade('<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>');setFuncioGrupo();ddtreemenu.flatten('treemenu1', 'expand');disableLED();" value="<?php echo $usuarioGrupo['id_grupo_de_acesso']; ?>"/></td>
                             <?php
 
                         }

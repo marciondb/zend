@@ -131,6 +131,71 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         
     }
     
+    public function exibirca($pagina,$listaIdEmpresa,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo)
+    {           
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
+        
+        try{           
+            $select1 = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('funcionario',array('id_funcionario','nome','apelido','cpf','tel_residencial_1','celular_1'))->
+                    join('time','funcionario.id_time = time.id_time',array('id_time','titulo'))->
+                    join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
+                    join('lotacao', 'funcionario.id_funcionario = lotacao.id_funcionario',array('lotacao.data_hora'))->
+                    join('empresa', 'empresa.id_empresa = lotacao.id_empresa',array('nome_fantasia'))->
+                    join('usuario_funcionalidade', 'usuario_funcionalidade.id_usuario = funcionario.id_usuario',null)->
+                    where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
+                    where('usuario_funcionalidade.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
+                    where('lotacao.atual = 1');
+            
+            $select2 = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('funcionario',array('id_funcionario','nome','apelido','cpf','tel_residencial_1','celular_1'))->
+                    join('time','funcionario.id_time = time.id_time',array('id_time','titulo'))->
+                    join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
+                    join('lotacao', 'funcionario.id_funcionario = lotacao.id_funcionario',array('lotacao.data_hora'))->
+                    join('empresa', 'empresa.id_empresa = lotacao.id_empresa',array('nome_fantasia'))->
+                    join('usuario_grupo', 'usuario_grupo.id_usuario = funcionario.id_usuario',null)->
+                    where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
+                    where('usuario_grupo.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
+                    where('lotacao.atual = 1');
+                    
+            $select = $this->_dbTable->
+                  select()->
+                  setIntegrityCheck(false)->
+                  union(array($select1,$select2));
+            
+            if ($listaIdEmpresa)
+                $select->where('time.id_empresa in (' . $listaIdEmpresa . ')');
+            if ($listaIdTime)
+                $select->where('funcionario.id_time in (' . $listaIdTime . ')');
+            if ($idSetor)
+                $select->where('lotacao.id_setor in (' . $idSetor . ')');
+            if ($idCargo)
+                $select->where('lotacao.id_cargo in (' . $idCargo . ')');
+            if ($idFuncionario_tipo)
+                $select->where('lotacao.id_funcionario_tipo in (' . $idFuncionario_tipo . ')');
+
+            $select->order('nome ASC')->
+                    group('funcionario.id_funcionario');
+            
+            $paginator = Zend_Paginator::factory( $select );
+            $paginator->setCurrentPageNumber($pagina);
+            $paginator->setItemCountPerPage($perPage);
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+        
+        
+        return $paginator;
+        
+    }
+    
     public function getIdUsuario($listaIdFuncionario)
     {
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();

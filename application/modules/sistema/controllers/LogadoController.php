@@ -19,6 +19,7 @@ class Sistema_LogadoController extends Controller_Action
     protected $_setor;
     protected $_time;
     protected $_usuario_time_visivel;
+    protected $_usuario;
     
     
     public function init()
@@ -44,6 +45,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_funcionario_tipo = new Application_Model_FuncionarioTipo();
         $this->_setor = new Application_Model_Setor();
         $this->_cargo = new Application_Model_Cargo();
+        $this->_usuario = new Application_Model_Usuario();
         
         //*******************************************************************
         //  FIM Instanciando os models, para pode utilizar os metodos relacionado 
@@ -118,6 +120,27 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('remover', 0));
     }
     
+    public function ajaxcafuncionarioAction()
+    {
+        /*if(!$this->getRequest()->isXmlHttpRequest())
+            $this->_redirect ("sistema/logado");*/
+        $this->_helper->layout->disableLayout();
+        
+        
+        $arrayLED = $this->getLED('gerenciarcontroleacesso');
+                
+        $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
+        $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+        $this->view->liberar    = isset($arrayLED['liberar'])?$arrayLED['liberar']:false;
+        
+        $this->view->arrayFuncionario = $this->_funcionario->exibirca($this->_request->getParam('pagina', 1),
+                                                $this->_request->getParam('listaIdEmpresa', 0),
+                                                $this->_request->getParam('listaIdTime', 0),
+                                                $this->_request->getParam('idSetor', 0),
+                                                $this->_request->getParam('idCargo', 0),
+                                                $this->_request->getParam('idFuncionario_tipo', 0));
+    }
+    
     public function ajaxusuariogrupoAction()
     {
         /*if(!$this->getRequest()->isXmlHttpRequest())
@@ -134,15 +157,30 @@ class Sistema_LogadoController extends Controller_Action
 
             $this->view->arrayUsuarioGrupo = $this->_usuario_grupo->exibir($this->_id_usuario);
         }
+        
+        if($this->_request->getParam('editarCA',false))
+        {
+                $this->view->arrayIdGrupo = $this->_usuario_grupo->exibir($this->_request->getParam('id_usuario'));
+        }
     }
     
     public function ajaxcarregamenutreeAction()
     {
        $this->_helper->layout->disableLayout();
+       
+       
+       if($this->_request->getParam('editarCA',false))
+       {
+            $this->view->arrayIdFuncionalidades = $this->_usuario->getPermissao($this->_request->getParam('id_usuario'));
+       }
     }
     
     public function ajaxgravacontroleacessoAction()
     {
+        
+        if(!$this->possuiPermissao('cadastrarcontroleacesso'))
+        {$this->_redirect ("sistema/logado");}
+        
         $this->_helper->layout->disableLayout();
         $this->view->erros = '';
         $teste = '';
@@ -198,9 +236,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
         
         if($this->_request->isPost())
-        {
-            
-            
+        {   
             ZendUtils::transmissorMsg(' Salvo com sucesso',  ZendUtils::MENSAGEM_ACERTO,  2000);
         }
     }
@@ -224,6 +260,25 @@ class Sistema_LogadoController extends Controller_Action
     
     }
     
+    public function editarcontroleacessoAction()
+    {
+        $arrayIdUsuario = $this->_funcionario->getIdUsuario($this->_request->getParam('idFuncionario', false));
+        $this->view->id_usuario = $arrayIdUsuario[0]['id_usuario'];
+        
+        $this->view->arrayIdGrupo = $this->_usuario_grupo->exibir($this->view->id_usuario);
+        
+        $this->view->arrayIdEmpresa = $this->_usuario_empresa_visivel->exibir($this->view->id_usuario);
+        
+        $this->view->arrayIdTime = $this->_usuario_time_visivel->exibir($this->view->id_usuario);
+        
+        $this->view->idFuncionario = $this->_request->getParam('idFuncionario', false);
+        
+        $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
+        $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
+        $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
+    
+    }
+    
     public function cadastrarfuncionarioAction()
     {
         if($this->_request->isPost())
@@ -234,6 +289,12 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     public function gerenciarcontroleacessoAction() {
+        
+        $this->view->arrayControlAcessLED = $this->getLED('gerenciarcontroleacesso');
+        
+        $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
+        $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
+        $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
         
     }
     

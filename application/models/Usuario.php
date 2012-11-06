@@ -40,10 +40,8 @@ class Application_Model_Usuario extends Application_Model_Abstract
         }
     }
     
-    public function getPermissao()
+    public function getPermissao($idUsuario)
     {
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
-        
         $select1 = $this->_dbTable->
                   select()->
                   setIntegrityCheck(false)->
@@ -51,7 +49,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
                   join('funcionalidade', 'ferramenta.id_ferramenta = funcionalidade.id_ferramenta',array('id_funcionalidade','id_funcionalidade_pai', 'titulo','action' =>'nome_action','idFerramenta'=>'id_ferramenta'))->
                   join('usuario_funcionalidade','funcionalidade.id_funcionalidade = usuario_funcionalidade.id_funcionalidade',array('editar','deletar','liberar'))->
                   join('usuario','usuario.id_usuario = usuario_funcionalidade.id_usuario',null)->
-                  where('usuario.id_usuario = ?', $arrayIdentity->id_usuario)->
+                  where('usuario.id_usuario = ?', $idUsuario)->
                   group('funcionalidade.id_funcionalidade');
         $select2 = $this->_dbTable->
                   select()->
@@ -61,7 +59,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
                   join('grupo_funcionalidade', 'grupo_funcionalidade.id_funcionalidade = funcionalidade.id_funcionalidade', array('editar','deletar','liberar'))->
                   join('grupo_de_acesso', 'grupo_de_acesso.id_grupo_de_acesso = grupo_funcionalidade.id_grupo_de_acesso',null)->
                   join('usuario_grupo', 'usuario_grupo.id_grupo_de_acesso = grupo_de_acesso.id_grupo_de_acesso', null)->
-                  where('usuario_grupo.id_usuario = ?', $arrayIdentity->id_usuario)->
+                  where('usuario_grupo.id_usuario = ?', $idUsuario)->
                   group('funcionalidade.id_funcionalidade');
                 
         $select = $this->_dbTable->

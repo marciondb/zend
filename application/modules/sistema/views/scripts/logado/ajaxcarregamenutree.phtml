@@ -12,7 +12,7 @@
     $aux_pai_zero = '';
     $aux_pai = '';
     
-    function montaMenuTree($id_funcionalidade,$resultado,$url,$cont)
+    function montaMenuTree($id_funcionalidade,$resultado,$url,$cont,$arrayIdFuncionalidades)
     {
         foreach ($resultado as $value) 
         {
@@ -31,28 +31,65 @@
                 }
                 else
                 {                
+                    $checkEditar = '';
+                    $checkDeletar = '';
+                    $checkLiberar = '';
+                    $checkFuncionalidade = '';
+                    if($arrayIdFuncionalidades)
+                    {
+                        foreach ($arrayIdFuncionalidades as $IdFuncionalidade)
+                        {
+                            //echo "<script>alert('".$value['editar']." | ".$IdFuncionalidade['id_funcionalidade']."');</script>";
+                            if($value['editar']==$IdFuncionalidade['id_funcionalidade'])
+                            {    
+                                $checkEditar = 'checked="checked"';
+                                continue;
+                            }
+                            
+                            if($value['deletar']==$IdFuncionalidade['id_funcionalidade'])
+                            {    
+                                $checkDeletar = 'checked="checked"';
+                                continue;
+                            }
+                            
+                            if($value['liberar']==$IdFuncionalidade['id_funcionalidade'])
+                            {    
+                                $checkLiberar = 'checked="checked"';
+                                continue;
+                            }
+                            
+                            if($value['id_funcionalidade']==$IdFuncionalidade['id_funcionalidade'])
+                            {    
+                                $checkFuncionalidade = 'checked="checked"';
+                                echo "<script>setGrupoOff();toggleLED(".$value['id_funcionalidade'].");</script>";
+                                continue;
+                                
+                            }
+                        }                            
+                    }
+                    
                     $editar = '';
                     if($value['editar'])
-                        $editar = '&nbsp;&nbsp;Editar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_editar" name="funcionalidade_editar[]" value="'.$value['id_funcionalidade'].','.$value['editar'].'" onclick="setGrupoOff();" disabled="disabled">';
+                        $editar = '&nbsp;&nbsp;Editar&nbsp;<input '.$checkEditar.' class="idFuncionalidade" type="checkbox" id="funcionalidade_editar" name="funcionalidade_editar[]" value="'.$value['id_funcionalidade'].','.$value['editar'].'" onclick="setGrupoOff();" disabled="disabled">';
                     
                     $deletar = '';
                     if($value['deletar'])
-                        $deletar = '&nbsp;&nbsp;Deletar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_deletar" name="funcionalidade_deletar[]" value="'.$value['id_funcionalidade'].','.$value['deletar'].'" onclick="setGrupoOff();" disabled="disabled">';
+                        $deletar = '&nbsp;&nbsp;Deletar&nbsp;<input '.$checkDeletar.' class="idFuncionalidade" type="checkbox" id="funcionalidade_deletar" name="funcionalidade_deletar[]" value="'.$value['id_funcionalidade'].','.$value['deletar'].'" onclick="setGrupoOff();" disabled="disabled">';
                     
                     $liberar = '';
                     if($value['liberar'])
-                       $liberar = '&nbsp;&nbsp;Liberar&nbsp;<input class="idFuncionalidade" type="checkbox" id="funcionalidade_liberar" name="funcionalidade_liberar[]" value="'.$value['id_funcionalidade'].','.$value['liberar'].'" onclick="setGrupoOff();" disabled="disabled">';
+                       $liberar = '&nbsp;&nbsp;Liberar&nbsp;<input '.$checkLiberar.' class="idFuncionalidade" type="checkbox" id="funcionalidade_liberar" name="funcionalidade_liberar[]" value="'.$value['id_funcionalidade'].','.$value['liberar'].'" onclick="setGrupoOff();" disabled="disabled">';
                     
                     $seta='';
                     if($value['editar'] || $value['deletar'] || $value['liberar'])
                         $seta = '<i class="icon-arrow-right"></i>';
                     
-                    $_SESSION['menuTree'] .= '<li style="clear:both;"><div class="funcionalidade"><input class="idFuncionalidade" type="checkbox" id="id_funcionalidades" name="id_funcionalidades[]" value="'.$value['id_funcionalidade_pai'].','.$value['id_funcionalidade'].'" onclick="setGrupoOff();toggleLED('.$value['id_funcionalidade'].');">&nbsp;&nbsp;'.$value['titulo']."</div><div class='funcionalidade2' id='".$value['id_funcionalidade']."'>$seta&nbsp;$editar$deletar$liberar</div></li>\n";
+                    $_SESSION['menuTree'] .= '<li style="clear:both;"><div class="funcionalidade"><input '.$checkFuncionalidade.' class="idFuncionalidade" type="checkbox" id="id_funcionalidades" name="id_funcionalidades[]" value="'.$value['id_funcionalidade_pai'].','.$value['id_funcionalidade'].'" onclick="setGrupoOff();toggleLED('.$value['id_funcionalidade'].');">&nbsp;&nbsp;'.$value['titulo']."</div><div class='funcionalidade2' id='".$value['id_funcionalidade']."'>$seta&nbsp;$editar$deletar$liberar</div></li>\n";
                 }
                 
                 //echo $value['titulo']." ".$value['action']."\n";
                 
-                montaMenuTree($value['id_funcionalidade'],$resultado,$url,$cont);//,$menu);
+                montaMenuTree($value['id_funcionalidade'],$resultado,$url,$cont,$arrayIdFuncionalidades);//,$menu);
                 
                 if($value['action']=='')
                 {
@@ -64,7 +101,10 @@
         
     }
     
-    montaMenuTree(0,$this->permissoes,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1),1);
+    if(isset($this->arrayIdFuncionalidades))
+        montaMenuTree(0,$this->permissoes,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1),1,$this->arrayIdFuncionalidades);
+    else
+        montaMenuTree(0,$this->permissoes,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1),1,false);
     
     $_SESSION['menuTree'] .= '</ul>';
     

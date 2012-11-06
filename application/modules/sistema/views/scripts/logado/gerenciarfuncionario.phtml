@@ -1,4 +1,4 @@
-<h3>Genrenciar Controle de Acesso</h3>
+<h3>Genrenciar Funcionario</h3>
 <hr>
 <form name="formularioCarregaMenu" action="" method="post">
     <div class="modal_min_auto_size">
@@ -83,14 +83,24 @@
     <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
     <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
     <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
+    <div align="center" class="form-actions">
+        <?php
+            if(isset($this->arrayControlAcessLED['editar']))
+                echo '<input type="button" class="btn btn-primary" onclick="valida();" value="Editar">';
+            echo ' &nbsp; &nbsp;';
+            if(isset($this->arrayControlAcessLED['deletar']))
+                echo '<input type="button" class="btn btn-danger" onclick="valida();" value="Deletar">';
+
+        ?>
         
+    </div>
+    
 </form>
 
 <script type="text/javascript">      
     
     //set o "selectOrAdd" para selecionar
     selectOrAdd = 1;
-    urlAjaxFuncionario = urlAjaxCAFuncionario;
     
     //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
     // ajax eh excudado
@@ -112,14 +122,14 @@
             ajax(url,'ajax_funcionario');
         }
     }
-        
+    
     url = urlAjaxEmpresa+'/selecionar/1';
     ajax(url,'ajax_empresa');
     
     url = urlAjaxTime+'/selecionar/1/';
     ajax(url,'ajax_time');
         
-    url = urlAjaxCAFuncionario;
+    url = urlAjaxFuncionario+'/selecionar/1/';
     ajax(url,'ajax_funcionario');
        
     

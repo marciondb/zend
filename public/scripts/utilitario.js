@@ -4,6 +4,7 @@ host = pathArray[1];
 //ajax
 urlAjaxEmpresa = '/'+host+'/sistema/logado/ajaxempresa';
 urlAjaxTime = '/'+host+'/sistema/logado/ajaxtime';
+urlAjaxCAFuncionario = '/'+host+'/sistema/logado/ajaxcafuncionario';
 urlAjaxFuncionario = '/'+host+'/sistema/logado/ajaxfuncionario';
 urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
 urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
@@ -759,11 +760,13 @@ function setFiltroTime()
     url = urlAjaxTime+'/selecionar/1/listaIdEmpresa/'+listaIdEmpresa;
     ajax(url,'ajax_time');
 }
-    
+
+//0 = adicionar, 1= selecionar
+selectOrAdd = 0;
+
 //todos de todas as empresas
 function setFiltroFuncionario(todos,remover,pagina)
-{
-        
+{       
     listaIdFuncionarioEscolhido = document.getElementById('arrayIdTempFuncionarioEscolhido').value;
     listaIdFuncionarioEscolhido = listaIdFuncionarioEscolhido.substr(1,listaIdFuncionarioEscolhido.length-2); //retira a 1º e a ultima virgula
     url = urlAjaxFuncionario+
@@ -793,19 +796,24 @@ function setFiltroFuncionario(todos,remover,pagina)
         ajax(url2,'ajax_empresa');
     }
         
-    if ((typeof(pagina) != "undefined")  )
+    if ((typeof(pagina) != "undefined") || pagina!=''  )
         url+='/pagina/'+pagina;
         
-    ajax(url+'/adicionar/1/','ajax_funcionario');
-        
-    if ((typeof(remover) != "undefined")  )
-    {   
-        url += '/remover/1';
-        if(document.getElementById('arrayIdTempFuncionarioEscolhido').value != ',')
-            ajax(url,'ajax_funcionario_adicionados');
-        else
-            document.getElementById('ajax_funcionario_adicionados').innerHTML = 'Nenhum item adicionado.';
+    if (selectOrAdd == 0)
+    {
+        ajax(url+'/adicionar/1/','ajax_funcionario');
+
+        if ((typeof(remover) != "undefined") || remover!='' )
+        {   
+            url += '/remover/1';
+            if(document.getElementById('arrayIdTempFuncionarioEscolhido').value != ',')
+                ajax(url,'ajax_funcionario_adicionados');
+            else
+                document.getElementById('ajax_funcionario_adicionados').innerHTML = 'Nenhum item adicionado.';
+        }
     }
+    else
+        ajax(url+'/selecionar/1/','ajax_funcionario');
 }
     
 function filtraCnpj()
@@ -881,9 +889,15 @@ function setTabela(tabela)
     tabelas = tabela;
 }
     
-function carregaMenuTree()
+function carregaMenuTree(editar,id_usuario)
 {
     url = urlAjaxCarregaMenuTree;
+    
+    if ((typeof(editar) != "undefined") && editar==1 )
+    {
+        url +='/editarCA/1/id_usuario/'+id_usuario;
+    }
+    
     ajax(url,'ajax_funcionalidades');
     //carrega o menu tree
     //http://www.dynamicdrive.com/dynamicindex1/navigate1.htm

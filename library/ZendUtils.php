@@ -290,7 +290,7 @@ class ZendUtils {
 
                     if(isset($session->msg))
                     {
-                        echo '<script>ExibirMsg("#mensagem","'.$session->msg['mensagem'].'","'.$session->msg['tipo'].'",'.$session->msg['tempo'].');</script>';
+                        echo '<script>showAlert("ERRO","'.$session->msg['mensagem'].'");</script>';
 
                         unset($session->msg);
 

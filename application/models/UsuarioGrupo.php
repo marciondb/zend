@@ -46,7 +46,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             return $e->getMessage();
         }
         
@@ -58,7 +58,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         {
             foreach ($array_id_usuario as $value) 
             {
-                 $this->delete(array('id_usuario'=>(int)$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario)); 
+                 $this->delete(array('id_usuario=?'=>(int)$value['id_usuario'],'id_usuario_pai=?'=>$this->_id_usuario)); 
             }
         }
         catch(Exception $e)

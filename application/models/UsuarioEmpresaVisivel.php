@@ -45,7 +45,7 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
         {
             foreach ($array_id_usuario as $value) 
             {
-                 $this->delete(array('id_usuario'=>(int)$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario)); 
+                 $this->delete(array('id_usuario=?'=>(int)$value['id_usuario'],'id_usuario_pai=?'=>$this->_id_usuario)); 
             }
         }
         catch(Exception $e)
@@ -54,6 +54,18 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
         }
     }
     
+    public function exibir($idUsuario) {
+        
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('usuario_empresa_visivel', 'usuario_empresa_visivel.id_empresa')->
+                    where('usuario_empresa_visivel.id_usuario = ?',$idUsuario);
+           
+        return $select->query()->fetchAll();
+    }
+
+
     protected function _validarDados(array $data){
         // Validação
         $erros = TRUE;        

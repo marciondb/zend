@@ -8,9 +8,9 @@ abstract class Controller_Action extends Zend_Controller_Action {
     protected $_id_usuario;
     protected $baseUrl;
 
-    public function possuiPermissao()
+    public function possuiPermissao($action)
     {
-        $nomeDaAcao = $this->getRequest()->getActionName();
+        $nomeDaAcao = $action;
         
         $parametroEditar = $this->getRequest()->getParam('editar');
         $parametroDeletar = $this->getRequest()->getParam('deletar');
@@ -54,13 +54,13 @@ abstract class Controller_Action extends Zend_Controller_Action {
                 $this->_id_usuario = $arrayIdentity->id_usuario;
                 $this->view->nome_usuario = $arrayIdentity->login;
                 $this->view->id_usuario = $this->_id_usuario;
-                $this->_permissoes = $this->_usuario->getPermissao();
+                $this->_permissoes = $this->_usuario->getPermissao($this->_id_usuario);
                 $this->view->permissoes = $this->_permissoes;
                 //print_r($this->_permissoes);
                 
                 if($this->_permissoes)
                 {   
-                    if(!$this->possuiPermissao())
+                    if(!$this->possuiPermissao($this->getRequest()->getActionName()))
                     {  
                         if(strpos($this->getRequest()->getActionName(),"ajax")=== FALSE)
                         {
