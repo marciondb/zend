@@ -191,9 +191,9 @@ class Sistema_LogadoController extends Controller_Action
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($listaIdTempFuncionarioEscolhido);   
         
         $this->_usuario_time_visivel->deletar($arrayIdUsuario);        
-        $this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
+        /*$this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
         $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
-        $this->_usuario_grupo->deletar($arrayIdUsuario);
+        $this->_usuario_grupo->deletar($arrayIdUsuario);*/
         
         if(isset($parametros['arrayIdTempTimeEscolhido']) && ($parametros['arrayIdTempTimeEscolhido']!=","))
         {            
