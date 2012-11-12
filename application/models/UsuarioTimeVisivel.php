@@ -30,6 +30,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
             {
                 foreach ($array_id_time as $value2) 
                 {
+                    ZendUtils::transmissorMsg($value['id_usuario'].'value2'.$value2['id_time'],  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);            
                     $this->save(array('id_usuario'=>$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario,'id_time'=>$value2['id_time']));
                 }
             }
