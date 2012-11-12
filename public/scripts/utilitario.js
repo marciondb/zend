@@ -526,7 +526,7 @@ function habilitaDiv(opcao,divHidden)
     }
         
     else
-    {    $( "#transparente" ).fadeOut("slow");
+    {$( "#transparente" ).fadeOut("slow");
          setTimeout(function() {
             document.getElementById('transparente').style.visibility = 'hidden';
 
@@ -579,6 +579,46 @@ function showAlert(titulo,msg){
                 Ok: function() {
                     $( this ).dialog( "close" );
                     
+                }
+            }
+        });
+    });
+    
+}
+
+function showAlertConfirm(titulo,msg,funcao,parametros){
+    
+    var showAlertConfirm = document.createElement('div');
+    showAlertConfirm.id = 'showAlertConfirm';    
+    document.body.appendChild(showAlertConfirm);
+    
+    document.getElementById('showAlertConfirm').innerHTML = msg;
+    document.getElementById('showAlertConfirm').title = titulo;
+    
+    //montar os parametros
+    // parametro do tipo x = [ 'p0', 'p1', 'p2' ]; 
+    params = '';
+    for(i=0;i<parametros.length;i++){
+        params += parametros[i]+',';
+    }    
+    params = params.substr(0, (params.length-1));
+    
+    funcao = funcao+'('+params+');';
+    
+    $(function() {
+        $( "#showAlertConfirm" ).dialog({
+            resizable: true,
+            height:200,
+            modal: true,
+            buttons: {
+                "Confirma": function() {
+                    $( this ).dialog( "close" );
+                    
+                    eval(funcao);
+                    
+                },
+                Cancel: function() {
+                    $( this ).dialog( "close" );
                 }
             }
         });

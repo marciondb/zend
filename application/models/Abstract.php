@@ -3,33 +3,58 @@
 abstract class Application_Model_Abstract {
 
     protected $_dbTable;
+    protected $_dbTableLog;
     protected $_id_usuario;
     
     public function _init(){
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $this->_id_usuario = $arrayIdentity->id_usuario;
+        
     }
-
-
-
 
     public function find($id) {
         return $this->_dbTable->find($id)->current()->toArray();
+    }
+    
+    public function saveLog(array $arrayPK) {
+        $this->_dbTableLog = new Application_Model_DbTable_Log();
+        $strPK='';
+        
+        foreach ($arrayPK as $key ) {
+            $strPK = $key.',';            
+        }
+        
+        $strPK = substr($strPK, 0,-1);
+        
+        $data = array('id_usuario'=>$this->_id_usuario,
+                      'data_hora'=>date('Y-m-d H:i:s'),
+                      'acao'=>Zend_Controller_Front::getInstance()->getRequest()->getActionName(),
+                      'nome_tabela'=>  $this->_dbTable->getTableName(),
+                      'valor_id'=>$strPK);
+        
+        
+        $this->_dbTableLog->insert($data);
     }
 
     public function save(array $data, $update = FALSE) {
 
         $validacao = $this->_validarDados($data);
-
+        
+        $retorno = array();
+        
         if (is_string($validacao))
             throw new Exception($validacao);
         else {
             if ($update) {
-                return $this->_update($data);
+                $retorno = $this->_update($data);
             } else {
-                return $this->_insert($data);
+                $retorno = $this->_insert($data);
             }
         }
+        
+        $this->saveLog($retorno);
+        
+        return $retorno;
     }
     
     public function _insert(array $data) {

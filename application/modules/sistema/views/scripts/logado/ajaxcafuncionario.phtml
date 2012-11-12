@@ -70,7 +70,7 @@
                     {    
                         ?>
                         <td align="center" width="16%">
-                            <a class="btn" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletarcontroleacesso','idFuncionario'=>$funcionario['id_funcionario']), null, 1); ?>" ><i class="icon-trash"></i></a>
+                            <a class="btn" href="javascript:;" onclick="showAlertConfirm('Deletar','Tem certeza que deseja excluir os acessos deste funcionário? Esta é uma ação IRREVERSÍVEL!','deletar',[ '<?php echo $funcionario['id_funcionario'];?>']);" ><i class="icon-trash"></i></a>
                         </td>
                         <?php
                     }

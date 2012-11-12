@@ -85,6 +85,7 @@
     <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
         
 </form>
+<div id="temp"></div>
 
 <script type="text/javascript">      
     
@@ -112,7 +113,16 @@
             ajax(url,'ajax_funcionario');
         }
     }
+    
+    function deletar(idFuncionario)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletarcontroleacesso'), null, 1); ?>/idFuncionario/'+idFuncionario;
+        ajax(url,'temp');
         
+        url = urlAjaxCAFuncionario;
+        ajax(url,'ajax_funcionario');
+        
+    }
     url = urlAjaxEmpresa+'/selecionar/1';
     ajax(url,'ajax_empresa');
     

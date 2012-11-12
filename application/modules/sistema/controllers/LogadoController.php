@@ -240,25 +240,6 @@ class Sistema_LogadoController extends Controller_Action
             ZendUtils::transmissorMsg(' Salvo com sucesso',  ZendUtils::MENSAGEM_ACERTO,  2000);
         }
     }
-     
-    public function cadastrarempresaAction()
-    {
-        if($this->_request->isPost())
-        {
-            $parametros = $this->_getAllParams();
-            
-            //salva a empresa e pega o id
-            $array_id_empresa = array($this->_empresa->gravar($parametros,$this->_endereco));
-            
-            //pega tds os id´s de td´s os usuarios que pertecem ao grupo dos administradores
-            $id_grupo = 1; //Grupo dos administradores
-            $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($id_grupo);
-            
-            //para colocar a empresa salva na lista de empresas visiveis do grupo administrador
-            $this->_usuario_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa);
-        }    
-    
-    }
     
     public function editarcontroleacessoAction()
     {
@@ -279,6 +260,38 @@ class Sistema_LogadoController extends Controller_Action
     
     }
     
+    public function deletarcontroleacessoAction() {
+        $this->_helper->layout->disableLayout();
+        $arrayIdUsuario = $this->_funcionario->getIdUsuario($this->_request->getParam('idFuncionario', false));
+        
+        $this->_usuario_time_visivel->deletar($arrayIdUsuario);        
+        $this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
+        $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
+        $this->_usuario_grupo->deletar($arrayIdUsuario);
+        
+        
+    }
+
+
+    public function cadastrarempresaAction()
+    {
+        if($this->_request->isPost())
+        {
+            $parametros = $this->_getAllParams();
+            
+            //salva a empresa e pega o id
+            $array_id_empresa = array($this->_empresa->gravar($parametros,$this->_endereco));
+            
+            //pega tds os id´s de td´s os usuarios que pertecem ao grupo dos administradores
+            $id_grupo = 1; //Grupo dos administradores
+            $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($id_grupo);
+            
+            //para colocar a empresa salva na lista de empresas visiveis do grupo administrador
+            $this->_usuario_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa);
+        }    
+    
+    }
+        
     public function cadastrarfuncionarioAction()
     {
         if($this->_request->isPost())
