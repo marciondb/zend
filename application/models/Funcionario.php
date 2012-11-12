@@ -6,6 +6,12 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         $this->_dbTable = new Application_Model_DbTable_Funcionario();
     }
     
+    /***
+     * Atualiza caso o parametro $update seja diferente de false.
+     * Recebe a PK do endereço inserido desta empresa.
+     * @param array $parametros Array com os dados a serem gravados
+     * @param Model $_endereco Model do endereco
+     */
     public function gravar($parametros,$_endereco, $update = FALSE)
     {
         $dataFuncionario = array("id_matriz" => $parametros['id_matriz'],
@@ -70,9 +76,6 @@ class Application_Model_Funcionario extends Application_Model_Abstract
     /**
        * Exibe tds as funcionarios visiveis.      
        * @return Array retorna query()->fetchAll()
-       * @param  Boolean $selecionar  : coloca um elemento checkbox para selecionar a empresa
-       * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
-       * @param  Boolean $deletar : coloca um elemento um "botao" para pode deletar
        * @version 1.0
        * @author Márcio & Marco
      */
@@ -93,7 +96,10 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1');
                     
-            
+            // Para melhor entendimento, vá em Controle de Acesso/Cadastrar tab Funcionário, 
+            // na parte "Escolha os funcionários que receberão acessos".
+            // Ao clicar em "+", o funcionário será removido da div atual e adicionado na div abaixo.
+            // Atente para o "not in" no SQL
             if(!$remover)
             {
                 if ($listaIdEmpresa)
@@ -114,6 +120,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                 $select->where('funcionario.id_funcionario in (' . $listaIdFuncionarioEscolhido . ')');
 
             $select->order('funcionario.nome ASC');
+            $select->group('funcionario.id_funcionario');
             
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
@@ -123,7 +130,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         catch(Exception $e)
         {
             //setMsg('ERRO','Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),0);
-            //ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
         
@@ -131,6 +138,12 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         
     }
     
+    /**
+       * Exibe tds os funcionarios os quais o usuario logado deu acesso.      
+       * @return Array retorna query()->fetchAll()
+       * @version 1.0
+       * @author Márcio & Marco
+     */
     public function exibirca($pagina,$listaIdEmpresa,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo)
     {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
@@ -149,6 +162,16 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('usuario_funcionalidade.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1');
+            if ($listaIdEmpresa)
+                $select1->where('time.id_empresa in (' . $listaIdEmpresa . ')');
+            if ($listaIdTime)
+                $select1->where('funcionario.id_time in (' . $listaIdTime . ')');
+            if ($idSetor)
+                $select1->where('lotacao.id_setor in (' . $idSetor . ')');
+            if ($idCargo)
+                $select1->where('lotacao.id_cargo in (' . $idCargo . ')');
+            if ($idFuncionario_tipo)
+                $select1->where('lotacao.id_funcionario_tipo in (' . $idFuncionario_tipo . ')');
             
             $select2 = $this->_dbTable->
                     select()->
@@ -162,25 +185,25 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('usuario_grupo.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1');
-                    
+            if ($listaIdEmpresa)
+                $select2->where('time.id_empresa in (' . $listaIdEmpresa . ')');
+            if ($listaIdTime)
+                $select2->where('funcionario.id_time in (' . $listaIdTime . ')');
+            if ($idSetor)
+                $select2->where('lotacao.id_setor in (' . $idSetor . ')');
+            if ($idCargo)
+                $select2->where('lotacao.id_cargo in (' . $idCargo . ')');
+            if ($idFuncionario_tipo)
+                $select2->where('lotacao.id_funcionario_tipo in (' . $idFuncionario_tipo . ')');
+            
             $select = $this->_dbTable->
                   select()->
                   setIntegrityCheck(false)->
                   union(array($select1,$select2));
-            
-            if ($listaIdEmpresa)
-                $select->where('time.id_empresa in (' . $listaIdEmpresa . ')');
-            if ($listaIdTime)
-                $select->where('funcionario.id_time in (' . $listaIdTime . ')');
-            if ($idSetor)
-                $select->where('lotacao.id_setor in (' . $idSetor . ')');
-            if ($idCargo)
-                $select->where('lotacao.id_cargo in (' . $idCargo . ')');
-            if ($idFuncionario_tipo)
-                $select->where('lotacao.id_funcionario_tipo in (' . $idFuncionario_tipo . ')');
 
             $select->order('nome ASC')->
                     group('funcionario.id_funcionario');
+            
             
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
@@ -196,6 +219,13 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         
     }
     
+    /***
+     * Pega a id do usuário passando a id do funcionário.
+     * @param lista $listaIdFuncionario Lista com as ids dos funcionarios 
+     * separadas por vírgulas.
+     * @return array Array fetchAll com todas as ids dos usuários
+     * @example getIdUsuario('1,3,6')
+     */
     public function getIdUsuario($listaIdFuncionario)
     {
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();

@@ -1,37 +1,41 @@
 <?php
 
+/***
+ * Contem todos os metodos para controlar as action de todos os módulos do programa e garantir seguranca ao mesmo.
+ */
 abstract class Controller_Action extends Zend_Controller_Action {
-    //protected $userEmail;
-    protected $senha;
+    
+    //contem todas as permisses do usuario
     protected $_permissoes;
+    //instancia da table usuario
     protected $_usuario;
+    //id do user logado, que pode ser acessada por todos os controles
     protected $_id_usuario;
+    //base da url (antes do nome do controller 
+    //ex: baseUrl/controller/action/param/valor/.../paramN/valorN), 
+    //que pode ser acessada por todos os controles
+    // o metodo $this->baseUrl() so pode ser usado dentro de views, por isso
+    //esse atributo foi criado
     protected $baseUrl;
 
+    
+    /***
+     * Verifica se o usuario possui determinada action
+     * @param string $action Nome da action/funcionalidade
+     * @return boolean 
+     */
     public function possuiPermissao($action)
     {
         $nomeDaAcao = $action;
-        
-        $parametroEditar = $this->getRequest()->getParam('editar');
-        $parametroDeletar = $this->getRequest()->getParam('deletar');
-        $parametroLiberar = $this->getRequest()->getParam('liberar');
       
         $flag=0;
         foreach ($this->_permissoes as $value) 
             if(($value['action']==$nomeDaAcao))
-            {
                 $flag = 1;
-
-                if(!(($value['editar']==$parametroEditar) || (!isset($parametroEditar))))
-                    $flag = 0;
-                if(!(($value['deletar']==$parametroEditar) || (!isset($parametroDeletar))))
-                    $flag = 0;
-                if(!(($value['liberar']==$parametroEditar) || (!isset($parametroLiberar))))
-                    $flag = 0;
-            }
             
        return (($flag==0)&&($nomeDaAcao != 'index'))?FALSE:TRUE;
     }
+   
     public function init()
     {
        
@@ -80,6 +84,11 @@ abstract class Controller_Action extends Zend_Controller_Action {
                 
     }
     
+    /***
+     * Verifica se a ação possui liberar, editar ou deletar.
+     * @param String $nomeDaAcao Nome da ação
+     * @return array Array de LED
+     */
     public function getLED($nomeDaAcao) 
     {   
         $returnArray = array();
@@ -103,13 +112,16 @@ abstract class Controller_Action extends Zend_Controller_Action {
      */
     public function logarAction()
     {
+        $senha = '';
+        $userEmail = '';
+        
         if($this->getRequest()->isPost())
         {
-            $this->userEmail = $this->getRequest()->getParam("login");
-            $this->senha = $this->getRequest()->getParam("senha");
+            $userEmail = $this->getRequest()->getParam("login");
+            $senha = $this->getRequest()->getParam("senha");
             $redirect = $this->getRequest()->getModuleName();
             
-            if(!$this->_usuario->efetuarLogin($this->userEmail, $this->senha))
+            if(!$this->_usuario->efetuarLogin($userEmail, $senha))
             {
                 ?>
                     <script>
@@ -132,6 +144,9 @@ abstract class Controller_Action extends Zend_Controller_Action {
 
     }
 
+    /***
+     * Deslogar o usuário do sistema para todos os módulos
+     */
     public function logoutAction()
     {
         $redirect = $this->getRequest()->getModuleName();

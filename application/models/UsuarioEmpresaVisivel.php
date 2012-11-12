@@ -61,7 +61,7 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
                     setIntegrityCheck(false)->
                     from('usuario_empresa_visivel', 'usuario_empresa_visivel.id_empresa')->
                     where('usuario_empresa_visivel.id_usuario = ?',$idUsuario);
-           
+        $select->group('usuario_empresa_visivel.id_empresa');    
         return $select->query()->fetchAll();
     }
 

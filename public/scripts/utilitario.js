@@ -548,7 +548,7 @@ function carregaGravando()
         success: function (request,data) {
             //alert('ok');
             if($.trim(request)!='')
-                setMsg('ERRO','Erro 1 ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
+                setMsg('ERRO','Erro 1 ao salvar, entre em contato com a CRIWEB!<br>'+request+data,0);
             else
                 setMsg('Show','Salvo com sucesso!',1);
             habilitaDiv(false,'tabs');
@@ -836,7 +836,7 @@ function setFiltroFuncionario(todos,remover,pagina)
         ajax(url2,'ajax_empresa');
     }
         
-    if ((typeof(pagina) != "undefined") || pagina!=''  )
+   if ((typeof(pagina) != "undefined") || pagina!=''  )
         url+='/pagina/'+pagina;
         
     if (selectOrAdd == 0)
@@ -855,7 +855,7 @@ function setFiltroFuncionario(todos,remover,pagina)
     else
         ajax(url+'/selecionar/1/','ajax_funcionario');
 }
-    
+
 function filtraCnpj()
 {   
     cnpj = document.getElementById('cnpj').value;

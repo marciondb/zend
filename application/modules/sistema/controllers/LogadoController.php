@@ -303,7 +303,7 @@ class Sistema_LogadoController extends Controller_Action
     
     public function gerenciarcontroleacessoAction() {
         
-        $this->view->arrayControlAcessLED = $this->getLED('gerenciarcontroleacesso');
+        //$this->view->arrayControlAcessLED = $this->getLED('gerenciarcontroleacesso');
         
         $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
         $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');

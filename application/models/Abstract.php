@@ -1,9 +1,16 @@
 <?php
 
+/***
+ * Contem os métodos genéricos para todas as models do sistema
+ * 
+ */
 abstract class Application_Model_Abstract {
 
+    //tabela que será instanciada
     protected $_dbTable;
+    //table do LOG
     protected $_dbTableLog;
+    //id do usuario logado
     protected $_id_usuario;
     
     public function _init(){
@@ -11,31 +18,59 @@ abstract class Application_Model_Abstract {
         $this->_id_usuario = $arrayIdentity->id_usuario;
         
     }
-
+    
+    /***
+     * Traz apenas um resgistro cuja id deve ser fornecida
+     * @param  integer $id Id a qual sera feita a busca
+     * @return array
+     */
     public function find($id) {
         return $this->_dbTable->find($id)->current()->toArray();
     }
     
+    /***
+     * Salva o log da ativitade corrente
+     * @param array $arrayPK Array com as PK das tabelas alteradas
+     * @return nada
+     */
     public function saveLog(array $arrayPK) {
-        $this->_dbTableLog = new Application_Model_DbTable_Log();
-        $strPK='';
         
+        //cria uma instancia da table LOG
+        $this->_dbTableLog = new Application_Model_DbTable_Log();
+        
+        //Logica para montar as PK's em uma variavel do tipo string
+        $strPK='';        
         foreach ($arrayPK as $key ) {
             $strPK = $key.',';            
         }
         
+        //retira o ultima virgula
         $strPK = substr($strPK, 0,-1);
         
+        //monta o array a ser salvo
         $data = array('id_usuario'=>$this->_id_usuario,
                       'data_hora'=>date('Y-m-d H:i:s'),
                       'acao'=>Zend_Controller_Front::getInstance()->getRequest()->getActionName(),
                       'nome_tabela'=>  $this->_dbTable->getTableName(),
                       'valor_id'=>$strPK);
         
-        
-        $this->_dbTableLog->insert($data);
+        try
+        {
+            //insere na talbe log
+            $this->_dbTableLog->insert($data);
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao salvar o LOG, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
     }
 
+    /***
+     * Metodo generico para salvar ou atualizar
+     * @param array Sdata Array com os dados a serem salvos ou atualizados
+     * @param boolean $update Se true, ira fazer updadte, caso contrario, salva
+     * $return @array Array com as PK's
+     */
     public function save(array $data, $update = FALSE) {
 
         $validacao = $this->_validarDados($data);
@@ -70,10 +105,13 @@ abstract class Application_Model_Abstract {
     }
 
     /***
-     * @param String $order Para ter a opção de order by
+     * Retorna todos registros que satisfazem as contiçoes
+     * @param array [$conditions=null] condiçoes do where
+     * @param String [$order] Para ter a opção de order by
      * basta passar a string com o order desejado, ex: "order by campo ASC"
+     * @return array Retorna todos registros ordenados, que satisfazem as contiçoes
      */
-    public function fetchAll($conditions=null,$order=null) {
+    public function fetchAll(array $conditions=null,$order=null) {
         $select = $this->_dbTable->select();
 
         if (!is_null($conditions)) {
@@ -132,6 +170,11 @@ abstract class Application_Model_Abstract {
         return $this->_dbTable->getDefaultAdapter()->fetchPairs( $select );
     }
     
+    /***
+     * Toda model deve implementar esse método para validar os dados antes de salvar
+     * @param array $data Dados a serem validados
+     * @return boolean True se ok
+     */
     abstract protected function _validarDados(array $data);
     
 }

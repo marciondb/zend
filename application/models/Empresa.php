@@ -6,6 +6,12 @@ class Application_Model_Empresa extends Application_Model_Abstract
         $this->_dbTable = new Application_Model_DbTable_Empresa();
     }
     
+    /***
+     * Atualiza caso o parametro $update seja diferente de false.
+     * Recebe a PK do endereço inserido desta empresa.
+     * @param array $parametros Array com os dados a serem gravados
+     * @param Model $_endereco Model do endereco
+     */
     public function gravar($parametros,$_endereco, $update = FALSE)
     {
         $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
@@ -104,6 +110,8 @@ class Application_Model_Empresa extends Application_Model_Abstract
             }
             else
                 $select->where('empresa.id_empresa in (' . $listaIdEmpresasEscolhidas . ')');
+            
+            $select->group('empresa.id_empresa');
             
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);

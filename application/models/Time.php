@@ -101,6 +101,8 @@ class Application_Model_Time extends Application_Model_Abstract
             else
                 $select->where('time.id_time in (' . $listaIdTimesEscolhidos . ')');
             
+            $select->group('usuario_time_visivel.id_time');
+            
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
             if(!$remover)

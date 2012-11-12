@@ -26,7 +26,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
                   from('usuario_grupo', array('id_grupo_de_acesso'))->
                   join('grupo_de_acesso','usuario_grupo.id_grupo_de_acesso = grupo_de_acesso.id_grupo_de_acesso',array('nome'))->
                   where('usuario_grupo.id_usuario = ?', $idUsuario);
-       
+       $select->group('usuario_grupo.id_grupo_de_acesso');
        return $select->query()->fetchAll();
     }
     
