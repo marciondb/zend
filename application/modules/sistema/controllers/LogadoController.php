@@ -191,9 +191,9 @@ class Sistema_LogadoController extends Controller_Action
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($listaIdTempFuncionarioEscolhido);   
         
         $this->_usuario_time_visivel->deletar($arrayIdUsuario);        
-        $this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
+        /*$this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
         $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
-        $this->_usuario_grupo->deletar($arrayIdUsuario);
+        $this->_usuario_grupo->deletar($arrayIdUsuario);*/
         
         if(isset($parametros['arrayIdTempTimeEscolhido']) && ($parametros['arrayIdTempTimeEscolhido']!=","))
         {            
@@ -202,7 +202,7 @@ class Sistema_LogadoController extends Controller_Action
                 $this->view->erros .= " ".$teste;    
         }
 
-        if(isset($parametros['arrayIdTempEmpresaEscolhida']) && ($parametros['arrayIdTempEmpresaEscolhida']!=","))
+       /* if(isset($parametros['arrayIdTempEmpresaEscolhida']) && ($parametros['arrayIdTempEmpresaEscolhida']!=","))
         {
             $teste = $this->_usuario_empresa_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempEmpresaEscolhida'],1,-1));
             if(is_string($teste))
@@ -223,7 +223,7 @@ class Sistema_LogadoController extends Controller_Action
             $teste = $this->_usuario_grupo->gravar($arrayIdUsuario, $parametros['idGrupoTmp']);
             if(is_string($teste))
                 $this->view->erros .= " ".$teste;
-        }
+        }*/
     }
     
     public function cadastrarcontroleacessoAction()

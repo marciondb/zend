@@ -38,8 +38,8 @@ abstract class Application_Model_Abstract {
 
     public function save(array $data, $update = FALSE) {
 
-        $validacao = $this->_validarDados($data);
-        
+        //$validacao = $this->_validarDados($data);
+        $validacao = 1;
         $retorno = array();
         
         if (is_string($validacao))
@@ -52,7 +52,7 @@ abstract class Application_Model_Abstract {
             }
         }
         
-        $this->saveLog($retorno);
+        //$this->saveLog($retorno);
         
         return $retorno;
     }
