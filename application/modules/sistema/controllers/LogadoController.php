@@ -177,16 +177,16 @@ class Sistema_LogadoController extends Controller_Action
     
     public function ajaxgravacontroleacessoAction()
     {
+        $this->_helper->layout->disableLayout();
         
         if(!$this->possuiPermissao('cadastrarcontroleacesso'))
             $this->_redirect ("sistema/logado");
         
-        /*$this->_helper->layout->disableLayout();
         $this->view->erros = '';
         $teste = '';
                 
         $parametros = $this->_getAllParams();
-            
+        /*    
         $listaIdTempFuncionarioEscolhido = substr($parametros['arrayIdTempFuncionarioEscolhido'], 1,-1); 
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($listaIdTempFuncionarioEscolhido);   
         
