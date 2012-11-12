@@ -51,7 +51,8 @@ abstract class Application_Model_Abstract {
             }
         }
         
-        //$this->saveLog($retorno);
+        //lembrar que tem q modificar o Zend
+        $this->saveLog($retorno);
         
         return $retorno;
     }
