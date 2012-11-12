@@ -186,10 +186,10 @@ class Sistema_LogadoController extends Controller_Action
         $teste = '';
                 
         $parametros = $this->_getAllParams();
-        /*    
+            
         $listaIdTempFuncionarioEscolhido = substr($parametros['arrayIdTempFuncionarioEscolhido'], 1,-1); 
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($listaIdTempFuncionarioEscolhido);   
-        
+        /*
         $this->_usuario_time_visivel->deletar($arrayIdUsuario);        
         $this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
         $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
