@@ -198,8 +198,8 @@ class Sistema_LogadoController extends Controller_Action
         if(isset($parametros['arrayIdTempTimeEscolhido']) && ($parametros['arrayIdTempTimeEscolhido']!=","))
         {            
             $teste = $this->_usuario_time_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempTimeEscolhido'],1,-1));
-            if(is_string($teste))
-                $this->view->erros .= " ".$teste;    
+           /* if(is_string($teste))
+                $this->view->erros .= " ".$teste; */   
         }
 /*
         if(isset($parametros['arrayIdTempEmpresaEscolhida']) && ($parametros['arrayIdTempEmpresaEscolhida']!=","))
