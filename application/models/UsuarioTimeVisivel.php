@@ -30,7 +30,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
             {
                 foreach ($array_id_time as $value2) 
                 {
-                    $this->save(array('id_usuario'=>$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario,'id_time'=>$value2['id_time']));
+                    //$this->save(array('id_usuario'=>$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario,'id_time'=>$value2['id_time']));
                 }
             }
             
