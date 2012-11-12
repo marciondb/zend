@@ -194,14 +194,14 @@ class Sistema_LogadoController extends Controller_Action
         $this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
         $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
         $this->_usuario_grupo->deletar($arrayIdUsuario);
-        /*
+        
         if(isset($parametros['arrayIdTempTimeEscolhido']) && ($parametros['arrayIdTempTimeEscolhido']!=","))
         {            
             $teste = $this->_usuario_time_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempTimeEscolhido'],1,-1));
             if(is_string($teste))
                 $this->view->erros .= " ".$teste;    
         }
-
+/*
         if(isset($parametros['arrayIdTempEmpresaEscolhida']) && ($parametros['arrayIdTempEmpresaEscolhida']!=","))
         {
             $teste = $this->_usuario_empresa_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempEmpresaEscolhida'],1,-1));
