@@ -122,7 +122,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             return $e->getMessage();
         }
         
@@ -218,7 +218,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         catch(Exception $e)
         {
             //echo "<script>setMsg('ERRO','Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>".$e->getMessage()."',1)</script>";            
-            //ZendUtils::transmissorMsg('Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
         

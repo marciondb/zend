@@ -63,7 +63,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //ZendUtils::transmissorMsg('Erro ao retirar os usuarios dos grupos, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao retirar os usuarios dos grupos, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
     

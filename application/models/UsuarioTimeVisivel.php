@@ -37,7 +37,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //ZendUtils::transmissorMsg('Erro ao gravar a time visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);            
+            ZendUtils::transmissorMsg('Erro ao gravar a time visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);            
             return $e->getMessage();
             
         }
@@ -54,7 +54,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //ZendUtils::transmissorMsg('Erro ao deletar os times visiveis aos usuários, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao deletar os times visiveis aos usuários, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
     

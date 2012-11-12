@@ -179,7 +179,7 @@ class Sistema_LogadoController extends Controller_Action
     {
         
         if(!$this->possuiPermissao('cadastrarcontroleacesso'))
-        {$this->_redirect ("sistema/logado");}
+            $this->_redirect ("sistema/logado");
         
         $this->_helper->layout->disableLayout();
         $this->view->erros = '';
