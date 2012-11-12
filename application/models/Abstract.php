@@ -37,9 +37,9 @@ abstract class Application_Model_Abstract {
     }
 
     public function save(array $data, $update = FALSE) {
-        //ZendUtils::transmissorMsg(print_r(array('id_usuario'=>$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario,'id_time'=>$value2['id_time'])),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);            
-        //$validacao = $this->_validarDados($data);
-        $validacao = 1;
+
+        $validacao = $this->_validarDados($data);
+        
         $retorno = array();
         
         if (is_string($validacao))

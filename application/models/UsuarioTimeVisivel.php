@@ -30,7 +30,6 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
             {
                 foreach ($array_id_time as $value2) 
                 {
-                   
                     $this->save(array('id_usuario'=>$value['id_usuario'],'id_usuario_pai'=>$this->_id_usuario,'id_time'=>$value2['id_time']));
                 }
             }
@@ -74,7 +73,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         // Validação
         $erros = TRUE;        
        
-        /*$select = $this->_dbTable->
+        $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
                     from('usuario_time_visivel', 'usuario_time_visivel.id_time')->
@@ -82,7 +81,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
                     where('usuario_time_visivel.id_time = ?', $data['id_time']);
            
         if(!$select->query()->rowCount())
-            $erros = "ERRO 171 - Time";*/
+            $erros = "ERRO 171 - Time";
         
         return $erros;
     }
