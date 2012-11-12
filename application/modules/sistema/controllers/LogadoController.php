@@ -181,7 +181,7 @@ class Sistema_LogadoController extends Controller_Action
         if(!$this->possuiPermissao('cadastrarcontroleacesso'))
             $this->_redirect ("sistema/logado");
         
-        $this->_helper->layout->disableLayout();
+        /*$this->_helper->layout->disableLayout();
         $this->view->erros = '';
         $teste = '';
                 
@@ -223,7 +223,7 @@ class Sistema_LogadoController extends Controller_Action
             $teste = $this->_usuario_grupo->gravar($arrayIdUsuario, $parametros['idGrupoTmp']);
             if(is_string($teste))
                 $this->view->erros .= " ".$teste;
-        }
+        }*/
     }
     
     public function cadastrarcontroleacessoAction()
