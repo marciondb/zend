@@ -6,7 +6,11 @@ class Application_Model_Cargo extends Application_Model_Abstract
         $this->_dbTable = new Application_Model_DbTable_Cargo();
     }
     
-    public function gravar($parametros,$_endereco, $update = FALSE)
+    /***
+     * Atualiza caso o parametro $update seja diferente de false.
+     * @param array $parametros Array com os dados a serem gravados
+     */
+    public function gravar($parametros, $update = FALSE)
     {
         $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
                         "nome_fantasia" => $parametros['nome_fantasia'],
@@ -114,8 +118,7 @@ class Application_Model_Cargo extends Application_Model_Abstract
 
     protected function _validarDados(array $data){
         // Validação
-        //$erros = "";
-        
+        //$erros = "";        
         
         return true;
     }

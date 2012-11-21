@@ -28,7 +28,7 @@ class Sistema_LogadoController extends Controller_Action
         parent::init();
         
         //*******************************************************************
-        //  INICIO Instanciando os models, para pode utilizar os metodos relacionado 
+        //  INICIO Instanciando os models, para poder utiliza os metodos relacionado 
         // a banco de dados
         //*******************************************************************
         
@@ -48,23 +48,25 @@ class Sistema_LogadoController extends Controller_Action
         $this->_usuario = new Application_Model_Usuario();
         
         //*******************************************************************
-        //  FIM Instanciando os models, para pode utilizar os metodos relacionado 
+        //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
         // a banco de dados
         //*******************************************************************     
         
     }    
-
-    public function indexAction()
-    {
         
-    }
-        
+    /***
+     * Toda vez que tiver a necessidade de exibir as empresas, esta action deverá
+     * ser chamada
+     * action generica!
+     */
     public function ajaxempresaAction()
     {
         /*if(!$this->getRequest()->isXmlHttpRequest())
             $this->_redirect ("sistema/logado");*/
+        //Desabilita o layout
         $this->_helper->layout->disableLayout();
-        
+                
+        //pega os parametros, passados pela view que chamaou esta action
         $this->view->adicionar  = $this->_request->getParam('adicionar', false);
         $this->view->remover    = $this->_request->getParam('remover', false);
         $this->view->selecionar = $this->_request->getParam('selecionar', false);
@@ -72,12 +74,18 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->deletar    = $this->_request->getParam('deletar', false);
         $this->view->liberar    = $this->_request->getParam('liberar', false);
         
+        //chama a model
         $this->view->arrayEmpresa = $this->_empresa->exibir($this->_request->getParam('pagina', 1),
                                                             $this->_request->getParam('cnpj', 0),
                                                             $this->_request->getParam('listaIdEmpresasEscolhidas', 0),
                                                             $this->_request->getParam('remover', 0));
     }
     
+    /***
+     * Toda vez que tiver a necessidade de exibir as time, esta action deverá
+     * ser chamada
+     * action generica!
+     */
     public function ajaxtimeAction()
     {
         /*if(!$this->getRequest()->isXmlHttpRequest())
@@ -96,6 +104,11 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('remover', 0));
     }
     
+    /***
+     * Toda vez que tiver a necessidade de exibir as empresas, esta action deverá
+     * ser chamada
+     * action generica!
+     */
     public function ajaxfuncionarioAction()
     {
         /*if(!$this->getRequest()->isXmlHttpRequest())
@@ -120,6 +133,10 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('remover', 0));
     }
     
+    /***
+     * Exibe os funcionario que possuem permissoes conseditas pelo usuario logado
+     * Usado no Gerenciar Controle de Acesso 
+     */
     public function ajaxcafuncionarioAction()
     {
         /*if(!$this->getRequest()->isXmlHttpRequest())
@@ -141,16 +158,24 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('idFuncionario_tipo', 0));
     }
     
+    /***
+     * Toda vez que tiver a necessidade de exibir os grupo, esta action deverá
+     * ser chamada
+     * action generica!
+     */
     public function ajaxusuariogrupoAction()
     {
         /*if(!$this->getRequest()->isXmlHttpRequest())
             $this->_redirect ("sistema/logado");*/
         $this->_helper->layout->disableLayout();
         
+        //Caso seja necessario ter todas os ids funcionalidade de um grupo na view
         if($this->_request->getParam('idGrupo'))
             $this->view->arrayIdFuncionalidade= $this->_grupo_funcionalidade->getIdFuncionalidade($this->_request->getParam('idGrupo', false));
         else
         {
+            //Senao, exibe os grupos que o usuario logado tem acesso
+            
             $this->view->selecionar = $this->_request->getParam('selecionar', false);
             $this->view->editar     = $this->_request->getParam('editar', false);
             $this->view->deletar    = $this->_request->getParam('deletar', false);
@@ -158,23 +183,32 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->arrayUsuarioGrupo = $this->_usuario_grupo->exibir($this->_id_usuario);
         }
         
+        //Para o editar o controle de acesso, tem que ter os grupos do usuario 
+        //logado e os grupos do usuario a ser editado
         if($this->_request->getParam('editarCA',false))
         {
                 $this->view->arrayIdGrupo = $this->_usuario_grupo->exibir($this->_request->getParam('id_usuario'));
         }
     }
     
+    /***
+     * carrega as funcionalidade para cadastrar ou editar as permissoes, no controle de acesso
+     */
     public function ajaxcarregamenutreeAction()
     {
        $this->_helper->layout->disableLayout();
        
        
+       //Para o editar o controle de acesso
        if($this->_request->getParam('editarCA',false))
        {
             $this->view->arrayIdFuncionalidades = $this->_usuario->getPermissao($this->_request->getParam('id_usuario'));
        }
     }
     
+    /***
+     * grava as permissoes de controle de aceso
+     */
     public function ajaxgravacontroleacessoAction()
     {
         $this->_helper->layout->disableLayout();
@@ -188,6 +222,7 @@ class Sistema_LogadoController extends Controller_Action
         $parametros = $this->_getAllParams();
             
         $listaIdTempFuncionarioEscolhido = substr($parametros['arrayIdTempFuncionarioEscolhido'], 1,-1); 
+        //pega as ids de usuario dos funcionarios
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($listaIdTempFuncionarioEscolhido);   
         
         $this->_usuario_time_visivel->deletar($arrayIdUsuario);        
@@ -195,9 +230,11 @@ class Sistema_LogadoController extends Controller_Action
         $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
         $this->_usuario_grupo->deletar($arrayIdUsuario);
         
+        //salva
         if(isset($parametros['arrayIdTempTimeEscolhido']) && ($parametros['arrayIdTempTimeEscolhido']!=","))
         {            
             $teste = $this->_usuario_time_visivel->gravar($arrayIdUsuario, substr($parametros['arrayIdTempTimeEscolhido'],1,-1));
+            //se houver erro, passa para a view.
             if(is_string($teste))
                 $this->view->erros .= " ".$teste;    
         }
@@ -226,6 +263,9 @@ class Sistema_LogadoController extends Controller_Action
         }
     }
     
+    /***
+     * Carrega a tela cadastro controle de acesso
+     */
     public function cadastrarcontroleacessoAction()
     {
         /*$this->view->arrayEmpresaLED     = $this->getLED('ajaxempresa');
@@ -235,12 +275,11 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
         $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
         
-        if($this->_request->isPost())
-        {   
-            ZendUtils::transmissorMsg(' Salvo com sucesso',  ZendUtils::MENSAGEM_ACERTO,  2000);
-        }
     }
     
+    /***
+     * Carrega a tela editar controle de acesso
+     */
     public function editarcontroleacessoAction()
     {
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($this->_request->getParam('idFuncionario', false));
@@ -260,6 +299,9 @@ class Sistema_LogadoController extends Controller_Action
     
     }
     
+    /***
+     * Deleta todas as permissoes do usario, junto com as empresas e times visiveis
+     */
     public function deletarcontroleacessoAction() {
         $this->_helper->layout->disableLayout();
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($this->_request->getParam('idFuncionario', false));
@@ -271,8 +313,23 @@ class Sistema_LogadoController extends Controller_Action
         
         
     }
-
-
+    
+    /***
+     * Gerencia o controle de acesso
+     */
+    public function gerenciarcontroleacessoAction() {
+        
+        //$this->view->arrayControlAcessLED = $this->getLED('gerenciarcontroleacesso');
+        
+        $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
+        $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
+        $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
+        
+    }
+    
+    /***
+     * Cadastra empresa
+     */
     public function cadastrarempresaAction()
     {
         if($this->_request->isPost())
@@ -291,7 +348,10 @@ class Sistema_LogadoController extends Controller_Action
         }    
     
     }
-        
+    
+    /***
+     * Carrega a tela cadastro controle de acesso
+     */
     public function cadastrarfuncionarioAction()
     {
         if($this->_request->isPost())
@@ -301,13 +361,8 @@ class Sistema_LogadoController extends Controller_Action
     
     }
     
-    public function gerenciarcontroleacessoAction() {
-        
-        //$this->view->arrayControlAcessLED = $this->getLED('gerenciarcontroleacesso');
-        
-        $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
-        $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
-        $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
+    public function indexAction()
+    {
         
     }
     

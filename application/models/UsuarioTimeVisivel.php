@@ -9,6 +9,11 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         $this->_id_usuario = $arrayIdentity->id_usuario;
     }
 
+    /***
+     * Salva os usarios em um ou mais times visiveis
+     * @param array $arrayIdUsuario Array com os ids dos usuarios
+     * @param array $array_id_time Array com os ids dos times
+     */
     public function gravar($array_id_usuario,$array_id_time)
     {
         
@@ -58,7 +63,12 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         }
     }
     
-     public function exibir($idUsuario) {
+    /***
+     * Exibe tds os times visiveis do usuario
+     * @param int $idUsuario Id do usario a ser pesquisado
+     * @return Array $select->query()->fetchAll();
+     */
+    public function exibir($idUsuario) {
         
         $select = $this->_dbTable->
                     select()->

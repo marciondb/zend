@@ -8,6 +8,11 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         $this->_id_usuario = $arrayIdentity->id_usuario;
     }
 
+    /***
+     * Retorna as ids de todos os usarios membros do grupo.
+     * @param int $idGrupo Id do grupo de acesso
+     * @return Array $select->query()->fetchAll();
+     */
     public function getArrayIdUsuarioGrupo($idGrupo){
         
        $select = $this->_dbTable->
@@ -19,6 +24,11 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
        return $select->query()->fetchAll();
     }            
     
+    /***
+     * Exibe tds os grupos visiveis do usuario
+     * @param int $idUsuario Id do usario a ser pesquisado
+     * @return Array $select->query()->fetchAll();
+     */
     public function exibir($idUsuario){
         $select = $this->_dbTable->
                   select()->
@@ -30,11 +40,15 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
        return $select->query()->fetchAll();
     }
     
+    /***
+     * Salva os usarios em um ou mais grupos de acesso
+     * @param array $arrayIdUsuario Array com os ids dos usuarios
+     * @param array $grupos Array com os ids dos grupos
+     */
     public function gravar($arrayIdUsuario, $grupos){
         
         try
-        {
-            
+        {            
             foreach ($arrayIdUsuario as $usuario) {
 
                 foreach($grupos as $idGrupo){

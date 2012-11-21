@@ -7,10 +7,17 @@ class Application_Model_Usuario extends Application_Model_Abstract
         $this->_dbTable = new Application_Model_DbTable_Usuario();
     }
  
+    /***
+     * Efetua o login do usuario. Metodo para todos os modulos
+     * @param string $login Nome de usuario
+     * @param string $senha Senha do usuario
+     * @return Boolean
+     */
     public function efetuarLogin($login,$senha){
         if($login == "" || $senha == "")
             return false;
  
+            //Verifica os dados formnecidos e pesquisa no BD, pelo nome de usuario
             $authAdapter = new Zend_Auth_Adapter_DbTable($this->_dbTable->getDefaultAdapter(), 'usuario', 'login', 'senha','MD5(?)');
             $authAdapter->setIdentity($login)->setCredential($senha);
             $result = $authAdapter->authenticate();
@@ -20,12 +27,31 @@ class Application_Model_Usuario extends Application_Model_Abstract
                $auth = Zend_Auth::getInstance();
                $data = $authAdapter->getResultRowObject(null,'senha');
                
+               //registra o usuario
                $auth->getStorage()->write($data);
                return true;
             }
             else
             {
-                return false;
+                //Verifica os dados formnecidos e pesquisa no BD, pelo cpf de usuario
+                $authAdapter = new Zend_Auth_Adapter_DbTable($this->_dbTable->getDefaultAdapter(), 'usuario', 'cpf', 'senha','MD5(?)');
+                $authAdapter->setIdentity($login)->setCredential($senha);
+                $result = $authAdapter->authenticate();
+
+                if($result->isValid())
+                {
+                    $auth = Zend_Auth::getInstance();
+                    $data = $authAdapter->getResultRowObject(null,'senha');
+
+                    //registra o usuario
+                    $auth->getStorage()->write($data);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
     }
 
@@ -40,6 +66,11 @@ class Application_Model_Usuario extends Application_Model_Abstract
         }
     }
     
+    /***
+     * Pega todas os ids de funcionalidade, titulos, nome das actions do usuario logado
+     * @param int $idUsuario Id do usuario
+     * @return Array $select->query()->fetchAll();
+     */
     public function getPermissao($idUsuario)
     {
         $select1 = $this->_dbTable->
@@ -74,11 +105,11 @@ class Application_Model_Usuario extends Application_Model_Abstract
     }
 
     
-        protected function _validarDados(array $data){
+    protected function _validarDados(array $data){
         // Validação
         //$erros = "";
-        
-        
+
+
         return true;
     }
     

@@ -45,6 +45,7 @@ abstract class Controller_Action extends Zend_Controller_Action {
         // Verifica em todas as páginas se o usuário está logado ou não, permitindo o acesso de acordo com a situação
         $redirect = $this->getRequest()->getModuleName();
                         
+        //ATENCAO!!! Não colocar NADA dentro de NENHUMA controller index!!!!!
         if (!($this->getRequest()->getControllerName() == "index"))
         {
             if(!(Zend_Auth::getInstance()->hasIdentity()))
@@ -112,35 +113,19 @@ abstract class Controller_Action extends Zend_Controller_Action {
      */
     public function logarAction()
     {
+        $this->_helper->layout->disableLayout();
         $senha = '';
         $userEmail = '';
-        
-        if($this->getRequest()->isPost())
+        $this->view->erro = '';
+        $userEmail = $this->getRequest()->getParam("login");
+        $senha = $this->getRequest()->getParam("senha");
+
+        if(!$this->_usuario->efetuarLogin($userEmail, $senha))
         {
-            $userEmail = $this->getRequest()->getParam("login");
-            $senha = $this->getRequest()->getParam("senha");
-            $redirect = $this->getRequest()->getModuleName();
-            
-            if(!$this->_usuario->efetuarLogin($userEmail, $senha))
-            {
-                ?>
-                    <script>
-                        if(alert('Login ou senha incorretos!')==undefined)
-                        {
-                            window.location.pathname = '<?php echo $this->baseUrl;?>/<?php echo $redirect; ?>';
-                        }
-                    </script>
-                <?php
-                die();
-            }
-            
-            //Se o login der certo, sera redirecionado para a view "logado", view inical padrao, depois de logado, de TODOS os modulos
-            //menos o portal
-            if($redirect == "portal") 
-                $redirect = "ead";
-            
-            $this->_redirect($redirect."/logado");                
+            $this->view->erro = '0';
         }
+        else
+            $this->view->erro = '1';
 
     }
 

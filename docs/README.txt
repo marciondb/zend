@@ -29,6 +29,37 @@ acessar determinada action está no init desta classe.
 
 * Todos os arquivos de imagens, scripts e css estão na pasta public.
 
+* Toda nome de action ajax deve começar com ajax.
+* Todo ajax não eh uma funcionalidade do sistema, por isso não eh validado (esse eh o pq da nomenclatura)
+* Toda view que tiver ajax e este ajax usar o paginator, a view obrigatoriamente deve ter a funcao JS setPaginator()
+
+* Controle de Acesso
+    O controle de acesso é feito da seguinte forma:
+    - Toda funcionalidade tem uma funcionalidade pai. A funcionalidade pai igual a 0, significa 
+    que pertence a raiz do menu, ou seja, não tem pai!
+    - Sempre que uma funcionalidade for liberada, a funcionalidade pai tem que ser liberada, 
+    ate chegar a funcionalidade pai 0.
+    - Cada funcionalidade tem 3 outras funcionalidades, que são o EDITAR | DELETAR | LIBERAR, podendo 
+    ser ou não preenchidas com funcionalidades. Caso não seja, o valor padrao eh zero.
+    Caso tenha uma dessas 3 funcionalidade, cada uma delas deve ser uma nova funcionalidade, 
+    com o EDITAR | DELETAR | LIBERAR iguais a zero.
+    Ex:
+    Liberei o "Gerenciar funcionario", por exemplo, id_funcionalidade igual a 122 e dei 
+    permissao de editar (123) e deletar (124)
+    Logo, ficaria da seguinte forma:
+
+     ID_FUNCIONALIDADE | EDITAR | DELETAR | LIBERAR
+            122        |   123  |   124   |    0
+            123        |    0   |    0    |    0
+            124        |    0   |    0    |    0
+
+
+
+ERROS
+===========================
+* Erro 171 - qualquer tentativa de fraude ao sistema
+
+
 Setting Up Your VHOST
 =====================
 

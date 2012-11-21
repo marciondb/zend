@@ -8,7 +8,6 @@ class Application_Model_Funcionario extends Application_Model_Abstract
     
     /***
      * Atualiza caso o parametro $update seja diferente de false.
-     * Recebe a PK do endereço inserido desta empresa.
      * @param array $parametros Array com os dados a serem gravados
      * @param Model $_endereco Model do endereco
      */
@@ -161,7 +160,9 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     join('usuario_funcionalidade', 'usuario_funcionalidade.id_usuario = funcionario.id_usuario',null)->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('usuario_funcionalidade.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
-                    where('lotacao.atual = 1');
+                    where('lotacao.atual = 1')->
+                    where('funcionario.id_usuario <> ?', $arrayIdentity->id_usuario);
+                    
             if ($listaIdEmpresa)
                 $select1->where('time.id_empresa in (' . $listaIdEmpresa . ')');
             if ($listaIdTime)
@@ -184,7 +185,9 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     join('usuario_grupo', 'usuario_grupo.id_usuario = funcionario.id_usuario',null)->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('usuario_grupo.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
-                    where('lotacao.atual = 1');
+                    where('lotacao.atual = 1')->
+                    where('funcionario.id_usuario <> ?', $arrayIdentity->id_usuario);
+                    
             if ($listaIdEmpresa)
                 $select2->where('time.id_empresa in (' . $listaIdEmpresa . ')');
             if ($listaIdTime)
@@ -199,6 +202,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
             $select = $this->_dbTable->
                   select()->
                   setIntegrityCheck(false)->
+                  //Funcionario ou está em um grupo de acesso ou possui permissoes ou em ambos
                   union(array($select1,$select2));
 
             $select->order('nome ASC')->

@@ -8,6 +8,11 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
         $this->_id_usuario = $arrayIdentity->id_usuario;
     }
 
+    /***
+     * Torna as empresas visiveis para os usuarios
+     * @param array $array_id_usuario Array com as ids dos usuarios que verao as empresas
+     * @param array/lista $array_id_empresa Array ou lista de ids concatenadas por "," com as ids das empresas
+     */
     public function gravar($array_id_usuario,$array_id_empresa){
         
         if(!is_array($array_id_empresa))
@@ -54,6 +59,11 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
         }
     }
     
+    /***
+     * Exibe as empresas visiveis do usuario
+     * @param int $idUsuario id do usuario
+     * @return Array $select->query()->fetchAll();
+     */
     public function exibir($idUsuario) {
         
         $select = $this->_dbTable->

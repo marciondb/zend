@@ -34,16 +34,17 @@
                 unset($_SESSION['erro_redirect']);
             }
         ?>
-        <div id="mensagem" class="mensagem_acerto">
-              
-            <a id="btnfechardiv" href="#" onclick="FecharDivMsg()">[Fechar]</a>  
-        </div>
-        <?php           ZendUtils::receptorMsg();   ?>
+        
+        <?php  
+            //Caso tenha dado erro, fica na session.
+            ZendUtils::receptorMsg();   
+        ?>
         
         <div id="araiz" align="center">
             <div id="topo">
                 <img src="<?php echo $this->baseUrl()."/public/images/sistema/logoMarca.png"; ?>" alt="Painel de Controle">
              </div>
+            
             <div id="conteudo">   
                 <?php
                     if (Zend_Auth::getInstance()->hasIdentity())
@@ -67,26 +68,19 @@
                                 include("application/modules/sistema/views/layouts/carregamenu.phtml");
                             ?>
                         </div>
-                        <div>
-                            &nbsp;
-                        </div>
+                        
                 <?php
                     }                        
                 ?>
-                <div id="togglerMenssagem" class="togglerMenssagem">
-                    <div id="effectMenssagem" class="ui-widget-content ui-corner-all">
-                        <h3 class="ui-widget-header ui-corner-all"><p id="tituloMsg"></p><a id="btnfechardiv" href="javascript:;" onclick="fecharDivMsg(1,0)">[Fechar]</a></h3>
-                        <p id="conteudoMsg"></p>
-                    </div>
-                </div>
-                <?php echo $this->layout()->content; ?>
-                <div id="transparente" style="z-index:2;visibility: hidden; width:821px; filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; -moz-border-radius: 10px; -webkit-border-radius: 10px;">
-                    <div id="carregar" align="center" style="position: fixed;width: 821px; color: #fff;background: url(<?php echo $this->baseUrl() . "/public/images/sistema/bar_ani_laranja.gif"; ?>) repeat-x;">Salvando...</div>
-                </div>
-                
-                <script>            
-                    
-                </script>            
-        </div>
+                                                      
+                <?php 
+                    //imprime o conteudo da action
+                    echo $this->layout()->content; 
+                ?>
+                            
+            </div>           
+        </div>                 
+        
+            
     </body>
 </html>

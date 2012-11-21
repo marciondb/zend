@@ -1,21 +1,24 @@
+<?php
+/***
+ * formulario de login
+ */
+?>
+<div id="login1" style="border:10px;border-style:solid;border-color:#666;">
 <form name="formulario" action="<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logar'),null,1); ?>" method="post">
-    <table bgcolor="#CCCCCC" style="border:1px solid #666; margin-top:20px;" width="300" align="center">
+    <table bgcolor="#CCCCCC" style="margin-top:20px;" width="260" align="center">
         <th colspan="2" bgcolor="#999999" style="color:#FFF;" align="center">Administração</th>
+        
         <tr>
-            <td align="right" width="30%"></td>
-            <td width="70%"></td>
-        </tr>
-        <tr>
-            <td>
-                <div class="input-prepend">
-                    <span class="add-on">Usuário</span><input class="span2" id="login" name="login" type="text" placeholder="email">
+            <td >
+                <div class="input-prepend" >
+                    <span class="add-on">Usuário</span><input  id="login" name="login" type="text" placeholder="email ou cpf">
                 </div>
             </td>
         </tr>
         <tr>
             <td>
                 <div class="input-prepend">
-                    <span class="add-on">Senha</span><input class="span2" id="senha" name="senha" type="password" placeholder="senha">
+                    <span class="add-on">Senha&nbsp;&nbsp;</span><input id="senha" name="senha" type="password" placeholder="senha">
                 </div>
             </td>
         </tr>
@@ -23,11 +26,46 @@
             <td colspan="2" align="center"><a href="index.php?link=recuperarSenha" class="recupera"><i class="icon-wrench"></i>&nbsp;Esqueceu usuário ou senha?</a></td>
         </tr>
         <tr>
-            <td align="center" colspan="2"><input class="btn btn-primary" name="logar" type="submit" id="logar" value="Entrar" />&nbsp;<input name="" class="btn btn-danger" type="reset" value="Redefinir" /></td>
+            <td align="center" colspan="2"><input class="btn btn-primary" name="logar" type="button" id="logar" value="Entrar" onclick="loga();" />&nbsp;<input name="" class="btn btn-danger" type="reset" value="Redefinir" /></td>
         </tr>
     </table>	
 </form>
 
+</div>
+
+<div id="ajax" style="visibility: hidden">
+</div>
+<script>
+    url = '<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logar'),null,1); ?>';
+    redirect = '<?php echo $this->url(array('module'=>'sistema', 'controller'=>'logado','action'=>'index'),null,1); ?>';
+    redirectEad = '<?php echo $this->url(array('module'=>'ead', 'controller'=>'logado','action'=>'index'),null,1); ?>';
+    
+    function loga()
+    {
+        divAguarde(true,'login1');
+        email = document.getElementById('login').value;
+        senha = document.getElementById('senha').value;
+        
+        ajax(url+'/login/'+email+'/senha/'+senha, 'ajax');
+        
+        valida = document.getElementById('ajax').innerHTML;
+        
+        if(valida == 0)
+            showAlert('ERRO', 'Login ou senha incorretos!');
+        else
+        {
+            //Se o login der certo, sera redirecionado para a view "logado", view inical padrao, depois de logado, de TODOS os modulos
+            //menos o portal
+            if(pathArray[2] == "portal")
+                window.location.pathname = redirectEad;
+            else
+                window.location.pathname = redirect;
+        }
+        
+        divAguarde(false,'login1');
+            
+    }
+</script>
 
 
 

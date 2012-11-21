@@ -10,7 +10,17 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         $this->_id_usuario = $arrayIdentity->id_usuario;
     }
     
-    public function gravar($arrayIdusuario,$id_funcionalidades,$funcionalidade_editar,$funcionalidade_deletar,$funcionalidade_liberar,$funcionalidade_pai, $permissao,$update = FALSE)
+    /***
+     * Salva as permissoes do usuario
+     * @param array $arrayIdusuario Array com as ids do usario que receberao as permissoes
+     * @param array $id_funcionalidades Array com as funcionalidades
+     * @param array $funcionalidade_editar Array com as funcionalidades editar
+     * @param array $funcionalidade_deletar Array com as funcionalidades deletar
+     * @param array $funcionalidade_liberar Array com as funcionalidades liberar
+     * @param array $funcionalidade_pai Array com as funcionalidades pai
+     * @param array $permissao Array com as permissoes do usuario logado, para fazer a validacao
+     */
+    public function gravar($arrayIdusuario,$id_funcionalidades,$funcionalidade_editar,$funcionalidade_deletar,$funcionalidade_liberar,$funcionalidade_pai, $permissao)
     {      
         $this->_permissao = $permissao;
         $editar  = '';
@@ -18,21 +28,33 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         $liberar = '';        
                 
         try
-        {
-            //$count=0;
-            
+        {            
+            //Para cada usuario
             foreach ($arrayIdusuario as $key_usuario) 
             {
+                //Salva cada funcionalidade
                 foreach ($id_funcionalidades as $key_funcionalidade) 
                 {
+                    //Lembrando a estrutura da tabela usuario_funcionalidade, 
+                    //que é:id_usuario |id_usuario_pai usuario(que concedeu a permissão) | id_funcionalidade | id_editar | id_deletar | id_liberar
+                    //Entao devemos salvar junto com cada funcionalidade, os ids das funcionalidades do LED (liberar, editar e deletar).
+                    
+                    //Cada funcionalidade no formulario de cadastro/editar de controle de acesso possui a funcionalidade pai mais o id da funcionalidade em si, nesta ordem.
+                    //Então retira a funcionalidade em si, que esta depois da virgula
                     $key_funcionalidade = substr($key_funcionalidade,strpos($key_funcionalidade, ',')+1);
                     
+                    //E retira as funcionalidades LED para a funcionalidade $key_funcionalidade 
+                    
+                    //procura a funcionalidade editar da funcionalidade $key_funcionalidade
                     foreach ($funcionalidade_editar as $key_editar) 
                     {
-                        $key_editar_aux = substr($key_editar,0,strpos($key_editar, ','));
-
-                        if($key_funcionalidade==$key_editar_aux)
+                        //Retirar o pai
+                        $key_editar_pai = substr($key_editar,0,strpos($key_editar, ','));
+                        
+                        //Verifica se a $key_funcionalidade é o pai
+                        if($key_funcionalidade==$key_editar_pai)
                         {    
+                            //monta a string com o id desta funcionalidade
                             $editar = substr($key_editar,strpos($key_editar, ',')+1);
                             break;
                         }
@@ -67,11 +89,15 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
                     }
 
                     //$arrayFuncionalidade[$count] = array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar);
-                    //$count++;
+                    //salva
                     $this->save(array('id_usuario'=>$key_usuario['id_usuario'],'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar,'id_usuario_pai'=>$this->_id_usuario));
                     
                 }
 
+                //Para cada um das funcionalidade do LED, devemos salva-la como uma permissao especifica
+                // id_usuario   |id_usuario_pai usuario(que concedeu a permissão) | id_funcionalidade | id_editar | id_deletar | id_liberar
+                // id_usuario   |                    id_usuario_pai usuario       |         0         |     0     |      0     |     0
+                
                 foreach ($funcionalidade_editar as $key_editar) 
                 {
                     if($key_editar != ",")
@@ -128,83 +154,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         
     }
     
-    /**
-       * Exibe tds os Grupo de Funcionalidade visiveis.      
-       * @return Array retorna query()->fetchAll()
-       * @param  Boolean $selecionar  : coloca um elemento checkbox para selecionar a empresa
-       * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
-       * @param  Boolean $deletar : coloca um elemento um "botao" para pode deletar
-       * @version 1.0
-       * @author Márcio & Marco
-     */
-    public function exibir($pagina,$cnpj,$listaIdEmpresasEscolhidas,$remover)
-    {           
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
-        $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
         
-        try{
-            $select = $this->_dbTable->
-                    select()->
-                    setIntegrityCheck(false)->
-                    from('empresa',array('id_empresa','razao_social','nome_fantasia','apelido','cnpj','telefone_1','telefone_2'))->
-                    join('usuario_empresa_visivel', 'empresa.id_empresa = usuario_empresa_visivel.id_empresa',null)->
-                    where('usuario_empresa_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
-            
-            if($cnpj)
-            {
-                $cnpj = str_replace(".","",$cnpj);
-		$cnpj = str_replace("-","",$cnpj);
-		$cnpj = str_replace("/","",$cnpj);
-                $select->where('empresa.cnpj = ? ',$cnpj);
-            }
-            
-            if(!$remover)
-            {
-                if ($listaIdEmpresasEscolhidas)
-                    $select->where('empresa.id_empresa not in (' . $listaIdEmpresasEscolhidas . ')');
-            }
-            else
-                $select->where('empresa.id_empresa in (' . $listaIdEmpresasEscolhidas . ')');
-            
-            $paginator = Zend_Paginator::factory( $select );
-            $paginator->setCurrentPageNumber($pagina);
-            if(!$remover)
-                $paginator->setItemCountPerPage($perPage);
-        }
-        catch(Exception $e)
-        {
-            ZendUtils::transmissorMsg('Erro ao selecionar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-        }
-        
-        
-        return $paginator;
-        
-    }
-    
-    public function getIdFuncionalidade($idGrupo) {
-        
-        $select = $this->_dbTable->
-                  select()->
-                  setIntegrityCheck(false)->
-                  from('grupo_funcionalidade', array('id_funcionalidade'))->
-                  where('grupo_funcionalidade.id_grupo_de_acesso = ?', $idGrupo);
-       
-        
-        $arrayIdFuncionalidade = '';
-        
-        foreach ($select->query()->fetchAll() as $idFuncionalidade)
-        {
-            $arrayIdFuncionalidade .= $idFuncionalidade['id_funcionalidade'].',';
-        }    
-        
-        $arrayIdFuncionalidade = substr($arrayIdFuncionalidade,0,-1);
-        
-        if(!$select->query()->rowCount())
-            return "0";
-        else    
-            return $arrayIdFuncionalidade;
-    }
-    
     public function deletar($array_id_usuario)
     {
         try 
@@ -226,6 +176,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         // Validação
         $erros = TRUE;
         
+        //Verifica se o usuario logado concedeu permissoes que ele mesmo não possui
         foreach ($this->_permissao as $value) {
             
             if($data['id_funcionalidade'] == $value['id_funcionalidade'])
@@ -235,6 +186,8 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
             }
             else
                 $erros = 'ERRO 171 - Funcionalidades';
+            //vale lembrar, que pode acorre que ao salvar, o usuario pai retirou uma determinada funcionaliade do usuario logado
+            // logo, nesse caso, não é um erro do tipo 171
         }
                
         return $erros;

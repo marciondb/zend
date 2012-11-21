@@ -1,3 +1,4 @@
+//Pega somente o nome da baseUrl
 pathArray = window.location.pathname.split( '/' );
 host = pathArray[1];
 
@@ -9,6 +10,10 @@ urlAjaxFuncionario = '/'+host+'/sistema/logado/ajaxfuncionario';
 urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
 urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
 
+/***
+ * Preenche todos os compos de um formulario
+ * funcao para ajudar no teste de formulario com varios campos
+ */
 function preencheCampos()
 {
     for (i=0; i<formulario.elements.length; i++) {  
@@ -18,13 +23,16 @@ function preencheCampos()
             //alert();
             if(formulario.elements[i].type=='radio')
                 formulario.elements[i].checked = true;
-
         }  
     }
 }
 
 
-//valida o CPF digitado
+/***
+ * valida o CPF digitado
+ * @param object cpf Objeto texto, o campo em si
+ * @return boolean 
+ */
 function validarCPF(cpf){
 
            var  cpf = $(objcpf).attr('value');
@@ -137,7 +145,11 @@ function validarCPF(cpf){
 
         }
 
-//valida o CNPJ digitado
+/***
+ *valida o CNPJ digitado
+ * @param object cnpj Objeto texto, o campo em si
+ * @return boolean 
+ */
 function validarCNPJ(cnpj){
     
         var valida = new Array(6,5,4,3,2,9,8,7,6,5,4,3,2);
@@ -171,56 +183,48 @@ function mascaraInteiro(dom){
 
 }
 
-
-
-
 function validarData(data) 
-{
+{    
             
-            
-            exp = /\d{2}\/\d{0,2}\/\d{4}/
-        if(!exp.test(data))
-        {
-            return false;
-        }
-            
-            
-            
-	if (data == "")
-        { 
-           return false;
-        } 
+    exp = /\d{2}\/\d{0,2}\/\d{4}/
+    if(!exp.test(data))
+    {
+        return false;
+    }
+           
+    if (data == "")
+    { 
+        return false;
+    } 
 
-	
-	
-	    dia = (data.substring(0,2)); 
-            mes = (data.substring(3,5)); 
-            ano = (data.substring(6,10)); 
+    dia = (data.substring(0,2)); 
+    mes = (data.substring(3,5)); 
+    ano = (data.substring(6,10)); 
 
            
-            // verifica o dia valido para cada mes 
-            if ((dia < 01)||(dia < 01 || dia > 30) && (  mes == 4 || mes == 6 || mes == 9 || mes == 11 ) || dia > 31) { 
-                return false;
-            } 
+    // verifica o dia valido para cada mes 
+    if ((dia < 01)||(dia < 01 || dia > 30) && (  mes == 4 || mes == 6 || mes == 9 || mes == 11 ) || dia > 31) { 
+        return false;
+    } 
 
-            // verifica se o mes e valido 
-            if (mes < 01 || mes > 12 ) { 
-               return false;
-            } 
+    // verifica se o mes e valido 
+    if (mes < 01 || mes > 12 ) { 
+        return false;
+    } 
 
-            // verifica se e ano bissexto 
-            if (mes == 2 && ( dia < 01 || dia > 29 || ( dia > 28 && (parseInt(ano / 4) != ano / 4)))) { 
-             return false;
-            } 
+    // verifica se e ano bissexto 
+    if (mes == 2 && ( dia < 01 || dia > 29 || ( dia > 28 && (parseInt(ano / 4) != ano / 4)))) { 
+        return false;
+    } 
             
-          return true;
+    return true;
 
          
 } 
 
 function validarEmail(email)
 {
-      var exp = /^[a-zA-Z0-9]+[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]*\.+[a-z]{2,4}$/;
+  var exp = /^[a-zA-Z0-9]+[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]*\.+[a-z]{2,4}$/;
      
   if ( !exp.test(email))
   {
@@ -250,9 +254,9 @@ function FecharDivMsgOld()
    
 }
         
-        /**
-         * Função javascript para ser utilizada junto a função transmissor msg da classe ZendUtils, precisa do plugin jquery
-         */
+/**
+* Função javascript para ser utilizada junto a função transmissor msg da classe ZendUtils, precisa do plugin jquery
+*/
 function ExibirMsg(id, msg, tipo,tempo)
 {
 
@@ -289,9 +293,12 @@ function campoNumeros(ie, ff) {
     }
 }
 
-
+/***
+ * Para poder executar JS denro de um ajax
+ * @param string Texto String a ser remodelada
+ */
 function extraiScript(texto)
-{//para poder executar JS denro de um ajax
+{
     //Maravilhosa função feita pelo SkyWalker.TO do imasters/forum
     //http://forum.imasters.com.br/index.php?showtopic=165277
     // inicializa o inicio ><
@@ -311,9 +318,9 @@ function extraiScript(texto)
             // executa o script
             //eval(codigo);
             /**********************
-							* Alterado por Micox - micoxjcg@yahoo.com.br
-							* Alterei pois com o eval não executava funções.
-							***********************/
+            * Alterado por Micox - micoxjcg@yahoo.com.br
+            * Alterei pois com o eval não executava funções.
+            ***********************/
             novo = document.createElement("script")
             novo.text = codigo;
             document.body.appendChild(novo);
@@ -322,15 +329,16 @@ function extraiScript(texto)
 }
 
 function carregando(CampoDiv)
-{
-    pathArray = window.location.pathname.split( '/' );
-    host = pathArray[1];
-    
+{    
     document.getElementById(CampoDiv).innerHTML='<div id="loading" class="loading"><img src="/'+host+'/public/images/ajax_carregando.gif" width="16" height="16" />&nbsp;Aguarde...</div>';
 }
 	
-// Funcao para mostrar resultados obtidos no AJAX - nova função
-	
+
+/***
+ * Executa via ajax
+ * @param String Url Url da pagina (ou action)
+ * @param string CampoDiv Nome da DIV que ira receber o resultado do AJAX
+ */	
 function ajax(url,CampoDiv)
 {
 		
@@ -385,9 +393,10 @@ function removeNaStr(id,campo)
 
      document.getElementById(campo).value = arrayId.replace(','+id+',',","); //ele iria procurar pelo id dentro de arrayId e trocar por ","
 }
+
 /**
- * Usado tb na view logado, do modulo sistema em cadastrocontroleacesso.phtml
- * é chama dentro do ajax, ex de uso: ajaxempresa.phtml
+ * Usado tb na view, do controller logado do modulo sistema, cadastrocontroleacesso.phtml
+ * é chamada dentro do ajax, ex de uso: ajaxempresa.phtml
  * retira uma substring de dentro outra string
  */
 function removeId(id,tabela,campo,index)
@@ -400,19 +409,18 @@ function removeId(id,tabela,campo,index)
         {   
             arrayId = document.getElementById('arrayIdTemp'+tabela).value;
 
-            arrayId = arrayId.replace(','+id+',',","); //ele iria procurar pelo id dentro de arrayId e trocar por ","
+            arrayId = arrayId.replace(','+id+',',","); //ele ira procurar pelo id dentro de arrayId e trocar por ","
 
             document.getElementById('arrayIdTemp'+tabela).value = arrayId;
         }
     }
     else
     {
-        
         if(!document.getElementById(campo).checked)
         {   
             arrayId = document.getElementById('arrayIdTemp'+tabela).value;
 
-            arrayId = arrayId.replace(','+id+',',","); //ele iria procurar pelo id dentro de arrayId e trocar por ","
+            arrayId = arrayId.replace(','+id+',',","); //ele ira procurar pelo id dentro de arrayId e trocar por ","
 
             document.getElementById('arrayIdTemp'+tabela).value = arrayId;
         }
@@ -502,8 +510,23 @@ function fecharDivMsg(tipo,tempo) {
 
 };
 
+/***
+ * Função genéria para exibir uma msg com efeito de se mover da esquerda para direita
+ * @param string titulo Titulo da caixa de msg
+ * @param string conteudo Texto a ser colocaco dentro da caixa
+ * @param boolean tipo Se é erro (caixa na cor vermelho) ou sucesso (caixa na cor branca)
+ */
 function setMsg(titulo,conteudo,tipo)
 {
+    if(!document.getElementById('togglerMenssagem'))
+    {
+        var togglerMenssagem = document.createElement('div');
+        togglerMenssagem.id = 'togglerMenssagem';
+        togglerMenssagem.className = 'togglerMenssagem';
+        document.body.appendChild(togglerMenssagem);
+        $('#togglerMenssagem').append('<div id="effectMenssagem" class="ui-widget-content ui-corner-all"><h3 class="ui-widget-header ui-corner-all"><p id="tituloMsg"></p><a id="btnfechardiv" href="javascript:;" onclick="fecharDivMsg(1,0)">[Fechar]</a></h3><p id="conteudoMsg"></p></div>');
+    }    
+    
     if(!tipo)
         document.getElementById('effectMenssagem').style.background = '#f00'
     
@@ -513,18 +536,40 @@ function setMsg(titulo,conteudo,tipo)
     runEffect(tipo,2000);
 }
 
-function habilitaDiv(opcao,divHidden)
-{
+/***
+ * Cria um efeito do tipo "aguarde" sobre uma determinada DIV
+ * @param boolean opcao True para mostrar a DIV do tipo "aguarde"
+ * @param string divHidden Nome da DIV que sera sobreposta pela DIV do tipo "aguarde"
+ */
+function divAguarde(opcao,divHidden)
+{    
+    if(!document.getElementById('transparente'))
+    {
+        //Todo layout devera ter a div conteudo, que esta dentro da div araiz
+        $('#conteudo').append('<div id="transparente" style="position: absolute;z-index:2;visibility: hidden; width:819px; filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; -moz-border-radius: 8px; -webkit-border-radius: 8px;border-radius: 8px;"><div id="carregar" align="center" style="position: fixed;width: 819px; color: #fff;background: url(/'+host+'/public/images/sistema/bar_ani_laranja.gif) repeat-x;">Processando...</div></div>');
+    }
+    
     tamanhoDiv = document.getElementById(divHidden).clientHeight;
-    document.getElementById('transparente').style.marginTop = '-'+(tamanhoDiv+121)+'px';
-    document.getElementById('transparente').style.height = tamanhoDiv+'px';
+    //ajuste ao height e Top
+    ajusteTop = $('#'+divHidden).position().top;
+    borda = document.getElementById(divHidden).style.borderWidth;
+    if(!borda)
+        borda = '0px';
+    
+    //retirar o px da borda
+    borda = borda.substr(0, borda.length-2);
+    borda = parseInt(borda);
+    
+    ajusteHeight = (2*borda) + tamanhoDiv;
+    
+    document.getElementById('transparente').style.height = ajusteHeight+'px';
+    document.getElementById('transparente').style.top = ajusteTop+'px';    
                 
     if(opcao)
     {
         document.getElementById('transparente').style.visibility = '';
         $( "#transparente" ).fadeIn("fast");
-    }
-        
+    }        
     else
     {$( "#transparente" ).fadeOut("slow");
          setTimeout(function() {
@@ -535,10 +580,13 @@ function habilitaDiv(opcao,divHidden)
     }
 }
 
-function carregaGravando()
+/***
+ * Chama o ajax via JQuery, usando o efeito da função divAguarde()
+ * @param strin nomeDiv Nome da DIV, para o efeito divAguarde()
+ **/
+function ajaxJQuery(nomeDiv)
 {
-    
-    habilitaDiv(true,'tabs');
+    divAguarde(true,nomeDiv);
     var frm = $('form');        
     $.ajax({
         type: frm.attr('method'),
@@ -548,30 +596,38 @@ function carregaGravando()
         success: function (request,data) {
             //alert('ok');
             if($.trim(request)!='')
-                setMsg('ERRO','Erro 1 ao salvar, entre em contato com a CRIWEB!<br>'+request+data,0);
+                setMsg('ERRO','Erro 1 ao processar, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'+request+data,0);
             else
                 setMsg('Show','Salvo com sucesso!',1);
-            habilitaDiv(false,'tabs');
+            divAguarde(false,nomeDiv);
         },
         error: function (request, status, error) {
             //setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!'+request.responseText,0);
-            setMsg('ERRO','Erro 2 ao salvar, entre em contato com a CRIWEB!<br>'+request,0);
-            habilitaDiv(false,'tabs');
+            setMsg('ERRO','Erro 2 ao processar, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'+request,0);
+            divAguarde(false,nomeDiv);
         }
     });
    
 
 }
 
+/***
+ * Função alert() customizada
+ * @param string titulo Titulo do alert
+ * @param string msg Mensagem do alert
+ */
 function showAlert(titulo,msg){
     
-    var showAlert = document.createElement('div');
-    showAlert.id = 'showAlert';    
-    document.body.appendChild(showAlert);
-    
+    if(!document.getElementById('showAlert'))
+    {
+        var showAlert = document.createElement('div');
+        showAlert.id = 'showAlert';    
+        document.body.appendChild(showAlert);
+    }
     document.getElementById('showAlert').innerHTML = msg;
     document.getElementById('showAlert').title = titulo;
     
+    // Utiliza funções do plugin JQueryUI
     $(function() {
         $( "#showAlert" ).dialog({
             modal: true,
@@ -586,11 +642,21 @@ function showAlert(titulo,msg){
     
 }
 
+/***
+ * Função confirm() customizada
+ * @param string titulo Titulo do confirm
+ * @param string msg Mensagem do confirm
+ * @param string funcao Função chamada ao se confirmar
+ * @param array parametros Array com todos os parametros da função
+ */
 function showAlertConfirm(titulo,msg,funcao,parametros){
     
-    var showAlertConfirm = document.createElement('div');
-    showAlertConfirm.id = 'showAlertConfirm';    
-    document.body.appendChild(showAlertConfirm);
+    if(!document.getElementById('showAlertConfirm'))
+    {
+        var showAlertConfirm = document.createElement('div');
+        showAlertConfirm.id = 'showAlertConfirm';    
+        document.body.appendChild(showAlertConfirm);
+    }
     
     document.getElementById('showAlertConfirm').innerHTML = msg;
     document.getElementById('showAlertConfirm').title = titulo;
@@ -605,6 +671,7 @@ function showAlertConfirm(titulo,msg,funcao,parametros){
     
     funcao = funcao+'('+params+');';
     
+    // Utiliza funções do plugin JQueryUI
     $(function() {
         $( "#showAlertConfirm" ).dialog({
             resizable: true,
@@ -626,6 +693,9 @@ function showAlertConfirm(titulo,msg,funcao,parametros){
     
 }
 
+/***
+ * Para mais informações vide README.txt
+ */
 function desmarcaPai()
 {
     temp = document.forms[0].getElementsByClassName('idPai');
@@ -639,6 +709,9 @@ function desmarcaPai()
     }
 }
     
+/***
+ * Para mais informações vide README.txt
+ */
 function marcaPai(pai)
 {
     pai = pai.substr(0,pai.indexOf(','));
@@ -666,6 +739,9 @@ function marcaPai(pai)
         
 }
     
+/***
+ * Ao marcar diretamente uma funcionalidade, todos os grupos são desmarcados
+ */
 function setGrupoOff()
 {
     temp = document.forms[0].getElementsByClassName('idGrupoTmp');
@@ -684,6 +760,9 @@ function apagaArrayIdTempTime()
     document.getElementById('arrayIdTempTime').value=',';
 }
     
+/***
+ * Marca no menuTree as funcionalidades do grupo
+ */
 function setFuncioGrupo()
 {
     arrayIdFuncionalidades = "";
@@ -725,6 +804,10 @@ function setFuncioGrupo()
     }
 }
     
+/***
+ * Desabilita/Habilita os checkboxes das funcionalidades Liberar, editar, 
+ * deletar, quando existe um grupo e ele é marcado.
+ */
 function disableLED()
 {
     arrayIdFuncionalidades = '';
@@ -763,6 +846,10 @@ function disableLED()
     }
 }
     
+/***
+ * Chama a função toggleDisabled se a div com o LED existe
+ * @param string nomeDiv Nome da div que será desabilitada
+ */
 function toggleLED(nomeDiv) {
     if(document.getElementById(nomeDiv))
     {
@@ -771,6 +858,10 @@ function toggleLED(nomeDiv) {
             
 }
 
+/***
+ * Desabilita/Habilita os checkboxes
+ * @param Object el Elemento a ser habilidado ou desabilitado
+ */
 function toggleDisabled(el) {
     try 
     {
@@ -920,10 +1011,10 @@ function getIdFuncionalidade(idGrupo)
     
 tabelas='';
 /***
-    * Como existe mais de um paginator na pagina, temos que ter o controle da
-    * funcao setPaginator() para que o ajax correto seja carregado.
-    * Ao passar o mouse sobre cada DIV, essa variavel eh setada
-    */ 
+* Como existe mais de um paginator na pagina, temos que ter o controle da
+* funcao setPaginator() para que o ajax correto seja carregado.
+* Ao passar o mouse sobre cada DIV, essa variavel eh setada
+*/ 
 function setTabela(tabela)
 {
     tabelas = tabela;

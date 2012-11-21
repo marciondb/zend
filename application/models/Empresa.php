@@ -8,7 +8,6 @@ class Application_Model_Empresa extends Application_Model_Abstract
     
     /***
      * Atualiza caso o parametro $update seja diferente de false.
-     * Recebe a PK do endereço inserido desta empresa.
      * @param array $parametros Array com os dados a serem gravados
      * @param Model $_endereco Model do endereco
      */

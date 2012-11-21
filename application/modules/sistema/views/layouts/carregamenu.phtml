@@ -4,26 +4,38 @@
     * Carrega o menu baseado nas permissoes do usuario
     */
 
+    // uma string, que será o menu, será armazenada em uma session, apos montado
+    // todo o menu, pela funcao montaMenu(), neste arquivo, esta session é imprimida
     $_SESSION['menu'] = null;
     unset($_SESSION['menu']);
 
+//Nome do usuario logado e o "botao" sair
 ?>
-
 <p align="right"><?php echo $this->nome_usuario; ?> | <a href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'index', 'action' => 'logout'), null, 1); ?>">sair</a></p>
 
 <?php
+    
+    //inicio da construcao do menu
     $_SESSION['menu'] = '';
     $_SESSION['menu'] .= '<ul id="nav">'."\n".'
                 <li class="current"><a href="'.$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'index'), null, 1).'">Home</a></li>'."\n";
     
-    function montaMenu($id_funcionalidade,$resultado,$url)
+    /***
+     * Funcao recursiva que carrega o menu baseado nas permissoes do usuario
+     * @param int $id_funcionalidade_pai Funcionalidade pai.
+     * @param array $permissoes Permissoes do usuario logado
+     * @param string $url Url do link
+     * @example Para mais esclarecimentos vide o arquivo README.txt
+     */
+    function montaMenu($id_funcionalidade_pai,$permissoes,$url)
     {
-        foreach ($resultado as $value) 
+        //Para cada funcionalidade pai, monta os filhos.
+        //A condicao de parada é quando não existir mais permissoes
+        foreach ($permissoes as $value) 
         {
-            
-            if ($value['id_funcionalidade_pai']==$id_funcionalidade)
+            if ($value['id_funcionalidade_pai']==$id_funcionalidade_pai)
             {
-                
+                //senao possui action, cria um novo submenu
                 if($value['action']=='')
                 {
                     $_SESSION['menu'] .= "<li><a href='#'>".$value['titulo']."</a>\n";
@@ -36,7 +48,7 @@
                 
                 //echo $value['titulo']." ".$value['action']."\n";
                 
-                montaMenu($value['id_funcionalidade'],$resultado,$url);//,$menu);
+                montaMenu($value['id_funcionalidade'],$permissoes,$url);
                 
                 if($value['action']=='')
                 {
@@ -44,17 +56,17 @@
                     $_SESSION['menu'] .= "</li>\n";
                 }
             }
-        }
-        
+        }        
     }
     
     montaMenu(0,$this->permissoes,$this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => ''), null, 1));
     
     $_SESSION['menu'] .= '</ul>';
     
-    
+    //imprime a menu
     echo $_SESSION['menu'];
     
+    //limpa a session
     $_SESSION['menu'] = null;
     unset($_SESSION['menu']);
  

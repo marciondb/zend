@@ -245,7 +245,7 @@ class ZendUtils {
                  * Metodo Responsavel por enviar ao layout uma mensagem e exibi-la para o usuario
                  * ele simplismente pega a session gravada no Zend_registry com o nome de 'session' e  coloca dentro dela
                  * um array contendo as variaveis passadas por parametro e salva novamente no Zend_registry
-                 * para este metodo funcionar é necessario  ter o meroto receptorMsg em uma pagina que sempre sera carrega com o sistema
+                 * para este metodo funcionar é necessario  ter o metodo receptorMsg em uma pagina que sempre sera carrega com o sistema
                  * @param  String   $mensagem    A mensagem que se quer enviar
                  * @param  String   $tipo   O tipo de mensagem que se deseja enviar, na classe existem duas constantes contendo os possiveis tipos MENSAGEM_ACERTO e MENSAGEM_ERRO caso nenhuma seja selecionada ou o $tipo seja invalido sera atribuido o primeiro
                  * @param  Int      $tempo   O tempo que a msg ficará sendo exibida ao usuario em milisegundos   **/
@@ -286,17 +286,17 @@ class ZendUtils {
              *  **/
             public  static function  receptorMsg()
             {
-                 $session = Zend_Registry::get("session");
+                $session = Zend_Registry::get("session");
 
-                    if(isset($session->msg))
-                    {
-                        echo '<script>showAlert("ERRO","'.$session->msg['mensagem'].'");</script>';
+                if(isset($session->msg))
+                {
+                    echo '<script>showAlert("ERRO","'.$session->msg['mensagem'].'");</script>';
 
-                        unset($session->msg);
+                    unset($session->msg);
 
-                        Zend_Registry::set("session", $session);
+                    Zend_Registry::set("session", $session);
 
-                    }
+                }
                   
 
 

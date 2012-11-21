@@ -6,7 +6,11 @@ class Application_Model_Time extends Application_Model_Abstract
         $this->_dbTable = new Application_Model_DbTable_Time();
     }
     
-    public function gravar($parametros,$_endereco, $update = FALSE)
+    /***
+     * Atualiza caso o parametro $update seja diferente de false.
+     * @param array $parametros Array com os dados a serem gravados
+     */
+    public function gravar($parametros, $update = FALSE)
     {
         $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
                         "nome_fantasia" => $parametros['nome_fantasia'],
@@ -68,13 +72,14 @@ class Application_Model_Time extends Application_Model_Abstract
     }
     
     /**
-       * Exibe tds time visiveis.      
+       * Exibe tds os time visiveis do usuario logado.
        * @return Array retorna query()->fetchAll()
-       * @param  Boolean $selecionar  : coloca um elemento checkbox para selecionar a empresa
-       * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
-       * @param  Boolean $deletar : coloca um elemento um "botao" para pode deletar
+       * @param  int $pagina  : pagina atual, para a paginacao
+       * @param  lista $listaIdEmpresa : lista com as id's das empresas a serem filtradas
+       * @param  lista $listaIdTimesEscolhidos : lista com as id's dos times a serem filtradas.
+       * @param  Booelan $remover: Se False, time.id_time not in (' . $listaIdTimesEscolhidos . ')');
+       * se True time.id_time in (' . $listaIdTimesEscolhidos . ')');
        * @version 1.0
-       * @author Márcio & Marco
      */
     public function exibir($pagina,$listaIdEmpresa,$listaIdTimesEscolhidos,$remover)
     {           
@@ -89,13 +94,14 @@ class Application_Model_Time extends Application_Model_Abstract
                     join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
             
-            //filro para escolher o funcionario
+            //Filtrar por empresa
             if($listaIdEmpresa)
                 $select->where('time.id_empresa in ('.$listaIdEmpresa.')');
             
            if(!$remover)
             {
-                if ($listaIdTimesEscolhidos)
+               //Não exibe os times com ids na lista
+               if ($listaIdTimesEscolhidos)
                     $select->where('time.id_time not in (' . $listaIdTimesEscolhidos . ')');
             }
             else
