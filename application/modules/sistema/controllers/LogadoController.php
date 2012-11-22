@@ -20,6 +20,9 @@ class Sistema_LogadoController extends Controller_Action
     protected $_time;
     protected $_usuario_time_visivel;
     protected $_usuario;
+    protected $_ramo_empresa;
+    protected $_operadora_celular;
+    protected $_categoria;
     
     
     public function init()
@@ -46,6 +49,9 @@ class Sistema_LogadoController extends Controller_Action
         $this->_setor = new Application_Model_Setor();
         $this->_cargo = new Application_Model_Cargo();
         $this->_usuario = new Application_Model_Usuario();
+        $this->_ramo_empresa = new Application_Model_RamoEmpresa();
+        $this->_operadora_celular = new Application_Model_OperadoraCelular();
+        $this->_categoria = new Application_Model_CategoriaEmpresa();
         
         //*******************************************************************
         //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
@@ -53,7 +59,44 @@ class Sistema_LogadoController extends Controller_Action
         //*******************************************************************     
         
     }    
+    
+    /***
+     * Pre action, contem uns dos principais filtros usado pelo sistema
+     * @return array Array de array, ['setor'], ['cargo'] e ['tipo']
+     */
+    public function filtroSetorCargoTipo(){
+        $arrayResult = array();
+        $arrayResult['setor'] = $this->_setor->fetchAll(null,'setor.titulo ASC');
+        $arrayResult['cargo'] = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
+        $arrayResult['tipo'] = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
         
+        return $arrayResult;
+    }
+        
+    /***
+     * Contem a modal de filtro de Setor, Cargo e Tipo
+     */
+    public function ajaxfiltrosctAction()
+    {
+        //Desabilita o layout
+        $this->_helper->layout->disableLayout();
+        $arrayCST = $this->filtroSetorCargoTipo();
+                
+        //pega os parametros, passados pela view que chamaou esta action
+        $this->view->setor = $this->_request->getParam('setor', false);
+        $this->view->cargo = $this->_request->getParam('cargo', false);
+        $this->view->tipo  = $this->_request->getParam('tipo', false);
+        
+        if($this->view->setor)
+            $this->view->arraySetor = $arrayCST['setor'];
+        if($this->view->cargo)
+            $this->view->arrayCargo = $arrayCST['cargo'];
+        if($this->view->tipo)
+            $this->view->arrayFuncionario_tipo = $arrayCST['tipo'];
+        
+        
+    }
+    
     /***
      * Toda vez que tiver a necessidade de exibir as empresas, esta action deverá
      * ser chamada
@@ -70,6 +113,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->adicionar  = $this->_request->getParam('adicionar', false);
         $this->view->remover    = $this->_request->getParam('remover', false);
         $this->view->selecionar = $this->_request->getParam('selecionar', false);
+        $this->view->escolher   = $this->_request->getParam('escolher', false);
         $this->view->editar     = $this->_request->getParam('editar', false);
         $this->view->deletar    = $this->_request->getParam('deletar', false);
         $this->view->liberar    = $this->_request->getParam('liberar', false);
@@ -268,12 +312,11 @@ class Sistema_LogadoController extends Controller_Action
      */
     public function cadastrarcontroleacessoAction()
     {
-        /*$this->view->arrayEmpresaLED     = $this->getLED('ajaxempresa');
-        $this->view->arrayTimeLED        = $this->getLED('ajaxtime');
-        $this->view->arrayFuncionarioLED = $this->getLED('ajaxfuncionario');*/
-        $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
-        $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
-        $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
+        $arrayCST = $this->filtroSetorCargoTipo();
+        
+        $this->view->arraySetor = $arrayCST['setor'];
+        $this->view->arrayCargo = $arrayCST['cargo'];
+        $this->view->arrayFuncionario_tipo = $arrayCST['tipo'];
         
     }
     
@@ -285,6 +328,8 @@ class Sistema_LogadoController extends Controller_Action
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($this->_request->getParam('idFuncionario', false));
         $this->view->id_usuario = $arrayIdUsuario[0]['id_usuario'];
         
+        $this->view->nomeFuncionario = $this->_request->getParam('nomeFuncionario', false);
+        
         $this->view->arrayIdGrupo = $this->_usuario_grupo->exibir($this->view->id_usuario);
         
         $this->view->arrayIdEmpresa = $this->_usuario_empresa_visivel->exibir($this->view->id_usuario);
@@ -292,11 +337,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->arrayIdTime = $this->_usuario_time_visivel->exibir($this->view->id_usuario);
         
         $this->view->idFuncionario = $this->_request->getParam('idFuncionario', false);
-        
-        $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
-        $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
-        $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
-    
+            
     }
     
     /***
@@ -319,11 +360,11 @@ class Sistema_LogadoController extends Controller_Action
      */
     public function gerenciarcontroleacessoAction() {
         
-        //$this->view->arrayControlAcessLED = $this->getLED('gerenciarcontroleacesso');
+        $arrayCST = $this->filtroSetorCargoTipo();
         
-        $this->view->arraySetor = $this->_setor->fetchAll(null,'setor.titulo ASC');
-        $this->view->arrayCargo = $this->_cargo->fetchAll(null,'cargo.titulo ASC');
-        $this->view->arrayFuncionario_tipo = $this->_funcionario_tipo->fetchAll(null,'funcionario_tipo.titulo ASC');
+        $this->view->arraySetor = $arrayCST['setor'];
+        $this->view->arrayCargo = $arrayCST['cargo'];
+        $this->view->arrayFuncionario_tipo = $arrayCST['tipo'];
         
     }
     
@@ -332,6 +373,10 @@ class Sistema_LogadoController extends Controller_Action
      */
     public function cadastrarempresaAction()
     {
+        $this->view->ramosEmpresa = $this->_ramo_empresa->fetchAll();
+        $this->view->operadoras = $this->_operadora_celular->fetchAll();
+        $this->view->categorias = $this->_categoria->fetchAll();
+        
         if($this->_request->isPost())
         {
             $parametros = $this->_getAllParams();

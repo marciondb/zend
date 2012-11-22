@@ -9,6 +9,7 @@ urlAjaxCAFuncionario = '/'+host+'/sistema/logado/ajaxcafuncionario';
 urlAjaxFuncionario = '/'+host+'/sistema/logado/ajaxfuncionario';
 urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
 urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
+urlAjaxFiltroSCT = '/'+host+'/sistema/logado/ajaxfiltrosct';
 
 /***
  * Preenche todos os compos de um formulario
@@ -464,6 +465,7 @@ function remarcaId(tabela,campo)
     else
     {
         tempArrayId = document.getElementById('arrayIdTemp'+tabela).value;
+        
         if(existeNaStr(','+temp.value+',',tempArrayId))
         {
             temp.checked = true;			

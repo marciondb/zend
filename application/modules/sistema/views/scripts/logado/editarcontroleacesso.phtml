@@ -1,4 +1,5 @@
 <h3>Editar Controle de Acesso</h3>
+<strong>Funcionário:&nbsp;<?php echo $this->nomeFuncionario; ?></strong>
 <hr>
 <div id="tabs" style="width:811px;">  
     <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravacontroleacesso'), null, 1); ?>" method="post">

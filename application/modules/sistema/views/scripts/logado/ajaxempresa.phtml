@@ -21,6 +21,8 @@
     
     if($this->selecionar)
         echo '<th class="barra_titulo">Selecione</th>';
+    if($this->escolher)
+        echo '<th class="barra_titulo">Escolha</th>';
     if($this->editar)
         echo '<th class="barra_titulo">Editar</th>';
     if($this->deletar)
@@ -50,6 +52,18 @@
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
                         <td align="center" width="16%"><input type="checkbox" name="idEmpresaTmp[]" id="idEmpresaTmp" onclick="setId(this.value,'Empresa');removeId(this.value,'Empresa',this.id,<?php echo $cont;?>);setFiltroTime();setFiltroFuncionario();document.getElementById('todos').checked=false" value="<?php echo $empresa['id_empresa']; ?>"/></td>
+                        <?php
+                        $cont++;
+                    }
+                    
+                    if($this->escolher)
+                    {    
+                        //setId() e removeId() estao em public\scripts\utilitario.js
+                        ?>
+                        <td align="center" width="16%"><input type="radio" name="idEmpresaTmp" id="idEmpresaTmp" value="<?php echo $empresa['id_empresa']; ?>" onclick="document.getElementById('arrayIdTempEmpresa').value=',';setId(this.value,'Empresa');"/>
+                            <input type="hidden" id="nomefantasia_<?php echo $empresa['id_empresa'];?>" value="<?php echo $empresa['nome_fantasia'];?>"
+                        </td>
+                        
                         <?php
                         $cont++;
                     }
@@ -118,7 +132,7 @@
 ?>
 <script>
     <?php
-        if($this->selecionar)
+        if($this->selecionar || $this->escolher)
         {
     ?>
             remarcaId('Empresa','idEmpresaTmp');

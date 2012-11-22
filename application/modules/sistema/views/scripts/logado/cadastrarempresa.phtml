@@ -1,6 +1,6 @@
 <h3>Cadastro de Empresas</h3>
 <hr />
-<form novalidate="novalidate" name="formulario" id="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarempresa'), null, 1); ?>" method="post">
+<form novalidate="novalidate" name="formulario" id="formulario" class="form-horizontal" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarempresa'), null, 1); ?>" method="post">
 
     <input type="hidden" name="id_matriz" id="id_matriz" value="0" />
     <table  width="100%" height="1318" align="center">
@@ -9,9 +9,12 @@
                 <strong>Tipo de empresa:</strong>
             </td>
             <td width="70%" align="left">
-                Matriz <input tabindex="1" type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0">
-                Filial <input tabindex="2" type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1">
-
+                <label class="radio inline">
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" >Matriz
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" >Filial
+                </label>
                 <!-- Div do AJAX´s-->
 
                 <div id="div_tipoEmpresa" class="">
@@ -28,7 +31,6 @@
             </td>
             <td align="left">
                 <input tabindex="3" type="text" name="nome_fantasia" id="nome_fantasia" value="" maxlength="100" size="50">
-
             </td>
         </tr>
         <tr>
@@ -59,10 +61,15 @@
             </td>
             <td align="left">
                 
-                <select tabindex="7" name="id_ramo_empresa" id="id_ramo_empresa" style="width:337px">
+                <select tabindex="4" name="id_ramo_empresa" id="id_ramo_empresa" style="width:220px">
                     <option value="">::.. Selecione um Ramo de atuação ..::</option>
-                   
-
+                   <?php
+                   foreach ($this->ramosEmpresa as $ramo){
+                   ?>
+                    <option value="<?php echo $ramo['id_ramo_empresa']?>"><?php echo $ramo['titulo']?></option>
+                   <?php
+                   }
+                   ?>
                 </select>
             </td>
         </tr>
@@ -81,78 +88,84 @@
         <tr><td></td></tr>
         <tr>
             <td align="left" bgcolor="#BBBBBB">
-                <b>Endereço</b>
+                    <b>Endereço</b>
             </td>
         </tr>
         <tr><td></td></tr>
         <tr>
             <td height="26" align="left">
-                <label for="cep">CEP</label>
+                    <label for="cep">CEP</label>
             </td>
-            <td align="left">
-                <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" />&nbsp;<input type="button" value="Pesquisar Endereço" id="busend" /></td>
+        <td align="left">
+            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" />&nbsp;<input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" /></td>
         </tr>
         <tr>
             <td height="26" align="left">
-                <label for="endereco">Endereço</label>
+                    <label for="endereco">Endereço</label>
             </td>
             <td align="left">
-                <input tabindex="11" name="rua_av" type="text" id="rua_av" maxlength="100" size="28" value="" />                <label for="numero">Número </label>
-                <input tabindex="12" name="numero" type="text" id="numero" value="" size="8" maxlength="10" />
+                <input tabindex="22" name="endereco" type="text" id="endereco" maxlength="100" size="28" value="" />
+                Número:
+                <input tabindex="23" name="numero" type="text" id="numero" value="" style="width:50px" maxlength="10" />
             </td>
         </tr>
         <tr>
             <td height="28" align="left">
-                <label for="complemento">Complemento</label>
+                    <label for="complemento">Complemento</label>
             </td>
             <td align="left">
-                <input tabindex="13" name="complemento" type="text" id="complemento" maxlength="100" size="15" value="" />         
-                <label for="bairro">Bairro</label>
-                <input tabindex="14" name="bairro" type="text" id="bairro" value="" size="23" maxlength="100" />
+                <input tabindex="24" name="complemento" type="text" id="complemento" maxlength="100" size="15" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td height="28" align="left">
+                    <label for="complemento">Bairro</label>
+            </td>
+            <td align="left">
+                <input tabindex="25" name="bairro" type="text" id="bairro" value="" size="23" maxlength="100" />
             </td>
         </tr>
         <tr>
             <td height="26" align="left">
-                <label for="cidade">Cidade</label>
+                    <label for="cidade">Cidade</label>
             </td>
             <td align="left">
-                <input tabindex="15" name="cidade" type="text" id="cidade" maxlength="100" size="34" value="" />        
-                <label for="estado">Estado</label>
-                <label for="estado"></label>
-                <select tabindex="27" name="estado" id="estado" onchange="document.getElementById('cep').focus();">
-                    <option value="AC" >AC</option>
-                    <option value="AL" >AL</option>
-                    <option value="AP" >AP</option>
-                    <option value="AM" >AM</option>
-                    <option value="BA" >BA</option>
-                    <option value="DF" >DF</option>
-                    <option value="CE" >CE</option>
-                    <option value="ES" >ES</option>
-                    <option value="GO" >GO</option>
-                    <option value="MA" >MA</option>
-                    <option value="MT" >MT</option>
-                    <option value="MS" >MS</option>
-                    <option value="MG" >MG</option>
-                    <option value="PA" >PA</option>
-                    <option value="PB" >PB</option>
-                    <option value="PR" >PR</option>
-                    <option value="PE" >PE</option>
-                    <option value="PI" >PI</option>
-                    <option value="RJ" >RJ</option>
-                    <option value="RS" >RS</option>
-                    <option value="RN" >RN</option>
-                    <option value="RO" >RO</option>
-                    <option value="RR" >RR</option>
-                    <option value="SC" >SC</option>
-                    <option value="SP" >SP</option>
-                    <option value="SE" >SE</option>
-                    <option value="TO" >TO</option>
+                <input tabindex="26" name="cidade" type="text" id="cidade" maxlength="100" size="34" value="" />        
+                Estado:
+                <select tabindex="27" name="estado" id="estado" style="width:70px">
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="DF">DF</option>
+                    <option value="CE">CE</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ" selected="selected">RJ</option>
+                    <option value="RS">RS</option>
+                    <option value="RN">RN</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td height="26" align="left">Referência</td>
-            <td align="left"><input tabindex="17" name="referencia" type="text" id="referencia" value="" size="23" maxlength="100" />
+            <td align="left"><input tabindex="29" name="referencia" type="text" id="referencia" value="" size="23" maxlength="100" />
             </td>
         </tr>
         <tr>
@@ -160,30 +173,42 @@
                 <label for="dddTel">Telefone 1</label>
             </td>
             <td align="left">
-                <input type="text" tabindex="18" name="dddTel1" id="dddTel1" size="1" maxlength="2" value="" /><input name="telefone_1" type="text" id="telefone_1" value="" size="13" maxlength="9" />
+                <input tabindex="11" name="dddTel1" id="dddTel1" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
+                <input name="telefone_1" type="text" id="telefone_1"  value="" size="13" maxlength="9" />
                 <script>// coloar no editar xD selectHabilita('telefone1')</script>
                 &nbsp;
             </td>
         </tr>
         <tr>
             <td align="left">
-                <label for="dddTel2">Telefone  2</label>
+                <label for="dddTel">Telefone 2</label>
             </td>
             <td align="left">
-                <input type="text" name="dddTel2" id="dddTel2" tabindex="19" value="" size="1" maxlength="2" /><input name="telefone_2" type="text" id="telefone_2" value="" size="13" maxlength="9" />
-                &nbsp;</td>
+                <input tabindex="19" name="dddTel2" id="dddTel2" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
+                <input name="telefone_2" type="text" id="telefone_2"  value="" size="13" maxlength="9" />
+                <script>// coloar no editar xD selectHabilita('telefone2')</script>
+                &nbsp;
+            </td>
         </tr>
         <tr>
             <td align="left">
-                <label for="dddTelTemp1">Celular 1</label>
+                    <label for="dddTelTemp1">Celular 1</label>
             </td>
             <td align="left">
-                <input type="text" tabindex="20" name="dddCel1" id="dddCel1" size="1" maxlength="2" value="" /><input name="celular_1" type="text" id="celular_1" value="" size="13" maxlength="9"/>
-                <script>// coloar no editar xD selectHabilita('celular1')</script>
+                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
+                    <input name="celular_1" type="text" id="celular1" value="" size="13" maxlength="9" />
+                    <script>// coloar no editar xD selectHabilita('celular1')</script>
                 &nbsp;Operadora:
 
-                <select name="id_operadora_celular" id="id_operadora_celular" style="width:220px;">
+                <select  name="id_operadora_celular" id="id_operadora_celular" style="width:220px">
                     <option value="">::.. Selecione uma Operadora ..::</option>
+                                <?php
+                                foreach ($this->operadoras as $operadora){
+                                ?>
+                                 <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                                <?php
+                                }
+                                ?>
 
 
                 </select>
@@ -192,19 +217,27 @@
         </tr>
         <tr>
             <td align="left">
-                <label for="dddCel2">Celular 2</label>
+                    <label for="dddTelTemp2">Celular 2</label>
             </td>
             <td align="left">
-                <input type="text" tabindex="21" name="dddCel2" id="dddCel2" size="1" maxlength="2" value="" /><input name="celular_2" type="text" id="celular_2" value="" size="13" maxlength="9" />
-                <script>// coloar no editar xD selectHabilita('celular2')</script>
+                    <input tabindex="21" name="dddCel2" id="dddCel12"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
+                    <input name="celular_2" type="text" id="celular2" value="" size="13" maxlength="9" />
+                    <script>// coloar no editar xD selectHabilita('celular2')</script>
                 &nbsp;Operadora:
 
-                <select name="id_operadora_celular2" id="id_operadora_celular2" style="width:220px;">
+                <select  name="id_operadora_celular" id="id_operadora_celular" style="width:220px">
                     <option value="">::.. Selecione uma Operadora ..::</option>
-                
+                                <?php
+                                foreach ($this->operadoras as $operadora){
+                                ?>
+                                 <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                                <?php
+                                }
+                                ?>
+
 
                 </select>
-                <script>// coloar no editar xD selectHabilita('idOperadora2')</script>
+                <script>// coloar no editar xD selectHabilita('celular2')selectHabilita('idOperadora2')</script>
             </td>
         </tr>
         <tr>
@@ -212,17 +245,19 @@
                 <label for="dddFax1">Fax1</label>
             </td>
             <td align="left">
-                <input type="text" tabindex="22" name="dddFax1" id="dddFax1" size="1" maxlength="2" value="" /><input name="fax_1" type="text" id="fax_1" value="" size="13" maxlength="9" />
+                <input tabindex="22" name="dddFax1" id="dddFax1" id="dddFax1" maxlength="2" value="" type="text"  style="width:30px"  />&nbsp;
+                <input name="fax_1" type="text" id="fax_1" value="" size="13" maxlength="9" />
                 <script>// coloar no editar xD selectHabilita('fax1')</script>
                 &nbsp;
             </td>
         </tr>
         <tr>
             <td align="left">
-                <label for="dddFax1">Fax 2</label>
+                <label for="dddFax2">Fax2</label>
             </td>
             <td align="left">
-                <input type="text" tabindex="23" name="dddFax2" id="dddFax2" size="1" maxlength="2" value="" /><input name="fax_2" type="text" id="fax_2" value="" size="13" maxlength="9"  />
+                <input tabindex="22" name="dddFax2" id="dddFax2" id="dddFax2" maxlength="2" value="" type="text"  style="width:30px"  />&nbsp;
+                <input name="fax_2" type="text" id="fax_2" value="" size="13" maxlength="9" />
                 <script>// coloar no editar xD selectHabilita('fax2')</script>
                 &nbsp;
             </td>
@@ -309,38 +344,50 @@
         <tr>
             <td align="left">
                 <label for="nomeTemp1">Nome</label>
-                :
             </td>
             <td align="left">
                 <input type="text" name="nome_contato_1" id="nome_contato_1" value="" size="50" />
             </td>
         </tr>
+        
         <tr>
             <td align="left">
                 <label for="dddTelTemp1">Telefone</label>
-                :
             </td>
             <td align="left">
-                <input type="text" name="dddTelTemp1" id="dddTelTemp1" value="" size="1" maxlength="2" /><input name="tels_contato_1" type="text" id="tels_contato_1" value="" size="13" maxlength="9" />
-
+                <input tabindex="11" name="dddTelTemp1" id="dddTelTemp1" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
+                <input name="tels_contato_1" type="text" id="tels_contato_1"  value="" size="13" maxlength="9" />
+                <script>// coloar no editar xD selectHabilita('telefone1')</script>
+                &nbsp;
             </td>
         </tr>
+        
         <tr>
             <td align="left">
-                <label for="dddTelTemp1">Celular</label>
-                :
+                    <label for="dddTelTemp1">Celular</label>
             </td>
             <td align="left">
-                <input type="text" name="dddCelTemp1" id="dddCelTemp1" value="" size="1" maxlength="2" /><input name="cel_contato_1" type="text" id="cel_contato_1" value="" size="13" maxlength="9" />
+                    <input tabindex="13" name="dddCelTemp1" id="dddCelTemp1"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
+                    <input name="cel_contato_1" type="text" id="cel_contato_1" value="" size="13" maxlength="9" />
+                    <script>// coloar no editar xD selectHabilita('celular1')</script>
                 &nbsp;Operadora:
-                <input name="id_operadora_celular_contato_1" type="text" id="id_operadora_celular_contato_1" value="" />
 
+                <select  name="id_operadora_celular_contato_1" id="id_operadora_celular_contato_1" style="width:220px">
+                       <option value="">::.. Selecione uma Operadora ..::</option>
+                                <?php
+                                foreach ($this->operadoras as $operadora){
+                                ?>
+                                 <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                                <?php
+                                }
+                                ?>
+                </select>
+                <script>// coloar no editar xD selectHabilita('celular1')selectHabilita('idOperadora1')</script>
             </td>
         </tr>
         <tr>
             <td align="left">
                 <label for="dddTelTemp1">Email</label>
-                :
             </td>
             <td align="left">
                 <input name="email_contato_1" type="email" id="email_contato_1" value="" />
@@ -361,7 +408,6 @@
         <tr>
             <td align="left">
                 <label for="nomeTemp2">Nome</label>
-                :
             </td>
             <td align="left">
                 <input type="text" name="nome_contato_2" id="nome_contato_2" value="" size="50" />
@@ -370,30 +416,41 @@
         <tr>
             <td align="left">
                 <label for="dddTelTemp1">Telefone</label>
-                :
             </td>
             <td align="left">
-                <input type="text" name="dddTelTemp2" id="dddTelTemp2" value="" size="1" maxlength="2" /><input name="tels_contato_2" type="text" id="tels_contato_2" value="" size="13" maxlength="9" />
-
+                <input tabindex="11" name="dddTelTemp1" id="dddTelTemp1" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
+                <input name="tels_contato_1" type="text" id="tels_contato_1"  value="" size="13" maxlength="9" />
+                <script>// coloar no editar xD selectHabilita('telefone1')</script>
+                &nbsp;
             </td>
         </tr>
+        
         <tr>
             <td align="left">
-                <label for="dddTelTemp1">Celular</label>
-                :
+                    <label for="dddTelTemp2">Celular</label>
             </td>
             <td align="left">
-                <input type="text" name="dddCelTemp2" id="dddCelTemp2" value="" size="1" maxlength="2" /><input name="cel_contato_2" type="text" id="cel_contato_2" value="" size="13" maxlength="9" />
-
+                    <input tabindex="13" name="dddCelTemp2" id="dddCelTemp2"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
+                    <input name="cel_contato_2" type="text" id="cel_contato_2" value="" size="13" maxlength="9" />
+                    <script>// coloar no editar xD selectHabilita('celular1')</script>
                 &nbsp;Operadora:
-                <input name="id_operadora_celular_contato_2" type="text" id="id_operadora_celular_contato_2" value=""  />
 
+                <select  name="id_operadora_celular_contato_2" id="id_operadora_celular_contato_2" style="width:220px">
+                    <option value="">::.. Selecione uma Operadora ..::</option>
+                                <?php
+                                foreach ($this->operadoras as $operadora){
+                                ?>
+                                 <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                                <?php
+                                }
+                                ?>
+                </select>
+                <script>// coloar no editar xD selectHabilita('celular1')selectHabilita('idOperadora1')</script>
             </td>
         </tr>
         <tr>
             <td align="left">
                 <label for="dddTelTemp1">Email</label>
-                :
             </td>
             <td align="left">
                 <input name="email_contato_2" type="email" id="email_contato_2" value="" />
@@ -407,7 +464,7 @@
             <td align="left">
                 <label for="facebook">Número de Funcionários:</label></td>
             <td align="left">
-                <select tabindex="32" name="numero_de_funcionario" id="numero_de_funcionario" style="width:337px">
+                <select tabindex="32" name="numero_de_funcionario" id="numero_de_funcionario" style="width:220px">
                     <option value="-1">::.. Selecione ..::</option>
                     <option value="0">até 10</option>
                     <option value="1">20</option>
@@ -428,9 +485,15 @@
             </td>
             <td align="left">
 
-                <select tabindex="33" name="id_categoria_empresa" id="id_categoria_empresa" style="width:337px">
+                <select tabindex="33" name="id_categoria_empresa" id="id_categoria_empresa" style="width:220px">
                     <option value="">::.. Selecione uma Categoria ..::</option>
-
+                                <?php
+                                foreach ($this->categorias as $categoria){
+                                ?>
+                                 <option value="<?php echo $categoria['id_categoria_empresa']?>"><?php echo $categoria['titulo']?></option>
+                                <?php
+                                }
+                                ?>
                 </select>
             </td>
         </tr>
@@ -439,7 +502,12 @@
                 Status: 
             </td>
             <td align="left">
-                <input tabindex="34" type="radio" name="ativo" id="ativo" value="1" maxlength="1" />&nbsp;ATIVO<input type="radio" name="ativo" id="ativopree" value="0" maxlength="1" />&nbsp;INATIVO
+                <label class="radio inline">
+                    <input type="radio" name="ativo" id="ativo" value="1" />&nbsp;ATIVO
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="ativo" id="ativopree" value="0" />&nbsp;INATIVO
+                </label>
             </td>
         </tr>
         <tr>

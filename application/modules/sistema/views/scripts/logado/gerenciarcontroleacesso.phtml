@@ -19,60 +19,7 @@
         </div>
 
         <div id="div_FiltroFuncionrio" class="modal_filtro">
-            <table align="center">	
-                <tr>
-                    <td align="left">
-                        Setor / Unidade de Negócios: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
-                            <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
-                            <?php
-                            foreach ($this->arraySetor as $linha) {
-                                ?>
-                                <option value="<?php echo $linha['id_setor']; ?>"><?php echo $linha['titulo']; ?></option>
-                                <?php
-                            }
-                            ?>
-
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        Cargo: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
-                            <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
-                            <?php
-                            foreach ($this->arrayCargo as $linha) {
-                                ?>
-                                <option value="<?php echo $linha['id_cargo']; ?>" ><?php echo $linha['titulo']; ?></option>
-                                <?php
-                            }
-                            ?>                            
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        Tipo: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
-                            <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
-                            <?php
-                            foreach ($this->arrayFuncionario_tipo as $linha) {
-                                ?>
-                                <option value="<?php echo $linha['id_funcionario_tipo']; ?>" ><?php echo $linha['titulo']; ?></option>
-                                <?php
-                            }
-                            ?>                            
-                        </select>
-                    </td>
-                </tr>
-            </table>
+            
         </div>        
     </div>
     <hr>
@@ -131,6 +78,9 @@
         
     url = urlAjaxCAFuncionario;
     ajax(url,'ajax_funcionario');
+    
+    url = urlAjaxFiltroSCT+'/setor/1/cargo/1/tipo/1';
+    ajax(url,'div_FiltroFuncionrio');
        
     
 </script>

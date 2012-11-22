@@ -1,18 +1,18 @@
 
-    <h3>Cadastro de Funcionário</h3>
-    <hr />
-    <form name="formulario" id="formulario" action="" method="post" class="form-horizontal">
+<h3>Cadastro de Funcionário</h3>
+<hr />
+<form name="formulario" id="formulario" action="" method="post" >
     <table  width="100%" height="1318" align="center">
-            <tr>
+        <tr>
             <td width="30%" align="left">
                     <strong>Tipo de empresa:</strong>
             </td>
             <td width="70%" align="left">
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" >Matriz
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" onclick="abreDialog('0');">Matriz
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" >Filial
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" onclick="abreDialog('1');">Filial
                 </label>
                 <!-- Div do AJAX´s-->
 
@@ -29,7 +29,7 @@
                     Nome Fantasia da Empresa:
             </td>
             <td align="left">
-                    <input name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50" >
+                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50" >
                 <input type="hidden" name="idEmpresa" id="idEmpresa" value="" />
             </td>
         </tr>
@@ -431,9 +431,14 @@
                 Tem filhos:
             </td>
             <td align="left">
-                    <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" />&nbsp;SIM<input type="radio" name="temFilho" id="temFilho" value="0"  />&nbsp;NÃO
-                &nbsp;&nbsp;<label for="qtoFilhos">Quantos:</label>&nbsp;
-                <input tabindex="33" name="qtoFilhos" type="text" id="qtoFilhos"  maxlength="2" size="25" value="" />
+                <label class="radio inline">
+                    <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" />&nbsp;SIM
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="temFilho" id="temFilho" value="0"  />&nbsp;NÃO
+                </label>    
+                &nbsp;&nbsp;
+                <input tabindex="33" name="qtoFilhos" type="text" id="qtoFilhos"  maxlength="2" size="25" value="" placeholder="Quantos?"/>
             </td>
                     </tr>
         <tr>
@@ -455,7 +460,7 @@
                     <label for="situcao">Situação:</label>
                 </td>
                 <td align="left">
-                <select disabled tabindex="35" name="situcao" id="situcao"  > 
+                <select tabindex="35" name="situcao" id="situcao"  > 
                     <OPTION VALUE="" >::.. SELECIONE ..::</OPTION> 
                     <OPTION VALUE="0" >COMPLETO</OPTION>
                     <OPTION VALUE="2" >EM CURSO</OPTION> 
@@ -468,7 +473,7 @@
                     <label for="formacaoProfi">Formação Profissional:</label>
             </td>
             <td align="left">
-                    <input tabindex="36" name="formacaoProfi" type="text" id="formacaoProfi" maxlength="100" size="50" value="" />
+                <input tabindex="36" name="formacaoProfi" type="text" id="formacaoProfi" maxlength="100" size="50" value="" />
             </td>
         </tr>
 
@@ -477,7 +482,12 @@
                 Possui Computador: 
             </td>
             <td align="left">
-                    <input tabindex="38" type="radio" name="temPc" id="temPc" value="1" maxlength="1"/>&nbsp;SIM<input type="radio" name="temPc" id="temPc" value="0" maxlength="1" />&nbsp;NÃO
+                <label class="radio inline">
+                    <input tabindex="38" type="radio" name="temPc" id="temPc" value="1" maxlength="1"/>&nbsp;SIM
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="temPc" id="temPc" value="0" maxlength="1" />&nbsp;NÃO
+                </label>    
             </td>
                     </tr>
         <tr>
@@ -485,9 +495,14 @@
                 Conhecimento prático em informática: 
             </td>
             <td align="left">
-                    <input tabindex="39" type="radio" name="sabeInfo" id="sabeInfo" value="1" maxlength="1"/>&nbsp;SIM<input type="radio" name="sabeInfo" id="sabeInfo" value="0" maxlength="1" />&nbsp;NÃO
+                <label class="radio inline">
+                    <input tabindex="39" type="radio" name="sabeInfo" id="sabeInfo" value="1" maxlength="1"/>&nbsp;SIM
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="sabeInfo" id="sabeInfo" value="0" maxlength="1" />&nbsp;NÃO
+                </label>    
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                     <label for="religiao">Religião:</label>
@@ -501,17 +516,27 @@
                 Possui Bíblia: 
             </td>
             <td align="left">
-                    <input tabindex="41" type="radio" name="temBiblia" id="temBiblia" value="1" maxlength="1"/>&nbsp;SIM<input type="radio" name="temBiblia" id="temBiblia" value="0" maxlength="1" />&nbsp;NÃO
+                <label class="radio inline">
+                    <input tabindex="41" type="radio" name="temBiblia" id="temBiblia" value="1" maxlength="1"/>&nbsp;SIM
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="temBiblia" id="temBiblia" value="0" maxlength="1" />&nbsp;NÃO
+                </label>    
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                 Se não, Gostaria de Ganhar uma Bíblia? 
             </td>
             <td align="left">
-                    <input tabindex="42" type="radio" name="querBiblia" id="querBiblia" value="1"  maxlength="1"/>&nbsp;SIM<input type="radio" name="querBiblia" id="querBiblia" value="0"  maxlength="1" />&nbsp;NÃO
+                <label class="radio inline">
+                    <input tabindex="42" type="radio" name="querBiblia" id="querBiblia" value="1"  maxlength="1"/>&nbsp;SIM
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="querBiblia" id="querBiblia" value="0"  maxlength="1" />&nbsp;NÃO
+                </label>    
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                     <label for="lazer">O que você gosta de fazer no seu Lazer?</label>
@@ -571,9 +596,14 @@
                 Status: 
             </td>
             <td align="left">
-                    <input tabindex="49" type="radio" name="status" id="status" value="1" maxlength="1"/>&nbsp;ATIVO<input type="radio" name="status" id="status" value="0" maxlength="1" />&nbsp;INATIVO
+                <label class="radio inline">
+                    <input tabindex="49" type="radio" name="status" id="status" value="1" maxlength="1"/>&nbsp;ATIVO
+                </label>    
+                <label class="radio inline">
+                    <input type="radio" name="status" id="status" value="0" maxlength="1" />&nbsp;INATIVO
+                </label>
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td colspan="2" align="center">&nbsp;
 
@@ -586,7 +616,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input name="btnCadastrar" type="submit" id="btnCadastrar" value="Cadastrar" />&nbsp;</td>
+                <input name="btnCadastrar" type="button" id="btnCadastrar" value="Cadastrar" class="btn btn-success" />&nbsp;</td>
         </tr>
         <tr>
             <td colspan="2" align="center">&nbsp;
@@ -608,9 +638,56 @@
 
             </td>
         </tr>
-
-
-
-
     </table>
+    <div id="dialog-modal-empresa" title="Selecione uma empresa">
+        <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');"></div>
+    </div>
+    <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
 </form>
+
+
+
+<script>
+    varTipoEmpresa = '';
+    
+    function setNomeFantasia()
+    {
+        idEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        idEmpresa = idEmpresa.substr(1,idEmpresa.length-2);
+        
+        document.getElementById('nomeFantasia').value = document.getElementById('nomefantasia_'+idEmpresa).value;
+    }
+    
+    function setPaginator(pagina,query)
+    {  
+        //tabelas é setado ao passar o mouse sobre a DIV        
+        if(tabelas=='empresa')
+        {   
+            document.getElementById('ajax_empresa').innerHTML = '';
+            url = urlAjaxEmpresa+'/escolher/1/pagina/'+pagina+query+'/tipoEmpresa/'+varTipoEmpresa;
+            ajax(url,'ajax_empresa');
+        }
+    }   
+    
+    //exibe uma modal para que o usuario escolha uma empresa
+    function abreDialog(tipoEmpresa)
+    {
+        varTipoEmpresa = tipoEmpresa;
+        
+        url = urlAjaxEmpresa+'/escolher/1/tipoEmpresa/'+varTipoEmpresa;
+        ajax(url,'ajax_empresa');
+        
+        $( "#dialog-modal-empresa" ).dialog({
+            modal: true,
+            width: 822,
+            buttons: {
+                Ok: function() {
+                    setNomeFantasia();
+                    $( this ).dialog( "close" );
+                    
+                }
+            }
+        });
+    }
+    
+</script>    

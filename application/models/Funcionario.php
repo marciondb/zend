@@ -87,11 +87,12 @@ class Application_Model_Funcionario extends Application_Model_Abstract
             $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('funcionario',array('id_funcionario','nome','apelido','cpf','tel_residencial_1','celular_1'))->
+                    from('funcionario',array('id_funcionario','nome','apelido','tel_residencial_1','celular_1'))->
                     join('time','funcionario.id_time = time.id_time',array('id_time','titulo'))->
                     join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
                     join('lotacao', 'funcionario.id_funcionario = lotacao.id_funcionario',array('lotacao.data_hora'))->
                     join('empresa', 'empresa.id_empresa = lotacao.id_empresa',array('nome_fantasia'))->
+                    join('usuario', 'funcionario.id_usuario = usuario.id_usuario',array('cpf'))->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1');
                     
@@ -152,12 +153,13 @@ class Application_Model_Funcionario extends Application_Model_Abstract
             $select1 = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('funcionario',array('id_funcionario','nome','apelido','cpf','tel_residencial_1','celular_1'))->
+                    from('funcionario',array('id_funcionario','nome','apelido','tel_residencial_1','celular_1'))->
                     join('time','funcionario.id_time = time.id_time',array('id_time','titulo'))->
                     join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
                     join('lotacao', 'funcionario.id_funcionario = lotacao.id_funcionario',array('lotacao.data_hora'))->
                     join('empresa', 'empresa.id_empresa = lotacao.id_empresa',array('nome_fantasia'))->
                     join('usuario_funcionalidade', 'usuario_funcionalidade.id_usuario = funcionario.id_usuario',null)->
+                    join('usuario', 'funcionario.id_usuario = usuario.id_usuario',array('cpf'))->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('usuario_funcionalidade.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1')->
@@ -177,12 +179,13 @@ class Application_Model_Funcionario extends Application_Model_Abstract
             $select2 = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('funcionario',array('id_funcionario','nome','apelido','cpf','tel_residencial_1','celular_1'))->
+                    from('funcionario',array('id_funcionario','nome','apelido','tel_residencial_1','celular_1'))->
                     join('time','funcionario.id_time = time.id_time',array('id_time','titulo'))->
                     join('usuario_time_visivel', 'time.id_time = usuario_time_visivel.id_time',null)->
                     join('lotacao', 'funcionario.id_funcionario = lotacao.id_funcionario',array('lotacao.data_hora'))->
                     join('empresa', 'empresa.id_empresa = lotacao.id_empresa',array('nome_fantasia'))->
                     join('usuario_grupo', 'usuario_grupo.id_usuario = funcionario.id_usuario',null)->
+                    join('usuario', 'funcionario.id_usuario = usuario.id_usuario',array('cpf'))->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('usuario_grupo.id_usuario_pai = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1')->
