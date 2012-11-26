@@ -15,6 +15,8 @@
     
     if($this->selecionar)
         echo '<th class="barra_titulo">Selecione</th>';
+    if($this->escolher)
+        echo '<th class="barra_titulo">Escolha</th>';
     if($this->editar)
         echo '<th class="barra_titulo">Editar</th>';
     if($this->deletar)
@@ -40,6 +42,18 @@
                         ?>
                         <td align="center" width="16%"><input type="checkbox" name="idTimeTmp[]" id="idTimeTmp" onclick="setId(this.value,'Time');removeId(this.value,'Time',this.id,<?php echo $cont;?>);setFiltroFuncionario();" value="<?php echo $time['id_time']; ?>"/></td>        
                 
+                        <?php
+                        $cont++;
+                    }
+                    
+                    if($this->escolher)
+                    {    
+                        //setId() e removeId() estao em public\scripts\utilitario.js
+                        ?>
+                        <td align="center" width="16%"><input type="radio" name="idTimeTmp" id="idTimeTmp" value="<?php echo $time['id_time']; ?>" onclick="document.getElementById('arrayIdTempTime').value=',';setId(this.value,'Time');"/>
+                            <input type="hidden" id="nometime_<?php echo $time['id_time'];?>" value="<?php echo $time['titulo'];?>"
+                        </td>
+                        
                         <?php
                         $cont++;
                     }

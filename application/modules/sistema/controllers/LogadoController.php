@@ -122,7 +122,8 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->arrayEmpresa = $this->_empresa->exibir($this->_request->getParam('pagina', 1),
                                                             $this->_request->getParam('cnpj', 0),
                                                             $this->_request->getParam('listaIdEmpresasEscolhidas', 0),
-                                                            $this->_request->getParam('remover', 0));
+                                                            $this->_request->getParam('remover', 0),
+                                                            $this->_request->getParam('tipoEmpresa', 0));
     }
     
     /***
@@ -139,6 +140,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->adicionar  = $this->_request->getParam('adicionar', false);
         $this->view->remover    = $this->_request->getParam('remover', false);
         $this->view->selecionar = $this->_request->getParam('selecionar', false);
+        $this->view->escolher   = $this->_request->getParam('escolher', false);
         $this->view->editar     = $this->_request->getParam('editar', false);
         $this->view->deletar    = $this->_request->getParam('deletar', false);
         
@@ -170,9 +172,9 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('listaIdEmpresa', 0),
                                                 $this->_request->getParam('listaIdFuncionario', 0),
                                                 $this->_request->getParam('listaIdTime', 0),
-                                                $this->_request->getParam('idSetor', 0),
-                                                $this->_request->getParam('idCargo', 0),
-                                                $this->_request->getParam('idFuncionario_tipo', 0),
+                                                $this->_request->getParam('id_setor', 0),
+                                                $this->_request->getParam('id_cargo', 0),
+                                                $this->_request->getParam('id_funcionario_tipo', 0),
                                                 $this->_request->getParam('listaIdFuncionarioEscolhido', 0),
                                                 $this->_request->getParam('remover', 0));
     }
@@ -197,9 +199,9 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->arrayFuncionario = $this->_funcionario->exibirca($this->_request->getParam('pagina', 1),
                                                 $this->_request->getParam('listaIdEmpresa', 0),
                                                 $this->_request->getParam('listaIdTime', 0),
-                                                $this->_request->getParam('idSetor', 0),
-                                                $this->_request->getParam('idCargo', 0),
-                                                $this->_request->getParam('idFuncionario_tipo', 0));
+                                                $this->_request->getParam('id_setor', 0),
+                                                $this->_request->getParam('id_cargo', 0),
+                                                $this->_request->getParam('id_funcionario_tipo', 0));
     }
     
     /***
@@ -308,6 +310,28 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
+     * grava as permissoes de controle de aceso
+     */
+    public function ajaxgravafuncionarioAction()
+    {
+        $this->_helper->layout->disableLayout();
+        
+        if(!$this->possuiPermissao('cadastrarfuncionario'))
+            $this->_redirect ("sistema/logado");
+        
+        $this->view->erros = '';
+        $id_funcionario = '';
+                
+        $parametros = $this->_getAllParams();
+        //salva a empresa e pega o id
+        //$id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco);
+        
+        //se houver erro, passa para a view.
+        if(is_string($id_funcionario))
+            $this->view->erros .= " ".$id_funcionario; 
+    }
+    
+    /***
      * Carrega a tela cadastro controle de acesso
      */
     public function cadastrarcontroleacessoAction()
@@ -399,10 +423,8 @@ class Sistema_LogadoController extends Controller_Action
      */
     public function cadastrarfuncionarioAction()
     {
-        if($this->_request->isPost())
-        {
-            //$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
-        }    
+        $this->view->operadoras = $this->_operadora_celular->fetchAll();
+          
     
     }
     

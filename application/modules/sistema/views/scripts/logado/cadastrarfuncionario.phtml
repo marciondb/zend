@@ -1,6 +1,7 @@
 
 <h3>Cadastro de Funcionário</h3>
 <hr />
+<div id="funcionario">
 <form name="formulario" id="formulario" action="" method="post" >
     <table  width="100%" height="1318" align="center">
         <tr>
@@ -29,8 +30,18 @@
                     Nome Fantasia da Empresa:
             </td>
             <td align="left">
-                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50" >
+                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50">
                 <input type="hidden" name="idEmpresa" id="idEmpresa" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                    Nome do Time:
+            </td>
+            <td align="left">
+                <input disabled="disabled" name="nomeTime" id="nomeTime" type="text" value="::.. Selecione um Time ..::" maxlength="100" size="50" >&nbsp;
+                <input type="button" name="btTime" id="btTime" value="Escolher Time" onclick="abreDialogTime();" class="btn btn-info"/>
+                
             </td>
         </tr>
         <tr>
@@ -49,57 +60,16 @@
                     <input tabindex="2" type="text" name="apelido" id="apelido" value="" maxlength="100" size="50">
             </td>
         </tr>
-        <tr>
-            <td align="left">
-                    Setor / Unidade de Negócios: 
-            </td>
-            <td align="left">
-
-                <select tabindex="3" name="idSetorUniNeg" id="idSetorUniNeg" style="width:220px" >
-                <option value="">::.. Selecione um Setor / Unidade de Negócios ..::</option>
-
-                                                    <option value="" ></option>
-
-
-                </select>
-            </td>
-                    </tr>
-        <tr>
-            <td align="left">
-                    Cargo: 
-            </td>
-            <td align="left">
-
-                <select tabindex="4" name="idCargo" id="idCargo" style="width:220px">
-                <option value="">::.. Selecione um Cargo ..::</option>
-
-                                                    <option value="" ></option>
-
-
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                    Tipo: 
-            </td>
-            <td align="left">
-
-                <select tabindex="5" name="idTipo" id="idTipo" style="width:220px">
-                <option value="">::.. Selecione um Tipo ..::</option>
-
-                                                    <option value="" ></option>
-
-
-                </select>
-            </td>
+        <tr >
+            <td id="div_FiltroFuncionrio" colspan="2">
+            </td>        
         </tr>
         <tr>
             <td align="left">
                 <label for="cnpjCpf" id="cpfCnpj">CPF</label>
             </td>
             <td align="left">
-                    <input tabindex="6" name="cpf" type="text" id="cpf" value="" size="50" maxlength="14" />
+                    <input tabindex="6" name="cpf" type="text" id="cpf" value="" size="50" maxlength="14" onkeyup="MascaraCpfCnpj(this,event);" onblur="ValidaCpfCnpj(this);"/>
             </td>
                     </tr>
         <tr>
@@ -107,7 +77,7 @@
                 Data de Admissão:
             </td>
             <td align="left">
-                    <input tabindex="7" type="text" name="dataAdmissao" id="calendario" />
+                <input tabindex="7" type="text" name="dataAdmissao" id="calendario" class="calendario" />
             </td>
                     </tr>
         <tr>
@@ -115,17 +85,17 @@
                 Data no Setor:
             </td>
             <td align="left">
-                    <input tabindex="8" type="text" name="dataSetor" id="calendario2" />
+                    <input tabindex="8" type="text" name="dataSetor" id="calendario2" class="calendario"/>
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                 Data de Nascimento:
             </td>
             <td align="left">
-                    <input tabindex="9" type="text" name="dataNascimento" id="calendario3" />
+                    <input tabindex="9" type="text" name="dataNascimento" id="calendario3" class="calendario"/>
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                 AVISAR PINHO E MÁRCIA?
@@ -138,7 +108,7 @@
                     <input type="radio" name="avisarPM" id="avisarPM" value="0"  maxlength="1"/>&nbsp;NÃO
                 </label>
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                 Sexo:
@@ -151,14 +121,14 @@
                     <input type="radio" name="sexo" id="sexo" value="1" maxlength="1"/>&nbsp;F
                 </label>
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                     <label for="dddTel">Telefone Residêncial 1</label>
             </td>
             <td align="left">
-                <input tabindex="11" name="dddTelRes1" id="dddTelRes1" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
-                <input name="telefoneRes1" type="text" id="telefoneRes1"  value="" size="13" maxlength="9" />
+                <input tabindex="11" name="dddTelRes1" id="dddTelRes1" style="width:30px" type="text" value="" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefoneRes1');"/>&nbsp;
+                <input name="telefoneRes1" type="text" id="telefoneRes1" value="" size="13" maxlength="9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddTelRes2')" readonly="readonly" style="background-color:#E9E9E9" />
             &nbsp; 
             </td>
         </tr>
@@ -167,8 +137,8 @@
                 <label for="dddTel2">Telefone Residêncial 2</label>
             </td>
             <td align="left">
-                    <input name="dddTelRes2" id="dddTelRes2" tabindex="12" style="width:30px" value="" type="text" maxlength="2" />&nbsp;
-                    <input name="telefoneRes2" type="text" id="telefoneRes2"  value="" size="13" maxlength="9" />
+                    <input name="dddTelRes2" id="dddTelRes2" tabindex="12" style="width:30px" value="" type="text" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefoneRes2');"/>&nbsp;
+                    <input name="telefoneRes2" type="text" id="telefoneRes2"  value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCel1')"/>
             &nbsp; </td>
         </tr>
         <tr>
@@ -176,13 +146,19 @@
                     <label for="dddCel1">Celular 1</label>
             </td>
             <td align="left">
-                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
-                    <input name="celular1" type="text" id="celular1" value="" size="13" maxlength="9" />
+                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular1');habilitaSelect(this,'idOperadora3',0)"/>&nbsp;
+                    <input name="celular1" type="text" id="celular1" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
 
-                <select  name="idOperadora3" id="idOperadora3" style="width:220px">
+                <select disabled="disabled"  name="idOperadora3" id="idOperadora3" style="width:220px">
                     <option value="">::.. Selecione uma Operadora ..::</option>
-                            <option value="">
+                        <?php
+                        foreach ($this->operadoras as $operadora){
+                        ?>
+                            <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                        <?php
+                        }
+                        ?>
                     </option>
 
 
@@ -194,14 +170,20 @@
                     <label for="dddCel2">Celular 2</label>
             </td>
             <td align="left">
-                    <input tabindex="14" name="dddCel2" id="dddCel2" maxlength="2" style="width:30px" value="" type="text" />&nbsp;
-                    <input name="celular2" type="text" id="celular2"  value="" size="13" maxlength="9"/>
+                    <input tabindex="14" name="dddCel2" id="dddCel2" maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular2');habilitaSelect(this,'idOperadora4',0)"/>&nbsp;
+                    <input name="celular2" type="text" id="celular2"  value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
 
-                <select  name="idOperadora4" id="idOperadora4" style="width:220px">
+                <select disabled="disabled"  name="idOperadora4" id="idOperadora4" style="width:220px">
                     <option value="">::.. Selecione uma Operadora ..::</option>
+                        <?php
+                        foreach ($this->operadoras as $operadora){
+                        ?>
+                            <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                        <?php
+                        }
+                        ?>
 
-                            <option value="" >
                     </option>
 
 
@@ -213,14 +195,20 @@
                     <label for="dddCel3">Celular 3</label>
             </td>
         <td align="left">
-                    <input tabindex="15" name="dddCel3" id="dddCel3"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
-                    <input name="celular3" type="text" id="celular3" value="" size="13" maxlength="9" />
+                    <input tabindex="15" name="dddCel3" id="dddCel3"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular3');habilitaSelect(this,'idOperadora5',0)"/>&nbsp;
+                    <input name="celular3" type="text" id="celular3" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
 
-                <select name="idOperadora5" id="idOperadora5" >
+                <select disabled="disabled" name="idOperadora5" id="idOperadora5" >
                     <option value="">::.. Selecione uma Operadora ..::</option>
+                        <?php
+                        foreach ($this->operadoras as $operadora){
+                        ?>
+                            <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                        <?php
+                        }
+                        ?>
 
-                            <option value="" >
                     </option>
 
 
@@ -232,7 +220,7 @@
                     <label for="email2">E-mail
             da Empresa</label></td>
             <td align="left">
-                    <input tabindex="16" name="email" type="text" id="email" maxlength="100" size="50" value="" />
+                    <input tabindex="16" name="email" type="email" id="email" maxlength="100" size="50" value="" />
             </td>
         </tr>
 <tr>
@@ -240,7 +228,7 @@
                     <label for="email2">E-mail
         Pessoal</label></td>
             <td align="left">
-                    <input tabindex="16" name="email2" type="text" id="email2" maxlength="100" size="50" value="" />
+                    <input tabindex="16" name="email2" type="email" id="email2" maxlength="100" size="50" value="" />
         </td>
         </tr>
         <tr>
@@ -248,7 +236,7 @@
             <label for="email2">E-mail
                     Pessoal</label></td>
             <td align="left">
-                    <input tabindex="16" name="email3"  type="text" id="email3" maxlength="100" size="50" value="" />
+                    <input tabindex="16" name="email3"  type="email" id="email3" maxlength="100" size="50" value="" />
             </td>
         </tr>
         <tr><td></td></tr>
@@ -310,7 +298,8 @@
                     <label for="cep">CEP</label>
             </td>
         <td align="left">
-            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" />&nbsp;<input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" /></td>
+            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep();"/>&nbsp;
+            <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick="buscaCep();"/></td>
         </tr>
         <tr>
             <td height="26" align="left">
@@ -585,8 +574,13 @@
 
                 <select tabindex="48" name="idCategoria_cliente" id="idCategoria_cliente" style="width:220px">
                     <option value="">::.. Selecione uma Categoria ..::</option>
-
-                            <option value="">
+                        <?php
+                        foreach ($this->categorias as $categoria){
+                        ?>
+                            <option value="<?php echo $categoria['id_categoria_empresa']?>"><?php echo $categoria['titulo']?></option>
+                        <?php
+                        }
+                        ?>
 
                 </select>
             </td>
@@ -640,12 +634,19 @@
         </tr>
     </table>
     <div id="dialog-modal-empresa" title="Selecione uma empresa">
-        <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');"></div>
+        <div id="ajax_empresa" onmouseover="setTabela('empresa');"></div>
+    </div>
+    <div id="dialog-modal-time" title="Selecione um time">
+        <div id="ajax_time" onmouseover="setTabela('time');"></div>
     </div>
     <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+    <input type="hidden" name="arrayIdTempTime" id="arrayIdTempTime" value=",">
+    
+    <?php //campos a serem gravados  ?>
+    <input type="hidden" name="id_empresa" id="id_empresa" value=",">
+    <input type="hidden" name="id_time" id="id_time" value=",">
 </form>
-
-
+</div>
 
 <script>
     varTipoEmpresa = '';
@@ -655,7 +656,17 @@
         idEmpresa = document.getElementById('arrayIdTempEmpresa').value;
         idEmpresa = idEmpresa.substr(1,idEmpresa.length-2);
         
-        document.getElementById('nomeFantasia').value = document.getElementById('nomefantasia_'+idEmpresa).value;
+        if(idEmpresa)
+            document.getElementById('nomeFantasia').value = document.getElementById('nomefantasia_'+idEmpresa).value;
+    }
+    
+    function setNomeTime()
+    {
+        idTime = document.getElementById('arrayIdTempTime').value;
+        idTime = idTime.substr(1,idTime.length-2);
+        
+        if(idTime)
+            document.getElementById('nomeTime').value = document.getElementById('nometime_'+idTime).value;
     }
     
     function setPaginator(pagina,query)
@@ -666,6 +677,12 @@
             document.getElementById('ajax_empresa').innerHTML = '';
             url = urlAjaxEmpresa+'/escolher/1/pagina/'+pagina+query+'/tipoEmpresa/'+varTipoEmpresa;
             ajax(url,'ajax_empresa');
+        }
+        if(tabelas=='time')
+        {   
+            document.getElementById('ajax_time').innerHTML = '';
+            url = urlAjaxTime+'/escolher/1/pagina/'+pagina+query;
+            ajax(url,'ajax_time');
         }
     }   
     
@@ -689,5 +706,28 @@
             }
         });
     }
+    
+    //exibe uma modal para que o usuario escolha uma empresa
+    function abreDialogTime()
+    {        
+        url = urlAjaxTime+'/escolher/1';
+        ajax(url,'ajax_time');
+        
+        $( "#dialog-modal-time" ).dialog({
+            modal: true,
+            width: 822,
+            buttons: {
+                Ok: function() {
+                    setNomeTime();
+                    $( this ).dialog( "close" );
+                    
+                }
+            }
+        });
+    }
+    
+    url = urlAjaxFiltroSCT+'/setor/1/cargo/1/tipo/1';
+    ajax(url,'div_FiltroFuncionrio');
+    
     
 </script>    

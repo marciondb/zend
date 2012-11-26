@@ -3,8 +3,9 @@
  * formulario de login
  */
 ?>
-<div id="login1" style="border:10px;border-style:solid;border-color:#666;">
-<form name="formulario" action="<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logar'),null,1); ?>" method="post">
+<br><br><br><br><br><br>
+<div id="login1" class="navbar-inner">
+<form onKeyPress="return submitEnter(this,event)" name="formulario" action="<?php echo $this->url(array('module'=>'sistema', 'controller'=>'index','action'=>'logar'),null,1); ?>" method="post">
     <table bgcolor="#CCCCCC" style="margin-top:20px;" width="260" align="center">
         <th colspan="2" bgcolor="#999999" style="color:#FFF;" align="center">Administração</th>
         
@@ -18,7 +19,7 @@
         <tr>
             <td>
                 <div class="input-prepend">
-                    <span class="add-on">Senha&nbsp;&nbsp;</span><input id="senha" name="senha" type="password" placeholder="senha">
+                    <span class="add-on">Senha&nbsp;&nbsp;</span><input id="senha" name="senha" type="password" placeholder="senha" >
                 </div>
             </td>
         </tr>

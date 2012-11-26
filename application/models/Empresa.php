@@ -81,7 +81,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
        * @version 1.0
        * @author Márcio & Marco
      */
-    public function exibir($pagina,$cnpj,$listaIdEmpresasEscolhidas,$remover)
+    public function exibir($pagina,$cnpj,$listaIdEmpresasEscolhidas,$remover,$tipoEmpresa)
     {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
@@ -94,6 +94,11 @@ class Application_Model_Empresa extends Application_Model_Abstract
                     join('usuario_empresa_visivel', 'empresa.id_empresa = usuario_empresa_visivel.id_empresa',null)->
                     where('usuario_empresa_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
             
+            if($tipoEmpresa)
+                $select->where('empresa.id_matriz <> 0');
+            else
+                $select->where('empresa.id_matriz = 0');
+           
             if($cnpj)
             {
                 $cnpj = str_replace(".","",$cnpj);

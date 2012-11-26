@@ -11,6 +11,18 @@ urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
 urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
 urlAjaxFiltroSCT = '/'+host+'/sistema/logado/ajaxfiltrosct';
 
+//http://www.browser-update.org/pt/
+//Browser-Update.org - Informe o seu visitante sobre atualizações do navegador
+var $buoop = {vs:{i:8,f:12,o:11,s:5,n:9}} 
+$buoop.ol = window.onload; 
+window.onload=function(){ 
+ try {if ($buoop.ol) $buoop.ol();}catch (e) {} 
+ var e = document.createElement("script"); 
+ e.setAttribute("type", "text/javascript"); 
+ e.setAttribute("src", "http://browser-update.org/update.js"); 
+ document.body.appendChild(e); 
+} 
+
 /***
  * Preenche todos os compos de um formulario
  * funcao para ajudar no teste de formulario com varios campos
@@ -229,8 +241,10 @@ function validarEmail(email)
      
   if ( !exp.test(email))
   {
-   return false;
+    showAlert('Erro','E-mail inválido');
+    return false;
   }
+  
   return true;
 }
 	
@@ -541,14 +555,17 @@ function setMsg(titulo,conteudo,tipo)
 /***
  * Cria um efeito do tipo "aguarde" sobre uma determinada DIV
  * @param boolean opcao True para mostrar a DIV do tipo "aguarde"
- * @param string divHidden Nome da DIV que sera sobreposta pela DIV do tipo "aguarde"
+ * @param string divHidden Nome da DIV que sera sobreposta pela DIV do tipo "aguarde"]
+ * @param string [msg] Mensagem a ser exibida. O padrão é "processando"
  */
-function divAguarde(opcao,divHidden)
+function divAguarde(opcao,divHidden,msg)
 {    
     if(!document.getElementById('transparente'))
     {
+        if(typeof(msg) == "undefined")
+            msg = 'Processando...';
         //Todo layout devera ter a div conteudo, que esta dentro da div araiz
-        $('#conteudo').append('<div id="transparente" style="position: absolute;z-index:2;visibility: hidden; width:819px; filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; -moz-border-radius: 8px; -webkit-border-radius: 8px;border-radius: 8px;"><div id="carregar" align="center" style="position: fixed;width: 819px; color: #fff;background: url(/'+host+'/public/images/sistema/bar_ani_laranja.gif) repeat-x;">Processando...</div></div>');
+        $('#conteudo').append('<div id="transparente" style="position: absolute;z-index:2;visibility: hidden; width:819px; filter:alpha(opacity=80); opacity:0.8; background-color:#cccccc; -moz-border-radius: 8px; -webkit-border-radius: 8px;border-radius: 8px;"><div id="carregar" align="center" style="position: fixed;width: 819px; color: #fff;background: url(/'+host+'/public/images/sistema/bar_ani_laranja.gif) repeat-x;">'+msg+'</div></div>');
     }
     
     tamanhoDiv = document.getElementById(divHidden).clientHeight;
@@ -912,15 +929,15 @@ function setFiltroFuncionario(todos,remover,pagina)
         listaIdTime = document.getElementById('arrayIdTempTime').value;
         listaIdTime = listaIdTime.substr(1,listaIdTime.length-2); //retira a 1º e a ultima virgula
             
-        idCargo = document.getElementById('idCargo').value;
-        idSetor = document.getElementById('idSetor').value;
-        idFuncionario_tipo  = document.getElementById('idFuncionario_tipo').value;
+        idCargo = document.getElementById('id_cargo').value;
+        idSetor = document.getElementById('id_setor').value;
+        idFuncionario_tipo  = document.getElementById('id_funcionario_tipo').value;
             
         url += '/listaIdEmpresa/'+listaIdEmpresa+
         '/listaIdTime/'+listaIdTime+    
-        '/idCargo/'+idCargo+
-        '/idSetor/'+idSetor+
-        '/idFuncionario_tipo/'+idFuncionario_tipo;
+        '/id_cargo/'+idCargo+
+        '/id_setor/'+idSetor+
+        '/id_funcionario_tipo/'+idFuncionario_tipo;
     }
     else
     {
@@ -1042,3 +1059,374 @@ function carregaMenuTree(editar,id_usuario)
     /******************************************************************************/
     //                               FIM AJAX
     /******************************************************************************/
+    
+    
+/***
+* Faz o submit do formulário quando o usuário aperta a tecla "enter".
+*/ 
+function submitEnter(myfield,e)
+{
+    var keycode;
+    if (window.event) 
+        keycode = window.event.keyCode;
+    else if (e) 
+         keycode = e.which;
+    else 
+        return true;
+
+    if (keycode == 13)
+    {
+        loga();
+        return false;
+    }
+    else
+        return true;
+}
+
+
+function loga()
+{
+    divAguarde(true,'login1');
+    email = document.getElementById('login').value;
+    senha = document.getElementById('senha').value;
+
+    ajax(url+'/login/'+email+'/senha/'+senha, 'ajax');
+
+    valida = document.getElementById('ajax').innerHTML;
+
+    if(valida == 0)
+        showAlert('ERRO', 'Login ou senha incorretos!');
+    else
+    {
+        //Se o login der certo, sera redirecionado para a view "logado", view inical padrao, depois de logado, de TODOS os modulos
+        //menos o portal
+        if(pathArray[2] == "portal")
+            window.location.pathname = redirectEad;
+        else
+            window.location.pathname = redirect;
+    }
+
+    divAguarde(false,'login1');
+
+}
+
+/*****************************************************************************
+ *      INICIO DE SCRIPTS PARA VALIDACAO E MASCARAS
+ ****************************************************************************/
+
+/**  
+ * Função para aplicar máscara em campos de texto
+ * Copyright (c) 2008, Dirceu Bimonti Ivo - http://www.bimonti.net 
+ * All rights reserved. 
+ * @constructor 
+ * http://forum.wmonline.com.br/topic/196136-mascara-de-campos/
+  * Version 0.27  
+  *
+  * @param w - O elemento que será aplicado (normalmente this).
+  * @param e - O evento para capturar a tecla e cancelar o backspace.
+  * @param m - A máscara a ser aplicada.
+  * @param r - Se a máscara deve ser aplicada da direita para a esquerda. Veja Exemplos.
+  * @param a - 
+  * @returns null  
+  */
+function maskIt(w,e,m,r,a){
+        
+        // Cancela se o evento for Backspace
+        if (!e) var e = window.event
+        if (e.keyCode) code = e.keyCode;
+        else if (e.which) code = e.which;
+        
+        // Variáveis da função
+        var txt  = (!r) ? w.value.replace(/[^\d]+/gi,'') : w.value.replace(/[^\d]+/gi,'').reverse();
+        var mask = (!r) ? m : m.reverse();
+        var pre  = (a ) ? a.pre : "";
+        var pos  = (a ) ? a.pos : "";
+        var ret  = "";
+
+        if(code == 9 || code == 8 || txt.length == mask.replace(/[^#]+/g,'').length) return false;
+
+        // Loop na máscara para aplicar os caracteres
+        for(var x=0,y=0, z=mask.length;x<z && y<txt.length;){
+                if(mask.charAt(x)!='#'){
+                        ret += mask.charAt(x);x++;
+                } else{
+                        ret += txt.charAt(y);y++;x++;
+                }
+        }
+        
+        // Retorno da função
+        ret = (!r) ? ret : ret.reverse()        
+        w.value = pre+ret+pos;
+}
+
+function MascaraCpfCnpj(objeto,evento) 
+{
+    if (document.getElementById('cpfCnpj').innerHTML == 'CPF')
+    {
+            maskIt(objeto,evento,'###.###.###-##');
+    }
+    else
+    {
+            maskIt(objeto,evento,'##.###.###/####-##');
+    }
+}
+
+/***
+ * valida o CPF digitado
+ * @param Object Objcpf  O elemente a ser validado, objeto do tipo text
+ */
+function ValidarCPF(Objcpf){
+	var i; 
+  
+	s = Objcpf.value; 
+	exp = /\.|\-/g
+	s = s.toString().replace( exp, "" );
+	
+	if (s!='')
+	{
+		if (s.length != 11){ 
+		
+			alert("CPF Invalido") 
+			
+			return false;
+		}
+		
+		var c = s.substr(0,9); 
+		
+		var dv = s.substr(9,2); 
+		
+		var d1 = 0; 
+		
+		for (i = 0; i < 9; i++) 
+		
+		{ 
+		
+			d1 += c.charAt(i)*(10-i); 
+		
+		} 
+		
+		if (d1 == 0)
+		{ 
+		
+			alert("CPF Invalido") 
+			
+			return false; 
+		
+		} 
+		
+		d1 = 11 - (d1 % 11); 
+		
+		if (d1 > 9) d1 = 0; 
+		
+		if (dv.charAt(0) != d1) 
+		{ 
+		
+			alert("CPF Invalido") 
+			
+			return false; 
+		
+		} 
+			
+		d1 *= 2; 
+		
+		for (i = 0; i < 9; i++) 
+		
+		{ 
+		
+			d1 += c.charAt(i)*(11-i); 
+		
+		} 
+		
+		d1 = 11 - (d1 % 11); 
+		
+		if (d1 > 9) d1 = 0; 
+		
+		if (dv.charAt(1) != d1) 
+		{ 
+		
+			alert("CPF Invalido") 
+			
+			return false; 
+		
+		}
+		
+		if( (s == '11111111111') || (s == '22222222222') || (s == '33333333333') || (s == '44444444444') || (s == '55555555555') || (s == '66666666666') || (s == '77777777777') || (s == '88888888888') || (s == '99999999999') || (s == '00000000000') )
+		{
+			alert('CPF Invalido!');
+			Objcpf.select();
+				
+		}
+	
+	}
+	
+	return true;
+       
+}
+
+/***
+ * valida o CNPJ digitado
+ * @param Object ObjCnpj  O elemente a ser validado, objeto do tipo text
+ */
+function ValidarCNPJ(ObjCnpj){
+    var cnpj = ObjCnpj.value;
+    var valida = new Array(6,5,4,3,2,9,8,7,6,5,4,3,2);
+    var dig1= new Number;
+    var dig2= new Number;
+
+    exp = /\.|\-|\//g
+    cnpj = cnpj.toString().replace( exp, "" ); 
+    var digito = new Number(eval(cnpj.charAt(12)+cnpj.charAt(13)));
+
+    for(i = 0; i<valida.length; i++){
+            dig1 += (i>0? (cnpj.charAt(i-1)*valida[i]):0);  
+            dig2 += cnpj.charAt(i)*valida[i];       
+    }
+    dig1 = (((dig1%11)<2)? 0:(11-(dig1%11)));
+    dig2 = (((dig2%11)<2)? 0:(11-(dig2%11)));
+
+    if (cnpj != "")
+    {
+        if(((dig1*10)+dig2) != digito)
+        {
+            alert('CNPJ Invalido!');
+            ObjCnpj.select();
+        }
+    }        
+}
+
+function ValidaCpfCnpj(data) 
+{
+    if (document.getElementById('cpfCnpj').innerHTML == 'CPF')
+    {
+            ValidarCPF(data);
+    }
+    else
+    {
+            ValidarCNPJ(data);		
+    }
+}
+
+//valida telefone
+function validaTelefone(tel){
+    exp = /\d{4}\-\d{4}/
+    if( (tel.value.length != 0) && (!exp.test(tel.value)) )
+    {
+        showAlert('','Numero de Telefone Invalido!');
+    }
+}
+
+//valida CEP
+function validaCep(cep){
+    exp = /\d{2}\.\d{3}\-\d{3}/
+    var cep1 = cep.value;
+    cep1 = cep1.toString().replace( exp, "" );
+
+    if ( cep1 != '')
+    {
+        if(!exp.test(cep.value))
+        {
+            showAlert('Erro','Numero de Cep Invalido!');               
+        }
+    }
+}
+
+/*****************************************************************************
+ *      FIM DE SCRIPTS PARA VALIDACAO E MASCARAS
+ ****************************************************************************/
+
+function proximoCampo(atual,proximo)
+{
+    if(atual.value.length >= atual.maxLength)
+    {
+        document.getElementById(proximo).focus();
+    }
+}
+
+function ativaProximo(atual,proximo)
+{
+    if(atual.value.length >= atual.maxLength)
+    { 
+        document.getElementById(proximo).readOnly = false;
+        document.getElementById(proximo).style.background = '#FFFFFF';
+        document.getElementById(proximo).focus();
+    }
+}
+
+function habilitaSelect(atual,proximo,focu)
+{		
+    if(atual.value.length >= atual.maxLength)
+    { 
+        document.getElementById(proximo).disabled = false;
+        document.getElementById(proximo).style.background = '#FFFFFF';
+        if (focu==1)
+            document.getElementById(proximo).focus();
+    }
+}
+
+
+function buscaCep()
+{
+    divAguarde(true, 'funcionario','Aguarde, pesquisando o CEP...');
+    $.getScript("http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+$("#cep").attr('value'), function(){
+	
+				
+        if (resultadoCEP["tipo_logradouro"] != '') {
+            if (resultadoCEP["resultado"]) {
+                // troca o valor dos elementos
+                $("#endereco").val(unescape(resultadoCEP["tipo_logradouro"]) + " " + unescape(resultadoCEP["logradouro"]));
+                $("#bairro").val(unescape(resultadoCEP["bairro"]));
+                $("#cidade").val(unescape(resultadoCEP["cidade"]));
+                $("#estado").val(unescape(resultadoCEP["uf"]));
+                $("#numero").focus();
+                divAguarde(false, 'funcionario');
+            }
+        }
+        else
+        {
+            $("#endereco").val("");
+            $("#bairro").val("");	
+            $("#cidade").val("");
+            $("#estado").val("RJ");
+            divAguarde(false, 'funcionario');
+        }
+    });
+}
+
+// Inicio do Limite de caracteres; jquery SOMENTE PARA A PAGINA CADASTRO DE FUNCIONARIO
+	
+$(document).ready( 
+    function()
+    {
+        $("#lazer").limit('200', '#charsRight');
+    }
+    );
+	
+$(document).ready( // Limite de caracteres; jquery
+    function()
+    {
+        $("#talentos").limit('200', '#charsRight2');
+    }
+    );
+	
+$(document).ready( // Limite de caracteres; jquery
+    function()
+    {
+        $("#dons").limit('200', '#charsRight3');
+    }
+    );
+	
+$(document).ready( // Limite de caracteres; jquery 
+    function()
+    {
+        $("#sonhos").limit('200', '#charsRight4');
+    }
+    );
+	
+$(document).ready( // Limite de caracteres; jquery 
+    function()
+    {
+        $("#brindes").limit('200', '#charsRight5');
+    }
+    );
+		
+	// FIM do Limite de caracteres; jquery

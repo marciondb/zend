@@ -1,14 +1,14 @@
-<table align="center">	
+<table >	
     <?php
         if($this->setor)
         {
     ?>
     <tr>
-        <td align="left">
+        <td align="left" style="width: 235px">
             Setor / Unidade de Negócios: 
         </td>
         <td align="left">
-            <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
+            <select tabindex="30" name="id_setor" id="id_setor" style="width:370px" onchange="setFiltroFuncionario();">
                 <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
                 <?php
                 foreach ($this->arraySetor as $linha) {
@@ -27,11 +27,11 @@
         {    
     ?>
     <tr>
-        <td align="left">
+        <td align="left" style="width: 235px">
             Cargo: 
         </td>
         <td align="left">
-            <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
+            <select tabindex="4" name="id_cargo" id="id_cargo" style="width:370px" onchange="setFiltroFuncionario();">
                 <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
                 <?php
                 foreach ($this->arrayCargo as $linha) {
@@ -49,11 +49,11 @@
         {    
     ?>
     <tr>
-        <td align="left">
+        <td align="left" style="width: 235px">
             Tipo: 
         </td>
         <td align="left">
-            <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
+            <select tabindex="5" name="id_funcionario_tipo" id="id_funcionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
                 <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
                 <?php
                 foreach ($this->arrayFuncionario_tipo as $linha) {
