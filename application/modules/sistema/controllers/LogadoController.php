@@ -52,6 +52,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_ramo_empresa = new Application_Model_RamoEmpresa();
         $this->_operadora_celular = new Application_Model_OperadoraCelular();
         $this->_categoria = new Application_Model_CategoriaEmpresa();
+        $this->_lotacao = new Application_Model_Lotacao();
         
         //*******************************************************************
         //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
@@ -320,15 +321,42 @@ class Sistema_LogadoController extends Controller_Action
             $this->_redirect ("sistema/logado");
         
         $this->view->erros = '';
+        $teste = '';
         $id_funcionario = '';
                 
         $parametros = $this->_getAllParams();
+        
         //salva a empresa e pega o id
-        //$id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco);
+        $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco);
         
         //se houver erro, passa para a view.
         if(is_string($id_funcionario))
             $this->view->erros .= " ".$id_funcionario; 
+        
+        //salva o usuario e pega o id
+        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_pessoal_1']);
+        
+        //se houver erro, passa para a view.
+        if(is_string($id_usuario))
+            $this->view->erros .= " ".$id_usuario;
+        
+        //atualiza o funcionario com a id do usuario        
+        $this->_funcionario->gravar(array('id_funcionario'=>$id_funcionario,'id_usuario'=>$id_usuario),'',true);
+        
+        //salva a lotacao do funcionario
+        $id_lotacao = '';
+        $id_lotacao = $this->_lotacao->gravar(array('id_funcionario'=>$id_funcionario,
+                                                    'id_empresa'=>$parametros['id_empresa'],
+                                                    'id_cargo'=>$parametros['id_cargo'],
+                                                    'id_setor'=>$parametros['id_setor'],
+                                                    'id_funcionario_tipo'=>$parametros['id_funcionario_tipo'],
+                                                    'data_hora'=>date('Y-m-d H:i:s'),
+                                                    'atual'=>'1'));
+        
+        //se houver erro, passa para a view.
+        if(is_string($id_lotacao))
+            $this->view->erros .= " ".$id_lotacao;
+        
     }
     
     /***
@@ -433,11 +461,12 @@ class Sistema_LogadoController extends Controller_Action
         
     }
     
-    public function testeAction()
+    public function ajaxtesteAction()
     {
         if($this->_request->isPost())
         {
-            //$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
+            $this->view->parametros = $this->_getAllParams();
+//$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
         }    
     
     }

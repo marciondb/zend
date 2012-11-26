@@ -2,7 +2,7 @@
 <h3>Cadastro de Funcionário</h3>
 <hr />
 <div id="funcionario">
-<form name="formulario" id="formulario" action="" method="post" >
+<form name="formulario" id="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxteste'), null, 1); ?>" method="post" >
     <table  width="100%" height="1318" align="center">
         <tr>
             <td width="30%" align="left">
@@ -31,7 +31,7 @@
             </td>
             <td align="left">
                 <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50">
-                <input type="hidden" name="idEmpresa" id="idEmpresa" value="" />
+                
             </td>
         </tr>
         <tr>
@@ -49,7 +49,7 @@
                     Nome Completo:
             </td>
             <td align="left">
-                    <input tabindex="1" name="nomeCompleto" id="nomeCompleto" type="text" value="" maxlength="100" size="50" />
+                    <input tabindex="1" name="nome" id="nome" type="text" value="" maxlength="100" size="50" />
             </td>
         </tr>
         <tr>
@@ -77,7 +77,7 @@
                 Data de Admissão:
             </td>
             <td align="left">
-                <input tabindex="7" type="text" name="dataAdmissao" id="calendario" class="calendario" />
+                <input tabindex="7" type="text" name="data_admissao" id="data_admissao" class="calendario" />
             </td>
                     </tr>
         <tr>
@@ -85,7 +85,7 @@
                 Data no Setor:
             </td>
             <td align="left">
-                    <input tabindex="8" type="text" name="dataSetor" id="calendario2" class="calendario"/>
+                    <input tabindex="8" type="text" name="data_setor" id="data_setor" class="calendario"/>
             </td>
         </tr>
         <tr>
@@ -93,7 +93,7 @@
                 Data de Nascimento:
             </td>
             <td align="left">
-                    <input tabindex="9" type="text" name="dataNascimento" id="calendario3" class="calendario"/>
+                    <input tabindex="9" type="text" name="data_nascimento" id="data_nascimento" class="calendario"/>
             </td>
         </tr>
         <tr>
@@ -102,10 +102,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">    
-                    <input tabindex="10" type="radio" name="avisarPM" id="avisarPM" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="10" type="radio" name="avisar_pinho_marcia" id="avisar_pinho_marcia" value="1" maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="avisarPM" id="avisarPM" value="0"  maxlength="1"/>&nbsp;NÃO
+                    <input type="radio" name="avisar_pinho_marcia" id="avisar_pinho_marcia" value="0"  maxlength="1"/>&nbsp;NÃO
                 </label>
             </td>
         </tr>
@@ -146,11 +146,11 @@
                     <label for="dddCel1">Celular 1</label>
             </td>
             <td align="left">
-                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular1');habilitaSelect(this,'idOperadora3',0)"/>&nbsp;
+                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular1');habilitaSelect(this,'id_operadora_celular',0)"/>&nbsp;
                     <input name="celular1" type="text" id="celular1" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
 
-                <select disabled="disabled"  name="idOperadora3" id="idOperadora3" style="width:220px">
+                <select disabled="disabled"  name="id_operadora_celular" id="id_operadora_celular" style="width:220px">
                     <option value="">::.. Selecione uma Operadora ..::</option>
                         <?php
                         foreach ($this->operadoras as $operadora){
@@ -170,11 +170,11 @@
                     <label for="dddCel2">Celular 2</label>
             </td>
             <td align="left">
-                    <input tabindex="14" name="dddCel2" id="dddCel2" maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular2');habilitaSelect(this,'idOperadora4',0)"/>&nbsp;
+                    <input tabindex="14" name="dddCel2" id="dddCel2" maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular2');habilitaSelect(this,'id_operadora_celular2',0)"/>&nbsp;
                     <input name="celular2" type="text" id="celular2"  value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
 
-                <select disabled="disabled"  name="idOperadora4" id="idOperadora4" style="width:220px">
+                <select disabled="disabled"  name="id_operadora_celular2" id="id_operadora_celular2" style="width:220px">
                     <option value="">::.. Selecione uma Operadora ..::</option>
                         <?php
                         foreach ($this->operadoras as $operadora){
@@ -195,11 +195,11 @@
                     <label for="dddCel3">Celular 3</label>
             </td>
         <td align="left">
-                    <input tabindex="15" name="dddCel3" id="dddCel3"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular3');habilitaSelect(this,'idOperadora5',0)"/>&nbsp;
+                    <input tabindex="15" name="dddCel3" id="dddCel3"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular3');habilitaSelect(this,'id_operadora_celular3',0)"/>&nbsp;
                     <input name="celular3" type="text" id="celular3" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
 
-                <select disabled="disabled" name="idOperadora5" id="idOperadora5" >
+                <select disabled="disabled" name="id_operadora_celular3" id="id_operadora_celular3" >
                     <option value="">::.. Selecione uma Operadora ..::</option>
                         <?php
                         foreach ($this->operadoras as $operadora){
@@ -220,7 +220,7 @@
                     <label for="email2">E-mail
             da Empresa</label></td>
             <td align="left">
-                    <input tabindex="16" name="email" type="email" id="email" maxlength="100" size="50" value="" />
+                    <input tabindex="16" name="email_empresa" type="email" id="email_empresa" maxlength="100" size="50" value="" />
             </td>
         </tr>
 <tr>
@@ -228,7 +228,7 @@
                     <label for="email2">E-mail
         Pessoal</label></td>
             <td align="left">
-                    <input tabindex="16" name="email2" type="email" id="email2" maxlength="100" size="50" value="" />
+                    <input tabindex="16" name="email_pessoal_1" type="email" id="email_pessoal_1" maxlength="100" size="50" value="" />
         </td>
         </tr>
         <tr>
@@ -236,7 +236,7 @@
             <label for="email2">E-mail
                     Pessoal</label></td>
             <td align="left">
-                    <input tabindex="16" name="email3"  type="email" id="email3" maxlength="100" size="50" value="" />
+                    <input tabindex="16" name="email_pessoal_2"  type="email" id="email_pessoal_2" maxlength="100" size="50" value="" />
             </td>
         </tr>
         <tr><td></td></tr>
@@ -306,7 +306,7 @@
                     <label for="endereco">Endereço</label>
             </td>
             <td align="left">
-                <input tabindex="22" name="endereco" type="text" id="endereco" maxlength="100" size="28" value="" />
+                <input tabindex="22" name="tipo_logradouro" type="text" id="tipo_logradouro" maxlength="100" size="28" value="" />
                 Número:
                 <input tabindex="23" name="numero" type="text" id="numero" value="" style="width:50px" maxlength="10" />
             </td>
@@ -383,36 +383,36 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="30" type="radio" name="servicoCorreio" id="servicoCorreio" value="1"  maxlength="1"/>&nbsp;SIM
+                    <input tabindex="30" type="radio" name="servico_correios" id="servico_correios" value="1"  maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="servicoCorreio" id="servicoCorreio" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="servico_correios" id="servico_correios" value="0" maxlength="1" />&nbsp;NÃO
                 </label>
             </td>
                     </tr>
         <tr>
-                <td align="left">
-                    <label for="estadoCivil">Estado Civil</label>
-                </td>
-                <td align="left">
+            <td align="left">
+                <label for="estadoCivil">Estado Civil</label>
+            </td>
+            <td align="left">
 
-                <select tabindex="31" name="estadoCivil" > 
-                    <option value="" >::.. SELECIONE ..::</option> 
-                    <option value="0" > CASADO </option>
-                    <OPTION VALUE="2" > DIVORCIADO </OPTION>
-                    <OPTION VALUE="4"> JUNTADO </OPTION>
-                    <OPTION VALUE="5"> OUTROS </OPTION> 
-                    <option value="1"> SOLTEIRO </option>                      
-                    <OPTION VALUE="3"> VIUVO </OPTION> 
-                </select> 
-                </td>
-            </tr>
-            <tr>
+                <select tabindex="31" name="estado_civil" id="estado_civil" > 
+                <option value="" >::.. SELECIONE ..::</option> 
+                <option value="0" > CASADO </option>
+                <OPTION VALUE="2" > DIVORCIADO </OPTION>
+                <OPTION VALUE="4"> JUNTADO </OPTION>
+                <OPTION VALUE="5"> OUTROS </OPTION> 
+                <option value="1"> SOLTEIRO </option>                      
+                <OPTION VALUE="3"> VIUVO </OPTION> 
+            </select> 
+            </td>
+        </tr>
+       <tr>
             <td align="left">
                     <label for="nomeConjuge">Nome do Cônjuge (companheiro(a)):</label>
             </td>
             <td align="left">
-                    <input tabindex="37" name="nomeConjuge" type="text" id="nomeConjuge" maxlength="100" size="50" value="" />
+                    <input tabindex="37" name="nome_conjuge" type="text" id="nome_conjuge" maxlength="100" size="50" value="" />
             </td>
         </tr>
             <tr>
@@ -427,16 +427,16 @@
                     <input type="radio" name="temFilho" id="temFilho" value="0"  />&nbsp;NÃO
                 </label>    
                 &nbsp;&nbsp;
-                <input tabindex="33" name="qtoFilhos" type="text" id="qtoFilhos"  maxlength="2" size="25" value="" placeholder="Quantos?"/>
+                <input tabindex="33" name="numero_filhos" type="text" id="numero_filhos"  maxlength="2" size="25" value="" placeholder="Quantos?"/>
             </td>
                     </tr>
-        <tr>
+            <tr>
                 <td align="left">
                     <label for="escolaridade">Escolaridade:</label>
                 </td>
                 <td align="left">
 
-                <select tabindex="34" name="escolaridade"  > 
+                    <select tabindex="34" name="escolaridade" id="escolaridade"  > 
                     <OPTION VALUE="" >::.. SELECIONE ..::</OPTION> 
                     <OPTION VALUE="0" >ENSINO FUNDAMENTAL </OPTION> 
                     <OPTION VALUE="1">ENSINO MÉDIO </OPTION> 
@@ -449,7 +449,7 @@
                     <label for="situcao">Situação:</label>
                 </td>
                 <td align="left">
-                <select tabindex="35" name="situcao" id="situcao"  > 
+                <select tabindex="35" name="situacao" id="situacao"  > 
                     <OPTION VALUE="" >::.. SELECIONE ..::</OPTION> 
                     <OPTION VALUE="0" >COMPLETO</OPTION>
                     <OPTION VALUE="2" >EM CURSO</OPTION> 
@@ -462,7 +462,7 @@
                     <label for="formacaoProfi">Formação Profissional:</label>
             </td>
             <td align="left">
-                <input tabindex="36" name="formacaoProfi" type="text" id="formacaoProfi" maxlength="100" size="50" value="" />
+                <input tabindex="36" name="formacao" type="text" id="formacao" maxlength="100" size="50" value="" />
             </td>
         </tr>
 
@@ -472,10 +472,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="38" type="radio" name="temPc" id="temPc" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="38" type="radio" name="possui_pc" id="possui_pc" value="1" maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="temPc" id="temPc" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="possui_pc" id="possui_pc" value="0" maxlength="1" />&nbsp;NÃO
                 </label>    
             </td>
                     </tr>
@@ -485,10 +485,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="39" type="radio" name="sabeInfo" id="sabeInfo" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="39" type="radio" name="pratica_informatica" id="pratica_informatica" value="1" maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="sabeInfo" id="sabeInfo" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="pratica_informatica" id="pratica_informatica" value="0" maxlength="1" />&nbsp;NÃO
                 </label>    
             </td>
         </tr>
@@ -506,10 +506,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="41" type="radio" name="temBiblia" id="temBiblia" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="41" type="radio" name="possui_biblia" id="possui_biblia" value="1" maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="temBiblia" id="temBiblia" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="possui_biblia" id="possui_biblia" value="0" maxlength="1" />&nbsp;NÃO
                 </label>    
             </td>
         </tr>
@@ -519,10 +519,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="42" type="radio" name="querBiblia" id="querBiblia" value="1"  maxlength="1"/>&nbsp;SIM
+                    <input tabindex="42" type="radio" name="quer_biblia" id="quer_biblia" value="1"  maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="querBiblia" id="querBiblia" value="0"  maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="quer_biblia" id="quer_biblia" value="0"  maxlength="1" />&nbsp;NÃO
                 </label>    
             </td>
         </tr>
@@ -547,7 +547,7 @@
                     <label for="dons">Quais os seus Dons Artísticos?</label>
             </td>
             <td align="left">
-                    <textarea tabindex="45" name="dons" id="dons" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight3"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="45" name="dom_artes" id="dom_artes" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight3"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -555,7 +555,7 @@
                     <label for="sonhos">Qual o seu Sonho?</label>
             </td>
             <td align="left">
-                    <textarea tabindex="46" name="sonhos" id="sonhos" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight4"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="46" name="sonho" id="sonho" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight4"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -563,7 +563,7 @@
                     <label for="sonhos">Brindes já recebidos da Pinho & Consultores:</label>
             </td>
             <td align="left">
-                    <textarea tabindex="47" name="brindes" id="brindes" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight5"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="47" name="brindes_recebidos" id="brindes_recebidos" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight5"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -572,7 +572,7 @@
             </td>
             <td align="left">
 
-                <select tabindex="48" name="idCategoria_cliente" id="idCategoria_cliente" style="width:220px">
+                <select tabindex="48" name="id_categoria" id="id_categoria" style="width:220px">
                     <option value="">::.. Selecione uma Categoria ..::</option>
                         <?php
                         foreach ($this->categorias as $categoria){
@@ -610,7 +610,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input name="btnCadastrar" type="button" id="btnCadastrar" value="Cadastrar" class="btn btn-success" />&nbsp;</td>
+                <input name="btnCadastrar" type="submit" id="btnCadastrar" value="Cadastrar" class="btn btn-success" />&nbsp;</td>
         </tr>
         <tr>
             <td colspan="2" align="center">&nbsp;
@@ -645,6 +645,12 @@
     <?php //campos a serem gravados  ?>
     <input type="hidden" name="id_empresa" id="id_empresa" value=",">
     <input type="hidden" name="id_time" id="id_time" value=",">
+    <input type="hidden" name="id_usuario" id="id_usuario" value="<?php echo $this->id_usuario ?>">
+    <input type="hidden" name="tel_residencial_1" id="tel_residencial_1" value="">
+    <input type="hidden" name="tel_residencial_2" id="tel_residencial_2" value="">
+    <input type="hidden" name="celular_1" id="celular_1" value="">
+    <input type="hidden" name="celular_2" id="celular_2" value="">
+    <input type="hidden" name="celular_3" id="celular_3" value="">
 </form>
 </div>
 
@@ -653,9 +659,9 @@
     
     limiteTxtArea('lazer','charsRight');
     limiteTxtArea('talentos','charsRight2');
-    limiteTxtArea('dons','charsRight3');
-    limiteTxtArea('sonhos','charsRight4');
-    limiteTxtArea('brindes','charsRight5');
+    limiteTxtArea('dom_artes','charsRight3');
+    limiteTxtArea('sonho','charsRight4');
+    limiteTxtArea('brindes_recebidos','charsRight5');
     
     function setNomeFantasia()
     {
@@ -705,7 +711,19 @@
             width: 822,
             buttons: {
                 Ok: function() {
-                    setNomeFantasia();
+                    temp = document.getElementsByClassName('idEmpresaTempe');
+                    if(temp.length)
+                    { 
+                        for (i = 0; i < temp.length; i++)
+                        {   
+                            if(temp[i].checked)
+                            {    
+                                setNomeFantasia();
+                                break;
+                            }    
+                        }
+                    }
+                    
                     $( this ).dialog( "close" );
                     
                 }
@@ -724,7 +742,19 @@
             width: 822,
             buttons: {
                 Ok: function() {
-                    setNomeTime();
+                    temp = document.getElementsByClassName('idTimeTempe');
+                    if(temp.length)
+                    { 
+                        for (i = 0; i < temp.length; i++)
+                        {   
+                            if(temp[i].checked)
+                            {    
+                                 setNomeTime();
+                                break;
+                            }    
+                        }
+                    }
+                   
                     $( this ).dialog( "close" );
                     
                 }
@@ -734,6 +764,5 @@
     
     url = urlAjaxFiltroSCT+'/setor/1/cargo/1/tipo/1';
     ajax(url,'div_FiltroFuncionrio');
-    
     
 </script>    

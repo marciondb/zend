@@ -13,62 +13,73 @@ class Application_Model_Funcionario extends Application_Model_Abstract
      */
     public function gravar($parametros,$_endereco, $update = FALSE)
     {
-        $dataFuncionario = array("id_matriz" => $parametros['id_matriz'],
-                        "nome_fantasia" => $parametros['nome_fantasia'],
-                        "razao_social" => $parametros['razao_social'],
-                        "apelido" => $parametros['apelido'],
-                        "cnpj" => $parametros['cnpj'],
-                        "inscricao_estadual" => $parametros['inscricao_estadual'],
-                        "telefone_1" => $parametros['dddTel1'].$parametros['telefone_1'],
-                        "telefone_2" => $parametros['dddTel2'].$parametros['telefone_2'],
-                        "celular_1" => $parametros['dddCel1'].$parametros['celular_1'],
-                        "celular_2" => $parametros['dddCel2'].$parametros['celular_2'],
-                        "fax_1" => $parametros['dddFax1'].$parametros['fax_1'],
-                        "fax_2" => $parametros['dddFax2'].$parametros['fax_2'],
-                        "email" => $parametros['email'],
-                        "site" => $parametros['site'],
-                        "orkut" => $parametros['orkut'],
-                        "msn" => $parametros['msn'],
-                        "twitter" => $parametros['twitter'],
-                        "facebook" => $parametros['facebook'],
-                        "skype" => $parametros['skype'],
-                        "nome_contato_1" => $parametros['nome_contato_1'],
-                        "tels_contato_1" => $parametros['dddTelTemp1'].$parametros['tels_contato_1'],
-                        "cel_contato_1" => $parametros['dddCelTemp1'].$parametros['cel_contato_1'],
-                        "id_operadora_celular_contato_1" => $parametros['id_operadora_celular_contato_1'],
-                        "email_contato_1" => $parametros['email_contato_1'],
-                        "nome_contato_2" => $parametros['nome_contato_2'],
-                        "tels_contato_2" => $parametros['dddTelTemp2'].$parametros['tels_contato_2'],
-                        "cel_contato_2" => $parametros['dddCelTemp2'].$parametros['cel_contato_2'],
-                        "id_operadora_celular_contato_2" => $parametros['id_operadora_celular_contato_2'],
-                        "email_contato_2" => $parametros['email_contato_2'],
-                        "numero_de_funcionario" => $parametros['numero_de_funcionario'],
-                        "ativo" => $parametros['ativo']
-                        );            
+        
+        if(!$update)
+        {
+            $arrayEndereco = $parametros;
+
+            $dataEndereco =   array("cep" => $arrayEndereco['cep'],
+                                    "tipo_logradouro" => $arrayEndereco['tipo_logradouro'],
+                                    "numero" => $arrayEndereco['numero'],
+                                    "complemento" => $arrayEndereco['complemento'],
+                                    "bairro" => $arrayEndereco['bairro'],
+                                    "cidade" => $arrayEndereco['cidade'],
+                                    "estado" => $arrayEndereco['estado'],
+                                    "referencia" => $arrayEndereco['referencia']);
+
             try
             {
-                $id_empresa = $this->save($dataEmpresa);
-            
-                $dataEndereco = array("id_empresa" => $id_empresa,
-                            "cep" => $parametros['cep'],
-                            "rua_av" => $parametros['rua_av'],
-                            "numero" => $parametros['numero'],
-                            "complemento" => $parametros['complemento'],
-                            "bairro" => $parametros['bairro'],
-                            "cidade" => $parametros['cidade'],
-                            "estado" => $parametros['estado'],
-                            "referencia" => $parametros['referencia']);
+                $id_endereco = '';
+                $id_endereco = $_endereco->save($dataEndereco);
 
-                $_endereco->save($dataEndereco);   
-                
+                $arrayFuncionario = $parametros;
+
+                $arrayFuncionario['id_endereco'] = $id_endereco;
+                //retirando do array
+                unset($arrayFuncionario['module']);
+                unset($arrayFuncionario['cpf']);
+                unset($arrayFuncionario['controller']);
+                unset($arrayFuncionario['action']);
+                unset($arrayFuncionario['id_empresa']);
+                unset($arrayFuncionario['arrayIdTempTime']);
+                unset($arrayFuncionario['arrayIdTempEmpresa']);
+                unset($arrayFuncionario['celular3']);
+                unset($arrayFuncionario['dddCel3']);
+                unset($arrayFuncionario['celular2']);
+                unset($arrayFuncionario['dddCel2']);
+                unset($arrayFuncionario['celular1']);
+                unset($arrayFuncionario['dddCel1']);
+                unset($arrayFuncionario['telefoneRes2']);
+                unset($arrayFuncionario['dddTelRes2']);
+                unset($arrayFuncionario['telefoneRes1']);
+                unset($arrayFuncionario['dddTelRes1']);
+                unset($arrayFuncionario['tipoEmpresa']);
+                unset($arrayFuncionario['cep']);
+                unset($arrayFuncionario['tipo_logradouro']);
+                unset($arrayFuncionario['numero']);
+                unset($arrayFuncionario['complemento']);
+                unset($arrayFuncionario['bairro']);
+                unset($arrayFuncionario['cidade']);
+                unset($arrayFuncionario['estado']);
+                unset($arrayFuncionario['referencia']);
+
+                $id_funcionario = '';
+                $id_funcionario = $this->save($arrayFuncionario);   
+
                 ZendUtils::transmissorMsg('Inserido com sucesso!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-                
-                return $id_empresa;
+
+                return $id_funcionario;
             }
             catch(Exception $e)
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                ZendUtils::transmissorMsg('Erro ao cadastrar a Funcionario, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             }
+        }
+        else
+        {
+            $this->save($parametros,true);
+        }
+        
         
     }
     
@@ -130,7 +141,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         catch(Exception $e)
         {
             //setMsg('ERRO','Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),0);
-            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
         
@@ -218,7 +229,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
         

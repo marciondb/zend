@@ -1373,7 +1373,7 @@ function buscaCep()
         if (resultadoCEP["tipo_logradouro"] != '') {
             if (resultadoCEP["resultado"]) {
                 // troca o valor dos elementos
-                $("#endereco").val(unescape(resultadoCEP["tipo_logradouro"]) + " " + unescape(resultadoCEP["logradouro"]));
+                $("#tipo_logradouro").val(unescape(resultadoCEP["tipo_logradouro"]) + " " + unescape(resultadoCEP["logradouro"]));
                 $("#bairro").val(unescape(resultadoCEP["bairro"]));
                 $("#cidade").val(unescape(resultadoCEP["cidade"]));
                 $("#estado").val(unescape(resultadoCEP["uf"]));
@@ -1383,7 +1383,7 @@ function buscaCep()
         }
         else
         {
-            $("#endereco").val("");
+            $("#tipo_logradouro").val("");
             $("#bairro").val("");	
             $("#cidade").val("");
             $("#estado").val("RJ");

@@ -50,7 +50,7 @@
                     {    
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
-                        <td align="center" width="16%"><input type="radio" name="idTimeTmp" id="idTimeTmp" value="<?php echo $time['id_time']; ?>" onclick="document.getElementById('arrayIdTempTime').value=',';setId(this.value,'Time');"/>
+                        <td align="center" width="16%"><input class="idTimeTempe" type="radio" name="idTimeTmp" id="idTimeTmp" value="<?php echo $time['id_time']; ?>" onclick="document.getElementById('arrayIdTempTime').value=',';setId(this.value,'Time');"/>
                             <input type="hidden" id="nometime_<?php echo $time['id_time'];?>" value="<?php echo $time['titulo'];?>"
                         </td>
                         

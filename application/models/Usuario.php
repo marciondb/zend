@@ -103,7 +103,27 @@ class Application_Model_Usuario extends Application_Model_Abstract
        
         return $select->query()->fetchAll();
     }
-
+    
+    /***
+     * Salva usuario
+     * @param int $id_funcionario Id do funcionario
+     * @param string $cpf Cpf do funcionario
+     * @param string $email Email do funcionario
+     */
+    public function gravar($id_funcionario,$cpf,$email){
+        try{
+            $id_usuario = $this->save(array('id_funcionario'=>$id_funcionario,
+                          'login'=>$email,
+                          'cpf'=>$cpf,
+                          'chave_controle'=>md5($cpf)));
+            return $id_usuario;
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao cadastrar o Usuário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }    
+        
+    }
     
     protected function _validarDados(array $data){
         // Validação

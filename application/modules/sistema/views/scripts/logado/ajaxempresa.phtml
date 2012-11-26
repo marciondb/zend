@@ -60,7 +60,8 @@
                     {    
                         //setId() e removeId() estao em public\scripts\utilitario.js
                         ?>
-                        <td align="center" width="16%"><input type="radio" name="idEmpresaTmp" id="idEmpresaTmp" value="<?php echo $empresa['id_empresa']; ?>" onclick="document.getElementById('arrayIdTempEmpresa').value=',';setId(this.value,'Empresa');"/>
+                        <td align="center" width="16%">
+                            <input class="idEmpresaTempe" type="radio" name="idEmpresaTmp" id="idEmpresaTmp" value="<?php echo $empresa['id_empresa']; ?>" onclick="document.getElementById('arrayIdTempEmpresa').value=',';setId(this.value,'Empresa');"/>
                             <input type="hidden" id="nomefantasia_<?php echo $empresa['id_empresa'];?>" value="<?php echo $empresa['nome_fantasia'];?>"
                         </td>
                         

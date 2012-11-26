@@ -67,9 +67,9 @@ abstract class Application_Model_Abstract {
 
     /***
      * Metodo generico para salvar ou atualizar
-     * @param array Sdata Array com os dados a serem salvos ou atualizados
-     * @param boolean $update Se true, ira fazer updadte, caso contrario, salva
-     * $return @array Array com as PK's
+     * @param array $data Array com os dados a serem salvos ou atualizados
+     * @param boolean $update Se true, ira fazer update, caso contrario, salva
+     * @return array Array com as PK's
      */
     public function save(array $data, $update = FALSE) {
 
