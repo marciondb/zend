@@ -1392,41 +1392,13 @@ function buscaCep()
     });
 }
 
-// Inicio do Limite de caracteres; jquery SOMENTE PARA A PAGINA CADASTRO DE FUNCIONARIO
-	
-$(document).ready( 
-    function()
-    {
-        $("#lazer").limit('200', '#charsRight');
-    }
-    );
-	
-$(document).ready( // Limite de caracteres; jquery
-    function()
-    {
-        $("#talentos").limit('200', '#charsRight2');
-    }
-    );
-	
-$(document).ready( // Limite de caracteres; jquery
-    function()
-    {
-        $("#dons").limit('200', '#charsRight3');
-    }
-    );
-	
-$(document).ready( // Limite de caracteres; jquery 
-    function()
-    {
-        $("#sonhos").limit('200', '#charsRight4');
-    }
-    );
-	
-$(document).ready( // Limite de caracteres; jquery 
-    function()
-    {
-        $("#brindes").limit('200', '#charsRight5');
-    }
-    );
-		
-	// FIM do Limite de caracteres; jquery
+/***
+ * Faz uma contagem dos caracteres restantes de um textArea
+ * @param string campo id do TextArea a ser contado
+ * @param string spam id do Spam, onde o resultado da contagem ficara armazenado
+ * @example cadastrarfuncionario
+ */
+function limiteTxtArea(campo,spam){
+   $("#"+campo+"").limit('200', '#'+spam+''); 
+}
+
