@@ -116,11 +116,12 @@ class Application_Model_Usuario extends Application_Model_Abstract
                           'login'=>$email,
                           'cpf'=>$cpf,
                           'chave_controle'=>md5($cpf)));
-            return $id_usuario;
+            $id_usuario;
         }
         catch(Exception $e)
         {
             ZendUtils::transmissorMsg('Erro ao cadastrar o Usuário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            return $e->getMessage();
         }    
         
     }

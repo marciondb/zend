@@ -311,7 +311,7 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
-     * grava as permissoes de controle de aceso
+     * grava o funcionario
      */
     public function ajaxgravafuncionarioAction()
     {
@@ -321,30 +321,19 @@ class Sistema_LogadoController extends Controller_Action
             $this->_redirect ("sistema/logado");
         
         $this->view->erros = '';
-        $teste = '';
-        $id_funcionario = '';
                 
         $parametros = $this->_getAllParams();
         
-        //salva a empresa e pega o id
-        $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco);
-        
-        //se houver erro, passa para a view.
-        if(is_string($id_funcionario))
-            $this->view->erros .= " ".$id_funcionario; 
-        
+        //salva o funcionario e pega a id
+        $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco);      
+                
         //salva o usuario e pega o id
-        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_pessoal_1']);
-        
-        //se houver erro, passa para a view.
-        if(is_string($id_usuario))
-            $this->view->erros .= " ".$id_usuario;
-        
-        //atualiza o funcionario com a id do usuario        
-        $this->_funcionario->gravar(array('id_funcionario'=>$id_funcionario,'id_usuario'=>$id_usuario),'',true);
-        
+        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_empresa']);        
+                
+        //atualiza o funcionario com a id do usuario
+        $this->_funcionario->gravar(array('id_funcionario'=>$id_funcionario,'id_usuario'=>$id_usuario),'',true,'id_funcionario='.$id_funcionario);
+                
         //salva a lotacao do funcionario
-        $id_lotacao = '';
         $id_lotacao = $this->_lotacao->gravar(array('id_funcionario'=>$id_funcionario,
                                                     'id_empresa'=>$parametros['id_empresa'],
                                                     'id_cargo'=>$parametros['id_cargo'],
@@ -356,6 +345,10 @@ class Sistema_LogadoController extends Controller_Action
         //se houver erro, passa para a view.
         if(is_string($id_lotacao))
             $this->view->erros .= " ".$id_lotacao;
+        if(is_string($id_funcionario))
+            $this->view->erros .= " ".$id_funcionario; 
+        if(is_string($id_usuario))
+            $this->view->erros .= " ".$id_usuario;
         
     }
     

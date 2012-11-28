@@ -11,7 +11,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
      * @param array $parametros Array com os dados a serem gravados
      * @param Model $_endereco Model do endereco
      */
-    public function gravar($parametros,$_endereco, $update = FALSE)
+    public function gravar($parametros,$_endereco, $update = FALSE, $where = FALSE)
     {
         
         if(!$update)
@@ -29,9 +29,9 @@ class Application_Model_Funcionario extends Application_Model_Abstract
 
             try
             {
-                $id_endereco = '';
+                $id_endereco = '2';
                 $id_endereco = $_endereco->save($dataEndereco);
-
+                //ZendUtils::transmissorMsg('Erro '.$id_endereco,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
                 $arrayFuncionario = $parametros;
 
                 $arrayFuncionario['id_endereco'] = $id_endereco;
@@ -62,22 +62,31 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                 unset($arrayFuncionario['cidade']);
                 unset($arrayFuncionario['estado']);
                 unset($arrayFuncionario['referencia']);
+                unset($arrayFuncionario['id_setor']);
+                unset($arrayFuncionario['id_cargo']);
+                unset($arrayFuncionario['id_funcionario_tipo']);
 
                 $id_funcionario = '';
                 $id_funcionario = $this->save($arrayFuncionario);   
 
-                ZendUtils::transmissorMsg('Inserido com sucesso!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-
-                return $id_funcionario;
             }
             catch(Exception $e)
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar a Funcionario, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                ZendUtils::transmissorMsg('Erro ao cadastrar a Funcionário. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                return $e->getMessage();
             }
         }
         else
         {
-            $this->save($parametros,true);
+            try
+            {
+                $this->save($parametros,$update,$where);
+            }
+            catch(Exception $e)
+            {
+                ZendUtils::transmissorMsg('Erro ao atualizar o Funcionário. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                return $e->getMessage();
+            }
         }
         
         

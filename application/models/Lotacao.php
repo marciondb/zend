@@ -12,15 +12,31 @@ class Application_Model_Lotacao extends Application_Model_Abstract
      * @param string $cpf Cpf do funcionario
      * @param string $email Email do funcionario
      */
-    public function gravar($parametros,$uptade= false){
-        try{
-            $id_lotacao = $this->save($parametros);
-            return $id_lotacao;
-        }
-        catch(Exception $e)
+    public function gravar($parametros,$uptade= false,$where= false){
+        
+        if($uptade)
         {
-            ZendUtils::transmissorMsg('Erro ao cadastrar a Locatação do funcionário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-        }    
+            try{
+                $this->save($parametros);
+            }
+            catch(Exception $e)
+            {
+                ZendUtils::transmissorMsg('Erro ao cadastrar a Lotação do funcionário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                return $e->getMessage();
+            }
+        }
+        else
+        {
+            try
+            {
+                $this->save($parametros,$uptade,$where);
+            }
+            catch(Exception $e)
+            {
+                ZendUtils::transmissorMsg('Erro ao atualizar a lotação. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                return $e->getMessage();
+            }
+        }
         
     }
     

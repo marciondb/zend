@@ -1,8 +1,10 @@
 
 <h3>Cadastro de Funcionário</h3>
+<i class="icon-asterisk"></i> Campos obrigatórios.
 <hr />
+
 <div id="funcionario">
-<form name="formulario" id="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxteste'), null, 1); ?>" method="post" >
+<form class="form-inline" name="formulario" id="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravafuncionario'), null, 1); ?>" method="post" >
     <table  width="100%" height="1318" align="center">
         <tr>
             <td width="30%" align="left">
@@ -15,6 +17,7 @@
                 <label class="radio inline">
                     <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" onclick="abreDialog('1');">Filial
                 </label>
+                <p id="p_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
                 <!-- Div do AJAX´s-->
 
                 <div id="div_tipoEmpresa" >
@@ -41,7 +44,7 @@
             <td align="left">
                 <input disabled="disabled" name="nomeTime" id="nomeTime" type="text" value="::.. Selecione um Time ..::" maxlength="100" size="50" >&nbsp;
                 <input type="button" name="btTime" id="btTime" value="Escolher Time" onclick="abreDialogTime();" class="btn btn-info"/>
-                
+                <p id="p_time" class="radio inline"><i class="icon-asterisk"></i></p>                
             </td>
         </tr>
         <tr>
@@ -66,12 +69,16 @@
         </tr>
         <tr>
             <td align="left">
-                <label for="cnpjCpf" id="cpfCnpj">CPF</label>
+                <label for="cnpjCpf" id="cpfCnpj">CPF</label>                
+                <a href="javascript:;" rel="tooltip" title="Este campo será usado como login do funcionário.">
+                    <img src="<?php echo $this->baseUrl()."/public/images/sistema/help.ico"; ?>" width="20px" higth="20px">
+                </a>
             </td>
             <td align="left">
                     <input tabindex="6" name="cpf" type="text" id="cpf" value="" size="50" maxlength="14" onkeyup="MascaraCpfCnpj(this,event);" onblur="ValidaCpfCnpj(this);"/>
+                    <p id="p_cpf" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                 Data de Admissão:
@@ -79,7 +86,7 @@
             <td align="left">
                 <input tabindex="7" type="text" name="data_admissao" id="data_admissao" class="calendario" />
             </td>
-                    </tr>
+        </tr>
         <tr>
             <td align="left">
                 Data no Setor:
@@ -217,24 +224,25 @@
         </tr>
         <tr>
             <td align="left">
-                    <label for="email2">E-mail
-            da Empresa</label></td>
+                    <label for="email2">E-mail da Empresa</label>
+                    <a href="javascript:;" rel="tooltip" title="Este campo será usado como login do funcionário.">
+                    <img src="<?php echo $this->baseUrl()."/public/images/sistema/help.ico"; ?>" width="20px" higth="20px">
+                </a>
             <td align="left">
                     <input tabindex="16" name="email_empresa" type="email" id="email_empresa" maxlength="100" size="50" value="" />
+                    <p id="p_email" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
-<tr>
+        <tr>
             <td align="left">
-                    <label for="email2">E-mail
-        Pessoal</label></td>
+                    <label for="email2">E-mail Pessoal</label></td>
             <td align="left">
                     <input tabindex="16" name="email_pessoal_1" type="email" id="email_pessoal_1" maxlength="100" size="50" value="" />
         </td>
         </tr>
         <tr>
             <td align="left">
-            <label for="email2">E-mail
-                    Pessoal</label></td>
+            <label for="email2">E-mail Pessoal</label></td>
             <td align="left">
                     <input tabindex="16" name="email_pessoal_2"  type="email" id="email_pessoal_2" maxlength="100" size="50" value="" />
             </td>
@@ -610,28 +618,9 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input name="btnCadastrar" type="submit" id="btnCadastrar" value="Cadastrar" class="btn btn-success" />&nbsp;</td>
+                <input name="btnCadastrar" type="button" id="btnCadastrar" value="Cadastrar" class="btn btn-success" onclick="valida();"/>&nbsp;</td>
         </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
+        
     </table>
     <div id="dialog-modal-empresa" title="Selecione uma empresa">
         <div id="ajax_empresa" onmouseover="setTabela('empresa');"></div>
@@ -645,7 +634,6 @@
     <?php //campos a serem gravados  ?>
     <input type="hidden" name="id_empresa" id="id_empresa" value=",">
     <input type="hidden" name="id_time" id="id_time" value=",">
-    <input type="hidden" name="id_usuario" id="id_usuario" value="<?php echo $this->id_usuario ?>">
     <input type="hidden" name="tel_residencial_1" id="tel_residencial_1" value="">
     <input type="hidden" name="tel_residencial_2" id="tel_residencial_2" value="">
     <input type="hidden" name="celular_1" id="celular_1" value="">
@@ -653,6 +641,54 @@
     <input type="hidden" name="celular_3" id="celular_3" value="">
 </form>
 </div>
+<style>
+    .ui-tooltip, .arrow:after {
+        background: black;
+        border: 2px solid white;
+    }
+    .ui-tooltip {
+        padding: 10px 20px;
+        color: white;
+        border-radius: 20px;
+        font: bold 14px "Helvetica Neue", Sans-Serif;
+        text-transform: uppercase;
+        box-shadow: 0 0 7px black;
+    }
+    .arrow {
+        width: 70px;
+        height: 16px;
+        overflow: hidden;
+        position: absolute;
+        left: 50%;
+        margin-left: -35px;
+        bottom: -16px;
+    }
+    .arrow.top {
+        top: -16px;
+        bottom: auto;
+    }
+    .arrow.left {
+        left: 20%;
+    }
+    .arrow:after {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: -20px;
+        width: 25px;
+        height: 25px;
+        box-shadow: 6px 5px 9px -9px black;
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        tranform: rotate(45deg);
+    }
+    .arrow.top:after {
+        bottom: -20px;
+        top: auto;
+    }
+</style>
 
 <script>
     varTipoEmpresa = '';
@@ -662,6 +698,135 @@
     limiteTxtArea('dom_artes','charsRight3');
     limiteTxtArea('sonho','charsRight4');
     limiteTxtArea('brindes_recebidos','charsRight5');
+    $(function() {
+        $( document ).tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                    $( this ).css( position );
+                    $( "<div>" )
+                        .addClass( "arrow" )
+                        .addClass( feedback.vertical )
+                        .addClass( feedback.horizontal )
+                        .appendTo( this );
+                }
+            }
+        });
+    });
+    $(document).ready(function() {
+        document.getElementById('p_cargo').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('p_setor').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('p_tipo').innerHTML  = '<i class="icon-asterisk"></i>';
+        
+    });
+    
+    function reiniciaEstados(){
+        //reinicia os estados
+        document.getElementById('cpf').style.borderColor = "";
+        document.getElementById('p_cpf').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('p_empresa').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('nomeTime').style.borderColor = "";
+        document.getElementById('p_time').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('id_setor').style.borderColor = "";
+        document.getElementById('p_setor').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('id_cargo').style.borderColor = "";
+        document.getElementById('p_cargo').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('id_funcionario_tipo').style.borderColor = "";
+        document.getElementById('p_tipo').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('email_empresa').style.borderColor = "";
+        document.getElementById('p_email').innerHTML = '<i class="icon-asterisk"></i>';
+    }
+    
+    function prepara(){
+        document.getElementById('tel_residencial_1').value = document.getElementById('dddTelRes1').value+document.getElementById('telefoneRes1').value;
+        document.getElementById('tel_residencial_2').value = document.getElementById('dddTelRes2').value+document.getElementById('telefoneRes2').value;
+        document.getElementById('tel_residencial_1').value = document.getElementById('dddCel1').value+document.getElementById('celular1').value;
+        document.getElementById('tel_residencial_1').value = document.getElementById('dddCel2').value+document.getElementById('celular2').value;
+        document.getElementById('tel_residencial_1').value = document.getElementById('dddCel3').value+document.getElementById('celular3').value;
+                
+        document.getElementById('cpf').value = removeCaractere(document.getElementById('cpf').value);
+        document.getElementById('data_admissao').value = removeCaractere(document.getElementById('data_admissao').value);
+        document.getElementById('data_setor').value = removeCaractere(document.getElementById('data_setor').value);
+        document.getElementById('data_nascimento').value = removeCaractere(document.getElementById('data_nascimento').value);
+        document.getElementById('cep').value = removeCaractere(document.getElementById('cep').value);
+        document.getElementById('tel_residencial_1').value = removeCaractere(document.getElementById('tel_residencial_1').value);
+        document.getElementById('tel_residencial_2').value = removeCaractere(document.getElementById('tel_residencial_2').value);
+        document.getElementById('celular_1').value = removeCaractere(document.getElementById('celular_1').value);
+        document.getElementById('celular_2').value = removeCaractere(document.getElementById('celular_2').value);
+        document.getElementById('celular_3').value = removeCaractere(document.getElementById('celular_3').value);
+    }
+    
+    function valida(){
+        
+        reiniciaEstados();
+        prepara();
+        
+        flag=1
+        textoMsgErro = '';
+
+        if(document.getElementById('id_empresa').value == ",")
+        {
+            flag = 0;
+            textoMsgErro += 'Você deve escolher uma empresa!<br>';
+            document.getElementById('p_empresa').innerHTML = '<font color="#ff0000"><i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        if(document.getElementById('id_time').value == ",")
+        {
+            flag = 0;
+            textoMsgErro += 'Você deve escolher um time!<br>';
+            document.getElementById('nomeTime').style.borderColor = "#ff0000";
+            document.getElementById('p_time').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        if(document.getElementById('cpf').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'O campo CPF está em branco e deve ser preenchido!<br>';
+            document.getElementById('cpf').style.borderColor = "#ff0000";
+            document.getElementById('p_cpf').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        if(document.getElementById('email_empresa').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Você deve preencher o e-mail da Empresa!<br>';
+            document.getElementById('email_empresa').style.borderColor = "#ff0000";
+            document.getElementById('p_email').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        if(document.getElementById('id_setor').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Você deve preencher o setor!<br>';
+            document.getElementById('id_setor').style.borderColor = "#ff0000";
+            document.getElementById('p_setor').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+            
+        }
+        
+        if(document.getElementById('id_cargo').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Você deve preencher o cargo!<br>';
+            document.getElementById('id_cargo').style.borderColor = "#ff0000";
+            document.getElementById('p_cargo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        if(document.getElementById('id_funcionario_tipo').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Você deve preencher o tipo!<br>';
+            document.getElementById('id_funcionario_tipo').style.borderColor = "#ff0000";
+            document.getElementById('p_tipo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        //Se validou
+        if(flag)
+            ajaxJQuery('funcionario');
+        else
+            showAlert('Atenção',textoMsgErro);
+    }
     
     function setNomeFantasia()
     {
@@ -718,6 +883,7 @@
                         {   
                             if(temp[i].checked)
                             {    
+                                document.getElementById('id_empresa').value = temp[i].value;
                                 setNomeFantasia();
                                 break;
                             }    
@@ -749,7 +915,8 @@
                         {   
                             if(temp[i].checked)
                             {    
-                                 setNomeTime();
+                                setNomeTime();
+                                document.getElementById('id_time').value = temp[i].value;
                                 break;
                             }    
                         }

@@ -48,7 +48,10 @@ abstract class Application_Model_Abstract {
         $strPK = substr($strPK, 0,-1);
         
         //monta o array a ser salvo
-        $data = array('id_usuario'=>$this->_id_usuario,
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        $id_usuario = $arrayIdentity->id_usuario;
+        
+        $data = array('id_usuario'=>$id_usuario,
                       'data_hora'=>date('Y-m-d H:i:s'),
                       'acao'=>Zend_Controller_Front::getInstance()->getRequest()->getActionName(),
                       'nome_tabela'=>  $this->_dbTable->getTableName(),
@@ -71,7 +74,7 @@ abstract class Application_Model_Abstract {
      * @param boolean $update Se true, ira fazer update, caso contrario, salva
      * @return array Array com as PK's
      */
-    public function save(array $data, $update = FALSE) {
+    public function save(array $data, $update = FALSE, $where = FALSE) {
 
         $validacao = $this->_validarDados($data);
         $retorno = array();
@@ -80,24 +83,29 @@ abstract class Application_Model_Abstract {
             throw new Exception($validacao);
         else {
             if ($update) {
-                $retorno = $this->_update($data);
+                $retorno = $this->_update($data,$where);
             } else {
                 $retorno = $this->_insert($data);
             }
         }
         
+        $retornoAux = $retorno;
+        //Se a tabela tiver uma PK
+        if(!is_array($retorno))
+            $retorno = array($retorno);
+        
         //lembrar que tem q modificar o Zend
         $this->saveLog($retorno);
         
-        return $retorno;
+        return $retornoAux;
     }
     
     public function _insert(array $data) {
         return $this->_dbTable->insert($data);
     }
 
-    public function _update(array $data) {
-        return $this->_dbTable->update($data);
+    public function _update(array $data,$where) {
+        return $this->_dbTable->update($data,$where);
     }
 
     public function delete($arrayId) {
