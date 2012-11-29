@@ -776,6 +776,7 @@
     }
     
     function checaEmail(valor){
+        
         document.getElementById('p_email').innerHTML = '&nbsp<i class="icon-asterisk"></i>';
         
         if(validarEmail(document.getElementById('email_empresa').value))
@@ -792,7 +793,7 @@
     }
     
     function valida(){
-        
+        flag = 1;
         reiniciaEstados();
         prepara();
         checaCpf(document.getElementById('cpf').value);
