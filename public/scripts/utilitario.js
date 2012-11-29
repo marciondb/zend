@@ -10,6 +10,7 @@ urlAjaxFuncionario = '/'+host+'/sistema/logado/ajaxfuncionario';
 urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
 urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
 urlAjaxFiltroSCT = '/'+host+'/sistema/logado/ajaxfiltrosct';
+urlAjaxValidaUsuario = '/'+host+'/sistema/logado/ajaxvalidausuario';
 
 //http://www.browser-update.org/pt/
 //Browser-Update.org - Informe o seu visitante sobre atualizações do navegador
@@ -957,7 +958,7 @@ function ValidarCPF(Objcpf){
 	{
 		if (s.length != 11){ 
 		
-			alert("CPF Invalido") 
+			showAlert('Erro',"CPF Invalido") 
 			
 			return false;
 		}
@@ -979,7 +980,7 @@ function ValidarCPF(Objcpf){
 		if (d1 == 0)
 		{ 
 		
-			alert("CPF Invalido") 
+			showAlert('Erro',"CPF Invalido") 
 			
 			return false; 
 		
@@ -992,7 +993,7 @@ function ValidarCPF(Objcpf){
 		if (dv.charAt(0) != d1) 
 		{ 
 		
-			alert("CPF Invalido") 
+			showAlert('Erro',"CPF Invalido") 
 			
 			return false; 
 		
@@ -1015,7 +1016,7 @@ function ValidarCPF(Objcpf){
 		if (dv.charAt(1) != d1) 
 		{ 
 		
-			alert("CPF Invalido") 
+			showAlert('Erro',"CPF Invalido") 
 			
 			return false; 
 		
@@ -1023,7 +1024,7 @@ function ValidarCPF(Objcpf){
 		
 		if( (s == '11111111111') || (s == '22222222222') || (s == '33333333333') || (s == '44444444444') || (s == '55555555555') || (s == '66666666666') || (s == '77777777777') || (s == '88888888888') || (s == '99999999999') || (s == '00000000000') )
 		{
-			alert('CPF Invalido!');
+			showAlert('Erro','CPF Invalido!');
 			Objcpf.select();
 				
 		}
@@ -1059,7 +1060,7 @@ function ValidarCNPJ(ObjCnpj){
     {
         if(((dig1*10)+dig2) != digito)
         {
-            alert('CNPJ Invalido!');
+            showAlert('Erro','CNPJ Invalido!');
             ObjCnpj.select();
         }
     }        
@@ -1151,7 +1152,7 @@ function validarEmail(email)
 {
   var exp = /^[a-zA-Z0-9]+[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]*\.+[a-z]{2,4}$/;
      
-  if ( !exp.test(email))
+  if ( !exp.test(email) && email != "")
   {
     showAlert('Erro','E-mail inválido');
     return false;
@@ -1163,7 +1164,7 @@ function validarEmail(email)
 //Valida Senha
 function validarSenha(senha)
 {
-   alert('fdgfdgfdgfdg');
+    
     exp = /^.*(?=.{6,})(?=.*\d)(?=.*[a-zA-Z]).*$/
 
     if(alphaRegExp.test(senha))
@@ -1255,4 +1256,34 @@ function removeCaractere(valor){
     valor = valor.replace(/\./g, ""); //remove a "."
     return valor;
     
+}
+
+function converteDataMysql(data)
+{
+    if(data == "")
+    {
+            return null;
+    }
+
+    dia = data.substr(0,2);
+    mes = data.substr(3,2);
+    ano = data.substr(6,4);
+
+    return ano+'-'+mes+'-'+dia;
+}
+
+function converteDataTela(data)
+{
+    if(data == "0000-00-00")
+        return "";
+
+    if(data == "")
+        return "";
+
+    ano = substr(data,0,4);
+    mes = substr(data,5,2);
+    dia = substr(data,8,10);
+
+    return dia+'/'+mes+'/'+ano;
+
 }

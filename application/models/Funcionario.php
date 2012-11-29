@@ -66,8 +66,9 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                 unset($arrayFuncionario['id_cargo']);
                 unset($arrayFuncionario['id_funcionario_tipo']);
 
-                $id_funcionario = '';
+                
                 $id_funcionario = $this->save($arrayFuncionario);   
+                return (int)$id_funcionario;
 
             }
             catch(Exception $e)

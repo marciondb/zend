@@ -116,7 +116,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
                           'login'=>$email,
                           'cpf'=>$cpf,
                           'chave_controle'=>md5($cpf)));
-            $id_usuario;
+            return (int)$id_usuario;
         }
         catch(Exception $e)
         {
@@ -126,6 +126,19 @@ class Application_Model_Usuario extends Application_Model_Abstract
         
     }
     
+    public function validaCampoUnico($nomeCampo,$valorCampo) {
+        
+        $select = $this->_dbTable->
+                select()->
+                setIntegrityCheck(false)->
+                from('usuario')->
+                where($nomeCampo.' = ?',$valorCampo);
+
+        if(count($select->query()->fetchAll()))
+            return 'Já existe um funcionário para este '.strtoupper($nomeCampo).'!';
+    }
+
+
     protected function _validarDados(array $data){
         // Validação
         //$erros = "";

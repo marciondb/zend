@@ -1,0 +1,13 @@
+<?php
+    
+    if($this->erroCPF != "" && isset($this->erroCPF))
+        echo '&nbsp&nbsp<i class="icon-asterisk"></i>&nbsp<font color="#ff0000">'.$this->erroCPF.'</font>';
+    
+    if($this->sucessoCPF != "" && isset($this->sucessoCPF))
+        echo '&nbsp&nbsp<i class="icon-ok"></i>&nbsp<font color="#32CD32">'.$this->sucessoCPF.'</font>';
+        
+    if($this->erroEMAIL != "" && isset($this->erroEMAIL))
+        echo '&nbsp&nbsp<i class="icon-asterisk"></i>&nbsp<font color="#ff0000">'.$this->erroEMAIL.'</font>';
+    
+    if($this->sucessoEMAIL != "" && isset($this->sucessoEMAIL))
+        echo '&nbsp&nbsp<i class="icon-ok"></i>&nbsp<font color="#32CD32">'.$this->sucessoEMAIL.'</font>';

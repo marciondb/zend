@@ -254,6 +254,35 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
+     * Verifica se já exite um usuario com cpf e login fornecidos pelo formulario
+     */
+    public function ajaxvalidausuarioAction() {
+        $this->_helper->layout->disableLayout();
+        
+        $cpf = $this->_request->getParam('cpf', false);
+        $email = $this->_request->getParam('email', false);
+        $this->view->erroCPF = "";
+        $this->view->sucessoCPF = "";
+        $this->view->erroEMAIL = "";
+        $this->view->sucessoEMAIL = "";
+        
+        if($cpf){
+            $this->view->erroCPF = $this->_usuario->validaCampoUnico('cpf',$cpf);
+            if( $this->view->erroCPF == "")
+                $this->view->sucessoCPF = "CPF disponível para cadastro.";    
+        }
+        
+        if($email){
+            $this->view->erroEMAIL = $this->_usuario->validaCampoUnico('login',$email);  
+            if( $this->view->erroEMAIL == "")
+                $this->view->sucessoEMAIL = "E-MAIL disponível para cadastro.";
+        }
+           
+        
+        
+    }
+    
+    /***
      * grava as permissoes de controle de aceso
      */
     public function ajaxgravacontroleacessoAction()
