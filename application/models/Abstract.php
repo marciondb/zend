@@ -105,6 +105,7 @@ abstract class Application_Model_Abstract {
     }
 
     public function _update(array $data,$where) {
+        
         return $this->_dbTable->update($data,$where);
     }
 
@@ -121,10 +122,10 @@ abstract class Application_Model_Abstract {
      */
     public function fetchAll(array $conditions=null,$order=null) {
         $select = $this->_dbTable->select();
-
+        
         if (!is_null($conditions)) {
             foreach ($conditions as $key => $condition) {
-                $select->where($key, $condition);
+                $select->where($key.'=?', $condition);
             }
         }
         

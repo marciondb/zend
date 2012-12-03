@@ -13,6 +13,41 @@ class Application_Model_Funcionario extends Application_Model_Abstract
      */
     public function gravar($parametros,$_endereco, $update = FALSE, $where = FALSE)
     {
+        $arrayFuncionario = $parametros;
+
+        
+        //retirando do array
+        unset($arrayFuncionario['module']);
+        unset($arrayFuncionario['cpf']);
+        unset($arrayFuncionario['controller']);
+        unset($arrayFuncionario['action']);
+        unset($arrayFuncionario['id_empresa']);
+        unset($arrayFuncionario['arrayIdTempTime']);
+        unset($arrayFuncionario['arrayIdTempEmpresa']);
+        unset($arrayFuncionario['celular3']);
+        unset($arrayFuncionario['dddCel3']);
+        unset($arrayFuncionario['celular2']);
+        unset($arrayFuncionario['dddCel2']);
+        unset($arrayFuncionario['celular1']);
+        unset($arrayFuncionario['dddCel1']);
+        unset($arrayFuncionario['telefoneRes2']);
+        unset($arrayFuncionario['dddTelRes2']);
+        unset($arrayFuncionario['telefoneRes1']);
+        unset($arrayFuncionario['dddTelRes1']);
+        unset($arrayFuncionario['tipoEmpresa']);
+        unset($arrayFuncionario['cep']);
+        unset($arrayFuncionario['tipo_logradouro']);
+        unset($arrayFuncionario['numero']);
+        unset($arrayFuncionario['complemento']);
+        unset($arrayFuncionario['bairro']);
+        unset($arrayFuncionario['cidade']);
+        unset($arrayFuncionario['estado']);
+        unset($arrayFuncionario['referencia']);
+        unset($arrayFuncionario['id_setor']);
+        unset($arrayFuncionario['id_cargo']);
+        unset($arrayFuncionario['id_funcionario_tipo']);
+        unset($arrayFuncionario['status']);
+        
         
         if(!$update)
         {
@@ -26,47 +61,11 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                                     "cidade" => $arrayEndereco['cidade'],
                                     "estado" => $arrayEndereco['estado'],
                                     "referencia" => $arrayEndereco['referencia']);
-
             try
             {
-                $id_endereco = '2';
                 $id_endereco = $_endereco->save($dataEndereco);
                 //ZendUtils::transmissorMsg('Erro '.$id_endereco,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-                $arrayFuncionario = $parametros;
-
                 $arrayFuncionario['id_endereco'] = $id_endereco;
-                //retirando do array
-                unset($arrayFuncionario['module']);
-                unset($arrayFuncionario['cpf']);
-                unset($arrayFuncionario['controller']);
-                unset($arrayFuncionario['action']);
-                unset($arrayFuncionario['id_empresa']);
-                unset($arrayFuncionario['arrayIdTempTime']);
-                unset($arrayFuncionario['arrayIdTempEmpresa']);
-                unset($arrayFuncionario['celular3']);
-                unset($arrayFuncionario['dddCel3']);
-                unset($arrayFuncionario['celular2']);
-                unset($arrayFuncionario['dddCel2']);
-                unset($arrayFuncionario['celular1']);
-                unset($arrayFuncionario['dddCel1']);
-                unset($arrayFuncionario['telefoneRes2']);
-                unset($arrayFuncionario['dddTelRes2']);
-                unset($arrayFuncionario['telefoneRes1']);
-                unset($arrayFuncionario['dddTelRes1']);
-                unset($arrayFuncionario['tipoEmpresa']);
-                unset($arrayFuncionario['cep']);
-                unset($arrayFuncionario['tipo_logradouro']);
-                unset($arrayFuncionario['numero']);
-                unset($arrayFuncionario['complemento']);
-                unset($arrayFuncionario['bairro']);
-                unset($arrayFuncionario['cidade']);
-                unset($arrayFuncionario['estado']);
-                unset($arrayFuncionario['referencia']);
-                unset($arrayFuncionario['id_setor']);
-                unset($arrayFuncionario['id_cargo']);
-                unset($arrayFuncionario['id_funcionario_tipo']);
-
-                
                 $id_funcionario = $this->save($arrayFuncionario);   
                 return (int)$id_funcionario;
 
@@ -80,8 +79,13 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         else
         {
             try
-            {
-                $this->save($parametros,$update,$where);
+            {   
+                unset($arrayFuncionario['idFuncionario']);
+                unset($arrayFuncionario['nomeFuncionario']);
+                unset($arrayFuncionario['atualizar']);
+                unset($arrayFuncionario['email_empresa']);
+                $id_funcionario = $this->save($arrayFuncionario,$update,$where);
+                return (int)$id_funcionario;
             }
             catch(Exception $e)
             {
@@ -124,7 +128,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
             if(!$remover)
             {
                 if ($listaIdEmpresa)
-                    $select->where('time.id_empresa in (' . $listaIdEmpresa . ')');
+                    $select->where('lotacao.id_empresa in (' . $listaIdEmpresa . ')');
                 if ($listaIdTime)
                     $select->where('funcionario.id_time in (' . $listaIdTime . ')');
                 if ($idSetor)
@@ -142,6 +146,8 @@ class Application_Model_Funcionario extends Application_Model_Abstract
 
             $select->order('funcionario.nome ASC');
             $select->group('funcionario.id_funcionario');
+            
+            //ZendUtils::transmissorMsg('e'.$select,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
@@ -187,7 +193,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('funcionario.id_usuario <> ?', $arrayIdentity->id_usuario);
                     
             if ($listaIdEmpresa)
-                $select1->where('time.id_empresa in (' . $listaIdEmpresa . ')');
+                $select1->where('lotacao.id_empresa in (' . $listaIdEmpresa . ')');
             if ($listaIdTime)
                 $select1->where('funcionario.id_time in (' . $listaIdTime . ')');
             if ($idSetor)
@@ -213,7 +219,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('funcionario.id_usuario <> ?', $arrayIdentity->id_usuario);
                     
             if ($listaIdEmpresa)
-                $select2->where('time.id_empresa in (' . $listaIdEmpresa . ')');
+                $select2->where('lotacao.id_empresa in (' . $listaIdEmpresa . ')');
             if ($listaIdTime)
                 $select2->where('funcionario.id_time in (' . $listaIdTime . ')');
             if ($idSetor)
@@ -271,7 +277,8 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('funcionario.id_funcionario in (' . $listaIdFuncionario . ')');
         return $select->query()->fetchAll(); 
     }
-
+    
+    
     protected function _validarDados(array $data){
         // Validação
         //$erros = "";

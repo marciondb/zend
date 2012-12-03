@@ -1,21 +1,23 @@
-
-<h3>Cadastro de Funcionário</h3>
+<?php print_r($this->arrayFuncionario);?>
+<h3>Editar Funcionário</h3>
+<strong>Funcionário:&nbsp;<?php echo $this->nomeFuncionario; ?></strong><br><br>
 <i class="icon-asterisk"></i> Campos obrigatórios.
 <hr />
 
 <div id="funcionario">
-<form class="form-inline" name="formulario" id="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravafuncionario','atualizar'=>'false'), null, 1); ?>" method="post" >
+<form class="form-inline" name="formulario" id="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravafuncionario','idFuncionario' => $this->idFuncionario,'atualizar'=>true), null, 1); ?>" method="post" >
     <table  width="100%" height="1318" align="center">
         <tr>
             <td width="30%" align="left">
                     <strong>Tipo de empresa:</strong>
             </td>
             <td width="70%" align="left">
+                
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" onclick="abreDialog('0');">Matriz
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa"  value="0" <?php if($this->arrayEmpresa[0]['id_matriz'] == 0) echo 'checked="checked"'; ?> onclick="abreDialog('0');">Matriz
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" onclick="abreDialog('1');">Filial
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" <?php if($this->arrayEmpresa[0]['id_matriz'] != 0) echo 'checked="checked"'; ?> onclick="abreDialog('1');">Filial
                 </label>
                 <p id="p_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
                 <!-- Div do AJAX´s-->
@@ -33,7 +35,7 @@
                     Nome Fantasia da Empresa:
             </td>
             <td align="left">
-                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50">
+                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="<?php echo $this->arrayEmpresa[0]['nome_fantasia']; ?>" maxlength="100" size="50">
                 
             </td>
         </tr>
@@ -42,7 +44,7 @@
                     Nome do Time:
             </td>
             <td align="left">
-                <input disabled="disabled" name="nomeTime" id="nomeTime" type="text" value="::.. Selecione um Time ..::" maxlength="100" size="50" >&nbsp;
+                <input disabled="disabled" name="nomeTime" id="nomeTime" type="text" value="<?php echo $this->arrayTime[0]['titulo']; ?>" maxlength="100" size="50" >&nbsp;
                 <input type="button" name="btTime" id="btTime" value="Escolher Time" onclick="abreDialogTime();" class="btn btn-info"/>
                 <p id="p_time" class="radio inline"><i class="icon-asterisk"></i></p>                
             </td>
@@ -52,7 +54,7 @@
                     Nome Completo:
             </td>
             <td align="left">
-                    <input tabindex="1" name="nome" id="nome" type="text" value="" maxlength="100" size="50" />
+                    <input tabindex="1" name="nome" id="nome" type="text" value="<?php echo $this->arrayFuncionario[0]['nome']; ?>" maxlength="100" size="50" />
             </td>
         </tr>
         <tr>
@@ -60,7 +62,7 @@
                     Conhecido por:
             </td>
             <td align="left">
-                    <input tabindex="2" type="text" name="apelido" id="apelido" value="" maxlength="100" size="50">
+                    <input tabindex="2" type="text" name="apelido" id="apelido" value="<?php echo $this->arrayFuncionario[0]['apelido']; ?>" maxlength="100" size="50">
             </td>
         </tr>
         <tr >
@@ -75,7 +77,11 @@
                 </a>
             </td>
             <td align="left">
-                    <input tabindex="6" name="cpf" type="text" id="cpf" value="" size="50" maxlength="14" onkeyup="MascaraCpfCnpj(this,event);" onblur="checaCpf(this.value)"/>
+                <?php 
+                    $cpf = $this->cpf; 
+                    $cpf = substr($cpf, 0,3).'.'.substr($cpf, 3,3).'.'.substr($cpf, 6,3).'-'.substr($cpf, 9,2);
+                ?>
+                <input tabindex="6" readonly="readonly" name="cpf" type="text" id="cpf" value="<?php echo $cpf; ?>" size="50" maxlength="14" onkeyup="MascaraCpfCnpj(this,event);" onblur="checaCpf(this.value)"/>
                     <p id="p_cpf" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
@@ -84,7 +90,10 @@
                 Data de Admissão:
             </td>
             <td align="left">
-                <input tabindex="7" type="text" name="data_admissao" id="data_admissao" class="calendario" value=""/>
+                <?php 
+                    $data_admissao = ZendUtils::ConverteDataTela($this->arrayFuncionario[0]['data_admissao']);                     
+                ?>
+                <input tabindex="7" type="text" name="data_admissao" id="data_admissao" class="calendario" value="<?php echo $data_admissao; ?>"/>
             </td>
         </tr>
         <tr>
@@ -92,15 +101,21 @@
                 Data no Setor:
             </td>
             <td align="left">
-                    <input tabindex="8" type="text" name="data_setor" id="data_setor" class="calendario" value=""/>
+                <?php 
+                    $data_setor = ZendUtils::ConverteDataTela($this->arrayFuncionario[0]['data_setor']);                     
+                ?>
+                    <input tabindex="8" type="text" name="data_setor" id="data_setor" class="calendario" value="<?php echo $data_setor; ?>"/>
             </td>
         </tr>
         <tr>
             <td align="left">
+                <?php 
+                    $data_nascimento = ZendUtils::ConverteDataTela($this->arrayFuncionario[0]['data_nascimento']);                     
+                ?>
                 Data de Nascimento:
             </td>
             <td align="left">
-                    <input tabindex="9" type="text" name="data_nascimento" id="data_nascimento" class="calendario" value=""/>
+                    <input tabindex="9" type="text" name="data_nascimento" id="data_nascimento" class="calendario" value="<?php echo $data_nascimento; ?>"/>
             </td>
         </tr>
         <tr>
@@ -109,10 +124,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">    
-                    <input tabindex="10" type="radio" name="avisar_pinho_marcia" id="avisar_pinho_marcia" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="10" type="radio" name="avisar_pinho_marcia" id="avisar_pinho_marcia" <?php if($this->arrayFuncionario[0]['avisar_pinho_marcia'] == 1) echo 'checked="checked"'; ?> value="1" maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="avisar_pinho_marcia" id="avisar_pinho_marcia" value="0"  maxlength="1"/>&nbsp;NÃO
+                    <input type="radio" name="avisar_pinho_marcia" id="avisar_pinho_marcia" value="0" <?php if($this->arrayFuncionario[0]['avisar_pinho_marcia'] == 0) echo 'checked="checked"'; ?>  maxlength="1"/>&nbsp;NÃO
                 </label>
             </td>
         </tr>
@@ -122,10 +137,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">    
-                    <input tabindex="10" type="radio" name="sexo" id="sexo" value="0"  maxlength="1"/>&nbsp;M&nbsp;&nbsp;&nbsp;
+                    <input tabindex="10" type="radio" name="sexo" id="sexo" value="0"  maxlength="1" <?php if($this->arrayFuncionario[0]['sexo'] == 0) echo 'checked="checked"'; ?>/>&nbsp;M&nbsp;&nbsp;&nbsp;
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="sexo" id="sexo" value="1" maxlength="1"/>&nbsp;F
+                    <input type="radio" name="sexo" id="sexo" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['sexo'] == 1) echo 'checked="checked"'; ?>/>&nbsp;F
                 </label>
             </td>
         </tr>
@@ -134,8 +149,21 @@
                     <label for="dddTel">Telefone Residêncial 1</label>
             </td>
             <td align="left">
-                <input tabindex="11" name="dddTelRes1" id="dddTelRes1" style="width:30px" type="text" value="" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefoneRes1');"/>&nbsp;
-                <input name="telefoneRes1" type="text" id="telefoneRes1" value="" size="13" maxlength="9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddTelRes2')" readonly="readonly" style="background-color:#E9E9E9" />
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayFuncionario[0]['tel_residencial_1'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayFuncionario[0]['tel_residencial_1'],0,2);
+                    $tel = substr($this->arrayFuncionario[0]['tel_residencial_1'],2,4).'-'.substr($this->arrayFuncionario[0]['tel_residencial_1'],6);
+                }    
+                ?>
+                <input tabindex="11" name="dddTelRes1" id="dddTelRes1" style="width:30px" type="text" value="<?php echo $ddd; ?>" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefoneRes1');"/>&nbsp;
+                <input  name="telefoneRes1" type="text" id="telefoneRes1" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddTelRes2')"  />
             &nbsp; 
             </td>
         </tr>
@@ -144,8 +172,21 @@
                 <label for="dddTel2">Telefone Residêncial 2</label>
             </td>
             <td align="left">
-                    <input name="dddTelRes2" id="dddTelRes2" tabindex="12" style="width:30px" value="" type="text" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefoneRes2');"/>&nbsp;
-                    <input name="telefoneRes2" type="text" id="telefoneRes2"  value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCel1')"/>
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayFuncionario[0]['tel_residencial_2'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayFuncionario[0]['tel_residencial_2'],0,2);
+                    $tel = substr($this->arrayFuncionario[0]['tel_residencial_2'],2,4).'-'.substr($this->arrayFuncionario[0]['tel_residencial_2'],6);
+                }    
+                ?>
+                    <input name="dddTelRes2" id="dddTelRes2" tabindex="12" style="width:30px" value="<?php echo $ddd; ?>" type="text" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefoneRes2');"/>&nbsp;
+                    <input name="telefoneRes2" type="text" id="telefoneRes2"  value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCel1')"/>
             &nbsp; </td>
         </tr>
         <tr>
@@ -153,16 +194,36 @@
                     <label for="dddCel1">Celular 1</label>
             </td>
             <td align="left">
-                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular1');habilitaSelect(this,'id_operadora_celular',0)"/>&nbsp;
-                    <input name="celular1" type="text" id="celular1" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayFuncionario[0]['celular_1'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayFuncionario[0]['celular_1'],0,2);
+                    $tel = substr($this->arrayFuncionario[0]['celular_1'],2,4).'-'.substr($this->arrayFuncionario[0]['celular_1'],6);
+                }    
+                ?>
+                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="<?php echo $ddd; ?>" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular1');habilitaSelect(this,'id_operadora_celular',0)"/>&nbsp;
+                    <input name="celular1" type="text" id="celular1" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
-
-                <select disabled="disabled"  name="id_operadora_celular" id="id_operadora_celular" style="width:220px">
+                <?php
+                        $disabled='';
+                        if($tel=="")
+                            $disabled='disabled="disabled"';
+                ?>        
+                <select <?php echo $disabled?> name="id_operadora_celular" id="id_operadora_celular" >
                     <option value="">::.. Selecione uma Operadora ..::</option>
-                        <?php
+                        <?php                        
                         foreach ($this->operadoras as $operadora){
-                        ?>
-                            <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                            $selected = '';
+                            if($this->arrayFuncionario[0]['id_operadora_celular']==$operadora['id_operadora_celular'])
+                                $selected = 'selected="selected"';
+                            ?>
+                    <option <?php echo $selected?> value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
                         <?php
                         }
                         ?>
@@ -177,16 +238,36 @@
                     <label for="dddCel2">Celular 2</label>
             </td>
             <td align="left">
-                    <input tabindex="14" name="dddCel2" id="dddCel2" maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular2');habilitaSelect(this,'id_operadora_celular2',0)"/>&nbsp;
-                    <input name="celular2" type="text" id="celular2"  value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
+            <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayFuncionario[0]['celular_2'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayFuncionario[0]['celular_2'],0,2);
+                    $tel = substr($this->arrayFuncionario[0]['celular_2'],2,4).'-'.substr($this->arrayFuncionario[0]['celular_2'],6);
+                }   
+                ?>    
+                    <input tabindex="14" name="dddCel2" id="dddCel2" maxlength="2" style="width:30px" value="<?php echo $ddd; ?>" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular2');habilitaSelect(this,'id_operadora_celular2',0)"/>&nbsp;
+                    <input name="celular2" type="text" id="celular2"  value="<?php echo $tel; ?>" <?php echo $readonly; ?> size="13" maxlength="9"  onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
-
-                <select disabled="disabled"  name="id_operadora_celular2" id="id_operadora_celular2" style="width:220px">
+<?php
+                        $disabled='';
+                        if($tel=="")
+                            $disabled='disabled="disabled"';
+                ?>        
+                <select <?php echo $disabled?> name="id_operadora_celular2" id="id_operadora_celular2" >
                     <option value="">::.. Selecione uma Operadora ..::</option>
-                        <?php
+                        <?php                        
                         foreach ($this->operadoras as $operadora){
-                        ?>
-                            <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                            $selected = '';
+                            if($this->arrayFuncionario[0]['id_operadora_celular2']==$operadora['id_operadora_celular'])
+                                $selected = 'selected="selected"';
+                            ?>
+                    <option <?php echo $selected?> value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
                         <?php
                         }
                         ?>
@@ -202,16 +283,37 @@
                     <label for="dddCel3">Celular 3</label>
             </td>
         <td align="left">
-                    <input tabindex="15" name="dddCel3" id="dddCel3"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular3');habilitaSelect(this,'id_operadora_celular3',0)"/>&nbsp;
-                    <input name="celular3" type="text" id="celular3" value="" size="13" maxlength="9" readonly="readonly" style="background-color:#E9E9E9" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
+            <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayFuncionario[0]['celular_3'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayFuncionario[0]['celular_3'],0,2);
+                    $tel = substr($this->arrayFuncionario[0]['celular_3'],2,4).'-'.substr($this->arrayFuncionario[0]['celular_3'],6);
+                }
+                
+             ?>
+                    <input tabindex="15" name="dddCel3" id="dddCel3"  maxlength="2" style="width:30px" value="<?php echo $ddd; ?>" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular3');habilitaSelect(this,'id_operadora_celular3',0)"/>&nbsp;
+                    <input name="celular3" type="text" id="celular3" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####')"/>
                 &nbsp;Operadora:
-
-                <select disabled="disabled" name="id_operadora_celular3" id="id_operadora_celular3" >
+                <?php
+                        $disabled='';
+                        if($tel=="")
+                            $disabled='disabled="disabled"';
+                ?>        
+                <select <?php echo $disabled?> name="id_operadora_celular3" id="id_operadora_celular3" >
                     <option value="">::.. Selecione uma Operadora ..::</option>
-                        <?php
+                        <?php                        
                         foreach ($this->operadoras as $operadora){
-                        ?>
-                            <option value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                            $selected = '';
+                            if($this->arrayFuncionario[0]['id_operadora_celular3']==$operadora['id_operadora_celular'])
+                                $selected = 'selected="selected"';
+                            ?>
+                    <option <?php echo $selected?> value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
                         <?php
                         }
                         ?>
@@ -229,7 +331,7 @@
                     <img src="<?php echo $this->baseUrl()."/public/images/sistema/help.ico"; ?>" width="20px" higth="20px">
                 </a>
             <td align="left">
-                <input tabindex="16" name="email_empresa" type="email" id="email_empresa" maxlength="100" size="50" value="" onblur="checaEmail(this.value)" />
+                <input readonly="readonly" tabindex="16" name="email_empresa" type="email" id="email_empresa" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['email_empresa']; ?>" onblur="checaEmail(this.value)" />
                     <p id="p_email" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
@@ -237,14 +339,14 @@
             <td align="left">
                     <label for="email2">E-mail Pessoal</label></td>
             <td align="left">
-                    <input tabindex="16" name="email_pessoal_1" type="email" id="email_pessoal_1" maxlength="100" size="50" value="" onblur="checaEmail(this.value)"/>
+                    <input tabindex="16" name="email_pessoal_1" type="email" id="email_pessoal_1" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['email_pessoal_1']; ?>" onblur="checaEmail(this.value)"/>
         </td>
         </tr>
         <tr>
             <td align="left">
             <label for="email2">E-mail Pessoal</label></td>
             <td align="left">
-                    <input tabindex="16" name="email_pessoal_2"  type="email" id="email_pessoal_2" maxlength="100" size="50" value="" onblur="checaEmail(this.value)"/>
+                    <input tabindex="16" name="email_pessoal_2"  type="email" id="email_pessoal_2" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['email_pessoal_2']; ?>" onblur="checaEmail(this.value)"/>
             </td>
         </tr>
         <tr><td></td></tr>
@@ -259,7 +361,7 @@
                     <label for="msn">MSN</label>
             </td>
             <td align="left">
-                    <input tabindex="17" name="msn" type="text" id="msn" maxlength="100" size="50" value="" />
+                    <input tabindex="17" name="msn" type="text" id="msn" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['msn']; ?>" />
             </td>
         </tr>
         <tr>
@@ -267,7 +369,7 @@
                     <label for="skype">Skype</label>
             </td>
             <td align="left">
-                    <input name="skype" tabindex="18" type="text" id="skype" maxlength="100" size="50" value="" />
+                    <input name="skype" tabindex="18" type="text" id="skype" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['skype']; ?>" />
             </td>
         </tr>
         <tr>
@@ -275,7 +377,7 @@
                     <label for="orkut">Orkut</label>
             </td>
             <td align="left">
-                    <input name="orkut" tabindex="19" type="text" id="orkut" maxlength="100" size="50" value="" />
+                    <input name="orkut" tabindex="19" type="text" id="orkut" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['orkut']; ?>" />
             </td>
         </tr>
         <tr>
@@ -283,7 +385,7 @@
                     <label for="facebook">Facebook</label>
             </td>
             <td align="left">
-                    <input name="facebook" tabindex="20" type="text" id="facebook" maxlength="100" size="50" value="" />
+                    <input name="facebook" tabindex="20" type="text" id="facebook" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['facebook']; ?>" />
             </td>
         </tr>
         <tr>
@@ -291,7 +393,7 @@
                     <label for="twitter">Twitter</label>
             </td>
             <td align="left">
-                    <input name="twitter" tabindex="21" type="text" id="twitter" maxlength="100" size="50" value="" />
+                    <input name="twitter" tabindex="21" type="text" id="twitter" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['twitter']; ?>" />
             </td>
         </tr>
         <tr><td></td></tr>
@@ -306,7 +408,7 @@
                     <label for="cep">CEP</label>
             </td>
         <td align="left">
-            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep();"/>&nbsp;
+            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="<?php echo ZendUtils::ColocaMascaraCep($this->arrayEndereco[0]['cep']); ?>" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep();"/>&nbsp;
             <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick="buscaCep();"/></td>
         </tr>
         <tr>
@@ -314,9 +416,9 @@
                     <label for="endereco">Endereço</label>
             </td>
             <td align="left">
-                <input tabindex="22" name="tipo_logradouro" type="text" id="tipo_logradouro" maxlength="100" size="28" value="" />
+                <input tabindex="22" name="tipo_logradouro" type="text" id="tipo_logradouro" maxlength="100" size="28" value="<?php echo $this->arrayEndereco[0]['tipo_logradouro']; ?>" />
                 Número:
-                <input tabindex="23" name="numero" type="text" id="numero" value="" style="width:50px" maxlength="10" />
+                <input tabindex="23" name="numero" type="text" id="numero" value="<?php echo $this->arrayEndereco[0]['numero']; ?>" style="width:50px" maxlength="10" />
             </td>
         </tr>
         <tr>
@@ -324,7 +426,7 @@
                     <label for="complemento">Complemento</label>
             </td>
             <td align="left">
-                <input tabindex="24" name="complemento" type="text" id="complemento" maxlength="100" size="15" value="" />
+                <input tabindex="24" name="complemento" type="text" id="complemento" maxlength="100" size="15" value="<?php echo $this->arrayEndereco[0]['complemento']; ?>" />
             </td>
         </tr>
         <tr>
@@ -332,7 +434,7 @@
                     <label for="complemento">Bairro</label>
             </td>
             <td align="left">
-                <input tabindex="25" name="bairro" type="text" id="bairro" value="" size="23" maxlength="100" />
+                <input tabindex="25" name="bairro" type="text" id="bairro" value="<?php echo $this->arrayEndereco[0]['bairro']; ?>" size="23" maxlength="100" />
             </td>
         </tr>
         <tr>
@@ -340,42 +442,44 @@
                     <label for="cidade">Cidade</label>
             </td>
             <td align="left">
-                <input tabindex="26" name="cidade" type="text" id="cidade" maxlength="100" size="34" value="" />        
+                <input tabindex="26" name="cidade" type="text" id="cidade" maxlength="100" size="34" value="<?php echo $this->arrayEndereco[0]['cidade']; ?>" />        
                 Estado:
+                
                 <select tabindex="27" name="estado" id="estado" style="width:70px">
-                    <option value="AC">AC</option>
-                    <option value="AL">AL</option>
-                    <option value="AP">AP</option>
-                    <option value="AM">AM</option>
-                    <option value="BA">BA</option>
-                    <option value="DF">DF</option>
-                    <option value="CE">CE</option>
-                    <option value="ES">ES</option>
-                    <option value="GO">GO</option>
-                    <option value="MA">MA</option>
-                    <option value="MT">MT</option>
-                    <option value="MS">MS</option>
-                    <option value="MG">MG</option>
-                    <option value="PA">PA</option>
-                    <option value="PB">PB</option>
-                    <option value="PR">PR</option>
-                    <option value="PE">PE</option>
-                    <option value="PI">PI</option>
-                    <option value="RJ" selected="selected">RJ</option>
-                    <option value="RS">RS</option>
-                    <option value="RN">RN</option>
-                    <option value="RO">RO</option>
-                    <option value="RR">RR</option>
-                    <option value="SC">SC</option>
-                    <option value="SP">SP</option>
-                    <option value="SE">SE</option>
-                    <option value="TO">TO</option>
+                    <OPTION VALUE=""   <?php if($this->arrayEndereco[0]['estado']=="") echo 'selected="selected"'; ?>>::.. SELECIONE ..::</OPTION>
+                    <option value="AC" <?php if($this->arrayEndereco[0]['estado']=="AC") echo 'selected="selected"'; ?>>AC</option>
+                    <option value="AL" <?php if($this->arrayEndereco[0]['estado']=="AL") echo 'selected="selected"'; ?>>AL</option>
+                    <option value="AP" <?php if($this->arrayEndereco[0]['estado']=="AP") echo 'selected="selected"'; ?>>AP</option>
+                    <option value="AM" <?php if($this->arrayEndereco[0]['estado']=="AM") echo 'selected="selected"'; ?>>AM</option>
+                    <option value="BA" <?php if($this->arrayEndereco[0]['estado']=="BA") echo 'selected="selected"'; ?>>BA</option>
+                    <option value="DF" <?php if($this->arrayEndereco[0]['estado']=="DF") echo 'selected="selected"'; ?>>DF</option>
+                    <option value="CE" <?php if($this->arrayEndereco[0]['estado']=="CE") echo 'selected="selected"'; ?>>CE</option>
+                    <option value="ES" <?php if($this->arrayEndereco[0]['estado']=="ES") echo 'selected="selected"'; ?>>ES</option>
+                    <option value="GO" <?php if($this->arrayEndereco[0]['estado']=="GO") echo 'selected="selected"'; ?>>GO</option>
+                    <option value="MA" <?php if($this->arrayEndereco[0]['estado']=="MA") echo 'selected="selected"'; ?>>MA</option>
+                    <option value="MT" <?php if($this->arrayEndereco[0]['estado']=="MT") echo 'selected="selected"'; ?>>MT</option>
+                    <option value="MS" <?php if($this->arrayEndereco[0]['estado']=="MS") echo 'selected="selected"'; ?>>MS</option>
+                    <option value="MG" <?php if($this->arrayEndereco[0]['estado']=="MG") echo 'selected="selected"'; ?>>MG</option>
+                    <option value="PA" <?php if($this->arrayEndereco[0]['estado']=="PA") echo 'selected="selected"'; ?>>PA</option>
+                    <option value="PB" <?php if($this->arrayEndereco[0]['estado']=="PB") echo 'selected="selected"'; ?>>PB</option>
+                    <option value="PR" <?php if($this->arrayEndereco[0]['estado']=="PR") echo 'selected="selected"'; ?>>PR</option>
+                    <option value="PE" <?php if($this->arrayEndereco[0]['estado']=="PI") echo 'selected="selected"'; ?>>PE</option>
+                    <option value="PI" <?php if($this->arrayEndereco[0]['estado']=="PI") echo 'selected="selected"'; ?>>PI</option>
+                    <option value="RJ" <?php if($this->arrayEndereco[0]['estado']=="RJ") echo 'selected="selected"'; ?>>RJ</option>
+                    <option value="RS" <?php if($this->arrayEndereco[0]['estado']=="RS") echo 'selected="selected"'; ?>>RS</option>
+                    <option value="RN" <?php if($this->arrayEndereco[0]['estado']=="RN") echo 'selected="selected"'; ?>>RN</option>
+                    <option value="RO" <?php if($this->arrayEndereco[0]['estado']=="RO") echo 'selected="selected"'; ?>>RO</option>
+                    <option value="RR" <?php if($this->arrayEndereco[0]['estado']=="RR") echo 'selected="selected"'; ?>>RR</option>
+                    <option value="SC" <?php if($this->arrayEndereco[0]['estado']=="SC") echo 'selected="selected"'; ?>>SC</option>
+                    <option value="SP" <?php if($this->arrayEndereco[0]['estado']=="SP") echo 'selected="selected"'; ?>>SP</option>
+                    <option value="SE" <?php if($this->arrayEndereco[0]['estado']=="SE") echo 'selected="selected"'; ?>>SE</option>
+                    <option value="TO" <?php if($this->arrayEndereco[0]['estado']=="TO") echo 'selected="selected"'; ?>>TO</option>
                 </select>
             </td>
         </tr>
         <tr>
             <td height="26" align="left">Referência</td>
-            <td align="left"><input tabindex="29" name="referencia" type="text" id="referencia" value="" size="23" maxlength="100" />
+            <td align="left"><input tabindex="29" name="referencia" type="text" id="referencia" value="<?php echo $this->arrayEndereco[0]['referencia']; ?>" size="23" maxlength="100" />
             </td>
         </tr>
         <tr><td></td></tr>
@@ -391,10 +495,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="30" type="radio" name="servico_correios" id="servico_correios" value="1"  maxlength="1"/>&nbsp;SIM
+                    <input tabindex="30" type="radio" name="servico_correios" id="servico_correios" value="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="1") echo 'checked="checked"';?> maxlength="1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="servico_correios" id="servico_correios" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="servico_correios" id="servico_correios" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="0") echo 'checked="checked"';?> />&nbsp;NÃO
                 </label>
             </td>
                     </tr>
@@ -405,13 +509,13 @@
             <td align="left">
 
                 <select tabindex="31" name="estado_civil" id="estado_civil" > 
-                <option value="" >::.. SELECIONE ..::</option> 
-                <option value="0" > CASADO </option>
-                <OPTION VALUE="2" > DIVORCIADO </OPTION>
-                <OPTION VALUE="4"> JUNTADO </OPTION>
-                <OPTION VALUE="5"> OUTROS </OPTION> 
-                <option value="1"> SOLTEIRO </option>                      
-                <OPTION VALUE="3"> VIUVO </OPTION> 
+                <option value="" <?php if($this->arrayFuncionario[0]['estado_civil']=="") echo 'selected="selected"'; ?>>::.. SELECIONE ..::</option> 
+                <option value="0" <?php if($this->arrayFuncionario[0]['estado_civil']=="0") echo 'selected="selected"'; ?>> CASADO </option>
+                <OPTION VALUE="2" <?php if($this->arrayFuncionario[0]['estado_civil']=="2") echo 'selected="selected"'; ?>> DIVORCIADO </OPTION>
+                <OPTION VALUE="4" <?php if($this->arrayFuncionario[0]['estado_civil']=="4") echo 'selected="selected"'; ?>> JUNTADO </OPTION>
+                <OPTION VALUE="5" <?php if($this->arrayFuncionario[0]['estado_civil']=="5") echo 'selected="selected"'; ?>> OUTROS </OPTION> 
+                <option value="1" <?php if($this->arrayFuncionario[0]['estado_civil']=="1") echo 'selected="selected"'; ?>> SOLTEIRO </option>                      
+                <OPTION VALUE="3" <?php if($this->arrayFuncionario[0]['estado_civil']=="3") echo 'selected="selected"'; ?>> VIUVO </OPTION> 
             </select> 
             </td>
         </tr>
@@ -420,7 +524,7 @@
                     <label for="nomeConjuge">Nome do Cônjuge (companheiro(a)):</label>
             </td>
             <td align="left">
-                    <input tabindex="37" name="nome_conjuge" type="text" id="nome_conjuge" maxlength="100" size="50" value="" />
+                    <input tabindex="37" name="nome_conjuge" type="text" id="nome_conjuge" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['nome_conjuge']; ?>" />
             </td>
         </tr>
             <tr>
@@ -429,13 +533,13 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" />&nbsp;SIM
+                    <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="temFilho" id="temFilho" value="0"  />&nbsp;NÃO
+                    <input type="radio" name="temFilho" id="temFilho" value="0"  <?php if($this->arrayFuncionario[0]['servico_correios']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
                 </label>    
                 &nbsp;&nbsp;
-                <input tabindex="33" name="numero_filhos" type="text" id="numero_filhos"  maxlength="2" size="25" value="" placeholder="Quantos?"/>
+                <input tabindex="33" name="numero_filhos" type="text" id="numero_filhos"  maxlength="2" size="25" value="<?php echo $this->arrayFuncionario[0]['numero_filhos']; ?>" placeholder="Quantos?"/>
             </td>
                     </tr>
             <tr>
@@ -445,10 +549,10 @@
                 <td align="left">
 
                     <select tabindex="34" name="escolaridade" id="escolaridade"  > 
-                    <OPTION VALUE="" >::.. SELECIONE ..::</OPTION> 
-                    <OPTION VALUE="0" >ENSINO FUNDAMENTAL </OPTION> 
-                    <OPTION VALUE="1">ENSINO MÉDIO </OPTION> 
-                    <OPTION VALUE="2" >ENSINO SUPERIOR </OPTION>
+                    <OPTION VALUE="" <?php if($this->arrayFuncionario[0]['escolaridade']=="") echo 'selected="selected"'; ?>>::.. SELECIONE ..::</OPTION> 
+                    <OPTION VALUE="0" <?php if($this->arrayFuncionario[0]['escolaridade']=="0") echo 'selected="selected"'; ?>>ENSINO FUNDAMENTAL </OPTION> 
+                    <OPTION VALUE="1" <?php if($this->arrayFuncionario[0]['escolaridade']=="1") echo 'selected="selected"'; ?>>ENSINO MÉDIO </OPTION> 
+                    <OPTION VALUE="2" <?php if($this->arrayFuncionario[0]['escolaridade']=="2") echo 'selected="selected"'; ?>>ENSINO SUPERIOR </OPTION>
                 </select> 
                 </td>
             </tr>
@@ -458,10 +562,10 @@
                 </td>
                 <td align="left">
                 <select tabindex="35" name="situacao" id="situacao"  > 
-                    <OPTION VALUE="" >::.. SELECIONE ..::</OPTION> 
-                    <OPTION VALUE="0" >COMPLETO</OPTION>
-                    <OPTION VALUE="2" >EM CURSO</OPTION> 
-                    <OPTION VALUE="1">INCOMPLETO</OPTION> 
+                    <OPTION VALUE="" <?php if($this->arrayFuncionario[0]['situacao']=="") echo 'selected="selected"'; ?>>::.. SELECIONE ..::</OPTION> 
+                    <OPTION VALUE="0" <?php if($this->arrayFuncionario[0]['situacao']=="0") echo 'selected="selected"'; ?>>COMPLETO</OPTION>
+                    <OPTION VALUE="2" <?php if($this->arrayFuncionario[0]['situacao']=="2") echo 'selected="selected"'; ?>>EM CURSO</OPTION> 
+                    <OPTION VALUE="1" <?php if($this->arrayFuncionario[0]['situacao']=="1") echo 'selected="selected"'; ?>>INCOMPLETO</OPTION> 
                 </select> 
             </td>
             </tr>
@@ -470,7 +574,7 @@
                     <label for="formacaoProfi">Formação Profissional:</label>
             </td>
             <td align="left">
-                <input tabindex="36" name="formacao" type="text" id="formacao" maxlength="100" size="50" value="" />
+                <input tabindex="36" name="formacao" type="text" id="formacao" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['formacao']; ?>" />
             </td>
         </tr>
 
@@ -480,10 +584,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="38" type="radio" name="possui_pc" id="possui_pc" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="38" type="radio" name="possui_pc" id="possui_pc" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_pc']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="possui_pc" id="possui_pc" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="possui_pc" id="possui_pc" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_pc']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
                 </label>    
             </td>
                     </tr>
@@ -493,10 +597,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="39" type="radio" name="pratica_informatica" id="pratica_informatica" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="39" type="radio" name="pratica_informatica" id="pratica_informatica" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['pratica_informatica']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="pratica_informatica" id="pratica_informatica" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="pratica_informatica" id="pratica_informatica" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['pratica_informatica']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
                 </label>    
             </td>
         </tr>
@@ -505,7 +609,7 @@
                     <label for="religiao">Religião:</label>
             </td>
             <td align="left">
-                    <input tabindex="40" name="religiao" type="text" id="religiao" maxlength="100" size="50" value="" />
+                    <input tabindex="40" name="religiao" type="text" id="religiao" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['religiao']; ?>" />
             </td>
         </tr>
         <tr>
@@ -514,10 +618,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="41" type="radio" name="possui_biblia" id="possui_biblia" value="1" maxlength="1"/>&nbsp;SIM
+                    <input tabindex="41" type="radio" name="possui_biblia" id="possui_biblia" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_biblia']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="possui_biblia" id="possui_biblia" value="0" maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="possui_biblia" id="possui_biblia" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_biblia']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
                 </label>    
             </td>
         </tr>
@@ -527,10 +631,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="42" type="radio" name="quer_biblia" id="quer_biblia" value="1"  maxlength="1"/>&nbsp;SIM
+                    <input tabindex="42" type="radio" name="quer_biblia" id="quer_biblia" value="1"  maxlength="1" <?php if($this->arrayFuncionario[0]['quer_biblia']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="quer_biblia" id="quer_biblia" value="0"  maxlength="1" />&nbsp;NÃO
+                    <input type="radio" name="quer_biblia" id="quer_biblia" value="0"  maxlength="1" <?php if($this->arrayFuncionario[0]['quer_biblia']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
                 </label>    
             </td>
         </tr>
@@ -539,7 +643,7 @@
                     <label for="lazer">O que você gosta de fazer no seu Lazer?</label>
             </td>
             <td align="left">
-                    <textarea tabindex="43" name="lazer" id="lazer" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="43" name="lazer" id="lazer" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['lazer']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -547,7 +651,7 @@
                     <label for="lazer">Quais são os seus Talentos/ Aptidões?</label>
             </td>
             <td align="left">
-                    <textarea tabindex="44" name="talentos" id="talentos" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight2"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="44" name="talentos" id="talentos" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['talentos']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight2"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -555,7 +659,7 @@
                     <label for="dons">Quais os seus Dons Artísticos?</label>
             </td>
             <td align="left">
-                    <textarea tabindex="45" name="dom_artes" id="dom_artes" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight3"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="45" name="dom_artes" id="dom_artes" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['dom_artes']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight3"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -563,7 +667,7 @@
                     <label for="sonhos">Qual o seu Sonho?</label>
             </td>
             <td align="left">
-                    <textarea tabindex="46" name="sonho" id="sonho" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight4"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="46" name="sonho" id="sonho" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['sonho']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight4"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -571,7 +675,7 @@
                     <label for="sonhos">Brindes já recebidos da Pinho & Consultores:</label>
             </td>
             <td align="left">
-                    <textarea tabindex="47" name="brindes_recebidos" id="brindes_recebidos" maxlength="200" cols="39" rows="5"></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight5"></span>&nbsp;<font color="#999">caracteres restantes</font>
+                    <textarea tabindex="47" name="brindes_recebidos" id="brindes_recebidos" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['brindes_recebidos']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight5"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </td>
         </tr>
         <tr>
@@ -584,8 +688,11 @@
                     <option value="">::.. Selecione uma Categoria ..::</option>
                         <?php
                         foreach ($this->categorias as $categoria){
-                        ?>
-                            <option value="<?php echo $categoria['id_categoria_empresa']?>"><?php echo $categoria['titulo']?></option>
+                        $selected = '';
+                            if($this->arrayFuncionario[0]['id_categoria_empresa']==$categoria['titulo'])
+                                $selected = 'selected="selected"';
+                            ?>
+                        <option <?php echo $selected?> value="<?php echo $categoria['id_categoria_empresa']?>"><?php echo $categoria['titulo']?></option>
                         <?php
                         }
                         ?>
@@ -599,10 +706,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="49" type="radio" name="status" id="status" value="1" maxlength="1"/>&nbsp;ATIVO
+                    <input tabindex="49" type="radio" name="status" id="status" value="1" maxlength="1" <?php if($this->status=="1") echo 'checked="checked"';?>/>&nbsp;ATIVO
                 </label>    
                 <label class="radio inline">
-                    <input type="radio" name="status" id="status" value="0" maxlength="1" />&nbsp;INATIVO
+                    <input type="radio" name="status" id="status" value="0" maxlength="1" <?php if($this->status=="0") echo 'checked="checked"';?>/>&nbsp;INATIVO
                 </label>
             </td>
         </tr>
@@ -618,7 +725,7 @@
         </tr>
         <tr>
             <td colspan="2" align="center">
-                <input name="btnCadastrar" type="button" id="btnCadastrar" value="Cadastrar" class="btn btn-success" onclick="valida();"/>&nbsp;</td>
+                <input name="btnCadastrar" type="button" id="btnCadastrar" value="Editar" class="btn btn-success" onclick="valida();"/>&nbsp;</td>
         </tr>
         
     </table>
@@ -632,8 +739,8 @@
     <input type="hidden" name="arrayIdTempTime" id="arrayIdTempTime" value=",">
     
     <?php //campos a serem gravados  ?>
-    <input type="hidden" name="id_empresa" id="id_empresa" value=",">
-    <input type="hidden" name="id_time" id="id_time" value=",">
+    <input type="hidden" name="id_empresa" id="id_empresa" value="<?php echo $this->arrayLotacao[0]['id_empresa']; ?>">
+    <input type="hidden" name="id_time" id="id_time" value="<?php echo $this->arrayFuncionario[0]['id_time']; ?>">
     <input type="hidden" name="tel_residencial_1" id="tel_residencial_1" value="">
     <input type="hidden" name="tel_residencial_2" id="tel_residencial_2" value="">
     <input type="hidden" name="celular_1" id="celular_1" value="">
@@ -698,6 +805,7 @@
     limiteTxtArea('dom_artes','charsRight3');
     limiteTxtArea('sonho','charsRight4');
     limiteTxtArea('brindes_recebidos','charsRight5');
+    
     $(function() {
         $( ".showToolTip" ).tooltip({
             position: {
@@ -714,10 +822,14 @@
             }
         });
     });
+    
     $(document).ready(function() {
         document.getElementById('p_cargo').innerHTML = '<i class="icon-asterisk"></i>';
         document.getElementById('p_setor').innerHTML = '<i class="icon-asterisk"></i>';
         document.getElementById('p_tipo').innerHTML  = '<i class="icon-asterisk"></i>';
+        document.getElementById('id_setor').value = '<?php echo $this->arrayLotacao[0]['id_setor']; ?>';
+        document.getElementById('id_cargo').value = '<?php echo $this->arrayLotacao[0]['id_cargo']; ?>';
+        document.getElementById('id_funcionario_tipo').value = '<?php echo $this->arrayLotacao[0]['id_funcionario_tipo']; ?>';
         
     });
     
@@ -792,20 +904,55 @@
             
     }
     
+    
+    
+    function verificaLotacao()
+    {
+        flagLotacao = 1;
+        
+        id_empresa = document.getElementById('id_empresa').value;
+        id_empresaTemp = '<?php echo $this->arrayLotacao[0]['id_empresa']; ?>';
+        
+        if(id_empresa != id_empresaTemp)
+            flagLotacao = 0;
+        
+        id_setor = document.getElementById('id_setor').value;
+        id_setorTemp = '<?php echo $this->arrayLotacao[0]['id_setor']; ?>';
+        
+        if(id_setor != id_setorTemp)
+            flagLotacao = 0;
+        
+        id_cargo = document.getElementById('id_cargo').value;
+        id_cargoTemp = '<?php echo $this->arrayLotacao[0]['id_cargo']; ?>';
+        
+        if(id_cargo != id_cargoTemp)
+            flagLotacao = 0;
+        
+        id_funcionario_tipo = document.getElementById('id_funcionario_tipo').value;
+        id_funcionario_tipoTemp = '<?php echo $this->arrayLotacao[0]['id_funcionario_tipo']; ?>';
+        
+        if(id_funcionario_tipo != id_funcionario_tipoTemp)
+            flagLotacao = 0;
+
+        if(!flagLotacao)
+            document.forms[0].action = document.forms[0].action+"/flagLotacao/1";
+        
+    }
+    
     function valida(){
         flag = 1;
         reiniciaEstados();
         prepara();
-        checaCpf(document.getElementById('cpf').value);
-        checaEmail(document.getElementById('email_empresa').value);
+        //checaCpf(document.getElementById('cpf').value);
+        //checaEmail(document.getElementById('email_empresa').value);
         
-        if(document.getElementById('id_empresa').value == ",")
+        if(document.getElementById('id_empresa').value == "")
         {
             flag = 0;
             document.getElementById('p_empresa').innerHTML = '<font color="#ff0000"><i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
         }
         
-        if(document.getElementById('id_time').value == ",")
+        if(document.getElementById('id_time').value == "")
         {
             flag = 0;
             document.getElementById('nomeTime').style.borderColor = "#ff0000";
@@ -844,24 +991,36 @@
             document.getElementById('p_setor').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
             
         }
-        
         if(document.getElementById('id_cargo').value == "")
         {
             flag = 0;
             document.getElementById('id_cargo').style.borderColor = "#ff0000";
             document.getElementById('p_cargo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
         }
-        
         if(document.getElementById('id_funcionario_tipo').value == "")
         {
             flag = 0;
             document.getElementById('id_funcionario_tipo').style.borderColor = "#ff0000";
             document.getElementById('p_tipo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
         }
+        verificaLotacao();
         
         //Se validou
         if(flag)
+        {    
             ajaxJQuery('funcionario');
+            2003-12-02
+            
+            data = document.getElementById('data_admissao').value;
+            document.getElementById('data_admissao').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
+            
+            data = document.getElementById('data_nascimento').value;
+            document.getElementById('data_nascimento').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
+            
+            data = document.getElementById('data_setor').value;
+            document.getElementById('data_setor').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
+            
+        }    
         else
             showAlert('Atenção','Verifique no formulário os campos indicados.');
     }

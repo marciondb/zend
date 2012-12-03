@@ -380,7 +380,7 @@ class ZendUtils {
              * @param string $data uma data no formato aaaa-mm-dd
              * @return string
              */
-           public static   function ConverteDataTela($data)
+           public static function ConverteDataTela($data)
             {
                     if($data == "0000-00-00")
                     return "";
@@ -456,10 +456,11 @@ class ZendUtils {
                     return "";
             }
 
-            $parte1 = substr($cep,0,5);
-            $parte2 = substr($cep,5,3);
+            $parte1 = substr($cep,0,2);
+            $parte2 = substr($cep,2,3);
+            $parte3 = substr($cep,5,3);
 
-            return $parte1.'-'.$parte2;
+            return $parte1.'.'.$parte2.'-'.$parte3;
     }
     
      /**

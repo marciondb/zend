@@ -81,6 +81,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
                   join('usuario_funcionalidade','funcionalidade.id_funcionalidade = usuario_funcionalidade.id_funcionalidade',array('editar','deletar','liberar'))->
                   join('usuario','usuario.id_usuario = usuario_funcionalidade.id_usuario',null)->
                   where('usuario.id_usuario = ?', $idUsuario)->
+                  where('usuario.status = 1')->
                   group('funcionalidade.id_funcionalidade');
         $select2 = $this->_dbTable->
                   select()->
@@ -90,7 +91,9 @@ class Application_Model_Usuario extends Application_Model_Abstract
                   join('grupo_funcionalidade', 'grupo_funcionalidade.id_funcionalidade = funcionalidade.id_funcionalidade', array('editar','deletar','liberar'))->
                   join('grupo_de_acesso', 'grupo_de_acesso.id_grupo_de_acesso = grupo_funcionalidade.id_grupo_de_acesso',null)->
                   join('usuario_grupo', 'usuario_grupo.id_grupo_de_acesso = grupo_de_acesso.id_grupo_de_acesso', null)->
+                  join('usuario','usuario.id_usuario = usuario_grupo.id_usuario',null)->
                   where('usuario_grupo.id_usuario = ?', $idUsuario)->
+                  where('usuario.status = 1')->
                   group('funcionalidade.id_funcionalidade');
                 
         $select = $this->_dbTable->
@@ -110,19 +113,38 @@ class Application_Model_Usuario extends Application_Model_Abstract
      * @param string $cpf Cpf do funcionario
      * @param string $email Email do funcionario
      */
-    public function gravar($id_funcionario,$cpf,$email){
-        try{
-            $id_usuario = $this->save(array('id_funcionario'=>$id_funcionario,
-                          'login'=>$email,
-                          'cpf'=>$cpf,
-                          'chave_controle'=>md5($cpf)));
-            return (int)$id_usuario;
+    public function gravar($id_funcionario,$cpf,$email,$status,$update=false,$where=false){
+        if(!$update)
+        {    
+            try{
+                $id_usuario = $this->save(array('id_funcionario'=>$id_funcionario,
+                            'login'=>$email,
+                            'cpf'=>$cpf,
+                            'chave_controle'=>md5($cpf),
+                            'status'=>md5($status)));
+                return (int)$id_usuario;
+            }
+            catch(Exception $e)
+            {
+                ZendUtils::transmissorMsg('Erro ao cadastrar o Usuário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                return $e->getMessage();
+            }
         }
-        catch(Exception $e)
+        else
         {
-            ZendUtils::transmissorMsg('Erro ao cadastrar o Usuário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-            return $e->getMessage();
-        }    
+            try
+            {
+                //ZendUtils::transmissorMsg(print_r(array('login'=>$email,'status'=>$status).$update.$where),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                $id_usuario = $this->save(array('login'=>$email,'status'=>$status),$update,$where);
+                return (int)$id_usuario;
+
+            }
+            catch(Exception $e)
+            {
+                //ZendUtils::transmissorMsg('Erro ao atualizar o Usuário. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                return $e->getMessage();
+            }
+        }
         
     }
     

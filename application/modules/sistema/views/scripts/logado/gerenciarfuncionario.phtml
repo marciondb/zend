@@ -1,4 +1,4 @@
-<h3>Genrenciar Funcionario</h3>
+<h3>Gerenciar Funcioário</h3>
 <hr>
 <form name="formularioCarregaMenu" action="" method="post">
     <div class="modal_min_auto_size">
@@ -19,60 +19,7 @@
         </div>
 
         <div id="div_FiltroFuncionrio" class="modal_filtro">
-            <table align="center">	
-                <tr>
-                    <td align="left">
-                        Setor / Unidade de Negócios: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="30" name="idSetor" id="idSetor" style="width:370px" onchange="setFiltroFuncionario();">
-                            <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
-                            <?php
-                            foreach ($this->arraySetor as $linha) {
-                                ?>
-                                <option value="<?php echo $linha['id_setor']; ?>"><?php echo $linha['titulo']; ?></option>
-                                <?php
-                            }
-                            ?>
-
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        Cargo: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="4" name="idCargo" id="idCargo" style="width:370px" onchange="setFiltroFuncionario();">
-                            <option value="">::.. Selecione um Cargo (TODOS) ..::</option>
-                            <?php
-                            foreach ($this->arrayCargo as $linha) {
-                                ?>
-                                <option value="<?php echo $linha['id_cargo']; ?>" ><?php echo $linha['titulo']; ?></option>
-                                <?php
-                            }
-                            ?>                            
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left">
-                        Tipo: 
-                    </td>
-                    <td align="left">
-                        <select tabindex="5" name="idFuncionario_tipo" id="idFuncionario_tipo" style="width:370px" onchange="setFiltroFuncionario();" >
-                            <option value="">::.. Selecione um Tipo (TODOS) ..::</option>
-                            <?php
-                            foreach ($this->arrayFuncionario_tipo as $linha) {
-                                ?>
-                                <option value="<?php echo $linha['id_funcionario_tipo']; ?>" ><?php echo $linha['titulo']; ?></option>
-                                <?php
-                            }
-                            ?>                            
-                        </select>
-                    </td>
-                </tr>
-            </table>
+            
         </div>        
     </div>
     <hr>
@@ -83,19 +30,9 @@
     <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
     <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
     <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
-    <div align="center" class="form-actions">
-        <?php
-            if(isset($this->arrayControlAcessLED['editar']))
-                echo '<input type="button" class="btn btn-primary" onclick="valida();" value="Editar">';
-            echo ' &nbsp; &nbsp;';
-            if(isset($this->arrayControlAcessLED['deletar']))
-                echo '<input type="button" class="btn btn-danger" onclick="valida();" value="Deletar">';
-
-        ?>
         
-    </div>
-    
 </form>
+<div id="temp"></div>
 
 <script type="text/javascript">      
     
@@ -123,14 +60,38 @@
         }
     }
     
+    function deletar(idFuncionario)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletarfuncionario'), null, 1); ?>/idFuncionario/'+idFuncionario;
+        ajax(url,'temp');
+        
+        url = urlAjaxCAFuncionario;
+        ajax(url,'ajax_funcionario');
+        
+    }
+    
     url = urlAjaxEmpresa+'/selecionar/1';
     ajax(url,'ajax_empresa');
     
     url = urlAjaxTime+'/selecionar/1/';
     ajax(url,'ajax_time');
+    
+    LED = '';    
+    <?php
+        $aux = '';
         
-    url = urlAjaxFuncionario+'/selecionar/1/';
+        if($this->editar)
+          $aux .= '/editar/1';
+        
+        if($this->deletar)
+          $aux .= '/deletar/1' 
+    ?>
+
+    url = urlAjaxFuncionario+'<?php echo $aux; ?>';
     ajax(url,'ajax_funcionario');
+    
+    url = urlAjaxFiltroSCT+'/setor/1/cargo/1/tipo/1';
+    ajax(url,'div_FiltroFuncionrio');
        
     
 </script>

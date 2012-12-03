@@ -353,17 +353,29 @@ class Sistema_LogadoController extends Controller_Action
                 
         $parametros = $this->_getAllParams();
         
-        //salva o funcionario e pega a id
-        $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco);      
-                
-        //salva o usuario e pega o id
-        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_empresa']);        
-                
-        //atualiza o funcionario com a id do usuario
-        $this->_funcionario->gravar(array('id_funcionario'=>$id_funcionario,'id_usuario'=>$id_usuario),'',true,'id_funcionario='.$id_funcionario);
-                
+        if(isset($parametros['idFuncionario']))
+            $id_funcionario = $parametros['idFuncionario'];
+        
+        //salva ou atualiza o funcionario e pega a id
+        $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco,$parametros['atualizar'],'id_funcionario='.$id_funcionario);      
+        
+        if(isset($parametros['idFuncionario']))
+            $id_funcionario = $parametros['idFuncionario'];
+        $id_funcionario = (int)$id_funcionario;
+        //salva ou atualiza o usuario e pega o id
+        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_empresa'],$parametros['status'],$parametros['atualizar'],'id_funcionario='.$id_funcionario);
+        
+        if(!$parametros['atualizar'])
+        {
+            //atualiza o funcionario com a id do usuario
+            $this->_funcionario->gravar(array('id_funcionario'=>$id_funcionario,'id_usuario'=>$id_usuario),'',true,'id_funcionario='.$id_funcionario);
+        } 
+        
+        $id_lotacao = 0;
+        $id_lotacao = (int)$id_lotacao;
         //salva a lotacao do funcionario
-        $id_lotacao = $this->_lotacao->gravar(array('id_funcionario'=>$id_funcionario,
+        if($this->_request->getParam('flagLotacao', false))
+                $id_lotacao = $this->_lotacao->gravar(array('id_funcionario'=>$id_funcionario,
                                                     'id_empresa'=>$parametros['id_empresa'],
                                                     'id_cargo'=>$parametros['id_cargo'],
                                                     'id_setor'=>$parametros['id_setor'],
@@ -476,6 +488,58 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->operadoras = $this->_operadora_celular->fetchAll();
           
     
+    }
+    
+    /***
+     * Carrega a tela editar controle de acesso
+     */
+    public function editarfuncionarioAction()
+    {               
+        $this->view->nomeFuncionario = $this->_request->getParam('nomeFuncionario', false);        
+        $this->view->idFuncionario   = $this->_request->getParam('idFuncionario', false);
+        
+        $this->view->arrayFuncionario = $this->_funcionario->fetchAll(array('id_funcionario'=>$this->_request->getParam('idFuncionario')));
+        $this->view->arrayEndereco    = $this->_endereco->fetchAll(array('id_endereco'=>$this->view->arrayFuncionario[0]['id_endereco']));
+        $arrayUsuario                 = $this->_usuario->fetchAll(array('id_funcionario'=>$this->_request->getParam('idFuncionario')));
+        $this->view->cpf              = $arrayUsuario[0]['cpf'];
+        $this->view->status           = $arrayUsuario[0]['status'];
+        $this->view->arrayLotacao     = $this->_lotacao->fetchAll(array('id_funcionario'=>$this->_request->getParam('idFuncionario'),'atual'=>'1'));
+        $this->view->arrayEmpresa     = $this->_empresa->fetchAll(array('id_empresa'=>$this->view->arrayLotacao[0]['id_empresa']));
+        $this->view->arrayTime        = $this->_time->fetchAll(array('id_time'=>$this->view->arrayFuncionario[0]['id_time']));
+            
+    }
+    
+    /***
+     * Deleta todas as permissoes do usario, junto com as empresas e times visiveis
+     */
+    public function deletarfuncionarioAction() {
+        $this->_helper->layout->disableLayout();
+        $arrayIdUsuario = $this->_funcionario->getIdUsuario($this->_request->getParam('idFuncionario', false));
+        
+        $this->_usuario_time_visivel->deletar($arrayIdUsuario);        
+        $this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
+        $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
+        $this->_usuario_grupo->deletar($arrayIdUsuario);
+        
+        
+    }
+    
+    /***
+     * Gerencia o funcionario
+     */
+    public function gerenciarfuncionarioAction() {
+        
+        $arrayCST = $this->filtroSetorCargoTipo();
+        
+        $this->view->arraySetor = $arrayCST['setor'];
+        $this->view->arrayCargo = $arrayCST['cargo'];
+        $this->view->arrayFuncionario_tipo = $arrayCST['tipo'];
+        
+        $arrayLED = $this->getLED('gerenciarfuncionario');
+                
+        $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
+        $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+        
     }
     
     public function indexAction()
