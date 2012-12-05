@@ -59,17 +59,7 @@
             ajax(url,'ajax_funcionario');
         }
     }
-    
-    function deletar(idFuncionario)
-    {
-        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletarfuncionario'), null, 1); ?>/idFuncionario/'+idFuncionario;
-        ajax(url,'temp');
-        
-        url = urlAjaxCAFuncionario;
-        ajax(url,'ajax_funcionario');
-        
-    }
-    
+            
     url = urlAjaxEmpresa+'/selecionar/1';
     ajax(url,'ajax_empresa');
     
@@ -86,6 +76,16 @@
         if($this->deletar)
           $aux .= '/deletar/1' 
     ?>
+        
+    function deletar(idFuncionario)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletarfuncionario'), null, 1); ?>/idFuncionario/'+idFuncionario;
+        ajax(url,'temp');
+        
+        url = urlAjaxFuncionario+'<?php echo $aux; ?>';
+        ajax(url,'ajax_funcionario');
+        
+    }    
 
     url = urlAjaxFuncionario+'<?php echo $aux; ?>';
     ajax(url,'ajax_funcionario');

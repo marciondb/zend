@@ -7,14 +7,14 @@ class Application_Model_Lotacao extends Application_Model_Abstract
     }
     
     /***
-     * Salva usuario
-     * @param int $id_funcionario Id do funcionario
-     * @param string $cpf Cpf do funcionario
-     * @param string $email Email do funcionario
+     * Salva a lotacao do usuario
+     * @param array $parametros Dados da lotacao
+     * @param string $uptade True, se for atualizar
+     * @param string $where Se $update, entao deve passar a id a ser atualiazada
      */
     public function gravar($parametros,$uptade= false,$where= false){
         
-        if($uptade)
+        if(!$uptade)
         {
             try{
                 $this->save($parametros);
@@ -29,6 +29,7 @@ class Application_Model_Lotacao extends Application_Model_Abstract
         {
             try
             {
+                //ZendUtils::transmissorMsg('Erro '.print_r($parametros).$where,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
                 $this->save($parametros,$uptade,$where);
             }
             catch(Exception $e)

@@ -353,36 +353,46 @@ class Sistema_LogadoController extends Controller_Action
                 
         $parametros = $this->_getAllParams();
         
+        $id_funcionario = '';
+        $id_funcionario = (int)$id_funcionario;
+        
+        //se for atualizar
         if(isset($parametros['idFuncionario']))
             $id_funcionario = $parametros['idFuncionario'];
         
         //salva ou atualiza o funcionario e pega a id
-        $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco,$parametros['atualizar'],'id_funcionario='.$id_funcionario);      
-        
-        if(isset($parametros['idFuncionario']))
-            $id_funcionario = $parametros['idFuncionario'];
-        $id_funcionario = (int)$id_funcionario;
+        $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco,$this->_request->getParam('atualizar', false),'id_funcionario='.$id_funcionario,$id_funcionario);      
+                
         //salva ou atualiza o usuario e pega o id
-        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_empresa'],$parametros['status'],$parametros['atualizar'],'id_funcionario='.$id_funcionario);
+        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_empresa'],$parametros['status'],$this->_request->getParam('atualizar', false),'id_funcionario='.$id_funcionario);
         
-        if(!$parametros['atualizar'])
+        if(!$this->_request->getParam('atualizar', false))
         {
             //atualiza o funcionario com a id do usuario
             $this->_funcionario->gravar(array('id_funcionario'=>$id_funcionario,'id_usuario'=>$id_usuario),'',true,'id_funcionario='.$id_funcionario);
         } 
         
-        $id_lotacao = 0;
-        $id_lotacao = (int)$id_lotacao;
-        //salva a lotacao do funcionario
-        if($this->_request->getParam('flagLotacao', false))
-                $id_lotacao = $this->_lotacao->gravar(array('id_funcionario'=>$id_funcionario,
+        $id_lotacao = 0;        
+        //salva a lotacao do funcionario 
+        //$temp=isset($this->_request->getParam('atualizar'));
+        if( ($this->_request->getParam('flagLotacao', false) && $this->_request->getParam('atualizar', false)) || ( !$this->_request->getParam('atualizar', false) ) )
+        {        
+            //atualiza a lotacao e depois grava
+            if($this->_request->getParam('atualizar', false))            
+                $this->_lotacao->gravar(array('atual'=>'0'),true,'id_funcionario='.$id_funcionario);
+            
+            //grava uma nova lotacao
+            $id_lotacao = $this->_lotacao->gravar(array('id_funcionario'=>$id_funcionario,
                                                     'id_empresa'=>$parametros['id_empresa'],
                                                     'id_cargo'=>$parametros['id_cargo'],
                                                     'id_setor'=>$parametros['id_setor'],
                                                     'id_funcionario_tipo'=>$parametros['id_funcionario_tipo'],
                                                     'data_hora'=>date('Y-m-d H:i:s'),
                                                     'atual'=>'1'));
+        }
         
+       $id_lotacao = (int)$id_lotacao;
+       
         //se houver erro, passa para a view.
         if(is_string($id_lotacao))
             $this->view->erros .= " ".$id_lotacao;
@@ -510,17 +520,29 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
-     * Deleta todas as permissoes do usario, junto com as empresas e times visiveis
+     * Deleta todas as informacoes do funcionario
      */
     public function deletarfuncionarioAction() {
         $this->_helper->layout->disableLayout();
         $arrayIdUsuario = $this->_funcionario->getIdUsuario($this->_request->getParam('idFuncionario', false));
         
-        $this->_usuario_time_visivel->deletar($arrayIdUsuario);        
-        $this->_usuario_empresa_visivel->deletar($arrayIdUsuario);
-        $this->_usuario_funcionalidade->deletar($arrayIdUsuario);
-        $this->_usuario_grupo->deletar($arrayIdUsuario);
+        $this->_usuario_time_visivel->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));        
+        $this->_usuario_empresa_visivel->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
+        $this->_usuario_funcionalidade->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
+        $this->_usuario_grupo->delete(array('id_usuario=?'=>(int)$arrayIdUsuario['id_usuario']));
         
+        $this->_lotacao->delete(array('id_funcionario=?'=>(int)$this->_request->getParam('idFuncionario')));
+        
+        $this->view->arrayFuncionario = $this->_funcionario->fetchAll(array('id_funcionario'=>$this->_request->getParam('idFuncionario')));
+        $this->view->arrayEndereco    = $this->_endereco->fetchAll(array('id_endereco'=>$this->view->arrayFuncionario[0]['id_endereco']));
+        
+        $this->_endereco->delete(array('id_endereco=?'=>(int)$this->view->arrayEndereco[0]['id_endereco']));
+        $this->_funcionario->delete(array('id_funcionario=?'=>(int)$this->_request->getParam('idFuncionario')));/**/
+        
+        /*********************************************/
+        // deletar os demais dados a medida que
+        // as novas ferramentas forem implementadas
+        /*********************************************/
         
     }
     

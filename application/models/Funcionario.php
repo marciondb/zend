@@ -11,12 +11,11 @@ class Application_Model_Funcionario extends Application_Model_Abstract
      * @param array $parametros Array com os dados a serem gravados
      * @param Model $_endereco Model do endereco
      */
-    public function gravar($parametros,$_endereco, $update = FALSE, $where = FALSE)
+    public function gravar($parametros,$_endereco, $update = FALSE, $where = FALSE,$id_funcionario=false)
     {
         $arrayFuncionario = $parametros;
-
         
-        //retirando do array
+        //retirando do array campos que não pertencem a tabela do BD
         unset($arrayFuncionario['module']);
         unset($arrayFuncionario['cpf']);
         unset($arrayFuncionario['controller']);
@@ -46,6 +45,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         unset($arrayFuncionario['id_setor']);
         unset($arrayFuncionario['id_cargo']);
         unset($arrayFuncionario['id_funcionario_tipo']);
+        unset($arrayFuncionario['temFilho']);
         unset($arrayFuncionario['status']);
         
         
@@ -80,11 +80,19 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         {
             try
             {   
+                $id_funcionario = $id_funcionario;
+                $id_funcionario = (int)$id_funcionario;
+                
+                //qdo for o atualizar do editar funcionario
+                if(isset($arrayFuncionario['idFuncionario']))
+                    $id_funcionario = $arrayFuncionario['idFuncionario'];
+                
                 unset($arrayFuncionario['idFuncionario']);
                 unset($arrayFuncionario['nomeFuncionario']);
                 unset($arrayFuncionario['atualizar']);
                 unset($arrayFuncionario['email_empresa']);
-                $id_funcionario = $this->save($arrayFuncionario,$update,$where);
+                unset($arrayFuncionario['flagLotacao']);
+                $this->save($arrayFuncionario,$update,$where);
                 return (int)$id_funcionario;
             }
             catch(Exception $e)

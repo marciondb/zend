@@ -1,4 +1,3 @@
-<?php print_r($this->arrayFuncionario);?>
 <h3>Editar Funcionário</h3>
 <strong>Funcionário:&nbsp;<?php echo $this->nomeFuncionario; ?></strong><br><br>
 <i class="icon-asterisk"></i> Campos obrigatórios.
@@ -81,7 +80,7 @@
                     $cpf = $this->cpf; 
                     $cpf = substr($cpf, 0,3).'.'.substr($cpf, 3,3).'.'.substr($cpf, 6,3).'-'.substr($cpf, 9,2);
                 ?>
-                <input tabindex="6" readonly="readonly" name="cpf" type="text" id="cpf" value="<?php echo $cpf; ?>" size="50" maxlength="14" onkeyup="MascaraCpfCnpj(this,event);" onblur="checaCpf(this.value)"/>
+                <input tabindex="6" readonly="readonly" name="cpf" type="text" id="cpf" value="<?php echo $cpf; ?>" size="50" maxlength="14" />
                     <p id="p_cpf" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
@@ -331,7 +330,7 @@
                     <img src="<?php echo $this->baseUrl()."/public/images/sistema/help.ico"; ?>" width="20px" higth="20px">
                 </a>
             <td align="left">
-                <input readonly="readonly" tabindex="16" name="email_empresa" type="email" id="email_empresa" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['email_empresa']; ?>" onblur="checaEmail(this.value)" />
+                <input readonly="readonly" tabindex="16" name="email_empresa" type="email" id="email_empresa" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['email_empresa']; ?>"  />
                     <p id="p_email" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
@@ -533,10 +532,10 @@
             </td>
             <td align="left">
                 <label class="radio inline">
-                    <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
+                    <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="1") echo 'checked="checked"';?> onclick="document.getElementById('numero_filhos').disabled = false;document.getElementById('numero_filhos').value = 1"/>&nbsp;SIM
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="temFilho" id="temFilho" value="0"  <?php if($this->arrayFuncionario[0]['servico_correios']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
+                    <input type="radio" name="temFilho" id="temFilho" value="0"  <?php if($this->arrayFuncionario[0]['servico_correios']=="0") echo 'checked="checked"';?> onclick="document.getElementById('numero_filhos').disabled = true;document.getElementById('numero_filhos').value = 0"/>&nbsp;NÃO
                 </label>    
                 &nbsp;&nbsp;
                 <input tabindex="33" name="numero_filhos" type="text" id="numero_filhos"  maxlength="2" size="25" value="<?php echo $this->arrayFuncionario[0]['numero_filhos']; ?>" placeholder="Quantos?"/>
@@ -1012,13 +1011,16 @@
             2003-12-02
             
             data = document.getElementById('data_admissao').value;
-            document.getElementById('data_admissao').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
+            if(data!="")
+                document.getElementById('data_admissao').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
             
             data = document.getElementById('data_nascimento').value;
-            document.getElementById('data_nascimento').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
+            if(data!="")
+                document.getElementById('data_nascimento').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
             
             data = document.getElementById('data_setor').value;
-            document.getElementById('data_setor').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
+            if(data!="")
+                document.getElementById('data_setor').value = data.substr(8,2)+'/'+data.substr(2,2)+'/'+data.substr(0,4);
             
         }    
         else

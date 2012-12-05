@@ -134,7 +134,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
         {
             try
             {
-                //ZendUtils::transmissorMsg(print_r(array('login'=>$email,'status'=>$status).$update.$where),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                //ZendUtils::transmissorMsg($email.' '.$status.' '.$update.$where,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
                 $id_usuario = $this->save(array('login'=>$email,'status'=>$status),$update,$where);
                 return (int)$id_usuario;
 
