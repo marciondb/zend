@@ -346,6 +346,8 @@ class Sistema_LogadoController extends Controller_Action
     {
         $this->_helper->layout->disableLayout();
         
+        $segmd5 = date('His');
+        
         if(!$this->possuiPermissao('cadastrarfuncionario'))
             $this->_redirect ("sistema/logado");
         
@@ -364,7 +366,7 @@ class Sistema_LogadoController extends Controller_Action
         $id_funcionario = $this->_funcionario->gravar($parametros, $this->_endereco,$this->_request->getParam('atualizar', false),'id_funcionario='.$id_funcionario,$id_funcionario);      
                 
         //salva ou atualiza o usuario e pega o id
-        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_empresa'],$parametros['status'],$this->_request->getParam('atualizar', false),'id_funcionario='.$id_funcionario);
+        $id_usuario = $this->_usuario->gravar($id_funcionario,$parametros['cpf'],$parametros['email_empresa'],$parametros['status'],$this->_request->getParam('atualizar', false),'id_funcionario='.$id_funcionario,$segmd5);
         
         if(!$this->_request->getParam('atualizar', false))
         {
@@ -374,7 +376,6 @@ class Sistema_LogadoController extends Controller_Action
         
         $id_lotacao = 0;        
         //salva a lotacao do funcionario 
-        //$temp=isset($this->_request->getParam('atualizar'));
         if( ($this->_request->getParam('flagLotacao', false) && $this->_request->getParam('atualizar', false)) || ( !$this->_request->getParam('atualizar', false) ) )
         {        
             //atualiza a lotacao e depois grava
@@ -392,14 +393,39 @@ class Sistema_LogadoController extends Controller_Action
         }
         
        $id_lotacao = (int)$id_lotacao;
+       $flag = 1;
        
         //se houver erro, passa para a view.
-        if(is_string($id_lotacao))
+        if(is_string($id_lotacao)){
             $this->view->erros .= " ".$id_lotacao;
-        if(is_string($id_funcionario))
-            $this->view->erros .= " ".$id_funcionario; 
-        if(is_string($id_usuario))
+            $flag = 0;
+        }    
+        if(is_string($id_funcionario)){
+            $this->view->erros .= " ".$id_funcionario;
+            $flag = 0;
+        } 
+        if(is_string($id_usuario)){
             $this->view->erros .= " ".$id_usuario;
+            $flag = 0;
+        } 
+        
+        if($flag){
+            
+            $msg = "Olá ".$parametros['nome'].", seja bem-vindo(a), agora você 
+                já pode acessar o nosso Portal Pinhonline, basta clicar no link 
+                e cadastrar a sua senha: <a href='www.pinhonline.com.br/portal/index/chave/chave/".$segmd5."'>
+                Clique aqui</a><br>( caso não consiga clicar no link, basta 
+                copiar o seguinte endereço e colar na barra de endereço de seu 
+                navegador: www.pinhonline.com.br/portal/index/chave/chave/".$segmd5.")";
+            
+            $mail = new Zend_Mail(); 
+            $mail->setBodyHtml($msg);
+            $mail->setFrom('consultores@pinhonline.com.br', 'P&C Online');
+            $mail->addTo($parametros['email_empresa'], $parametros['nome']);
+            $mail->setSubject('Bem-vindo ao PinhOnline.');
+            $mail->send();
+        }
+        
         
     }
     
@@ -575,8 +601,8 @@ class Sistema_LogadoController extends Controller_Action
         {
             $this->view->parametros = $this->_getAllParams();
 //$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
-        }    
-    
+        }
+        
     }
 }
 

@@ -112,16 +112,17 @@ class Application_Model_Usuario extends Application_Model_Abstract
      * @param int $id_funcionario Id do funcionario
      * @param string $cpf Cpf do funcionario
      * @param string $email Email do funcionario
+     * @paran md5 $segmd5 Chave de controle do usuario
      */
-    public function gravar($id_funcionario,$cpf,$email,$status,$update=false,$where=false){
+    public function gravar($id_funcionario,$cpf,$email,$status,$update=false,$where=false,$segmd5){
         if(!$update)
         {    
             try{
                 $id_usuario = $this->save(array('id_funcionario'=>$id_funcionario,
                             'login'=>$email,
                             'cpf'=>$cpf,
-                            'chave_controle'=>md5($cpf),
-                            'status'=>md5($status)));
+                            'chave_controle'=>$segmd5,
+                            'status'=>$status));
                 return (int)$id_usuario;
             }
             catch(Exception $e)
@@ -159,7 +160,20 @@ class Application_Model_Usuario extends Application_Model_Abstract
         if(count($select->query()->fetchAll()))
             return 'Já existe um funcionário para este '.strtoupper($nomeCampo).'!';
     }
-
+    
+    public function validaChave($chave) {
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('usuario')->
+                    where('chave_controle = ?',$chave)->
+                    where('ISNULL(senha)');
+        //ZendUtils::transmissorMsg($select,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        if(count($select->query()->fetchAll()))
+            return $select->query()->fetchAll();
+        else
+            return false;
+    }
 
     protected function _validarDados(array $data){
         // Validação

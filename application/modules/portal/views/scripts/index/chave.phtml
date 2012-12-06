@@ -1,0 +1,105 @@
+<?php
+    if($this->usuario)
+    {    
+?>
+<style>
+    .error
+    {
+            color: Red;
+            display: block;
+            margin-left:132px;
+    }
+</style>
+<img src="<?php echo $this->baseUrl()."/public/images/portal/geral/pinhonet.png"; ?>" style="margin-left:130px;"/> 
+
+  
+    <div class="listaSolucoes">
+        Cadastre a sua senha de usuário.<br />
+        <br />
+        <form action="" method="post" name="formulario">
+            
+            <div class="password-container">
+                <p>
+                    <label>
+                        Login:
+                    </label>
+                    <input type="text" name="email" id="email" readonly="readonly" value="<?php echo $this->usuario[0]['login']?>"/>
+                </p>
+                <p>
+                    <span class="error">A senha deve ter no mínimo 8 caracteres.</span>
+                </p>
+                <p>
+                    <label>
+                        Senha:</label>
+                    <input class="strong-password" type="password" name="senha" id="senha"/>
+                </p>
+                <p>
+                    <label>
+                        Confirme a Senha:</label>
+                    <input class="strong-password" type="password" name="confirmasenha" id="confirmasenha"/>
+                </p>
+                <p>
+                    <a class="submit-button locked" href="javascript:;" onclick="valida();">Salvar</a>
+                </p>
+                
+                <div class="strength-indicator">
+                    <font color="#000000">
+                        <div class="meter">
+                        </div>
+                    </font>
+                    Senha forte contém 8-16 caracteres, não incluem palavras ou nomes comuns e
+                    combina letras em maiúsculo e minúsculo, números e símbolos.
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+           
+            //Demo code
+            $('.password-container').pschecker({ onPasswordValidate: validatePassword, onPasswordMatch: matchPassword });
+
+            var submitbutton = $('.submit-button');
+            var errorBox = $('.error');
+            errorBox.css('visibility', 'hidden');
+            submitbutton.attr("disabled", "disabled");
+
+            //this function will handle onPasswordValidate callback, which mererly checks the password against minimum length
+            function validatePassword(isValid) {
+                if (!isValid)
+                    errorBox.css('visibility', 'visible');
+                else
+                    errorBox.css('visibility', 'hidden');
+            }
+            //this function will be called when both passwords match
+            function matchPassword(isMatched) {
+                if (isMatched) {
+                    submitbutton.addClass('unlocked').removeClass('locked');
+                    submitbutton.removeAttr("disabled", "disabled");
+                }
+                else {
+                    submitbutton.attr("disabled", "disabled");
+                    submitbutton.addClass('locked').removeClass('unlocked');
+                }
+            }
+        });
+        
+        function valida(){
+            senha = document.getElementById('senha').value;
+            repeteSenha = document.getElementById('confirmasenha').value;
+            
+            if(senha != repeteSenha)
+                showAlert('Erros', 'As senhas não combinam.')
+        }
+    </script>
+<?php
+    }
+    else
+    {    
+?>
+    <script>
+        showAlert('Atenção.', 'Esta chave é inválida ou já foi utilizada. Entre em contato o PinhoNet.');
+    </script>
+<?php
+    }
+?>

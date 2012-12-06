@@ -6,53 +6,5 @@
  */
 //    print_r($this->parametros);
 
-    $arrayEndereco = $this->parametros;
     
-    $dataEndereco =   array("cep" => $arrayEndereco['cep'],
-                            "tipo_logradouro" => $arrayEndereco['tipo_logradouro'],
-                            "numero" => $arrayEndereco['numero'],
-                            "complemento" => $arrayEndereco['complemento'],
-                            "bairro" => $arrayEndereco['bairro'],
-                            "cidade" => $arrayEndereco['cidade'],
-                            "estado" => $arrayEndereco['estado'],
-                            "referencia" => $arrayEndereco['referencia']);
-    $id_endereco = '';
-    
-    $arrayFuncionario = $this->parametros;
-    
-    $arrayFuncionario['id_endereco'] = $id_endereco;
-    
-    
-    unset($arrayFuncionario['module']);
-    unset($arrayFuncionario['cpf']);
-    unset($arrayFuncionario['controller']);
-    unset($arrayFuncionario['action']);
-    unset($arrayFuncionario['id_empresa']);
-    unset($arrayFuncionario['arrayIdTempTime']);
-    unset($arrayFuncionario['arrayIdTempEmpresa']);
-    unset($arrayFuncionario['celular3']);
-    unset($arrayFuncionario['dddCel3']);
-    unset($arrayFuncionario['celular2']);
-    unset($arrayFuncionario['dddCel2']);
-    unset($arrayFuncionario['celular1']);
-    unset($arrayFuncionario['dddCel1']);
-    unset($arrayFuncionario['telefoneRes2']);
-    unset($arrayFuncionario['dddTelRes2']);
-    unset($arrayFuncionario['telefoneRes1']);
-    unset($arrayFuncionario['dddTelRes1']);
-    unset($arrayFuncionario['tipoEmpresa']);
-    unset($arrayFuncionario['cep']);
-    unset($arrayFuncionario['tipo_logradouro']);
-    unset($arrayFuncionario['numero']);
-    unset($arrayFuncionario['complemento']);
-    unset($arrayFuncionario['bairro']);
-    unset($arrayFuncionario['cidade']);
-    unset($arrayFuncionario['estado']);
-    unset($arrayFuncionario['referencia']);
-    
-    $id_funcionario = '';
-    
-    
-    
-    print_r($arrayFuncionario);
 ?>

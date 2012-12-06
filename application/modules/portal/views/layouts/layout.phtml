@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>PINHONLINE</title>
-
+                
         <link href="<?php echo $this->baseUrl()."/public/styles/portal/estilo.css"; ?>" type="text/css" rel="stylesheet" />
         <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/jquery.js"; ?>"></script>
         <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/portal/font.js"; ?>"></script>
@@ -32,8 +32,17 @@
         </script>
 
         <script>
-        jQuery(document).ready(function(){jQuery("#formCadastro").validationEngine(); });
+            jQuery(document).ready(function(){jQuery("#formCadastro").validationEngine(); });
         </script>
+        
+        <link href="<?php echo $this->baseUrl()."/library/Plugins/jqueryui/css/smoothness/jquery-ui-1.9.1.custom.css"; ?>" rel="stylesheet" type="text/css" />
+        
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/library/Plugins/jqueryui/js/jquery-ui-1.9.1.custom.js"; ?>"></script>
+                        
+        <script type="text/javascript" src="<?php echo $this->baseUrl()."/public/scripts/utilitario.js" ?>"></script>
+        
+        <!--forca da senha-->
+        <script src="<?php echo $this->baseUrl()."/public/scripts/portal/pschecker.js"; ?>"></script>
 
     </head>
     <?php
@@ -56,7 +65,10 @@
         else  { echo 'portal'; }
         
     ?>">
-       
+       <?php  
+            //Caso tenha dado erro, fica na session.
+            ZendUtils::receptorMsg();   
+        ?>
 
         <div id="preloader"></div>
 
