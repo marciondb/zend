@@ -13,10 +13,10 @@
 <img src="<?php echo $this->baseUrl()."/public/images/portal/geral/pinhonet.png"; ?>" style="margin-left:130px;"/> 
 
   
-    <div class="listaSolucoes">
+<div class="listaSolucoes" id="usuario">
         Cadastre a sua senha de usuário.<br />
         <br />
-        <form action="" method="post" name="formulario">
+        <form action="<?php echo $this->url(array('module' => 'portal', 'controller' => 'index', 'action' => 'ajaxgravasenhausuario','id_usuario'=>$this->usuario[0]['id_usuario'],'chave'=>$this->usuario[0]['chave_controle']), null, 1); ?>" method="post" name="formulario">
             
             <div class="password-container">
                 <p>
@@ -31,12 +31,12 @@
                 <p>
                     <label>
                         Senha:</label>
-                    <input class="strong-password" type="password" name="senha" id="senha"/>
+                    <input class="strong-password" type="password" name="cria_senha" id="cria_senha" value=""/>
                 </p>
                 <p>
                     <label>
                         Confirme a Senha:</label>
-                    <input class="strong-password" type="password" name="confirmasenha" id="confirmasenha"/>
+                    <input class="strong-password" type="password" name="cria_confirmasenha" id="cria_confirmasenha" value=""/>
                 </p>
                 <p>
                     <a class="submit-button locked" href="javascript:;" onclick="valida();">Salvar</a>
@@ -50,9 +50,9 @@
                     Senha forte contém 8-16 caracteres, não incluem palavras ou nomes comuns e
                     combina letras em maiúsculo e minúsculo, números e símbolos.
                 </div>
-            </div>
         </form>
     </div>
+
     <script>
         $(document).ready(function () {
            
@@ -85,11 +85,17 @@
         });
         
         function valida(){
-            senha = document.getElementById('senha').value;
-            repeteSenha = document.getElementById('confirmasenha').value;
+            senha = document.getElementById('cria_senha').value;
+            repeteSenha = document.getElementById('cria_confirmasenha').value;
             
             if(senha != repeteSenha)
                 showAlert('Erros', 'As senhas não combinam.')
+            else{
+                ajax(document.forms[1].action+'/senha/'+senha,'usuario');
+                document.getElementById('preloader').style.display = 'none'
+            }
+                
+            
         }
     </script>
 <?php
@@ -98,7 +104,7 @@
     {    
 ?>
     <script>
-        showAlert('Atenção.', 'Esta chave é inválida ou já foi utilizada. Entre em contato o PinhoNet.');
+        showAlert('Atenção.', 'Esta chave ou é inválida, ou já foi utilizada ou existem pendências cadastrais. Entre em contato o PinhoNet.');
     </script>
 <?php
     }

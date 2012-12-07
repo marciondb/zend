@@ -167,6 +167,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
                     setIntegrityCheck(false)->
                     from('usuario')->
                     where('chave_controle = ?',$chave)->
+                    where('status = 1')->
                     where('ISNULL(senha)');
         //ZendUtils::transmissorMsg($select,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         if(count($select->query()->fetchAll()))
@@ -182,6 +183,40 @@ class Application_Model_Usuario extends Application_Model_Abstract
 
         return true;
     }
+    
+    /***
+     * Metodo específico da model usuário para salvar ou atualizar
+     * @param array $data Array com os dados a serem salvos ou atualizados
+     * @param boolean [$update] Se true, ira fazer update, caso contrario, salva
+     * @param string [$where] String contendo a condicao do where para o update
+     * @return array Array com as PK's
+     */
+    public function save(array $data, $update = FALSE, $where = FALSE,$id_usuario=false) {
+
+        $validacao = $this->_validarDados($data);
+        $retorno = array();
+        
+        if (is_string($validacao))
+            throw new Exception($validacao);
+        else {
+            if ($update) {
+                $retorno = $this->_update($data,$where);
+            } else {
+                $retorno = $this->_insert($data);
+            }
+        }
+        
+        $retornoAux = $retorno;
+        //Se a tabela tiver uma PK
+        if(!is_array($retorno))
+            $retorno = array($retorno);
+        
+        //lembrar que tem q modificar o Zend
+        $this->saveLog($retorno,$id_usuario);
+        
+        return $retornoAux;
+    }
+    
     
 }
 

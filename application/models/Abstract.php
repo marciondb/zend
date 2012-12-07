@@ -31,9 +31,11 @@ abstract class Application_Model_Abstract {
     /***
      * Salva o log da ativitade corrente
      * @param array $arrayPK Array com as PK das tabelas alteradas
+     * @param boolean [$id_usuario] Ao criar senha do usuario, a id_usuario nao sera
+     * retirado do getIdentity(), pois o mesmo nao esta logado
      * @return nada
      */
-    public function saveLog(array $arrayPK) {
+    public function saveLog(array $arrayPK,$id_usuario=false) {
         
         //cria uma instancia da table LOG
         $this->_dbTableLog = new Application_Model_DbTable_Log();
@@ -48,8 +50,11 @@ abstract class Application_Model_Abstract {
         $strPK = substr($strPK, 0,-1);
         
         //monta o array a ser salvo
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
-        $id_usuario = $arrayIdentity->id_usuario;
+        if(!$id_usuario)
+        {
+            $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+            $id_usuario = $arrayIdentity->id_usuario;
+        }
         
         $data = array('id_usuario'=>$id_usuario,
                       'data_hora'=>date('Y-m-d H:i:s'),
@@ -71,7 +76,8 @@ abstract class Application_Model_Abstract {
     /***
      * Metodo generico para salvar ou atualizar
      * @param array $data Array com os dados a serem salvos ou atualizados
-     * @param boolean $update Se true, ira fazer update, caso contrario, salva
+     * @param boolean [$update] Se true, ira fazer update, caso contrario, salva
+     * @param string [$where] String contendo a condicao do where para o update
      * @return array Array com as PK's
      */
     public function save(array $data, $update = FALSE, $where = FALSE) {
