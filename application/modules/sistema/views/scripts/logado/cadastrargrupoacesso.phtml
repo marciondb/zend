@@ -1,0 +1,84 @@
+<div id="funcionalidade">
+    <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravagrupo'), null, 1); ?>" method="post">
+       
+        <div class="modal_filtro">
+            <h3>Funcionalidades</h3>
+            <hr>
+            <strong>
+                Escolha as funcionalidades que serão liberadas para o grupo a ser criado.<br>
+            </strong>
+            <hr>
+            <h4>Nome do Grupo</h4>
+            <div align="center" class="form-actions">
+                <input name="nome" id="nome" value="" placeholder="Nome do Grupo">
+            </div>
+            <h4>Funcionalidades</h4>
+            <div id="ajax_funcionalidades" class="modal_min_auto_size">
+            </div>
+        </div>
+           
+
+        <!-- campos hidden temporarios -->
+        
+        <div id="ajax_id_funcionalidade" style="display: none"></div>    
+    
+        <div align="center" class="form-actions">
+            <input type="button" class="btn btn-success" onclick="valida();" value="Salvar">
+        </div>        
+    </form>
+</div>    
+
+<script>
+    
+    function valida()
+    {
+        flag=1
+        textoMsgErro = '';
+
+        if(document.getElementById('nome').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Preencha o nome do Grupo de Acesso!<br>';
+        }
+                
+        flag1=0;
+        temps = document.forms[0].getElementsByClassName('idFuncionalidade');
+        if(temps.length)
+        { 
+            for (j = 0; j < temps.length; j++)
+            {   //alert(temp.length);
+                if(temps[j].checked)
+                    flag1 = 1;
+            }
+        }
+        if(flag1==0)
+        {
+            flag = 0;
+            textoMsgErro += 'Não há Funcionalidade escolhida!<br>';
+        } 
+        
+        //Se validou
+        if(flag)
+        {            
+            temps = document.forms[0].getElementsByClassName('idFuncionalidade');
+            desmarcaPai();
+
+            if(temps.length)
+            { 
+                for (j = 0; j < temps.length; j++)
+                {   //alert(temp.length);
+                    if(temps[j].checked)
+                        marcaPai(temps[j].value);
+                }
+            }
+            
+            //grava
+            ajaxJQuery('funcionalidade');
+        }
+        else
+            showAlert('Atenção.',textoMsgErro);
+        
+    }    
+    
+    carregaMenuTree();
+</script>    

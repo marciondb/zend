@@ -430,6 +430,42 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
+     * grava as funcionalidades do grupo de aceso
+     */
+    public function ajaxgravagrupoAction()
+    {
+        $this->_helper->layout->disableLayout();
+        
+        if(!$this->possuiPermissao('cadastrargrupoacesso'))
+            $this->_redirect ("sistema/logado");
+        
+        $this->view->erros = '';
+        $teste = '';
+                
+        $parametros = $this->_getAllParams();
+        
+        //salva o grupo de acesso
+        $teste = $this->_grupo_de_acesso->gravar(array('nome'=>$parametros['nome']));
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+        
+        $id_grupo = $teste;
+        
+        // Inserir o usuario logado ao grupo criado
+        $teste = $this->_usuario_grupo->gravarNovo(array('id_usuario'=>$this->_id_usuario,'id_usuario_pai'=>$this->_id_usuario,'id_grupo_de_acesso'=>$id_grupo));
+        
+        
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+       
+        // Inserir as uncionalidade ao grupo
+        $teste = $this->_grupo_funcionalidade->gravar($id_grupo, $parametros['id_funcionalidades'],(isset($parametros['funcionalidade_editar']))?$parametros['funcionalidade_editar']:array('funcionalidade_editar'=>','),(isset($parametros['funcionalidade_deletar'])?$parametros['funcionalidade_deletar']:array('funcionalidade_deletar'=>',')),(isset($parametros['funcionalidade_liberar'])?$parametros['funcionalidade_liberar']:array('funcionalidade_liberar'=>',')),$parametros['idPai'],$this->_permissoes);
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+                
+    }
+    
+    /***
      * Carrega a tela cadastro controle de acesso
      */
     public function cadastrarcontroleacessoAction()
@@ -587,6 +623,16 @@ class Sistema_LogadoController extends Controller_Action
                 
         $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
         $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+        
+    }
+    
+    
+    /***
+     * Cadastrar grupo de acesso
+     */
+    public function cadastrargrupoacessoAction() {
+        
+        
         
     }
     

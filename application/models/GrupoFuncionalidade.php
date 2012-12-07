@@ -7,122 +7,147 @@ class Application_Model_GrupoFuncionalidade extends Application_Model_Abstract
     }
     
     /***
-     * Atualiza caso o parametro $update seja diferente de false.
-     * @param array $parametros Array com os dados a serem gravados
+     * Salva as permissoes do usuario
+     * @param int $idGrupo id do grupo que receberá as permissoes
+     * @param array $id_funcionalidades Array com as funcionalidades
+     * @param array $funcionalidade_editar Array com as funcionalidades editar
+     * @param array $funcionalidade_deletar Array com as funcionalidades deletar
+     * @param array $funcionalidade_liberar Array com as funcionalidades liberar
+     * @param array $funcionalidade_pai Array com as funcionalidades pai
+     * @param array $permissao Array com as permissoes do usuario logado, para fazer a validacao
      */
-    public function gravar($parametros, $update = FALSE)
-    {
-        $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
-                        "nome_fantasia" => $parametros['nome_fantasia'],
-                        "razao_social" => $parametros['razao_social'],
-                        "apelido" => $parametros['apelido'],
-                        "cnpj" => $parametros['cnpj'],
-                        "inscricao_estadual" => $parametros['inscricao_estadual'],
-                        "telefone_1" => $parametros['dddTel1'].$parametros['telefone_1'],
-                        "telefone_2" => $parametros['dddTel2'].$parametros['telefone_2'],
-                        "celular_1" => $parametros['dddCel1'].$parametros['celular_1'],
-                        "celular_2" => $parametros['dddCel2'].$parametros['celular_2'],
-                        "fax_1" => $parametros['dddFax1'].$parametros['fax_1'],
-                        "fax_2" => $parametros['dddFax2'].$parametros['fax_2'],
-                        "email" => $parametros['email'],
-                        "site" => $parametros['site'],
-                        "orkut" => $parametros['orkut'],
-                        "msn" => $parametros['msn'],
-                        "twitter" => $parametros['twitter'],
-                        "facebook" => $parametros['facebook'],
-                        "skype" => $parametros['skype'],
-                        "nome_contato_1" => $parametros['nome_contato_1'],
-                        "tels_contato_1" => $parametros['dddTelTemp1'].$parametros['tels_contato_1'],
-                        "cel_contato_1" => $parametros['dddCelTemp1'].$parametros['cel_contato_1'],
-                        "id_operadora_celular_contato_1" => $parametros['id_operadora_celular_contato_1'],
-                        "email_contato_1" => $parametros['email_contato_1'],
-                        "nome_contato_2" => $parametros['nome_contato_2'],
-                        "tels_contato_2" => $parametros['dddTelTemp2'].$parametros['tels_contato_2'],
-                        "cel_contato_2" => $parametros['dddCelTemp2'].$parametros['cel_contato_2'],
-                        "id_operadora_celular_contato_2" => $parametros['id_operadora_celular_contato_2'],
-                        "email_contato_2" => $parametros['email_contato_2'],
-                        "numero_de_funcionario" => $parametros['numero_de_funcionario'],
-                        "ativo" => $parametros['ativo']
-                        );            
-            try
+    public function gravar($idGrupo,$id_funcionalidades,$funcionalidade_editar,$funcionalidade_deletar,$funcionalidade_liberar,$funcionalidade_pai, $permissao)
+    {      
+        $this->_permissao = $permissao;
+        $editar  = '';
+        $deletar = '';
+        $liberar = '';        
+                
+        try
+        {            
+            //Salva cada funcionalidade
+            foreach ($id_funcionalidades as $key_funcionalidade) 
             {
-                $id_empresa = $this->save($dataEmpresa);
-            
-                $dataEndereco = array("id_empresa" => $id_empresa,
-                            "cep" => $parametros['cep'],
-                            "rua_av" => $parametros['rua_av'],
-                            "numero" => $parametros['numero'],
-                            "complemento" => $parametros['complemento'],
-                            "bairro" => $parametros['bairro'],
-                            "cidade" => $parametros['cidade'],
-                            "estado" => $parametros['estado'],
-                            "referencia" => $parametros['referencia']);
+                //Lembrando a estrutura da tabela grupo_funcionalidade, 
+                //que é:id_grupo_de_acesso | id_funcionalidade | id_editar | id_deletar | id_liberar
+                //Entao devemos salvar junto com cada funcionalidade, os ids das funcionalidades do LED (liberar, editar e deletar).
 
-                $_endereco->save($dataEndereco);   
-                
-                ZendUtils::transmissorMsg('Inserido com sucesso!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-                
-                return $id_empresa;
+                //Cada funcionalidade no formulario de cadastro/editar de controle de acesso possui a funcionalidade pai mais o id da funcionalidade em si, nesta ordem.
+                //Então retira a funcionalidade em si, que esta depois da virgula
+                $key_funcionalidade = substr($key_funcionalidade,strpos($key_funcionalidade, ',')+1);
+
+                //E retira as funcionalidades LED para a funcionalidade $key_funcionalidade 
+
+                //procura a funcionalidade editar da funcionalidade $key_funcionalidade
+                foreach ($funcionalidade_editar as $key_editar) 
+                {
+                    //Retirar o pai
+                    $key_editar_pai = substr($key_editar,0,strpos($key_editar, ','));
+
+                    //Verifica se a $key_funcionalidade é o pai
+                    if($key_funcionalidade==$key_editar_pai)
+                    {    
+                        //monta a string com o id desta funcionalidade
+                        $editar = substr($key_editar,strpos($key_editar, ',')+1);
+                        break;
+                    }
+                    else
+                        $editar = '0';
+                }
+
+                foreach ($funcionalidade_deletar as $key_deletar) 
+                {
+                    $key_deletar_aux = substr($key_deletar,0,strpos($key_deletar, ','));
+
+                    if($key_funcionalidade==$key_deletar_aux)
+                    {    
+                        $deletar = substr($key_deletar,strpos($key_deletar, ',')+1);
+                        break;
+                    }
+                    else
+                        $deletar = '0';
+                }
+
+                foreach ($funcionalidade_liberar as $key_liberar) 
+                {
+                    $key_liberar_aux = substr($key_liberar,0,strpos($key_liberar, ','));
+
+                    if($key_funcionalidade==$key_liberar_aux)
+                    {    
+                        $liberar = substr($key_liberar,strpos($key_liberar, ',')+1);
+                        break;
+                    }
+                    else
+                        $liberar = '0';
+                }
+
+                //$arrayFuncionalidade[$count] = array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar);
+                //salva
+                $this->save(array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_funcionalidade,'editar'=>$editar,'deletar'=>$deletar,'liberar'=>$liberar));
+
             }
-            catch(Exception $e)
+
+            //Para cada um das funcionalidade do LED, devemos salva-la como uma permissao especifica
+            // id_grupo_de_acesso   |id_funcionalidade | id_editar | id_deletar | id_liberar
+            // id_grupo_de_acesso   |        0         |     0     |      0     |     0
+
+            foreach ($funcionalidade_editar as $key_editar) 
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                if($key_editar != ",")
+                {
+                    $key_editar = substr($key_editar,strpos($key_editar, ',')+1);                   
+
+                    //$arrayFuncionalidade[$count]= array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                    //$count++;
+                    $this->save(array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_editar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                }
             }
-        
-    }
-    
-    /**
-       * Exibe tds os Grupo de Funcionalidade visiveis.      
-       * @return Array retorna query()->fetchAll()
-       * @param  Boolean $selecionar  : coloca um elemento checkbox para selecionar a empresa
-       * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
-       * @param  Boolean $deletar : coloca um elemento um "botao" para pode deletar
-       * @version 1.0
-       * @author Márcio & Marco
-     */
-    public function exibir($pagina,$cnpj,$listaIdEmpresasEscolhidas,$remover)
-    {           
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
-        $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
-        
-        try{
-            $select = $this->_dbTable->
-                    select()->
-                    setIntegrityCheck(false)->
-                    from('empresa',array('id_empresa','razao_social','nome_fantasia','apelido','cnpj','telefone_1','telefone_2'))->
-                    join('usuario_empresa_visivel', 'empresa.id_empresa = usuario_empresa_visivel.id_empresa',null)->
-                    where('usuario_empresa_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
-            
-            if($cnpj)
+
+            foreach ($funcionalidade_deletar as $key_deletar) 
             {
-                $cnpj = str_replace(".","",$cnpj);
-		$cnpj = str_replace("-","",$cnpj);
-		$cnpj = str_replace("/","",$cnpj);
-                $select->where('empresa.cnpj = ? ',$cnpj);
+                if($key_deletar != ",")
+                {
+                    $key_deletar = substr($key_deletar,strpos($key_deletar, ',')+1);
+
+                    //$arrayFuncionalidade[$count]= array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                    //$count++;
+                    $this->save(array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_deletar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                }
             }
-            
-            if(!$remover)
+
+            foreach ($funcionalidade_liberar as $key_liberar) 
             {
-                if ($listaIdEmpresasEscolhidas)
-                    $select->where('empresa.id_empresa not in (' . $listaIdEmpresasEscolhidas . ')');
+                if($key_liberar != ",")
+                {
+                    $key_liberar = substr($key_liberar,strpos($key_liberar, ',')+1);
+
+                    //$arrayFuncionalidade[$count]= array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                    //$count++;
+                    $this->save(array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$key_liberar,'editar'=>0,'deletar'=>0,'liberar'=>0));
+                }
             }
-            else
-                $select->where('empresa.id_empresa in (' . $listaIdEmpresasEscolhidas . ')');
+
+            foreach ($funcionalidade_pai as $idPai) 
+            {
+                $idPai = substr($idPai,strpos($idPai, ',')+1);
+
+                //$arrayFuncionalidade[$count]= array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$idPai,'editar'=>0,'deletar'=>0,'liberar'=>0);
+                //$count++;
+                $this->save(array('id_grupo_de_acesso'=>$idGrupo,'id_funcionalidade'=>$idPai,'editar'=>0,'deletar'=>0,'liberar'=>0));
+            }
+            // print_r($arrayFuncionalidade);
             
-            $paginator = Zend_Paginator::factory( $select );
-            $paginator->setCurrentPageNumber($pagina);
-            if(!$remover)
-                $paginator->setItemCountPerPage($perPage);
+            
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao selecionar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do grupo. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            return $e->getMessage();
         }
         
-        
-        return $paginator;
-        
     }
+    
+    
     
     /***
      * Retorna todas as id's das funcionalidades do grupo, concatenadas por ","

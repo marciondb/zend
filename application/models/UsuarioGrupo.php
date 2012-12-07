@@ -60,7 +60,26 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao cadastrar o controle de acesso, Usuario Grupo. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            return $e->getMessage();
+        }
+        
+    }
+    
+    /***
+     * Salva o usario em um grupo de acesso recem criado
+     * @param array $parametros array('id_usuario'=>$this->_id_usuario,'id_usuario_pai'=>$this->_id_usuario,'id_grupo_de_acesso'=>$id_grupo)
+     */
+    public function gravarNovo($parametros){
+        
+        try
+        {            
+            $this->_insert(array('id_usuario'=>$parametros['id_usuario'],'id_grupo_de_acesso'=>$parametros['id_grupo_de_acesso'],'id_usuario_pai'=>$parametros['id_usuario_pai']));
+            
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao cadastrar o usuario ao grupo de acesso. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             return $e->getMessage();
         }
         
@@ -77,7 +96,7 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao retirar os usuarios dos grupos, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao retirar os usuarios dos grupos. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
     
@@ -85,15 +104,17 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         // Validação
         $erros = TRUE;        
         
-        $select = $this->_dbTable->
-                    select()->
-                    setIntegrityCheck(false)->
-                    from('usuario_grupo', 'usuario_grupo.id_grupo_de_acesso')->
-                    where('usuario_grupo.id_usuario = ?',$this->_id_usuario)->
-                    where('usuario_grupo.id_grupo_de_acesso = ?', $data['id_grupo_de_acesso']);
-           
-        if(!$select->query()->rowCount())
-            $erros = "ERRO 171 - Grupo";
+        if(!isset($data['novo_grupo'])){
+            $select = $this->_dbTable->
+                        select()->
+                        setIntegrityCheck(false)->
+                        from('usuario_grupo', 'usuario_grupo.id_grupo_de_acesso')->
+                        where('usuario_grupo.id_usuario = ?',$this->_id_usuario)->
+                        where('usuario_grupo.id_grupo_de_acesso = ?', $data['id_grupo_de_acesso']);
+
+            if(!$select->query()->rowCount())
+                $erros = "ERRO 171 - Grupo";
+        }
         
         return $erros;
     }   
