@@ -566,7 +566,7 @@ function setFuncioGrupo()
         {   
             if(temp[i].checked)
             {
-                arrayIdFuncionalidades += ','+document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value+',';
+                arrayIdFuncionalidades += ','+document.getElementById('arrayIdTempFuncionalidade_'+temp[i].value).value+',';
                 arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
                 arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
             }
@@ -611,7 +611,7 @@ function disableLED()
         {   
             if(temp[i].checked)
             {    
-                arrayIdFuncionalidades = document.getElementById('arrayIdTempFuncionalidade_'+(i+1)).value;
+                arrayIdFuncionalidades = document.getElementById('arrayIdTempFuncionalidade_'+temp[i].value).value;
                 arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/^\s+|\s+$/g,"");//retirar espaços em branco
                 arrayIdFuncionalidades = arrayIdFuncionalidades.replace(/(\r\n|\n|\r)/gm,"");//retirar "enter"
                 arrayIdFuncionalidades = arrayIdFuncionalidades.split(',');
@@ -801,6 +801,7 @@ function getIdFuncionalidade(idGrupo)
 }
     
 tabelas='';
+
 /***
 * Como existe mais de um paginator na pagina, temos que ter o controle da
 * funcao setPaginator() para que o ajax correto seja carregado.

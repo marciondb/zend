@@ -164,19 +164,33 @@ class Application_Model_GrupoFuncionalidade extends Application_Model_Abstract
                   where('grupo_funcionalidade.id_grupo_de_acesso = ?', $idGrupo);
        
         
-        $arrayIdFuncionalidade = '';
+        $listaIdFuncionalidade = '';
         
         foreach ($select->query()->fetchAll() as $idFuncionalidade)
         {
-            $arrayIdFuncionalidade .= $idFuncionalidade['id_funcionalidade'].',';
+            $listaIdFuncionalidade .= $idFuncionalidade['id_funcionalidade'].',';
         }    
         
-        $arrayIdFuncionalidade = substr($arrayIdFuncionalidade,0,-1);
+        $listaIdFuncionalidade = substr($listaIdFuncionalidade,0,-1);
         
         if(!$select->query()->rowCount())
             return "0";
         else    
-            return $arrayIdFuncionalidade;
+            return $listaIdFuncionalidade;
+    }
+    
+    public function deletar($array)
+    {
+        try 
+        {
+                          
+            $this->delete($array);
+            
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao deletar o grupo de funcionalidade. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
     }
 
     protected function _validarDados(array $data){

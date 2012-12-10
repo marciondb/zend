@@ -1,0 +1,255 @@
+<h3>Cadastro de Time</h3>
+<hr>
+<div id="tabs" style="width:811px;">  
+    <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravacontroleacesso'), null, 1); ?>" method="post">
+        <ul>
+            <li><a href="#tabs-4" onclick="montaSelectLider();">Time</a></li>
+            <li><a href="#tabs-3">Adicionar Funcionários</a></li>
+        </ul>
+        <div id="tabs-4" class="tab_content">
+            <h4>Nome do Time</h4>
+            <div align="center" class="form-actions">
+                <input type="text" name="titulo" id="titulo" value="" placeholder="Nome do Time">
+            </div>
+            <h4>Líder do Time</h4>
+            <div align="center" class="form-actions">
+                <select id="id_funcionario_lider">
+                    <option value="">::.. Selecione um Líder ..::</option>
+                </select>
+                <a href="javascript:;" class="showToolTip" title="Os funcionários adicionados serão exibidos aqui. Adicione ao menos um para que você possa escolher o líder.">
+                    <img src="<?php echo $this->baseUrl()."/public/images/sistema/help.ico"; ?>" width="20px" higth="20px">
+                </a>
+            </div>
+            
+            <h4>Escolha uma Empresa para este Time</h4>
+
+            <div class="form-actions" title="Selecione uma empresa">
+                <label class="radio inline">
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" onclick="abreDialog('0');">Matriz
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" onclick="abreDialog('1');">Filial
+                </label>
+                <br>                
+                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50">
+                
+            </div>
+        </div>
+        <div id="tabs-3" class="tab_content">
+            <div class="modal_min_auto_size">
+                <h4>Filtros:</h4>
+                CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+                <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+                <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+                &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
+                <b>Exibir todas as empresas</b>
+                <hr>
+                <h5>Selecione uma empresa</h5>
+                <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
+                </div>
+                <hr>
+                <h5>Selecione um time</h5>
+                <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+                </div>
+            </div>
+            <br>
+            <h4>Escolha os funcionários que receberão acessos</h4>
+
+            <div id="div_FiltroFuncionrio1" class="modal_filtro">                
+                <div id="div_FiltroFuncionrio" class="modal_filtro">
+                    
+                </div>
+                <div id="ajax_funcionario" class="modal_ajax" onmouseover="setTabela('funcionario');">    
+                </div>
+            </div>        
+
+            <hr>
+            <h4>Funcionários escolhidos</h4>
+
+            <div id="ajax_funcionario_adicionados" class="modal_ajax" onmouseover="setTabela('funcionario_adicionados');">
+            </div>
+        </div>
+        
+            
+
+        <!-- campos hidden temporarios -->
+        <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+        <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
+        <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
+        <input type="hidden" name="id_empresa" id="id_empresa" value=",">
+        
+        <div id="ajax_id_funcionalidade" style="display: none"></div>
+    
+    </div>
+    <div align="center" class="form-actions" id="salva">
+        <input type="button" class="btn btn-success" onclick="valida();" value="Gravar">
+    </div>
+    <div id="dialog-modal-empresa" title="Selecione uma empresa">
+        <div id="empresa_time" onmouseover="setTabela('empresa_time');"></div>
+    </div>
+        
+    </form>
+    
+</div>
+
+<script type="text/javascript">      
+    varTipoEmpresa = '';
+    
+    $(function() {
+        $( ".showToolTip" ).tooltip({
+            position: {
+                my: "center bottom-20",
+                at: "center top",
+                using: function( position, feedback ) {
+                    $( this ).css( position );
+                    $( "<div>" )
+                        .addClass( "arrow" )
+                        .addClass( feedback.vertical )
+                        .addClass( feedback.horizontal )
+                        .appendTo( this );
+                }
+            }
+        });
+    })
+    
+    function valida()
+    {
+        flag=1
+        textoMsgErro = '';
+
+        if(document.getElementById('titulo').value == ",")
+        {
+            flag = 0;
+            textoMsgErro += 'Nome do Time é obrigatório!<br>';
+        }
+        
+        if(document.getElementById('id_funcionario_lider').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Você deve escolher um líder para este time!<br>';
+        }
+        
+        if(document.getElementById('id_empresa').value == ",")
+        {
+            flag = 0;
+            textoMsgErro += 'Não há Empresa escolhida para este Time!<br>';
+        }
+        
+        //Se validou
+        if(flag)
+        {   
+            //grava
+            ajaxJQuery('tabs');
+            document.getElementById('salva').innerHTML = '<font color="green">Salvo!</font>';
+        }
+        else
+            showAlert('Atenção',textoMsgErro);
+
+    }    
+    
+    //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
+    // ajax eh excudado
+    function setPaginator(pagina,query)
+    {  
+        //tabelas é setado ao passar o mouse sobre a DIV
+        
+        if(tabelas=='empresa')
+        {    
+            url = urlAjaxEmpresa+'/selecionar/1/pagina/'+pagina+query;
+            ajax(url,'ajax_empresa');
+        }
+        else if(tabelas=='time')
+        {
+            url = urlAjaxTime+'/selecionar/1/pagina/'+pagina+query;
+            ajax(url,'ajax_time');
+        }
+        else if(tabelas=='funcionario')
+        {
+            setFiltroFuncionario(null,null,pagina);
+        }
+        else if(tabelas=='funcionario_adicionados')
+        {
+            setFiltroFuncionario(null,1,pagina);
+        }
+        elseif(tabelas=='empresa_time')
+        {   
+            document.getElementById('empresa_time').innerHTML = '';
+            url = urlAjaxEmpresa+'/escolher/1/pagina/'+pagina+query+'/tipoEmpresa/'+varTipoEmpresa;
+            ajax(url,'empresa_time');
+        }
+    }
+    
+    function setNomeFantasia()
+    {
+        idEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        idEmpresa = idEmpresa.substr(1,idEmpresa.length-2);
+        
+        if(idEmpresa)
+            document.getElementById('nomeFantasia').value = document.getElementById('nomefantasia_'+idEmpresa).value;
+    }
+    
+    //exibe uma modal para que o usuario escolha uma empresa
+    function abreDialog(tipoEmpresa)
+    {
+        varTipoEmpresa = tipoEmpresa;
+        
+        url = urlAjaxEmpresa+'/escolher/1/tipoEmpresa/'+varTipoEmpresa;
+        ajax(url,'empresa_time');
+        
+        $( "#dialog-modal-empresa" ).dialog({
+            modal: true,
+            width: 822,
+            buttons: {
+                Ok: function() {
+                    temp = document.getElementsByClassName('idEmpresaTempe');
+                    if(temp.length)
+                    { 
+                        for (i = 0; i < temp.length; i++)
+                        {   
+                            if(temp[i].checked)
+                            {    
+                                document.getElementById('id_empresa').value = temp[i].value;
+                                setNomeFantasia();
+                                break;
+                            }    
+                        }
+                    }
+                    
+                    $( this ).dialog( "close" );
+                    
+                }
+            }
+        });
+    }
+    
+    function  montaSelectLider()
+    {
+        var select = document.getElementById('id_funcionario_lider');
+        select.options.length = 0;
+        select.options[select.options.length] = new Option("::.. Selecione um Líder ..::", ""); 
+        
+        temps = document.forms[0].getElementsByClassName('id_funcionario');
+            
+        if(temps.length)
+        { 
+            for (j = 0; j < temps.length; j++)
+            {   //alert(temp.length);
+                select.options[select.options.length] = new Option(document.getElementById('nome_funcionario_'+temps[j].innerHTML).innerHTML, temps[j].innerHTML);  
+            }
+        }
+    }
+    
+    url = urlAjaxEmpresa+'/selecionar/1';
+    ajax(url,'ajax_empresa');
+    
+    url = urlAjaxTime+'/selecionar/1/';
+    ajax(url,'ajax_time');
+    
+    url = urlAjaxFuncionario+'/adicionar/1/';
+    ajax(url,'ajax_funcionario');
+    
+    url = urlAjaxFiltroSCT+'/setor/1/cargo/1/tipo/1';
+    ajax(url,'div_FiltroFuncionrio');
+    
+    
+</script>

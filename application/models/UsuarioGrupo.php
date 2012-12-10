@@ -100,6 +100,18 @@ class Application_Model_UsuarioGrupo extends Application_Model_Abstract
         }
     }
     
+    public function deletarTodosGrupo($array)
+    {
+        try 
+        {
+            $this->delete($array); 
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao retirar todos os usuarios dos grupos. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+    }
+    
     protected function _validarDados(array $data){
         // Validação
         $erros = TRUE;        

@@ -1,12 +1,12 @@
-<h3>Cadastro de Grupo de Acesso</h3>
-<hr>
+<h3><p id="nomeGrupo">Editar Grupo de Acesso: <?php echo $this->nomeGrupo; ?></p></h3>
+
 <div id="funcionalidade">
-    <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravagrupo'), null, 1); ?>" method="post">
+    <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravagrupo','idGrupo'=>$this->idGrupo), null, 1); ?>" method="post">
        
         <div class="modal_filtro">
             <h4>Nome do Grupo</h4>
             <div align="center" class="form-actions">
-                <input name="nome" id="nome" value="" placeholder="Nome do Grupo">
+                <input name="nome" id="nome" value="<?php echo $this->nomeGrupo; ?>" placeholder="Nome do Grupo">
             </div>
             <h4>Funcionalidades</h4>
             <strong>
@@ -22,13 +22,14 @@
         
         <div id="ajax_id_funcionalidade" style="display: none"></div>    
     
-        <div align="center" class="form-actions" id="salva">
-            <input type="button" class="btn btn-success" onclick="valida();" value="Salvar">
+        <div align="center" class="form-actions">
+            <input type="button" class="btn btn-success" onclick="valida();" value="Editar">
         </div>        
     </form>
 </div>    
 
 <script>
+    listaIdFuncionalidade = '<?php echo $this->listaIdFuncionalidade;?>';
     
     function valida()
     {
@@ -74,7 +75,8 @@
             
             //grava
             ajaxJQuery('funcionalidade');
-            document.getElementById('salva').innerHTML = '<font color="green">Salvo!</font>';
+            
+            document.getElementById('nomeGrupo').innerHTML = 'Editar Grupo de Acesso: '+document.getElementById('nome').value; 
         }
         else
             showAlert('Atenção.',textoMsgErro);
@@ -82,4 +84,32 @@
     }    
     
     carregaMenuTree();
+    
+    function recarrega(){
+        arrayIdFuncionalidades = '';
+        temps = document.forms[0].getElementsByClassName('idFuncionalidade');
+        if(temps.length)
+        { 
+            for (j = 0; j < temps.length; j++)
+            {   //alert(temp.length);
+               
+                idFuncionalidade = temps[j].value;
+                idFuncionalidade = idFuncionalidade.substr(idFuncionalidade.indexOf(',')+1)
+                arrayIdFuncionalidades = listaIdFuncionalidade.split(",");
+                
+                for (m = 0; m < arrayIdFuncionalidades.length; m++)
+                {
+                    if(arrayIdFuncionalidades[m] == idFuncionalidade)
+                    {    
+                        temps[j].checked  = true;
+                        toggleLED(idFuncionalidade);
+                    }    
+                }
+            }
+        }
+    }
+    
+    recarrega();
+    ddtreemenu.flatten('treemenu1', 'expand');
+    
 </script>    

@@ -1,0 +1,35 @@
+<h3>Gerenciar Controle de Acesso</h3>
+<hr>
+
+<div class="modal_filtro" id="ajax_grupo">
+    
+</div>
+
+<script type="text/javascript">      
+    
+    LED = '';    
+    <?php
+        $aux = '';
+        
+        if($this->editar)
+          $aux .= '/editar/1';
+        
+        if($this->deletar)
+          $aux .= '/deletar/1' 
+    ?>
+        
+    function deletar(idGrupo)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletargrupoacesso'), null, 1); ?>/idGrupo/'+idGrupo;
+        ajax(url,'ajax_grupo');
+        
+        url = urlAjaxGrupo+'<?php echo $aux; ?>';
+        ajax(url,'ajax_grupo');
+        
+    }    
+    
+    url = urlAjaxGrupo+'<?php echo $aux; ?>';
+    ajax(url,'ajax_grupo');
+       
+    
+</script>

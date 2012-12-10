@@ -436,7 +436,7 @@ class Sistema_LogadoController extends Controller_Action
     {
         $this->_helper->layout->disableLayout();
         
-        if(!$this->possuiPermissao('cadastrargrupoacesso'))
+        if(!$this->possuiPermissao('cadastrargrupoacesso') || !$this->possuiPermissao('editargrupoacesso'))
             $this->_redirect ("sistema/logado");
         
         $this->view->erros = '';
@@ -444,12 +444,38 @@ class Sistema_LogadoController extends Controller_Action
                 
         $parametros = $this->_getAllParams();
         
-        //salva o grupo de acesso
-        $teste = $this->_grupo_de_acesso->gravar(array('nome'=>$parametros['nome']));
-        if(is_string($teste))
-            $this->view->erros .= " ".$teste;
+        //Se tiver idGrupo, significa q esta no editar, entao deve-se deletar
+        if(isset($parametros['idGrupo'])){
+            
+            //deleta o grupo de acesso
+            $teste = $this->_grupo_de_acesso->gravar(array('nome'=>$parametros['nome']),true,'id_grupo_de_acesso='.$parametros['idGrupo']);
+            if(is_string($teste))
+                $this->view->erros .= " ".$teste;
+
+            $id_grupo = $parametros['idGrupo'];
+
+            // deleta o usuario logado ao grupo criado
+            $teste = $this->_usuario_grupo->deletarTodosGrupo(array('id_grupo_de_acesso=?'=>$id_grupo));
+
+            if(is_string($teste))
+                $this->view->erros .= " ".$teste;
+
+            // deleta as funcionalidade ao grupo
+            $teste = $this->_grupo_funcionalidade->deletar(array('id_grupo_de_acesso=?'=>$id_grupo));
+            if(is_string($teste))
+                $this->view->erros .= " ".$teste;/**/
+            
+        }
+        else
+        {
+            //salva o grupo de acesso
+            $teste = $this->_grupo_de_acesso->gravar(array('nome'=>$parametros['nome']));
+            if(is_string($teste))
+                $this->view->erros .= " ".$teste;
+
+            $id_grupo = $teste;
+        }
         
-        $id_grupo = $teste;
         
         // Inserir o usuario logado ao grupo criado
         $teste = $this->_usuario_grupo->gravarNovo(array('id_usuario'=>$this->_id_usuario,'id_usuario_pai'=>$this->_id_usuario,'id_grupo_de_acesso'=>$id_grupo));
@@ -458,10 +484,10 @@ class Sistema_LogadoController extends Controller_Action
         if(is_string($teste))
             $this->view->erros .= " ".$teste;
        
-        // Inserir as uncionalidade ao grupo
+        // Inserir as funcionalidade ao grupo
         $teste = $this->_grupo_funcionalidade->gravar($id_grupo, $parametros['id_funcionalidades'],(isset($parametros['funcionalidade_editar']))?$parametros['funcionalidade_editar']:array('funcionalidade_editar'=>','),(isset($parametros['funcionalidade_deletar'])?$parametros['funcionalidade_deletar']:array('funcionalidade_deletar'=>',')),(isset($parametros['funcionalidade_liberar'])?$parametros['funcionalidade_liberar']:array('funcionalidade_liberar'=>',')),$parametros['idPai'],$this->_permissoes);
         if(is_string($teste))
-            $this->view->erros .= " ".$teste;
+            $this->view->erros .= " ".$teste;/**/
                 
     }
     
@@ -631,6 +657,66 @@ class Sistema_LogadoController extends Controller_Action
      * Cadastrar grupo de acesso
      */
     public function cadastrargrupoacessoAction() {
+        
+        
+        
+    }
+    
+    /***
+     * Editar grupo de acesso
+     */
+    public function editargrupoacessoAction() {
+        
+        $this->view->nomeGrupo = $this->_request->getParam('nomeGrupo', false);        
+        $this->view->idGrupo   = $this->_request->getParam('idGrupo', false);
+        
+        $this->view->listaIdFuncionalidade = $this->_grupo_funcionalidade->getIdFuncionalidade($this->view->idGrupo);
+        
+    }
+    
+    /***
+     * Gerenciar grupo de acesso
+     */
+    public function deletargrupoacessoAction() {
+        
+        $id_grupo = $this->_request->getParam('idGrupo', false);
+        //deleta o grupo de acesso
+        $teste = $this->_grupo_de_acesso->deletar(array('id_grupo_de_acesso=?'=>$id_grupo));
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+
+        $id_grupo = $parametros['idGrupo'];
+
+        // deleta o usuario logado ao grupo criado
+        $teste = $this->_usuario_grupo->deletarTodosGrupo(array('id_grupo_de_acesso=?'=>$id_grupo));
+
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+
+        // deleta as funcionalidade ao grupo
+        $teste = $this->_grupo_funcionalidade->deletar(array('id_grupo_de_acesso=?'=>$id_grupo));
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+        
+    }
+    
+    /***
+     * Gerenciar grupo de acesso
+     */
+    public function gerenciargrupoacessoAction() {
+        
+        $arrayLED = $this->getLED('gerenciargrupoacesso');
+                
+        $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
+        $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+        
+        
+    }
+    
+    /***
+     * Cadastrar time
+     */
+    public function cadastrartimeAction() {
         
         
         
