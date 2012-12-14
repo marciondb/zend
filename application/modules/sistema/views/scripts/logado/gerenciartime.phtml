@@ -1,0 +1,89 @@
+<h3>Gerenciar time</h3>
+<hr>
+<form name="formularioTime" action="" method="post">
+    <div class="modal_min_auto_size">
+    
+        <h4>Filtros:</h4>
+        CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+        <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
+        <b>Exibir todas as empresas</b>
+        <hr>
+        <h5>Empresa</h5>
+        <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
+        </div>
+     </div>
+    <hr>
+    <h5>Time</h5>
+    <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+    </div>
+    
+    <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+    <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
+    
+        
+</form>
+<div id="temp"></div>
+
+<script type="text/javascript">      
+    
+    //set o "selectOrAdd" para selecionar
+    selectOrAdd = 1;
+    
+    //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
+    // ajax eh excudado
+    function setPaginator(pagina,query)
+    {  
+        if(tabelas=='empresa')
+        {    
+            url = urlAjaxEmpresa+'/selecionar/1/pagina/'+pagina+query;
+            ajax(url,'ajax_empresa');
+        }
+        else if(tabelas=='time')
+        {
+            url = urlAjaxTime+'/selecionar/1/pagina/'+pagina+query;
+            ajax(url,'ajax_time');
+        }  
+    }
+    
+    <?php
+        $aux = '';
+        
+        if($this->editar)
+          $aux .= '/editar/1';
+        
+        if($this->deletar)
+          $aux .= '/deletar/1' 
+    ?>
+    
+    function setFiltroTime()
+    {
+        listaIdEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        listaIdEmpresa = listaIdEmpresa.substr(1,listaIdEmpresa.length-2); //retira a 1º e a ultima virgula
+
+        url = urlAjaxTime+'/listaIdEmpresa/'+listaIdEmpresa+'<?php echo $aux; ?>';
+        ajax(url,'ajax_time');
+    }
+    function deletar(idTime)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletartime'), null, 1); ?>/idTime/'+idTime;
+        ajax(url,'temp');
+        
+        url = urlAjaxTime+'<?php echo $aux; ?>';
+        ajax(url,'ajax_time');
+        
+    } 
+            
+    url = urlAjaxEmpresa+'/selecionar/1';
+    ajax(url,'ajax_empresa');
+    
+    url = urlAjaxTime+'<?php echo $aux; ?>';
+    ajax(url,'ajax_time');
+    
+    
+        
+    
+       
+    
+</script>

@@ -87,6 +87,8 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->setor = $this->_request->getParam('setor', false);
         $this->view->cargo = $this->_request->getParam('cargo', false);
         $this->view->tipo  = $this->_request->getParam('tipo', false);
+        $this->view->temEvento  = $this->_request->getParam('temEvento', false); //evento + funcao; ex: onchange="setFiltroFuncionario();"
+        $this->view->nomeSetor  = $this->_request->getParam('nomeSetor', false); //nome, q tb será o msm o da id, do campo
         
         if($this->view->setor)
             $this->view->arraySetor = $arrayCST['setor'];
@@ -491,6 +493,72 @@ class Sistema_LogadoController extends Controller_Action
                 
     }
     
+    public function ajaxgravatimeAction() {
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        $teste = "";
+        //Se é editar
+        if(isset($parametros['idTime']))
+        {
+            $id_time=$parametros['idTime'];
+            $this->_time->gravar(array('id_funcionario_lider'=>$parametros['id_funcionario_lider'],
+                                    'id_empresa'=>$parametros['id_empresa'],
+                                    'id_setor'=>$parametros['id_setor_funcionario'],
+                                    'titulo'=>$parametros['titulo'],
+                                    'descricao'=>$parametros['descricao']), true, 'id_time='.$id_time);
+            
+            // Tira todos os usuários do time, para inserir os selecionados agora
+            $this->_usuario_time_visivel->deletarPorTime($id_time);
+            $this->_funcionario->gravar(array('id_time'=>'0'), false, true, 'id_time='.$id_time);
+            $id_time=(int)$parametros['idTime'];
+            
+        } else
+        {
+            $id_time = $this->_time->gravar(array('id_funcionario_lider'=>$parametros['id_funcionario_lider'],
+                                    'id_empresa'=>$parametros['id_empresa'],
+                                    'id_setor'=>$parametros['id_setor_funcionario'],
+                                    'titulo'=>$parametros['titulo'],
+                                    'descricao'=>$parametros['descricao']));
+        }
+
+        //pega as ids de usuario dos funcionarios
+        $arrayIdUsuario = $this->_funcionario->getIdUsuarioSF(substr($parametros['arrayIdTempFuncionarioEscolhido'],1,-1));           
+        
+        if(is_string($id_time))
+            $this->view->erros .= " ".$id_time;
+       
+        $cont=0;
+        foreach ($arrayIdUsuario as $value) 
+        {
+            if($value['id_usuario']==$this->_id_usuario){
+                unset($arrayIdUsuario[$cont]);
+                break;
+            }
+            $cont++;
+        }
+        //add o time ao times visiveis do usuario logado
+        $this->_usuario_time_visivel->_insert(array('id_usuario'=>$this->_id_usuario,'id_usuario_pai'=>$this->_id_usuario,'id_time'=>$id_time));        
+        
+        //add o time ao times visiveis dos usuario escolhidos
+        $teste = $this->_usuario_time_visivel->gravar($arrayIdUsuario, $id_time);
+        
+        //se houver erro, passa para a view.
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+        
+        $arrayFuncionario = $parametros['arrayIdTempFuncionarioEscolhido'];
+        $arrayFuncionario = substr($arrayFuncionario, 1,-1);
+        $arrayFuncionario = explode(',', $arrayFuncionario);
+        
+        foreach ($arrayFuncionario as $idFuncionario) {
+            $this->_funcionario->gravar(array('id_time'=>$id_time),
+                                        false,
+                                        true,
+                                        'id_funcionario ='.$idFuncionario);
+        }
+        
+    }
+    
     /***
      * Carrega a tela cadastro controle de acesso
      */
@@ -722,6 +790,45 @@ class Sistema_LogadoController extends Controller_Action
         
     }
     
+    /***
+     * Cadastrar time
+     */
+    public function editartimeAction() {
+        
+        $this->view->nomeTime = $this->_request->getParam('nomeTime', false);        
+        $this->view->idTime   = $this->_request->getParam('idTime', false);
+        
+        $this->view->arrayFuncionario = $this->_funcionario->fetchAll(array('id_time'=>$this->_request->getParam('idTime')));
+        $this->view->arrayTime = $this->_time->fetchAll(array('id_time'=>$this->_request->getParam('idTime')));
+        $this->view->arrayEmpresa     = $this->_empresa->fetchAll(array('id_empresa'=>$this->view->arrayTime[0]['id_empresa']));
+    }
+    
+    /***
+     * Gerenciar time
+     */
+    public function gerenciartimeAction() {
+        $arrayLED = $this->getLED('gerenciartime');
+                
+        $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
+        $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+        
+        
+    }
+    
+    /***
+     * Deletar time
+     */
+    public function deletartimeAction() {
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        
+        $idTime = $parametros['idTime'];
+
+        $this->_time->deletar($idTime);
+        $this->_usuario_time_visivel->deletarPorTime($idTime);
+        $this->_funcionario->gravar(array('id_time'=>0), false, true, 'id_time='.$idTime);
+    }
+    
     public function indexAction()
     {
         
@@ -732,11 +839,7 @@ class Sistema_LogadoController extends Controller_Action
         if($this->_request->isPost())
         {
             $this->view->parametros = $this->_getAllParams();
-//$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
+        //$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
         }
-        
     }
 }
-
-
-

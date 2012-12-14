@@ -8,7 +8,20 @@
             Setor / Unidade de Negócios: 
         </td>
         <td align="left">
-            <select tabindex="30" name="id_setor" id="id_setor" style="width:370px" onchange="setFiltroFuncionario();">
+            <?php
+                //costumizar o filtro
+                if($this->nomeSetor)
+                    $nomeId = $this->nomeSetor;
+                else
+                    $nomeId = "id_setor";
+                
+                if(!$this->temEvento)
+                    $evento = 'onchange="setFiltroFuncionario();"';
+                else
+                    $evento = $this->temEvento;
+                
+            ?>
+            <select tabindex="30" name="<?php echo $nomeId;?>" id="<?php echo $nomeId;?>" style="width:370px" <?php echo $evento; ?>>
                 <option value="">::.. Selecione um Setor / Unidade de Negócios (TODOS) ..::</option>
                 <?php
                 foreach ($this->arraySetor as $linha) {

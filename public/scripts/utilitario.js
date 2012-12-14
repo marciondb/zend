@@ -1246,8 +1246,8 @@ function buscaCep()
  * @param string spam id do Spam, onde o resultado da contagem ficara armazenado
  * @example cadastrarfuncionario
  */
-function limiteTxtArea(campo,spam){
-   $("#"+campo+"").limit('200', '#'+spam+''); 
+function limiteTxtArea(campo,spam,limite){  
+   $("#"+campo+"").limit(limite, '#'+spam+''); 
 }
 
 function removeCaractere(valor){

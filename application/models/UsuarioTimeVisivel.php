@@ -12,7 +12,7 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
     /***
      * Salva os usarios em um ou mais times visiveis
      * @param array $arrayIdUsuario Array com os ids dos usuarios
-     * @param array $array_id_time Array com os ids dos times
+     * @param array/lista $array_id_time Array ou lista, separada por ",", com as ids dos times
      */
     public function gravar($array_id_usuario,$array_id_time)
     {
@@ -63,12 +63,25 @@ class Application_Model_UsuarioTimeVisivel extends Application_Model_Abstract
         }
     }
     
+    
+    public function deletarPorTime($id_time)
+    {
+        try 
+        {           
+            $this->delete(array('id_time=?'=>$id_time));
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao deletar os times visiveis, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+    }
+    
     /***
      * Exibe tds os times visiveis do usuario
      * @param int $idUsuario Id do usario a ser pesquisado
      * @return Array $select->query()->fetchAll();
      */
-    public function exibir($idUsuario) {
+        public function exibir($idUsuario) {
         
         $select = $this->_dbTable->
                     select()->

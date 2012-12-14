@@ -1,5 +1,6 @@
-<h3>Cadastro de Time</h3>
+<h3>Editar Time</h3>
 <hr>
+<h4><?php echo $this->nomeTime;?></h4>
 <div id="tabs" style="width:811px;">  
     <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravatime'), null, 1); ?>" method="post">
         <ul>
@@ -9,17 +10,28 @@
         <div id="tabs-4" class="tab_content">
             <h4>Nome do Time</h4>
             <div align="center" class="form-actions">
-                <input type="text" name="titulo" id="titulo" value="" placeholder="Nome do Time">
+                <input type="text" name="titulo" id="titulo" value="<?php echo $this->arrayTime[0]['titulo'];?>" placeholder="Nome do Time">
             </div>
             <h4>Descrição do Time</h4>
             <div align="center" class="form-actions">
-                <textarea maxlength="250" name="descricao" id="descricao" placeholder="Informe a descrição do Time" cols="8" rows="8"></textarea><br>
+                <textarea maxlength="250" name="descricao" id="descricao" placeholder="Informe a descrição do Time" cols="8" rows="8"><?php echo $this->arrayTime[0]['descricao'];?></textarea><br>
                 <span style="margin-left:216px;color:#999" id="charsRight"></span>&nbsp;<font color="#999">caracteres restantes</font>
             </div>
             <h4>Líder do Time</h4>
             <div align="center" class="form-actions">
                 <select id="id_funcionario_lider" onchange="setIdLider(this.value);">
                     <option value="">::.. Selecione um Líder ..::</option>
+                    <?php
+                        $listaIdFuncionario = ",";
+                        foreach ($this->arrayFuncionario as $value) {
+                            $select = '';
+                            $listaIdFuncionario .= $value['id_funcionario'].',';
+                            
+                            if($value['id_funcionario']==$this->arrayTime[0]['id_funcionario_lider'])
+                                $select = 'selected="selected"';
+                            echo '<option value="'.$value['id_funcionario'].'" '.$select.'>'.$value['nome'].'</option>';
+                        }
+                    ?>
                 </select>
                 <a href="javascript:;" class="showToolTip" title="Os funcionários adicionados serão exibidos aqui. Adicione ao menos um para que você possa escolher o líder.">
                     <img src="<?php echo $this->baseUrl()."/public/images/sistema/help.ico"; ?>" width="20px" higth="20px">
@@ -34,13 +46,13 @@
 
             <div class="form-actions" title="Selecione uma empresa">
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" onclick="abreDialog('0');">Matriz
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" <?php if($this->arrayEmpresa[0]['id_matriz'] == 0) echo 'checked="checked"'; ?> onclick="abreDialog('0');">Matriz
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" onclick="abreDialog('1');">Filial
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" <?php if($this->arrayEmpresa[0]['id_matriz'] != 0) echo 'checked="checked"'; ?> onclick="abreDialog('1');">Filial
                 </label>
                 <br>                
-                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="::.. Selecione um tipo de Empresa ..::" maxlength="100" size="50">
+                <input disabled="disabled" name="nomeFantasia" id="nomeFantasia" type="text" value="<?php echo $this->arrayEmpresa[0]['nome_fantasia']; ?>" maxlength="100" size="50">
                 
             </div>
         </div>
@@ -84,14 +96,14 @@
         <!-- campos hidden temporarios -->
         <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
         <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
-        <input type="hidden" name="arrayIdTempFuncionarioEscolhido" id="arrayIdTempFuncionarioEscolhido" value=",">
-        <input type="hidden" name="id_empresa" id="id_empresa" value=",">
+        <input type="hidden" name="arrayIdTempFuncionarioEscolhido" id="arrayIdTempFuncionarioEscolhido" value="<?php echo $listaIdFuncionario;?>">
+        <input type="hidden" name="id_empresa" id="id_empresa" value="<?php echo $this->arrayTime[0]['id_empresa'];?>">
         
         <div id="ajax_id_funcionalidade" style="display: none"></div>
     
     </div>
     <div align="center" class="form-actions" id="salva">
-        <input type="button" class="btn btn-success" onclick="valida();" value="Gravar">
+        <input type="button" class="btn btn-success" onclick="valida();" value="Editar">
     </div>
     <div id="dialog-modal-empresa" title="Selecione uma empresa">
         <div id="empresa_time" onmouseover="setTabela('empresa_time');"></div>
@@ -123,6 +135,11 @@
         });
     })
     
+    $(document).ready(function() {
+        document.getElementById('id_setor_funcionario').value = '<?php echo $this->arrayTime[0]['id_setor']; ?>';
+        
+    });
+    
     function valida()
     {
         flag=1
@@ -149,10 +166,10 @@
         //Se validou
         if(flag)
         {   
-            //grava
-            document.forms[0].action = document.forms[0].action+'/id_funcionario_lider/'+document.getElementById('id_funcionario_lider').value;
+            //edita
+            document.forms[0].action = document.forms[0].action+'/id_funcionario_lider/'+document.getElementById('id_funcionario_lider').value+'/idTime/<?php echo $this->arrayTime[0]['id_time'] ?>';
             ajaxJQuery('tabs');
-            document.getElementById('salva').innerHTML = '<font color="green">Salvo!</font>';
+            
         }
         else
             showAlert('Atenção',textoMsgErro);
@@ -234,7 +251,7 @@
         });
     }
     
-    idLider = '';
+    idLider = '<?php echo $this->arrayTime[0]['id_funcionario_lider']?>';
     function setIdLider(idFuncLider){
         idLider = idFuncLider;
     }
@@ -273,6 +290,8 @@
     
     url = urlAjaxFiltroSCT+'/setor/1/temEvento/1/nomeSetor/id_setor_funcionario';
     ajax(url,'div_SetorFuncionrio');
+    
+    setFiltroFuncionario('',1);
     
     
 </script>

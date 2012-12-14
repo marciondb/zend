@@ -7,11 +7,13 @@ class Application_Model_Funcionario extends Application_Model_Abstract
     }
     
     /***
-     * Atualiza caso o parametro $update seja diferente de false.
+     * Grava o funcionario ou atualiza caso o parametro $update seja diferente de false.
      * @param array $parametros Array com os dados a serem gravados
-     * @param Model $_endereco Model do endereco
+     * @param Model [$_endereco] Model do endereco apenas se for salva e ou atualizar o endereco
+     * @param boolean [$update] Atualiza caso o parametro $update seja diferente de false
+     * @param string [$where] condicao
      */
-    public function gravar($parametros,$_endereco, $update = FALSE, $where = FALSE,$id_funcionario=false)
+    public function gravar($parametros,$_endereco = false, $update = FALSE, $where = FALSE,$id_funcionario=false)
     {
         $arrayFuncionario = $parametros;
         
@@ -173,6 +175,26 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         
     }
     
+    /***
+     * Pega a id do usuário passando a id do funcionário sem filtro de time.
+     * @param lista $listaIdFuncionario Lista com as ids dos funcionarios 
+     * separadas por vírgulas.
+     * @return array Array fetchAll com todas as ids dos usuários
+     * @example getIdUsuario('1,3,6')
+     */
+    public function getIdUsuarioSF($listaIdFuncionario)
+    {
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('funcionario',array('id_usuario'))->
+                    where('funcionario.id_funcionario in (' . $listaIdFuncionario . ')');
+        
+        return $select->query()->fetchAll(); 
+    }
+    
     /**
        * Exibe tds os funcionarios os quais o usuario logado deu acesso.      
        * @return Array retorna query()->fetchAll()
@@ -283,7 +305,8 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1')->
                     where('funcionario.id_funcionario in (' . $listaIdFuncionario . ')');
-        return $select->query()->fetchAll(); 
+        return $select;
+        //return $select->query()->fetchAll(); 
     }
     
     
