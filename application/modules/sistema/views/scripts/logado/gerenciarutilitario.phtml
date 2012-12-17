@@ -1,0 +1,60 @@
+<h3>Gerenciar <?php echo $this->nomeUtilitario; ?></h3>
+<hr>
+<form name="formulario" action="" method="post">
+    <div class="modal_min_auto_size" id="ajax_utilitario">
+    
+        
+     </div>
+    <hr>
+    
+        
+</form>
+<div id="temp"></div>
+
+<script type="text/javascript">      
+    
+    //set o "selectOrAdd" para selecionar
+    selectOrAdd = 1;
+    
+    //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
+    // ajax eh excudado
+    function setPaginator(pagina,query)
+    {  
+        if(tabelas=='empresa')
+        {    
+            url = urlAjaxEmpresa+'/selecionar/1/pagina/'+pagina+query;
+            ajax(url,'ajax_empresa');
+        }
+         
+    }
+    
+    <?php
+        $aux = '';
+        
+        if($this->editar)
+          $aux .= '/editar/1';
+        
+        if($this->deletar)
+          $aux .= '/deletar/1' 
+    ?>
+    
+    
+    function deletar(idTabela)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletarutilitario','idUtilitario'=>$this->idUtilitario,'atualizar'=>true), null, 1); ?>/idTabela/'+idTabela;
+        ajax(url,'temp');
+        
+        url = urlAjaxUtilitario+'<?php echo $aux; ?>'+'/idUtilitario/<?php echo $this->idUtilitario; ?>';
+        ajax(url,'ajax_utilitario');
+        
+    }            
+    
+    url = urlAjaxUtilitario+'<?php echo $aux; ?>'+'/idUtilitario/<?php echo $this->idUtilitario; ?>';
+    ajax(url,'ajax_utilitario');
+    
+    
+        
+    
+       
+    
+</script>

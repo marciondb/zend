@@ -1,0 +1,45 @@
+<h3>Cadastro de <?php echo $this->nomeUtilitario; ?></h3>
+<hr>
+<div id="area">
+    <form name="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravautilitario','idUtilitario'=>$this->idUtilitario), null, 1); ?>" method="post">
+       
+        <div class="modal_filtro">
+            <h4>Nome</h4>
+            <div align="center" class="form-actions">
+                <input name="titulo" id="titulo" value="" placeholder="Nome">
+            </div>
+        </div>  
+    
+        <div align="center" class="form-actions" id="salva">
+            <input type="button" class="btn btn-success" onclick="valida();" value="Salvar">
+        </div>        
+    </form>
+</div>    
+
+<script>
+    
+    function valida()
+    {
+        flag=1
+        textoMsgErro = '';
+
+        if(document.getElementById('titulo').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Preencha o campo nome!<br>';
+        }
+        
+        //Se validou
+        if(flag)
+        {            
+            
+            //grava
+            ajaxJQuery('area');
+            document.getElementById('salva').innerHTML = '<font color="green">Salvo!</font>';
+        }
+        else
+            showAlert('Atenção.',textoMsgErro);
+        
+    }    
+    
+</script>    

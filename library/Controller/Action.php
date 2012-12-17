@@ -27,7 +27,12 @@ abstract class Controller_Action extends Zend_Controller_Action {
     public function possuiPermissao($action)
     {
         $nomeDaAcao = $action;
-      
+        
+        if($action=="cadastrarutilitario" || $action=="gerenciarutilitario" || $action=="editarutilitario" || $action=="deletarutilitario")
+            $nomeDaAcao = $nomeDaAcao.'/idUtilitario/'.$this->getRequest()->getParam('idUtilitario');
+        
+        
+        //echo "<script>alert('".$nomeDaAcao."');</script>";
         $flag=0;
         foreach ($this->_permissoes as $value) 
             if(($value['action']==$nomeDaAcao))

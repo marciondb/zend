@@ -1,9 +1,9 @@
 <?php
 
-class Application_Model_RamoEmpresa extends Application_Model_Abstract
+class Application_Model_Area extends Application_Model_Abstract
 {
     public function __construct() {
-        $this->_dbTable = new Application_Model_DbTable_RamoEmpresa();
+        $this->_dbTable = new Application_Model_DbTable_Area();
     }
     
     /***
@@ -16,13 +16,13 @@ class Application_Model_RamoEmpresa extends Application_Model_Abstract
         {
             try
             {                
-                $id_ramo_empresa = $this->save($parametros);    
+                $id_area = $this->save($parametros);    
                 
-                return (int)$id_ramo_empresa;
+                return (int)$id_area;
             }
             catch(Exception $e)
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar o ramo, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                ZendUtils::transmissorMsg('Erro ao cadastrar a Área, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             }
         } else
         {
@@ -33,22 +33,22 @@ class Application_Model_RamoEmpresa extends Application_Model_Abstract
             }
             catch(Exception $e)
             {
-                ZendUtils::transmissorMsg('Erro ao atualizar o ramo. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                ZendUtils::transmissorMsg('Erro ao atualizar a área. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
                 return $e->getMessage();
             }
         }
         
     }
     
-    public function deletar($id_ramo_empresa)
+    public function deletar($id_area)
     {
         try 
         {       
-            $this->delete(array('id_ramo_empresa=?'=>$id_ramo_empresa));
+            $this->delete(array('id_area=?'=>$id_area));
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao deletar o ramo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao deletar a área, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
     
@@ -70,9 +70,9 @@ class Application_Model_RamoEmpresa extends Application_Model_Abstract
             $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('ramo_empresa',array('id_ramo_empresa','titulo'));
+                    from('area',array('id_area','titulo'));
             
-            $select->order('ramo_empresa.titulo');
+            $select->order('area.titulo');
             //ZendUtils::transmissorMsg($select,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
@@ -80,7 +80,7 @@ class Application_Model_RamoEmpresa extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao selecionar o ramo, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao selecionar a Área, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
         

@@ -11,6 +11,7 @@ urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
 urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
 urlAjaxFiltroSCT = '/'+host+'/sistema/logado/ajaxfiltrosct';
 urlAjaxValidaUsuario = '/'+host+'/sistema/logado/ajaxvalidausuario';
+urlAjaxUtilitario = '/'+host+'/sistema/logado/ajaxutilitario';
 
 //http://www.browser-update.org/pt/
 //Browser-Update.org - Informe o seu visitante sobre atualizações do navegador

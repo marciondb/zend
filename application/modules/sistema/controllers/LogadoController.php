@@ -23,6 +23,8 @@ class Sistema_LogadoController extends Controller_Action
     protected $_ramo_empresa;
     protected $_operadora_celular;
     protected $_categoria;
+    protected $_area;
+    protected $_foco;
     
     
     public function init()
@@ -48,11 +50,15 @@ class Sistema_LogadoController extends Controller_Action
         $this->_funcionario_tipo = new Application_Model_FuncionarioTipo();
         $this->_setor = new Application_Model_Setor();
         $this->_cargo = new Application_Model_Cargo();
+        $this->_familia = new Application_Model_Familia();
         $this->_usuario = new Application_Model_Usuario();
         $this->_ramo_empresa = new Application_Model_RamoEmpresa();
         $this->_operadora_celular = new Application_Model_OperadoraCelular();
         $this->_categoria = new Application_Model_CategoriaEmpresa();
         $this->_lotacao = new Application_Model_Lotacao();
+        $this->_area = new Application_Model_Area();
+        $this->_foco = new Application_Model_Foco();
+        
         
         //*******************************************************************
         //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
@@ -151,6 +157,60 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('listaIdEmpresa', 0),
                                                 $this->_request->getParam('listaIdTimesEscolhidos', 0),
                                                 $this->_request->getParam('remover', 0));
+    }
+    
+    /***
+     * Toda vez que tiver a necessidade de exibir algum utilitario, esta action deverá
+     * ser chamada
+     * action generica!
+     */
+    public function ajaxutilitarioAction()
+    {
+        /*if(!$this->getRequest()->isXmlHttpRequest())
+            $this->_redirect ("sistema/logado");*/
+        $this->_helper->layout->disableLayout();
+        
+        
+        $this->view->editar     = $this->_request->getParam('editar', false);
+        $this->view->deletar    = $this->_request->getParam('deletar', false);
+        $this->view->idUtilitario    = $this->_request->getParam('idUtilitario', false);
+        
+        $parametros = $this->_getAllParams();
+        
+        $idUtilitario = (int)$parametros['idUtilitario'];
+        
+        if($idUtilitario==1){
+            $this->view->arrayUtilitario = $this->_area->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'area';
+        }    
+        if($idUtilitario==2){
+            $this->view->arrayUtilitario = $this->_cargo->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'cargo';
+        }   
+        if($idUtilitario==3){
+            $this->view->arrayUtilitario = $this->_categoria->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'categoria_empresa';
+        }   
+        if($idUtilitario==4){
+            $this->view->arrayUtilitario = $this->_familia->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'familia';
+        }   
+        if($idUtilitario==5){
+            $this->view->arrayUtilitario = $this->_funcionario_tipo->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'funcionario_tipo';
+        }   
+        if($idUtilitario==6){
+            $this->view->arrayUtilitario = $this->_ramo_empresa->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'ramo_empresa';
+        }   
+        if($idUtilitario==7){
+            $this->view->arrayUtilitario = $this->_setor->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'setor';
+        }   
+        if($idUtilitario==8){
+            $this->view->arrayUtilitario = $this->_foco ->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'foco';
+        }   
     }
     
     /***
@@ -560,6 +620,45 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
+     * grava o utilitario
+     */
+    public function ajaxgravautilitarioAction() {
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        $teste = 0;
+        
+        $idUtilitario = (int)$parametros['idUtilitario'];
+        
+        $idTabela = '';
+        if(isset($parametros['idTabela']))
+            $idTabela = $parametros['idTabela'];
+        
+        if($idUtilitario==1)
+            $teste = $this->_area->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_area='.$idTabela);
+        if($idUtilitario==2)
+            $teste = $this->_cargo->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_cargo='.$idTabela);
+        if($idUtilitario==3)
+            $teste = $this->_categoria->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_categoria_empresa='.$idTabela);
+        if($idUtilitario==4)
+            $teste = $this->_familia->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_familia='.$idTabela);
+        if($idUtilitario==5)
+            $teste = $this->_funcionario_tipo->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_funcionario_tipo='.$idTabela);
+        if($idUtilitario==6)
+            $teste = $this->_ramo_empresa->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_ramo_empresa='.$idTabela);
+        if($idUtilitario==7)
+            $teste = $this->_setor->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_setor='.$idTabela);
+        if($idUtilitario==8)
+            $teste = $this->_foco ->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_foco='.$idTabela);
+        
+        //$teste = $this->_area->gravar(array('titulo'=>$parametros['titulo']));
+        //se houver erro, passa para a view.
+        //ZendUtils::transmissorMsg(print_r($parametros).var_dump($teste),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        if(is_string($teste))
+            $this->view->erros .= " ".$teste;
+        
+    }
+    
+    /***
      * Carrega a tela cadastro controle de acesso
      */
     public function cadastrarcontroleacessoAction()
@@ -827,6 +926,144 @@ class Sistema_LogadoController extends Controller_Action
         $this->_time->deletar($idTime);
         $this->_usuario_time_visivel->deletarPorTime($idTime);
         $this->_funcionario->gravar(array('id_time'=>0), false, true, 'id_time='.$idTime);
+    }
+    
+    /***
+     * Cadastrar Utilitarios: Area, cargo, categoria_empresa,familia, foco, funcionario_tipo,
+     * ramo_empresa e setor
+     */
+    public function cadastrarutilitarioAction() {
+        
+        $parametros = $this->_getAllParams();
+        
+        $idUtilitario = $parametros['idUtilitario'];
+        
+        $this->view->idUtilitario = $idUtilitario;
+        
+        if($idUtilitario==1)
+            $this->view->nomeUtilitario = 'Área';
+        if($idUtilitario==2)
+            $this->view->nomeUtilitario = 'Cargo';
+        if($idUtilitario==3)
+            $this->view->nomeUtilitario = 'Categoria';
+        if($idUtilitario==4)
+            $this->view->nomeUtilitario = 'Família';
+        if($idUtilitario==5)
+            $this->view->nomeUtilitario = 'Tipo';
+        if($idUtilitario==6)
+            $this->view->nomeUtilitario = 'Ramo';
+        if($idUtilitario==7)
+            $this->view->nomeUtilitario = 'Setor';
+        if($idUtilitario==8)
+            $this->view->nomeUtilitario = 'Foco';
+        
+    }
+    /***
+     * Cadastrar Utilitarios: Area, cargo, categoria_empresa,familia, foco, funcionario_tipo,
+     * ramo_empresa e setor
+     */
+    public function editarutilitarioAction() {
+        
+        $parametros = $this->_getAllParams();
+        
+        $idUtilitario = $parametros['idUtilitario'];
+        
+        $this->view->idUtilitario = $idUtilitario;
+        $this->view->idTabela = $parametros['idTabela'];
+        $this->view->titulo = $parametros['titulo'];
+        
+        if($idUtilitario==1)
+            $this->view->nomeUtilitario = 'Área';
+        if($idUtilitario==2)
+            $this->view->nomeUtilitario = 'Cargo';
+        if($idUtilitario==3)
+            $this->view->nomeUtilitario = 'Categoria';
+        if($idUtilitario==4)
+            $this->view->nomeUtilitario = 'Família';
+        if($idUtilitario==5)
+            $this->view->nomeUtilitario = 'Tipo';
+        if($idUtilitario==6)
+            $this->view->nomeUtilitario = 'Ramo';
+        if($idUtilitario==7)
+            $this->view->nomeUtilitario = 'Setor';
+        if($idUtilitario==8)
+            $this->view->nomeUtilitario = 'Foco';
+        
+    }
+    
+    /***
+     * Gerenciar utilitario
+     */
+    public function gerenciarutilitarioAction() {
+        $parametros = $this->_getAllParams();
+        $idUtilitario = $parametros['idUtilitario'];
+        $arrayLED = $this->getLED('gerenciarutilitario/idUtilitario/'.$idUtilitario);
+        
+        $this->view->idUtilitario = $idUtilitario;        
+        $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
+        $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+        
+        if($idUtilitario==1)
+            $this->view->nomeUtilitario = 'Área';
+        if($idUtilitario==2)
+            $this->view->nomeUtilitario = 'Cargo';
+        if($idUtilitario==3)
+            $this->view->nomeUtilitario = 'Categoria';
+        if($idUtilitario==4)
+            $this->view->nomeUtilitario = 'Família';
+        if($idUtilitario==5)
+            $this->view->nomeUtilitario = 'Tipo';
+        if($idUtilitario==6)
+            $this->view->nomeUtilitario = 'Ramo';
+        if($idUtilitario==7)
+            $this->view->nomeUtilitario = 'Setor';
+        if($idUtilitario==8)
+            $this->view->nomeUtilitario = 'Foco';
+        
+        
+    }
+    
+    /***
+     * Deletar utilitario
+     */
+    public function deletarutilitarioAction() {
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        $idUtilitario = $parametros['idUtilitario'];
+        $idTabela = $parametros['idTabela'];
+        
+        if($idUtilitario==1){
+            $this->_area->deletar($idTabela);
+            $this->view->tabela = 'area';
+        }    
+        if($idUtilitario==2){
+            $this->_cargo->deletar($idTabela);
+            $this->view->tabela = 'cargo';
+        }   
+        if($idUtilitario==3){
+            $this->_categoria->deletar($idTabela);
+            $this->view->tabela = 'categoria_empresa';
+        }   
+        if($idUtilitario==4){
+            $this->_familia->deletar($idTabela);
+            $this->view->tabela = 'familia';
+        }   
+        if($idUtilitario==5){
+            $this->_funcionario_tipo->deletar($idTabela);
+            $this->view->tabela = 'funcionario_tipo';
+        }   
+        if($idUtilitario==6){
+            $this->_ramo_empresa->deletar($idTabela);
+            $this->view->tabela = 'ramo_empresa';
+        }   
+        if($idUtilitario==7){
+            $this->_setor->deletar($idTabela);
+            $this->view->tabela = 'setor';
+        }   
+        if($idUtilitario==8){
+            $this->_foco ->deletar($idTabela);
+            $this->view->tabela = 'foco';
+        } 
     }
     
     public function indexAction()

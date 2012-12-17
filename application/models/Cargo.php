@@ -10,104 +10,77 @@ class Application_Model_Cargo extends Application_Model_Abstract
      * Atualiza caso o parametro $update seja diferente de false.
      * @param array $parametros Array com os dados a serem gravados
      */
-    public function gravar($parametros, $update = FALSE)
+    public function gravar($parametros, $update = FALSE,$where = false)
     {
-        $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
-                        "nome_fantasia" => $parametros['nome_fantasia'],
-                        "razao_social" => $parametros['razao_social'],
-                        "apelido" => $parametros['apelido'],
-                        "cnpj" => $parametros['cnpj'],
-                        "inscricao_estadual" => $parametros['inscricao_estadual'],
-                        "telefone_1" => $parametros['dddTel1'].$parametros['telefone_1'],
-                        "telefone_2" => $parametros['dddTel2'].$parametros['telefone_2'],
-                        "celular_1" => $parametros['dddCel1'].$parametros['celular_1'],
-                        "celular_2" => $parametros['dddCel2'].$parametros['celular_2'],
-                        "fax_1" => $parametros['dddFax1'].$parametros['fax_1'],
-                        "fax_2" => $parametros['dddFax2'].$parametros['fax_2'],
-                        "email" => $parametros['email'],
-                        "site" => $parametros['site'],
-                        "orkut" => $parametros['orkut'],
-                        "msn" => $parametros['msn'],
-                        "twitter" => $parametros['twitter'],
-                        "facebook" => $parametros['facebook'],
-                        "skype" => $parametros['skype'],
-                        "nome_contato_1" => $parametros['nome_contato_1'],
-                        "tels_contato_1" => $parametros['dddTelTemp1'].$parametros['tels_contato_1'],
-                        "cel_contato_1" => $parametros['dddCelTemp1'].$parametros['cel_contato_1'],
-                        "id_operadora_celular_contato_1" => $parametros['id_operadora_celular_contato_1'],
-                        "email_contato_1" => $parametros['email_contato_1'],
-                        "nome_contato_2" => $parametros['nome_contato_2'],
-                        "tels_contato_2" => $parametros['dddTelTemp2'].$parametros['tels_contato_2'],
-                        "cel_contato_2" => $parametros['dddCelTemp2'].$parametros['cel_contato_2'],
-                        "id_operadora_celular_contato_2" => $parametros['id_operadora_celular_contato_2'],
-                        "email_contato_2" => $parametros['email_contato_2'],
-                        "numero_de_funcionario" => $parametros['numero_de_funcionario'],
-                        "ativo" => $parametros['ativo']
-                        );            
+        if(!$update)
+        {
             try
-            {
-                $id_empresa = $this->save($dataEmpresa);
-            
-                $dataEndereco = array("id_empresa" => $id_empresa,
-                            "cep" => $parametros['cep'],
-                            "rua_av" => $parametros['rua_av'],
-                            "numero" => $parametros['numero'],
-                            "complemento" => $parametros['complemento'],
-                            "bairro" => $parametros['bairro'],
-                            "cidade" => $parametros['cidade'],
-                            "estado" => $parametros['estado'],
-                            "referencia" => $parametros['referencia']);
-
-                $_endereco->save($dataEndereco);   
+            {                
+                $id_cargo = $this->save($parametros);    
                 
-                ZendUtils::transmissorMsg('Inserido com sucesso!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-                
-                return $id_empresa;
+                return (int)$id_cargo;
             }
             catch(Exception $e)
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                ZendUtils::transmissorMsg('Erro ao cadastrar o cargo, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             }
+        } else
+        {
+            try
+            {   
+                //ZendUtils::transmissorMsg(print_r($parametros).$where,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                $this->save($parametros,true,$where);
+            }
+            catch(Exception $e)
+            {
+                ZendUtils::transmissorMsg('Erro ao atualizar o cargo. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                return $e->getMessage();
+            }
+        }
         
     }
     
+    public function deletar($id_cargo)
+    {
+        try 
+        {       
+            $this->delete(array('id_cargo=?'=>$id_cargo));
+        }
+        catch(Exception $e)
+        {
+            ZendUtils::transmissorMsg('Erro ao deletar o cargo, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        }
+    }
+    
     /**
-       * Exibe tds as empresas visiveis.      
+       * Exibe tds os time visiveis do usuario logado.
        * @return Array retorna query()->fetchAll()
-       * @param  Boolean $selecionar  : coloca um elemento checkbox para selecionar a empresa
-       * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
-       * @param  Boolean $deletar : coloca um elemento um "botao" para pode deletar
+       * @param  int $pagina  : pagina atual, para a paginacao
+       * @param  lista $listaIdEmpresa : lista com as id's das empresas a serem filtradas
+       * @param  lista $listaIdTimesEscolhidos : lista com as id's dos times a serem filtradas.
+       * @param  Booelan $remover: Se False, time.id_time not in (' . $listaIdTimesEscolhidos . ')');
+       * se True time.id_time in (' . $listaIdTimesEscolhidos . ')');
        * @version 1.0
-       * @author Márcio & Marco
      */
     public function exibir($pagina)
-    {           
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+    {                  
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
         
         try{
             $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
-                    from('empresa',array('id_empresa','razao_social','nome_fantasia','apelido','cnpj','telefone_1','telefone_2'))->
-                    join('usuario_empresa_visivel', 'empresa.id_empresa = usuario_empresa_visivel.id_empresa',null)->
-                    where('usuario_empresa_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
+                    from('cargo',array('id_cargo','titulo'));
             
-            if($cnpj)
-            {
-                $cnpj = str_replace(".","",$cnpj);
-		$cnpj = str_replace("-","",$cnpj);
-		$cnpj = str_replace("/","",$cnpj);
-                $select->where('empresa.cnpj = ? ',$cnpj);
-            }
-            
+            $select->order('cargo.titulo');
+            //ZendUtils::transmissorMsg($select,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             $paginator = Zend_Paginator::factory( $select );
             $paginator->setCurrentPageNumber($pagina);
             $paginator->setItemCountPerPage($perPage);
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao selecionar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao selecionar o cargo, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
         
         
@@ -118,7 +91,8 @@ class Application_Model_Cargo extends Application_Model_Abstract
 
     protected function _validarDados(array $data){
         // Validação
-        //$erros = "";        
+        //$erros = "";
+        
         
         return true;
     }
