@@ -298,9 +298,10 @@
             <td height="26" align="left">
                     <label for="cep">CEP</label>
             </td>
-        <td align="left">
-            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep();"/>&nbsp;
-            <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick="buscaCep();"/></td>
+            <td align="left">
+                <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep('funcionario');"/>&nbsp;
+                <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick="buscaCep('funcionario');"/>
+            </td>
         </tr>
         <tr>
             <td height="26" align="left">
@@ -609,12 +610,12 @@
 
             </td>
         </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input name="btnCadastrar" type="button" id="btnCadastrar" value="Cadastrar" class="btn btn-success" onclick="valida();"/>&nbsp;</td>
-        </tr>
+        
         
     </table>
+    <div align="center" class="form-actions" id="salva">
+        <input type="button" class="btn btn-success" onclick="valida();" value="Gravar">
+    </div>
     <div id="dialog-modal-empresa" title="Selecione uma empresa">
         <div id="ajax_empresa" onmouseover="setTabela('empresa');"></div>
     </div>
@@ -844,8 +845,10 @@
         }
         
         //Se validou
-        if(flag)
-            ajaxJQuery('funcionario');
+        if(flag){
+            //ajaxJQuery('funcionario');
+            document.getElementById('salva').innerHTML = '<font color="green">Salvo!</font>';
+        }    
         else
             showAlert('Atenção','Verifique no formulário os campos indicados.');
     }

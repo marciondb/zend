@@ -13,8 +13,8 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
      * @param array $array_id_usuario Array com as ids dos usuarios que verao as empresas
      * @param array/lista $array_id_empresa Array ou lista de ids concatenadas por "," com as ids das empresas
      */
-    public function gravar($array_id_usuario,$array_id_empresa){
-        
+    public function gravar($array_id_usuario,$array_id_empresa,$validar = true){
+        //ZendUtils::transmissorMsg('id_empresa:'.$array_id_empresa['id_empresa'],  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         if(!is_array($array_id_empresa))
         {
             $array_id_empresa_aux = explode(',', $array_id_empresa);
@@ -26,20 +26,23 @@ class Application_Model_UsuarioEmpresaVisivel extends Application_Model_Abstract
                 $cont++;
             }
         }    
-        
         try 
         {
             foreach ($array_id_usuario as $value) 
             {
                 foreach ($array_id_empresa as $value2) 
                 {
-                    $this->save(array('id_usuario'=>$value['id_usuario'],'id_empresa'=>$value2['id_empresa'],'id_usuario_pai'=>$this->_id_usuario));
+                    //ZendUtils::transmissorMsg('id_empresa:'.$value2.'id_usuario:'.$value['id_usuario'],  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                    if($validar)
+                        $this->save(array('id_usuario'=>$value['id_usuario'],'id_empresa'=>$value2['id_empresa'],'id_usuario_pai'=>$this->_id_usuario));
+                    else
+                        $this->_insert(array('id_usuario'=>$value['id_usuario'],'id_empresa'=>$value2,'id_usuario_pai'=>$this->_id_usuario));
                 }
             }
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao gravar a empresa visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            //ZendUtils::transmissorMsg('Erro ao gravar a empresa visivel, favor contactar Criweb<br>'.$e,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             return $e->getMessage();
         }    
     }

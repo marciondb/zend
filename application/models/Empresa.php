@@ -13,6 +13,9 @@ class Application_Model_Empresa extends Application_Model_Abstract
      */
     public function gravar($parametros,$_endereco, $update = FALSE)
     {
+        //ZendUtils::transmissorMsg('entrou!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+
+        
         $dataEmpresa = array("id_matriz" => $parametros['id_matriz'],
                         "nome_fantasia" => $parametros['nome_fantasia'],
                         "razao_social" => $parametros['razao_social'],
@@ -22,7 +25,9 @@ class Application_Model_Empresa extends Application_Model_Abstract
                         "telefone_1" => $parametros['dddTel1'].$parametros['telefone_1'],
                         "telefone_2" => $parametros['dddTel2'].$parametros['telefone_2'],
                         "celular_1" => $parametros['dddCel1'].$parametros['celular_1'],
+                        "id_operadora_celular" => $parametros['id_operadora_celular'],
                         "celular_2" => $parametros['dddCel2'].$parametros['celular_2'],
+                        "id_operadora_celular2" => $parametros['id_operadora_celular2'],
                         "fax_1" => $parametros['dddFax1'].$parametros['fax_1'],
                         "fax_2" => $parametros['dddFax2'].$parametros['fax_2'],
                         "email" => $parametros['email'],
@@ -38,10 +43,10 @@ class Application_Model_Empresa extends Application_Model_Abstract
                         "id_operadora_celular_contato_1" => $parametros['id_operadora_celular_contato_1'],
                         "email_contato_1" => $parametros['email_contato_1'],
                         "nome_contato_2" => $parametros['nome_contato_2'],
+                        "email_contato_2" => $parametros['email_contato_2'],
                         "tels_contato_2" => $parametros['dddTelTemp2'].$parametros['tels_contato_2'],
                         "cel_contato_2" => $parametros['dddCelTemp2'].$parametros['cel_contato_2'],
                         "id_operadora_celular_contato_2" => $parametros['id_operadora_celular_contato_2'],
-                        "email_contato_2" => $parametros['email_contato_2'],
                         "numero_de_funcionario" => $parametros['numero_de_funcionario'],
                         "ativo" => $parametros['ativo']
                         );            
@@ -51,7 +56,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
             
                 $dataEndereco = array("id_empresa" => $id_empresa,
                             "cep" => $parametros['cep'],
-                            "rua_av" => $parametros['rua_av'],
+                            "tipo_logradouro" => $parametros['tipo_logradouro'],
                             "numero" => $parametros['numero'],
                             "complemento" => $parametros['complemento'],
                             "bairro" => $parametros['bairro'],
@@ -130,6 +135,20 @@ class Application_Model_Empresa extends Application_Model_Abstract
         
         return $paginator;
         
+    }
+    
+    public function validaCnpj($nomeCampo,$valorCampo) {
+        
+        $select = $this->_dbTable->
+                select()->
+                setIntegrityCheck(false)->
+                from('empresa')->
+                where($nomeCampo.' = ?',$valorCampo);
+
+        if(count($select->query()->fetchAll()))
+            return 'Já existe uma empresa cadastrada para este '.strtoupper($nomeCampo).'!';
+        else
+            return "";
     }
 
 

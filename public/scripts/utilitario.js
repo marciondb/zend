@@ -11,6 +11,7 @@ urlAjaxGrupo = '/'+host+'/sistema/logado/ajaxusuariogrupo';
 urlAjaxCarregaMenuTree = '/'+host+'/sistema/logado/ajaxcarregamenutree';
 urlAjaxFiltroSCT = '/'+host+'/sistema/logado/ajaxfiltrosct';
 urlAjaxValidaUsuario = '/'+host+'/sistema/logado/ajaxvalidausuario';
+urlAjaxValidaEmpresa = '/'+host+'/sistema/logado/ajaxvalidaempresa';
 urlAjaxUtilitario = '/'+host+'/sistema/logado/ajaxutilitario';
 
 //http://www.browser-update.org/pt/
@@ -1027,8 +1028,8 @@ function ValidarCPF(Objcpf){
 		if( (s == '11111111111') || (s == '22222222222') || (s == '33333333333') || (s == '44444444444') || (s == '55555555555') || (s == '66666666666') || (s == '77777777777') || (s == '88888888888') || (s == '99999999999') || (s == '00000000000') )
 		{
 			showAlert('Erro','CPF Invalido!');
-			Objcpf.select();
-				
+			//Objcpf.select();
+			return false; 	
 		}
 	
 	}
@@ -1063,9 +1064,12 @@ function ValidarCNPJ(ObjCnpj){
         if(((dig1*10)+dig2) != digito)
         {
             showAlert('Erro','CNPJ Invalido!');
-            ObjCnpj.select();
+            //ObjCnpj.select();
+            return false;
         }
-    }        
+    }
+    
+    return true;
 }
 
 function ValidaCpfCnpj(data) 
@@ -1213,9 +1217,12 @@ function habilitaSelect(atual,proximo,focu)
 }
 
 
-function buscaCep()
-{
-    divAguarde(true, 'funcionario','Aguarde, pesquisando o CEP...');
+function buscaCep(div)
+{   
+    if(document.getElementById('cep').value == "")
+        return true;
+        
+    divAguarde(true, div,'Aguarde, pesquisando o CEP...');
     $.getScript("http://cep.republicavirtual.com.br/web_cep.php?formato=javascript&cep="+$("#cep").attr('value'), function(){
 	
 				
@@ -1227,7 +1234,7 @@ function buscaCep()
                 $("#cidade").val(unescape(resultadoCEP["cidade"]));
                 $("#estado").val(unescape(resultadoCEP["uf"]));
                 $("#numero").focus();
-                divAguarde(false, 'funcionario');
+                divAguarde(false, div);
             }
         }
         else
@@ -1236,7 +1243,7 @@ function buscaCep()
             $("#bairro").val("");	
             $("#cidade").val("");
             $("#estado").val("RJ");
-            divAguarde(false, 'funcionario');
+            divAguarde(false, div);
         }
     });
 }

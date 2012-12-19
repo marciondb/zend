@@ -1,8 +1,9 @@
 <h3>Cadastro de Empresas</h3>
+<i class="icon-asterisk"></i> Campos obrigatórios.
 <hr />
-<form novalidate="novalidate" name="formulario" id="formulario" class="form-horizontal" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarempresa'), null, 1); ?>" method="post">
+<div id="empresa">
+<form novalidate="novalidate" name="formulario" id="formulario" class="form-horizontal" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravaempresa'), null, 1); ?>" method="post">
 
-    <input type="hidden" name="id_matriz" id="id_matriz" value="0" />
     <table  width="100%" height="1318" align="center">
         <tr>
             <td width="30%" align="left">
@@ -10,11 +11,12 @@
             </td>
             <td width="70%" align="left">
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" >Matriz
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" checked="checked" onclick="document.getElementById('nome_matriz').style.display = 'none';document.getElementById('id_matriz').value=0;tipoMatriz();">Matriz
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" >Filial
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" onclick="abreDialog(0,1);">Filial
                 </label>
+                <p id="p_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
                 <!-- Div do AJAX´s-->
 
                 <div id="div_tipoEmpresa" class="">
@@ -31,6 +33,7 @@
             </td>
             <td align="left">
                 <input tabindex="3" type="text" name="nome_fantasia" id="nome_fantasia" value="" maxlength="100" size="50">
+                <p id="p_nome_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
         <tr>
@@ -39,13 +42,15 @@
             </td>
             <td align="left">
                 <input tabindex="4" type="text" name="razao_social" id="razao_social" value="" maxlength="100" size="50">
+                <p id="p_razao_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
-        <tr>
+        <tr id="nome_matriz">
             <td align="left">
-                <div id="nomeMatrizDiv">Nome da Matriz:</div></td>
+                <div id="nomeMatrizDiv">Nome da Matriz:</div>
+            </td>
             <td align="left">
-                <div id="nomeMatrizDiv1"><input type="text" name="nomeMatriz" id="nomeMatriz" tabindex="5" value="" size="50" maxlength="100"></div>
+                <div id="nomeMatrizDiv1"><input type="text" name="nomeMatriz" id="nomeMatriz" tabindex="5" value="" size="50" maxlength="100" readonly="readonly"></div>
             </td>
         </tr>            
         <tr>
@@ -74,9 +79,12 @@
             </td>
         </tr>
         <tr>
-            <td align="left"><label for="cnpj" id="cnpj">CNPJ.:</label></td>
             <td align="left">
-                <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" apelido size="50" maxlength="18" />
+                <label for="cnpjCpf" id="cpfCnpj">CNPJ</label>                
+            </td>
+            <td align="left">
+                    <input tabindex="6" name="cnpj" type="text" id="cnpj" value="" size="50" maxlength="18" onkeyup="MascaraCpfCnpj(this,event);" onblur="checaCnpj(this.value)"/>
+                    <p id="p_cnpj" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
         <tr>
@@ -96,15 +104,17 @@
             <td height="26" align="left">
                     <label for="cep">CEP</label>
             </td>
-        <td align="left">
-            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" />&nbsp;<input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" /></td>
+            <td align="left">
+                <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep('empresa');"/>&nbsp;
+                <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick='buscaCep("empresa");'/>
+            </td>
         </tr>
         <tr>
             <td height="26" align="left">
                     <label for="endereco">Endereço</label>
             </td>
             <td align="left">
-                <input tabindex="22" name="endereco" type="text" id="endereco" maxlength="100" size="28" value="" />
+                <input tabindex="22" name="tipo_logradouro" type="text" id="tipo_logradouro" maxlength="100" size="28" value="" />
                 Número:
                 <input tabindex="23" name="numero" type="text" id="numero" value="" style="width:50px" maxlength="10" />
             </td>
@@ -173,9 +183,9 @@
                 <label for="dddTel">Telefone 1</label>
             </td>
             <td align="left">
-                <input tabindex="11" name="dddTel1" id="dddTel1" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
-                <input name="telefone_1" type="text" id="telefone_1"  value="" size="13" maxlength="9" />
-                <script>// coloar no editar xD selectHabilita('telefone1')</script>
+                <input tabindex="11" name="dddTel1" id="dddTel1" style="width:30px" type="text" value="" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefone_1');"/>&nbsp;
+                <input name="telefone_1" type="text" id="telefone_1"  value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddTel2')"/>
+                
                 &nbsp;
             </td>
         </tr>
@@ -184,8 +194,8 @@
                 <label for="dddTel">Telefone 2</label>
             </td>
             <td align="left">
-                <input tabindex="19" name="dddTel2" id="dddTel2" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
-                <input name="telefone_2" type="text" id="telefone_2"  value="" size="13" maxlength="9" />
+                <input tabindex="19" name="dddTel2" id="dddTel2" style="width:30px" type="text" value="" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefone_2');"/>&nbsp;
+                <input name="telefone_2" type="text" id="telefone_2"  value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCel1')"/>
                 <script>// coloar no editar xD selectHabilita('telefone2')</script>
                 &nbsp;
             </td>
@@ -195,8 +205,8 @@
                     <label for="dddTelTemp1">Celular 1</label>
             </td>
             <td align="left">
-                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
-                    <input name="celular_1" type="text" id="celular1" value="" size="13" maxlength="9" />
+                    <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular_1');"/>&nbsp;
+                    <input name="celular_1" type="text" id="celular_1" value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular')"/>
                     <script>// coloar no editar xD selectHabilita('celular1')</script>
                 &nbsp;Operadora:
 
@@ -220,12 +230,12 @@
                     <label for="dddTelTemp2">Celular 2</label>
             </td>
             <td align="left">
-                    <input tabindex="21" name="dddCel2" id="dddCel12"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
-                    <input name="celular_2" type="text" id="celular2" value="" size="13" maxlength="9" />
-                    <script>// coloar no editar xD selectHabilita('celular2')</script>
+                    <input tabindex="21" name="dddCel2" id="dddCel12"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular_2');"/>&nbsp;
+                    <input name="celular_2" type="text" id="celular_2" value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular2')"/>
+                    
                 &nbsp;Operadora:
 
-                <select  name="id_operadora_celular" id="id_operadora_celular" style="width:220px">
+                <select  name="id_operadora_celular2" id="id_operadora_celular2" style="width:220px">
                     <option value="">::.. Selecione uma Operadora ..::</option>
                                 <?php
                                 foreach ($this->operadoras as $operadora){
@@ -237,7 +247,7 @@
 
 
                 </select>
-                <script>// coloar no editar xD selectHabilita('celular2')selectHabilita('idOperadora2')</script>
+                
             </td>
         </tr>
         <tr>
@@ -245,8 +255,8 @@
                 <label for="dddFax1">Fax1</label>
             </td>
             <td align="left">
-                <input tabindex="22" name="dddFax1" id="dddFax1" id="dddFax1" maxlength="2" value="" type="text"  style="width:30px"  />&nbsp;
-                <input name="fax_1" type="text" id="fax_1" value="" size="13" maxlength="9" />
+                <input tabindex="22" name="dddFax1" id="dddFax1" id="dddFax1" maxlength="2" value="" type="text"  style="width:30px" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'fax_1');" />&nbsp;
+                <input name="fax_1" type="text" id="fax_1" value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddFax2')"/>
                 <script>// coloar no editar xD selectHabilita('fax1')</script>
                 &nbsp;
             </td>
@@ -256,8 +266,8 @@
                 <label for="dddFax2">Fax2</label>
             </td>
             <td align="left">
-                <input tabindex="22" name="dddFax2" id="dddFax2" id="dddFax2" maxlength="2" value="" type="text"  style="width:30px"  />&nbsp;
-                <input name="fax_2" type="text" id="fax_2" value="" size="13" maxlength="9" />
+                <input tabindex="22" name="dddFax2" id="dddFax2" id="dddFax2" maxlength="2" value="" type="text"  style="width:30px"  onkeyup="maskIt(this,event,'##');ativaProximo(this, 'fax_2');"/>&nbsp;
+                <input name="fax_2" type="text" id="fax_2" value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'email')"/>
                 <script>// coloar no editar xD selectHabilita('fax2')</script>
                 &nbsp;
             </td>
@@ -355,8 +365,8 @@
                 <label for="dddTelTemp1">Telefone</label>
             </td>
             <td align="left">
-                <input tabindex="11" name="dddTelTemp1" id="dddTelTemp1" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
-                <input name="tels_contato_1" type="text" id="tels_contato_1"  value="" size="13" maxlength="9" />
+                <input tabindex="11" name="dddTelTemp1" id="dddTelTemp1" style="width:30px" type="text" value="" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'tels_contato_1');"/>&nbsp;
+                <input name="tels_contato_1" type="text" id="tels_contato_1"  value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCelTemp1')"/>
                 <script>// coloar no editar xD selectHabilita('telefone1')</script>
                 &nbsp;
             </td>
@@ -367,8 +377,8 @@
                     <label for="dddTelTemp1">Celular</label>
             </td>
             <td align="left">
-                    <input tabindex="13" name="dddCelTemp1" id="dddCelTemp1"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
-                    <input name="cel_contato_1" type="text" id="cel_contato_1" value="" size="13" maxlength="9" />
+                    <input tabindex="13" name="dddCelTemp1" id="dddCelTemp1"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'cel_contato_1');"/>&nbsp;
+                    <input name="cel_contato_1" type="text" id="cel_contato_1" value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular_contato_1')"/>
                     <script>// coloar no editar xD selectHabilita('celular1')</script>
                 &nbsp;Operadora:
 
@@ -415,11 +425,11 @@
         </tr>
         <tr>
             <td align="left">
-                <label for="dddTelTemp1">Telefone</label>
+                <label for="dddTelTemp2">Telefone</label>
             </td>
             <td align="left">
-                <input tabindex="11" name="dddTelTemp1" id="dddTelTemp1" style="width:30px" type="text" value="" maxlength="2"/>&nbsp;
-                <input name="tels_contato_1" type="text" id="tels_contato_1"  value="" size="13" maxlength="9" />
+                <input tabindex="11" name="dddTelTemp2" id="dddTelTemp2" style="width:30px" type="text" value="" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'tels_contato_2');"/>&nbsp;
+                <input name="tels_contato_2" type="text" id="tels_contato_2"  value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCelTemp2')"/>
                 <script>// coloar no editar xD selectHabilita('telefone1')</script>
                 &nbsp;
             </td>
@@ -427,11 +437,11 @@
         
         <tr>
             <td align="left">
-                    <label for="dddTelTemp2">Celular</label>
+                    <label for="dddCelTemp2">Celular</label>
             </td>
             <td align="left">
-                    <input tabindex="13" name="dddCelTemp2" id="dddCelTemp2"  maxlength="2" style="width:30px" value="" type="text" />&nbsp;
-                    <input name="cel_contato_2" type="text" id="cel_contato_2" value="" size="13" maxlength="9" />
+                    <input tabindex="13" name="dddCelTemp2" id="dddCelTemp2"  maxlength="2" style="width:30px" value="" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'cel_contato_2');"/>&nbsp;
+                    <input name="cel_contato_2" type="text" id="cel_contato_2" value="" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular_contato_2')"/>
                     <script>// coloar no editar xD selectHabilita('celular1')</script>
                 &nbsp;Operadora:
 
@@ -506,8 +516,9 @@
                     <input type="radio" name="ativo" id="ativo" value="1" />&nbsp;ATIVO
                 </label>
                 <label class="radio inline">
-                    <input type="radio" name="ativo" id="ativopree" value="0" />&nbsp;INATIVO
+                    <input type="radio" name="ativo" id="ativo" value="0" />&nbsp;INATIVO
                 </label>
+                <p id="p_ativo" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
         <tr>
@@ -520,31 +531,191 @@
 
             </td>
         </tr>
-        <tr>
-            <td colspan="2" align="center">
-                <input name="btnCadastrar" type="submit" id="btnCadastrar" value="Cadastrar" />&nbsp;</td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="center">&nbsp;
-
-            </td>
-        </tr>
+        
 
     </table>
-</form>
+    <div align="center" class="form-actions" id="salva">
+        <input type="button" class="btn btn-success" onclick="valida();" value="Gravar">
+    </div>
+    <input type="hidden" id="id_matriz" name="id_matriz" value=",">
+    <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+    <div id="dialog-modal-empresa" title="Selecione uma empresa">
+        <div id="ajax_empresa" onmouseover="setTabela('empresa');"></div>
+    </div>
 
+</form>
+</div>
+
+<script>
+    varTipoEmpresa = 0;
+    
+    function tipoMatriz(){
+        varTipoEmpresa = 0;
+        document.getElementById('cnpj').readOnly = false;
+        document.getElementById('cnpj').value = "";
+    }
+    
+    $(document).ready(function() {
+        document.getElementById('nome_matriz').style.display = 'none';
+    });
+    
+    function reiniciaEstados(){
+        //reinicia os estados
+        document.getElementById('cnpj').style.borderColor = "";
+        document.getElementById('p_cnpj').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('p_empresa').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('nome_fantasia').style.borderColor = "";
+        document.getElementById('p_nome_empresa').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('razao_social').style.borderColor = "";
+        document.getElementById('p_razao_empresa').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('ativo').style.borderColor = "";
+        document.getElementById('p_ativo').innerHTML = '<i class="icon-asterisk"></i>';
+       
+    }
+    
+    function prepara(){
+        document.getElementById('cnpj').value = removeCaractere(document.getElementById('cnpj').value);
+        document.getElementById('cep').value = removeCaractere(document.getElementById('cep').value);
+        document.getElementById('telefone_1').value = removeCaractere(document.getElementById('telefone_1').value);
+        document.getElementById('telefone_2').value = removeCaractere(document.getElementById('telefone_2').value);
+        document.getElementById('celular_1').value = removeCaractere(document.getElementById('celular_1').value);
+        document.getElementById('celular_2').value = removeCaractere(document.getElementById('celular_2').value);
+        document.getElementById('fax_1').value = removeCaractere(document.getElementById('fax_1').value);
+        document.getElementById('fax_2').value = removeCaractere(document.getElementById('fax_2').value);        
+        document.getElementById('tels_contato_1').value = removeCaractere(document.getElementById('tels_contato_1').value);
+        document.getElementById('tels_contato_2').value = removeCaractere(document.getElementById('tels_contato_2').value);
+        document.getElementById('cel_contato_1').value = removeCaractere(document.getElementById('cel_contato_1').value);
+        document.getElementById('cel_contato_2').value = removeCaractere(document.getElementById('cel_contato_2').value);
+    }
+    
+    flag = 1;
+    
+    function checaCnpj(valor){
+        
+        if(varTipoEmpresa==0)
+        {
+            valor = removeCaractere(valor);
+            document.getElementById('p_cnpj').innerHTML = '&nbsp<i class="icon-asterisk"></i>';
+
+            if(ValidarCNPJ(document.getElementById('cnpj')))
+                ajax(urlAjaxValidaEmpresa+'/cnpj/'+valor, 'p_cnpj');
+
+            temp = document.getElementById('p_cnpj').innerHTML
+            if(temp.indexOf("existe") != -1)
+            {    
+                flag = 0;
+            }
+        }
+        
+    }
+    
+    function setNomeMatriz()
+    {
+        idEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        idEmpresa = idEmpresa.substr(1,idEmpresa.length-2);
+        
+        if(idEmpresa){
+            document.getElementById('nomeMatriz').value = document.getElementById('nomefantasia_'+idEmpresa).value;
+            document.getElementById('cnpj').value = document.getElementById('cnpj_'+idEmpresa).value;
+        }     
+    }
+    
+    
+    //exibe uma modal para que o usuario escolha uma empresa
+    function abreDialog(tipoEmpresa,tipo)
+    {
+        varTipoEmpresa = tipo;
+        document.getElementById('p_cnpj').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('cnpj').readOnly = true;
+        document.getElementById('nome_matriz').style.display = '';
+        url = urlAjaxEmpresa+'/escolher/1/tipoEmpresa/'+tipoEmpresa;
+        ajax(url,'ajax_empresa');
+        
+        
+        $( "#dialog-modal-empresa" ).dialog({
+            modal: true,
+            width: 822,
+            buttons: {
+                Ok: function() {
+                    temp = document.getElementsByClassName('idEmpresaTempe');
+                    if(temp.length)
+                    { 
+                        for (i = 0; i < temp.length; i++)
+                        {   
+                            if(temp[i].checked)
+                            {    
+                                document.getElementById('id_matriz').value = temp[i].value;
+                                setNomeMatriz();
+                                break;
+                            }    
+                        }
+                    }
+                    
+                    $( this ).dialog( "close" );
+                    
+                }
+            }
+        });
+    }
+    
+    function valida(){
+        flag = 1;
+        reiniciaEstados();
+        prepara();
+        checaCnpj(document.getElementById('cnpj').value);
+        
+        if(document.getElementById('id_matriz').value == ",")
+        {
+            flag = 0;
+            document.getElementById('p_empresa').innerHTML = '<font color="#ff0000"><i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+                
+        if(!ValidarCNPJ(document.getElementById('cnpj')))
+        {
+            flag = 0;            
+        }
+        
+        if(document.getElementById('cnpj').value == "")
+        {
+            flag = 0;
+            document.getElementById('cnpj').style.borderColor = "#ff0000";
+            document.getElementById('p_cnpj').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        if(document.getElementById('nome_fantasia').value == "")
+        {
+            flag = 0;
+            document.getElementById('nome_fantasia').style.borderColor = "#ff0000";
+            document.getElementById('p_nome_empresa').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+
+        }
+        
+        if(document.getElementById('razao_social').value == "")
+        {
+            flag = 0;
+            document.getElementById('razao_social').style.borderColor = "#ff0000";
+            document.getElementById('p_razao_empresa').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+            
+        }
+        
+        if(!document.getElementById('ativo').checked )
+        {
+            flag = 0;
+            document.getElementById('ativo').style.borderColor = "#ff0000";
+            document.getElementById('p_ativo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        flag=1;
+        //Se validou
+        if(flag){
+            //alert('a');
+            ajaxJQuery('empresa');
+            document.getElementById('salva').innerHTML = '<font color="green">Salvo!</font>';
+        }
+        else
+            showAlert('Atenção','Verifique no formulário os campos indicados.');
+    }
+     
+    
+    
+</script>

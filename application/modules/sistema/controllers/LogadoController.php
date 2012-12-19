@@ -208,9 +208,13 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->tabela = 'setor';
         }   
         if($idUtilitario==8){
-            $this->view->arrayUtilitario = $this->_foco ->exibir($this->_request->getParam('pagina', 1));
+            $this->view->arrayUtilitario = $this->_foco->exibir($this->_request->getParam('pagina', 1));
             $this->view->tabela = 'foco';
-        }   
+        }
+        if($idUtilitario==9){
+            $this->view->arrayUtilitario = $this->_operadora_celular->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'operadora_celular';
+        }
     }
     
     /***
@@ -341,6 +345,27 @@ class Sistema_LogadoController extends Controller_Action
         }
            
         
+        
+    }
+    
+    /***
+     * Verifica se já exite uma empresa com mesmo cnpj
+     */
+    public function ajaxvalidaempresaAction() {
+        $this->_helper->layout->disableLayout();
+        
+        $cnpj = $this->_request->getParam('cnpj', false);
+        
+        $this->view->erroCNPJ = "";
+        $this->view->sucessoCNPJ = "";
+                
+        if($cnpj){
+            $this->view->erroCNPJ = $this->_empresa->validaCnpj('cnpj',$cnpj);
+            if( $this->view->erroCNPJ == "")
+                $this->view->sucessoCNPJ = '<i class="icon-asterisk"></i>';    
+        }
+        else
+            $this->view->sucessoCNPJ = '<i class="icon-asterisk"></i>';
         
     }
     
@@ -490,6 +515,31 @@ class Sistema_LogadoController extends Controller_Action
         
         
     }
+    
+    public function ajaxgravaempresaAction() {
+        
+        $this->_helper->layout->disableLayout();
+        
+        if(!$this->possuiPermissao('cadastrarempresa') || !$this->possuiPermissao('editarempresa'))
+            $this->_redirect ("sistema/logado");
+        
+        $this->view->erros = '';
+        $teste = '';
+        
+        $parametros = $this->_getAllParams();
+        
+
+        //salva a empresa e pega o id
+        $array_id_empresa = array('id_empresa'=>$this->_empresa->gravar($parametros,$this->_endereco));
+        
+        //pega tds os id´s de td´s os usuarios que pertecem ao grupo dos administradores
+        $id_grupo = 1; //Grupo dos administradores
+        $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($id_grupo);
+        //para colocar a empresa salva na lista de empresas visiveis do grupo administrador
+        $this->_usuario_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa, false);
+        
+    }
+    
     
     /***
      * grava as funcionalidades do grupo de aceso
@@ -648,7 +698,9 @@ class Sistema_LogadoController extends Controller_Action
         if($idUtilitario==7)
             $teste = $this->_setor->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_setor='.$idTabela);
         if($idUtilitario==8)
-            $teste = $this->_foco ->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_foco='.$idTabela);
+            $teste = $this->_foco->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_foco='.$idTabela);
+        if($idUtilitario==9)
+            $teste = $this->_operadora_celular->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_operadora_celular='.$idTabela);
         
         //$teste = $this->_area->gravar(array('titulo'=>$parametros['titulo']));
         //se houver erro, passa para a view.
@@ -727,22 +779,6 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->ramosEmpresa = $this->_ramo_empresa->fetchAll();
         $this->view->operadoras = $this->_operadora_celular->fetchAll();
         $this->view->categorias = $this->_categoria->fetchAll();
-        
-        if($this->_request->isPost())
-        {
-            $parametros = $this->_getAllParams();
-            
-            //salva a empresa e pega o id
-            $array_id_empresa = array($this->_empresa->gravar($parametros,$this->_endereco));
-            
-            //pega tds os id´s de td´s os usuarios que pertecem ao grupo dos administradores
-            $id_grupo = 1; //Grupo dos administradores
-            $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($id_grupo);
-            
-            //para colocar a empresa salva na lista de empresas visiveis do grupo administrador
-            $this->_usuario_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa);
-        }    
-    
     }
     
     /***
@@ -956,6 +992,8 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->nomeUtilitario = 'Setor';
         if($idUtilitario==8)
             $this->view->nomeUtilitario = 'Foco';
+        if($idUtilitario==9)
+            $this->view->nomeUtilitario = 'Operadora';
         
     }
     /***
@@ -988,6 +1026,8 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->nomeUtilitario = 'Setor';
         if($idUtilitario==8)
             $this->view->nomeUtilitario = 'Foco';
+        if($idUtilitario==9)
+            $this->view->nomeUtilitario = 'Operadora';
         
     }
     
@@ -1019,6 +1059,8 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->nomeUtilitario = 'Setor';
         if($idUtilitario==8)
             $this->view->nomeUtilitario = 'Foco';
+        if($idUtilitario==9)
+            $this->view->nomeUtilitario = 'Operadora';
         
         
     }
@@ -1061,9 +1103,13 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->tabela = 'setor';
         }   
         if($idUtilitario==8){
-            $this->_foco ->deletar($idTabela);
+            $this->_foco->deletar($idTabela);
             $this->view->tabela = 'foco';
-        } 
+        }        
+        if($idUtilitario==9){
+            $this->_operadora_celular->deletar($idTabela);
+            $this->view->tabela = 'operadora_celular';
+        }
     }
     
     public function indexAction()

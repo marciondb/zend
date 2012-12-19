@@ -42,7 +42,13 @@
                 <td align="center"><?php echo $empresa['razao_social']; ?></td>
                 <td align="center"><?php echo $empresa['nome_fantasia']; ?></td>
                 <td align="center"><?php echo $empresa['apelido']; ?></td>
-                <td align="center"><?php echo $empresa['cnpj']; ?></td>
+                <td align="center"><?php 
+                    $cnpj = $empresa['cnpj']; 
+                    
+                    $cnpj = substr($cnpj, 0,2).'.'.substr($cnpj, 2,3).'.'.substr($cnpj, 5,3).'/'.substr($cnpj, 8,4).'-'.substr($cnpj, 11,2);
+                
+                    echo $cnpj; ?>
+                </td>
                 <td align="center"><?php echo $empresa['telefone_1']; ?></td>
                 <td align="center"><?php echo $empresa['telefone_2']; ?></td>
             
@@ -62,7 +68,8 @@
                         ?>
                         <td align="center" width="16%">
                             <input class="idEmpresaTempe" type="radio" name="idEmpresaTmp" id="idEmpresaTmp" value="<?php echo $empresa['id_empresa']; ?>" onclick="document.getElementById('arrayIdTempEmpresa').value=',';setId(this.value,'Empresa');"/>
-                            <input type="hidden" id="nomefantasia_<?php echo $empresa['id_empresa'];?>" value="<?php echo $empresa['nome_fantasia'];?>"
+                            <input type="hidden" id="nomefantasia_<?php echo $empresa['id_empresa'];?>" value="<?php echo $empresa['nome_fantasia'];?>">
+                            <input type="hidden" id="cnpj_<?php echo $empresa['id_empresa'];?>" value="<?php echo $cnpj;?>">
                         </td>
                         
                         <?php

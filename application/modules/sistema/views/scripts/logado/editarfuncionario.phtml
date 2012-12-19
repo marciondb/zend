@@ -407,8 +407,8 @@
                     <label for="cep">CEP</label>
             </td>
         <td align="left">
-            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="<?php echo ZendUtils::ColocaMascaraCep($this->arrayEndereco[0]['cep']); ?>" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep();"/>&nbsp;
-            <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick="buscaCep();"/></td>
+            <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="<?php echo ZendUtils::ColocaMascaraCep($this->arrayEndereco[0]['cep']); ?>" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep('funcionario');"/>&nbsp;
+            <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick="buscaCep('funcionario');"/></td>
         </tr>
         <tr>
             <td height="26" align="left">

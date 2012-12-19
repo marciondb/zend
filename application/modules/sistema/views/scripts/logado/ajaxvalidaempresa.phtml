@@ -1,0 +1,9 @@
+<?php
+    
+    if($this->erroCNPJ != "" && isset($this->erroCNPJ))
+        echo '<i class="icon-asterisk"></i>&nbsp<font color="#ff0000">'.$this->erroCNPJ.'</font>';
+    
+    if($this->sucessoCNPJ != "" && isset($this->sucessoCNPJ))
+        echo '<font color="#32CD32">'.$this->sucessoCNPJ.'</font>';
+       
+    

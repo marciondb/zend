@@ -53,13 +53,9 @@ class Application_Model_Foco extends Application_Model_Abstract
     }
     
     /**
-       * Exibe tds os time visiveis do usuario logado.
+       * Exibe tds os foco visiveis do usuario logado.
        * @return Array retorna query()->fetchAll()
        * @param  int $pagina  : pagina atual, para a paginacao
-       * @param  lista $listaIdEmpresa : lista com as id's das empresas a serem filtradas
-       * @param  lista $listaIdTimesEscolhidos : lista com as id's dos times a serem filtradas.
-       * @param  Booelan $remover: Se False, time.id_time not in (' . $listaIdTimesEscolhidos . ')');
-       * se True time.id_time in (' . $listaIdTimesEscolhidos . ')');
        * @version 1.0
      */
     public function exibir($pagina)
