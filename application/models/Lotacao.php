@@ -85,6 +85,23 @@ class Application_Model_Lotacao extends Application_Model_Abstract
         
     }
 
+    /***
+     * Pega as ids dos funcionários de uma empresa.
+     * @param int $idEmpresa Id da empresa
+     * @return array Array fetchAll com todas as ids dos funcionarios
+     * @example getFuncionarios('1')
+     */
+    public function getFuncionarios($idEmpresa)
+    {
+        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
+        
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('lotacao',array('id_funcionario'))->
+                    where('lotacao.id_empresa = ?', $idEmpresa);
+        return $select->query()->fetchAll(); 
+    }
 
     protected function _validarDados(array $data){
         // Validação

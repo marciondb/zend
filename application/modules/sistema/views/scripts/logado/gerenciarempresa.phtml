@@ -1,0 +1,66 @@
+<h3>Gerenciar Empresa</h3>
+<hr>
+<form name="formularioCarregaMenu" action="" method="post">
+    <div class="modal_min_auto_size">
+
+        <label for="cnpjCpf" id="cpfCnpj">CNPJ</label>
+        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" onkeyup="MascaraCpfCnpj(this,event);" />
+        <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
+        <b>Exibir todas as empresas</b>
+        <hr>
+        <h5>Empresa</h5>
+        <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
+        </div>
+       
+    </div>
+        
+</form>
+<div id="temp"></div>
+
+<script type="text/javascript">      
+    
+    //set o "selectOrAdd" como 2 para não exibir
+    selectOrAdd = 2;
+    //set o "gerenciarFuncionario" para editar e deletar
+    gerenciarFuncionario = 1;
+    
+    
+    //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
+    // ajax eh excudado
+    function setPaginator(pagina,query)
+    {  
+        if(tabelas=='empresa')
+        {    
+            url = urlAjaxEmpresa+'/pagina/'+pagina+query;
+            ajax(url,'ajax_empresa');
+        }
+    }
+    
+    LED = '';    
+    <?php
+        $aux = '';
+        
+        if($this->editar)
+          $aux .= '/editar/1';
+        
+        if($this->deletar)
+          $aux .= '/deletar/1' 
+    ?>
+        
+    function deletar(idEmpresa)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletarempresa'), null, 1); ?>/idEmpresa/'+idEmpresa;
+        ajax(url,'temp');
+        
+        url = urlAjaxEmpresa+'<?php echo $aux; ?>';
+        ajax(url,'ajax_empresa');
+        
+    }    
+
+    url = urlAjaxEmpresa+'<?php echo $aux; ?>/tipoEmpresa/2';
+    ajax(url,'ajax_empresa');
+    
+    urlAjaxEmpresa+='<?php echo $aux; ?>/tipoEmpresa/2';
+    
+</script>

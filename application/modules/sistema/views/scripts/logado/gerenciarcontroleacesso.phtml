@@ -4,8 +4,8 @@
     <div class="modal_min_auto_size">
     
         <h4>Filtros:</h4>
-        CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
-        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+                        <label for="cnpjCpf" id="cpfCnpj">CNPJ</label>
+                <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" onkeyup="MascaraCpfCnpj(this,event);"/>
         <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
         &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setFiltroFuncionario('todos');apagaArrayIdTempTime();setFiltroTime();" checked="checked" /> 
         <b>Exibir todas as empresas</b>
@@ -39,7 +39,7 @@
     //set o "selectOrAdd" para selecionar
     selectOrAdd = 1;
     urlAjaxFuncionario = urlAjaxCAFuncionario;
-    
+    urlAjaxEmpresa += '/tipoEmpresa/2';
     //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
     // ajax eh excudado
     function setPaginator(pagina,query)

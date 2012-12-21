@@ -687,6 +687,8 @@ function setFiltroTime()
 
 //0 = adicionar, 1= selecionar
 selectOrAdd = 0;
+//1= gerenciar
+gerenciarFuncionario = 0;
 
 //todos de todas as empresas
 function setFiltroFuncionario(todos,remover,pagina)
@@ -736,14 +738,22 @@ function setFiltroFuncionario(todos,remover,pagina)
                 document.getElementById('ajax_funcionario_adicionados').innerHTML = 'Nenhum item adicionado.';
         }
     }
-    else
+    else if(selectOrAdd == 1)
         ajax(url+'/selecionar/1/','ajax_funcionario');
+    
+    if(gerenciarFuncionario == 1)
+        ajax(url,'ajax_funcionario');
+    
 }
 
 function filtraCnpj()
 {   
     cnpj = document.getElementById('cnpj').value;
-    url = urlAjaxEmpresa+'/selecionar/1'+'/cnpj/'+cnpj;
+    cnpj = removeCaractere(cnpj);
+    if(selectOrAdd != 2)
+        url = urlAjaxEmpresa+'/selecionar/1'+'/cnpj/'+cnpj;
+    else
+        url = urlAjaxEmpresa+'/cnpj/'+cnpj;
     ajax(url,'ajax_empresa');
 }
     

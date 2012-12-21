@@ -132,7 +132,7 @@ class Sistema_LogadoController extends Controller_Action
                                                             $this->_request->getParam('cnpj', 0),
                                                             $this->_request->getParam('listaIdEmpresasEscolhidas', 0),
                                                             $this->_request->getParam('remover', 0),
-                                                            $this->_request->getParam('tipoEmpresa', 0));
+                                                            $this->_request->getParam('tipoEmpresa', false));
     }
     
     /***
@@ -853,6 +853,51 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
         $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
         
+    }
+    
+        /***
+     * Gerencia a empresa
+     */
+    public function gerenciarempresaAction() {
+        
+
+        $arrayLED = $this->getLED('gerenciarempresa');
+                
+        $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
+        $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+        
+    }
+    
+    /***
+     * Deleta todas as informacoes da empresa
+     */
+    public function deletarempresaAction() {
+        $this->_helper->layout->disableLayout();
+
+        $this->_empresa->delete(array('id_empresa=?'=>(int)$this->_request->getParam('idEmpresa')));/**/
+        $this->_endereco->delete(array('id_empresa=?'=>(int)$this->_request->getParam('idEmpresa')));
+        $arrayIdFuncionario = $this->_lotacao->getFuncionarios($this->_request->getParam('idEmpresa'));
+        
+        //$this->_funcionario->delete($arrayIdFuncionario);/**/
+        foreach ($arrayIdFuncionario as $funcionario){
+            $arrayIdUsuario = $this->_funcionario->getIdUsuario($funcionario['id_funcionario']);
+            
+            
+            ZendUtils::transmissorMsg($arrayIdUsuario,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            
+            
+            
+            $this->_usuario_time_visivel->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));        
+            $this->_usuario_empresa_visivel->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
+            $this->_usuario_funcionalidade->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
+            $this->_usuario_grupo->delete(array('id_usuario=?'=>(int)$arrayIdUsuario['id_usuario']));
+
+            $this->_lotacao->delete(array('id_funcionario=?'=>(int)$this->_request->getParam('idFuncionario')));
+
+            $this->_endereco->delete(array('id_endereco=?'=>(int)$this->_endereco->fetchAll(array('id_endereco'=>$this->view->arrayFuncionario[0]['id_endereco'])) ));
+            $this->_funcionario->delete(array('id_funcionario=?'=>(int)$funcionario['id_funcionario']));
+        }
+             
     }
     
     

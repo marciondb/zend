@@ -66,8 +66,6 @@ class Application_Model_Empresa extends Application_Model_Abstract
 
                 $_endereco->save($dataEndereco);   
                 
-                ZendUtils::transmissorMsg('Inserido com sucesso!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-                
                 return $id_empresa;
             }
             catch(Exception $e)
@@ -99,11 +97,14 @@ class Application_Model_Empresa extends Application_Model_Abstract
                     join('usuario_empresa_visivel', 'empresa.id_empresa = usuario_empresa_visivel.id_empresa',null)->
                     where('usuario_empresa_visivel.id_usuario = ?', $arrayIdentity->id_usuario);
             
-            if($tipoEmpresa)
-                $select->where('empresa.id_matriz <> 0');
-            else
-                $select->where('empresa.id_matriz = 0');
-           
+            // Filtrar por tipo de empresa ou exibir todas
+            if($tipoEmpresa!=2){
+                if($tipoEmpresa)
+                    $select->where('empresa.id_matriz <> 0');
+                else
+                    $select->where('empresa.id_matriz = 0');
+            }
+            
             if($cnpj)
             {
                 $cnpj = str_replace(".","",$cnpj);
