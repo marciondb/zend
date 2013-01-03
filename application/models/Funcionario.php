@@ -305,8 +305,8 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1')->
                     where('funcionario.id_funcionario in (' . $listaIdFuncionario . ')');
-        return $select;
-        //return $select->query()->fetchAll(); 
+        //return $select;
+        return $select->query()->fetchAll(); 
     }
     
     

@@ -93,13 +93,13 @@ class Application_Model_Lotacao extends Application_Model_Abstract
      */
     public function getFuncionarios($idEmpresa)
     {
-        $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         
         $select = $this->_dbTable->
                     select()->
                     setIntegrityCheck(false)->
                     from('lotacao',array('id_funcionario'))->
-                    where('lotacao.id_empresa = ?', $idEmpresa);
+                    where('lotacao.id_empresa = ?', $idEmpresa)->
+                    where('lotacao.atual = 1');
         return $select->query()->fetchAll(); 
     }
 

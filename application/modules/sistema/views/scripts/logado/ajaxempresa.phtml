@@ -80,7 +80,7 @@
                     {    
                         ?>
                         <td align="center" width="16%">
-                            <a class="btn" href="#"><i class="icon-pencil"></i></a>
+                            <a class="btn" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'editarempresa','idEmpresa'=>$empresa['id_empresa'],'nomeEmpresa'=>$empresa['nome_fantasia']), null, 1); ?>" ><i class="icon-pencil"></i></a>
                         </td>
                         <?php
                     }

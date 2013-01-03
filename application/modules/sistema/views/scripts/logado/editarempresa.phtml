@@ -1,0 +1,918 @@
+<h3>Editar Empresas</h3>
+<h4><?php echo $this->nomeEmpresa; ?></h4>
+<i class="icon-asterisk"></i> Campos obrigatórios.
+<hr />
+
+<div id="empresa">
+<form novalidate="novalidate" name="formulario" id="formulario" class="form-horizontal" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravaempresa','atualizar'=>true,'idEmpresa'=>$this->idEmpresa), null, 1); ?>" method="post">
+
+    <table  width="100%" height="1318" align="center">
+        <tr>
+            <td width="30%" align="left">
+                <strong>Tipo de empresa:</strong>
+            </td>
+            <td width="70%" align="left">
+                <label class="radio inline">
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="0" onclick="document.getElementById('nome_matriz').style.display = 'none';document.getElementById('id_matriz').value=0;tipoMatriz();" <?php if($this->arrayEmpresa[0]['id_matriz'] == 0) echo 'checked="checked"'; ?>>Matriz
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="tipoEmpresa" id="tipoEmpresa" value="1" onclick="abreDialog(0,1);" <?php if($this->arrayEmpresa[0]['id_matriz'] != 0) echo 'checked="checked"'; ?>>Filial
+                </label>
+                <p id="p_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
+                <!-- Div do AJAX´s-->
+
+                <div id="div_tipoEmpresa" class="">
+
+                    <!-- Resultado do retorno do AJAX-->                      
+
+                </div>
+                <!-- FM da Div do AJAX´s-->
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                Nome Fantasia da Empresa:
+            </td>
+            <td align="left">
+                <input tabindex="3" type="text" name="nome_fantasia" id="nome_fantasia" value="<?php echo $this->arrayEmpresa[0]['nome_fantasia']; ?>" maxlength="100" size="50">
+                <p id="p_nome_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                Razão Social:
+            </td>
+            <td align="left">
+                <input tabindex="4" type="text" name="razao_social" id="razao_social" value="<?php echo $this->arrayEmpresa[0]['razao_social']; ?>" maxlength="100" size="50">
+                <p id="p_razao_empresa" class="radio inline"><i class="icon-asterisk"></i></p>
+            </td>
+        </tr>
+        <tr id="nome_matriz">
+            <td align="left">
+                <div id="nomeMatrizDiv">Nome da Matriz:</div>
+            </td>
+            <td align="left">
+                <div id="nomeMatrizDiv1"><input type="text" name="nomeMatriz" id="nomeMatriz" tabindex="5" value="<?php echo $this->nomeMatriz[0]['nome_fantasia']; ?>" size="50" maxlength="100" readonly="readonly"></div>
+            </td>
+        </tr>            
+        <tr>
+            <td align="left">
+                Apelido:</td>
+            <td align="left">
+                <input type="text" tabindex="6" name="apelido" id="apelido" value="<?php echo $this->arrayEmpresa[0]['apelido']; ?>" maxlength="100" size="50">
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                Ramo de atuação: 
+            </td>
+            <td align="left">
+                
+                <select tabindex="4" name="id_ramo_empresa" id="id_ramo_empresa" style="width:220px">
+                    <option value="">::.. Selecione um Ramo de atuação ..::</option>
+                   <?php
+                   foreach ($this->ramosEmpresa as $ramo){
+                       $select = '';
+                       if($this->arrayEmpresa[0]['id_ramo_empresa']==$ramo['id_ramo_empresa'])
+                           $select = 'selected="selected"';
+                   ?>
+                    <option <?php echo $select; ?>  value="<?php echo $ramo['id_ramo_empresa']?>"><?php echo $ramo['titulo']?></option>
+                   <?php
+                   }
+                   ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="cnpjCpf" id="cpfCnpj">CNPJ</label>                
+            </td>
+            <td align="left">
+                <?php 
+                    $cnpj = $this->arrayEmpresa[0]['cnpj'];
+                    $cnpj = substr($cnpj, 0,2).'.'.substr($cnpj, 2,3).'.'.substr($cnpj, 5,3).'/'.substr($cnpj, 8,4).'-'.substr($cnpj, 12,2);
+                ?>
+                    <input tabindex="6" name="cnpj" type="text" id="cnpj" value="<?php echo $cnpj; ?>" size="50" maxlength="18" onkeyup="MascaraCpfCnpj(this,event);" />
+                    <p id="p_cnpj" class="radio inline"><i class="icon-asterisk"></i></p>
+            </td>
+        </tr>
+        <tr>
+            <td align="left"><label for="ie" id="ie">Inscrição Estadual:</label></td>
+            <td align="left">
+                <input value="<?php echo $this->arrayEmpresa[0]['inscricao_estadual']; ?>" tabindex="10" name="inscricao_estadual" type="text" id="inscricao_estadual" apelido size="50" maxlength="15" />
+            </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td align="left" bgcolor="#BBBBBB">
+                    <b>Endereço</b>
+            </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td height="26" align="left">
+                    <label for="cep">CEP</label>
+            </td>
+            <td align="left">
+                <input tabindex="28" name="cep" type="text" id="cep" maxlength="10" size="10" value="<?php echo ZendUtils::ColocaMascaraCep($this->arrayEndereco[0]['cep']); ?>" onkeyup="proximoCampo(this, 'busend');maskIt(this,event,'##.###-###')" onblur="validaCep(this);buscaCep('empresa');"/>&nbsp;
+                <input type="button" value="Pesquisar Endereço" id="busend" class="btn btn-info" onclick='buscaCep("empresa");'/>
+            </td>
+        </tr>
+        <tr>
+            <td height="26" align="left">
+                    <label for="endereco">Endereço</label>
+            </td>
+            <td align="left">
+                <input tabindex="22" name="tipo_logradouro" type="text" id="tipo_logradouro" maxlength="100" size="28" value="<?php echo $this->arrayEndereco[0]['tipo_logradouro']; ?>" />
+                Número:
+                <input tabindex="23" name="numero" type="text" id="numero" value="<?php echo $this->arrayEndereco[0]['numero']; ?>" style="width:50px" maxlength="10" />
+            </td>
+        </tr>
+        <tr>
+            <td height="28" align="left">
+                    <label for="complemento">Complemento</label>
+            </td>
+            <td align="left">
+                <input tabindex="24" name="complemento" type="text" id="complemento" maxlength="100" size="15" value="<?php echo $this->arrayEndereco[0]['complemento']; ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td height="28" align="left">
+                    <label for="complemento">Bairro</label>
+            </td>
+            <td align="left">
+                <input tabindex="25" name="bairro" type="text" id="bairro" value="<?php echo $this->arrayEndereco[0]['bairro']; ?>" size="23" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td height="26" align="left">
+                    <label for="cidade">Cidade</label>
+            </td>
+            <td align="left">
+                <input tabindex="26" name="cidade" type="text" id="cidade" maxlength="100" size="34" value="<?php echo $this->arrayEndereco[0]['cidade']; ?>" />        
+                Estado:
+                <select tabindex="27" name="estado" id="estado" style="width:70px">
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="DF">DF</option>
+                    <option value="CE">CE</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ" selected="selected">RJ</option>
+                    <option value="RS">RS</option>
+                    <option value="RN">RN</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td height="26" align="left">Referência</td>
+            <td align="left"><input tabindex="29" name="referencia" type="text" id="referencia" value="<?php echo $this->arrayEndereco[0]['referencia']; ?>" size="23" maxlength="100" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddTel">Telefone 1</label>
+            </td>
+            <td align="left">
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['telefone_1'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['telefone_1'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['telefone_1'],2,4).'-'.substr($this->arrayEmpresa[0]['telefone_1'],6);
+                }    
+                ?>                  
+                
+                <input tabindex="11" name="dddTel1" id="dddTel1" style="width:30px" type="text" value="<?php echo $ddd; ?>" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefone_1');"/>&nbsp;
+                <input name="telefone_1" type="text" id="telefone_1"  value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddTel2')"/>
+                
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddTel">Telefone 2</label>
+            </td>
+            <td align="left">
+                 <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['telefone_2'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['telefone_2'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['telefone_2'],2,4).'-'.substr($this->arrayEmpresa[0]['telefone_2'],6);
+                }    
+                ?>     
+                
+                <input tabindex="19" name="dddTel2" id="dddTel2" style="width:30px" type="text" value="<?php echo $ddd; ?>" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'telefone_2');"/>&nbsp;
+                <input name="telefone_2" type="text" id="telefone_2"  value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCel1')"/>
+                <script>// coloar no editar xD selectHabilita('telefone2')</script>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                    <label for="dddTelTemp1">Celular 1</label>
+            </td>
+            <td align="left">
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['celular_1'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['celular_1'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['celular_1'],2,4).'-'.substr($this->arrayEmpresa[0]['celular_1'],6);
+                }    
+                ?>    
+                
+                
+                <input tabindex="13" name="dddCel1" id="dddCel1"  maxlength="2" style="width:30px" value="<?php echo $ddd; ?>" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular_1');"/>&nbsp;
+                    <input name="celular_1" type="text" id="celular_1" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular')"/>
+                    <script>// coloar no editar xD selectHabilita('celular1')</script>
+                &nbsp;Operadora:
+
+                <?php
+                        $disabled='';
+                        if($tel=="")
+                            $disabled='disabled="disabled"';
+                ?>        
+                <select  name="id_operadora_celular" id="id_operadora_celular" >
+                    <option value="">::.. Selecione uma Operadora ..::</option>
+                        <?php                        
+                        foreach ($this->operadoras as $operadora){
+                            $selected = '';
+                            if($this->arrayEmpresa[0]['id_operadora_celular']==$operadora['id_operadora_celular'])
+                                $selected = 'selected="selected"';
+                            ?>
+                    <option <?php echo $selected?> value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                        <?php
+                        }
+                        ?>
+
+                    </option>
+
+
+                </select>
+                <script>// coloar no editar xD selectHabilita('celular1')selectHabilita('idOperadora1')</script>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                    <label for="dddTelTemp2">Celular 2</label>
+            </td>
+            <td align="left">
+                
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['celular_2'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['celular_2'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['celular_2'],2,4).'-'.substr($this->arrayEmpresa[0]['celular_2'],6);
+                }    
+                ?>  
+                
+                    <input tabindex="21" name="dddCel2" id="dddCel12"  maxlength="2" style="width:30px" value="<?php echo $ddd; ?>" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'celular_2');"/>&nbsp;
+                    <input name="celular_2" type="text" id="celular_2" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular2')"/>
+                    
+                &nbsp;Operadora:
+
+                <?php
+                        $disabled='';
+                        if($tel=="")
+                            $disabled='disabled="disabled"';
+                ?>        
+                <select  name="id_operadora_celular2" id="id_operadora_celular2" >
+                    <option value="">::.. Selecione uma Operadora ..::</option>
+                        <?php                        
+                        foreach ($this->operadoras as $operadora){
+                            $selected = '';
+                            if($this->arrayEmpresa[0]['id_operadora_celular2']==$operadora['id_operadora_celular'])
+                                $selected = 'selected="selected"';
+                            ?>
+                    <option <?php echo $selected?> value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                        <?php
+                        }
+                        ?>
+
+                    </option>
+
+
+                </select>
+                
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddFax1">Fax1</label>
+            </td>
+            <td align="left">
+                
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['fax_1'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['fax_1'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['fax_1'],2,4).'-'.substr($this->arrayEmpresa[0]['fax_1'],6);
+                }    
+                ?>  
+                
+                <input tabindex="22" name="dddFax1" id="dddFax1" id="dddFax1" maxlength="2" value="<?php echo $ddd; ?>" type="text"  style="width:30px" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'fax_1');" />&nbsp;
+                <input name="fax_1" type="text" id="fax_1" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddFax2')"/>
+                <script>// coloar no editar xD selectHabilita('fax1')</script>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddFax2">Fax2</label>
+            </td>
+            <td align="left">
+                
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['fax_2'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['fax_2'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['fax_2'],2,4).'-'.substr($this->arrayEmpresa[0]['fax_2'],6);
+                }    
+                ?>  
+                
+                <input tabindex="22" name="dddFax2" id="dddFax2" id="dddFax2" maxlength="2" value="<?php echo $ddd; ?>" type="text"  style="width:30px"  onkeyup="maskIt(this,event,'##');ativaProximo(this, 'fax_2');"/>&nbsp;
+                <input name="fax_2" type="text" id="fax_2" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'email')"/>
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="email">E-mail</label>
+            </td>
+            <td align="left">
+                <input type="email" tabindex="24" name="email" id="email" maxlength="100" size="50" value="<?php echo $this->arrayEmpresa[0]['email']; ?>" />
+            </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td align="left" bgcolor="#BBBBBB">
+                <b>Redes Sociais</b>
+            </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td align="left">
+                <label for="site">Home Page:</label>
+            </td>
+            <td align="left">
+                <input tabindex="25" name="site" type="text" id="site" maxlength="100" size="50" value="<?php echo $this->arrayEmpresa[0]['site']; ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="orkut">Orkut</label>
+            </td>
+            <td align="left">
+                <input name="orkut" tabindex="26" type="text" id="orkut" maxlength="100" size="50" value="<?php echo $this->arrayEmpresa[0]['orkut']; ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="site">MSN</label>
+            </td>
+            <td align="left">
+                <input tabindex="27" name="msn" type="email" id="msn" maxlength="100" size="50" value="<?php echo $this->arrayEmpresa[0]['msn']; ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="twitter">Twitter</label>
+            </td>
+            <td align="left">
+                <input name="twitter" tabindex="28" type="text" id="twitter" maxlength="100" size="50" value="<?php echo $this->arrayEmpresa[0]['twitter']; ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="facebook">Facebook</label>
+            </td>
+            <td align="left">
+                <input name="facebook" tabindex="29" type="text" id="facebook" maxlength="100" size="50" value="<?php echo $this->arrayEmpresa[0]['facebook']; ?>" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="facebook">Skype</label>
+            </td>
+            <td align="left">
+                <input name="skype" tabindex="29" type="text" id="skype" maxlength="100" size="50" value="<?php echo $this->arrayEmpresa[0]['skype']; ?>" />
+            </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td align="left" bgcolor="#BBBBBB">
+                <b>Detalhes</b>
+            </td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td align="left">
+                Pessoa de Contato 1: 
+            </td>
+            <td align="left">
+                &nbsp;
+
+            </td>                
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="nomeTemp1">Nome</label>
+            </td>
+            <td align="left">
+                <input type="text" name="nome_contato_1" id="nome_contato_1" value="<?php echo $this->arrayEmpresa[0]['nome_contato_1']; ?>" size="50" />
+            </td>
+        </tr>
+        
+        <tr>
+            <td align="left">
+                <label for="dddTelTemp1">Telefone</label>
+            </td>
+            <td align="left">
+                <input tabindex="11" name="dddTelTemp1" id="dddTelTemp1" style="width:30px" type="text" value="<?php echo $this->arrayEmpresa[0]['tels_contato_1']; ?>" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'tels_contato_1');"/>&nbsp;
+                <input name="tels_contato_1" type="text" id="tels_contato_1"  value="<?php echo $this->arrayEmpresa[0]['tels_contato_1']; ?>" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCelTemp1')"/>
+                <script>// coloar no editar xD selectHabilita('telefone1')</script>
+                &nbsp;
+            </td>
+        </tr>
+        
+        <tr>
+            <td align="left">
+                    <label for="dddTelTemp1">Celular</label>
+            </td>
+            <td align="left">
+                
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['cel_contato_1'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['cel_contato_1'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['cel_contato_1'],2,4).'-'.substr($this->arrayEmpresa[0]['cel_contato_1'],6);
+                }    
+                ?>
+                
+                    <input tabindex="13" name="dddCelTemp1" id="dddCelTemp1"  maxlength="2" style="width:30px" value="<?php echo $ddd; ?>" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'cel_contato_1');"/>&nbsp;
+                    <input name="cel_contato_1" type="text" id="cel_contato_1" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular_contato_1')"/>
+                    <script>// coloar no editar xD selectHabilita('celular1')</script>
+                &nbsp;Operadora:
+                <?php
+                        $disabled='';
+                        if($tel=="")
+                            $disabled='disabled="disabled"';
+                ?>        
+                <select name="id_operadora_celular_contato_1" id="id_operadora_celular_contato_1" >
+                    <option value="">::.. Selecione uma Operadora ..::</option>
+                        <?php                        
+                        foreach ($this->operadoras as $operadora){
+                            $selected = '';
+                            if($this->arrayEmpresa[0]['id_operadora_celular_contato_1']==$operadora['id_operadora_celular'])
+                                $selected = 'selected="selected"';
+                            ?>
+                    <option <?php echo $selected?> value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                        <?php
+                        }
+                        ?>
+                    </option>
+
+
+                </select>
+                <script>// coloar no editar xD selectHabilita('celular1')selectHabilita('idOperadora1')</script>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddTelTemp1">Email</label>
+            </td>
+            <td align="left">
+                <input name="email_contato_1" type="email" id="email_contato_1" value="<?php echo $this->arrayEmpresa[0]['email_contato_1']; ?>" />
+
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="left">
+                Pessoa de Contato 2: 
+            </td>
+            <td align="left">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="nomeTemp2">Nome</label>
+            </td>
+            <td align="left">
+                <input type="text" name="nome_contato_2" id="nome_contato_2" value="<?php echo $this->arrayEmpresa[0]['nome_contato_2']; ?>" size="50" />
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddTelTemp2">Telefone</label>
+            </td>
+            <td align="left">
+                <input tabindex="11" name="dddTelTemp2" id="dddTelTemp2" style="width:30px" type="text" value="<?php echo $this->arrayEmpresa[0]['tels_contato_2']; ?>" maxlength="2" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'tels_contato_2');"/>&nbsp;
+                <input name="tels_contato_2" type="text" id="tels_contato_2"  value="<?php echo $this->arrayEmpresa[0]['tels_contato_2']; ?>" size="13" maxlength="9" readonly="readonly" onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'dddCelTemp2')"/>
+                <script>// coloar no editar xD selectHabilita('telefone1')</script>
+                &nbsp;
+            </td>
+        </tr>
+        
+        <tr>
+            <td align="left">
+                    <label for="dddCelTemp2">Celular</label>
+            </td>
+            <td align="left">
+                
+                <?php
+                $readonly = '';
+                $ddd = '';
+                $tel = '';
+                $readonly = 'readonly="readonly"';
+                
+                if($this->arrayEmpresa[0]['cel_contato_1'] != "")
+                {
+                    $readonly = '';
+                    $ddd = substr($this->arrayEmpresa[0]['cel_contato_1'],0,2);
+                    $tel = substr($this->arrayEmpresa[0]['cel_contato_1'],2,4).'-'.substr($this->arrayEmpresa[0]['cel_contato_1'],6);
+                }    
+                ?>
+                
+                    <input tabindex="13" name="dddCelTemp2" id="dddCelTemp2"  maxlength="2" style="width:30px" value="<?php echo $ddd; ?>" type="text" onkeyup="maskIt(this,event,'##');ativaProximo(this, 'cel_contato_2');"/>&nbsp;
+                    <input name="cel_contato_2" type="text" id="cel_contato_2" value="<?php echo $tel; ?>" size="13" maxlength="9" <?php echo $readonly; ?> onblur="validaTelefone(this);" onkeyup="maskIt(this,event,'####-####');proximoCampo(this, 'id_operadora_celular_contato_2')"/>
+                    <script>// coloar no editar xD selectHabilita('celular1')</script>
+                &nbsp;Operadora:
+                <?php
+                        $disabled='';
+                        if($tel=="")
+                            $disabled='disabled="disabled"';
+                ?>        
+                <select name="id_operadora_celular_contato_2" id="id_operadora_celular_contato_2" >
+                    <option value="">::.. Selecione uma Operadora ..::</option>
+                        <?php                        
+                        foreach ($this->operadoras as $operadora){
+                            $selected = '';
+                            if($this->arrayEmpresa[0]['id_operadora_celular_contato_2']==$operadora['id_operadora_celular'])
+                                $selected = 'selected="selected"';
+                            ?>
+                    <option <?php echo $selected?> value="<?php echo $operadora['id_operadora_celular']?>"><?php echo $operadora['titulo']?></option>
+                        <?php
+                        }
+                        ?>
+                    </option>
+
+
+                </select>
+                <script>// coloar no editar xD selectHabilita('celular1')selectHabilita('idOperadora1')</script>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="dddTelTemp1">Email</label>
+            </td>
+            <td align="left">
+                <input name="email_contato_2" type="email" id="email_contato_2" value="<?php echo $this->arrayEmpresa[0]['email_contato_2']; ?>" />
+
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td align="left">
+                <label for="facebook">Número de Funcionários:</label></td>
+            <td align="left">
+                <select tabindex="32" name="numero_de_funcionario" id="numero_de_funcionario" style="width:220px">
+                    <option value="" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="") echo 'selected="selected"'; ?>>::.. Selecione ..::</option>
+                    <option value="0" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="0") echo 'selected="selected"'; ?>>até 10</option>
+                    <option value="1" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="1") echo 'selected="selected"'; ?>>20</option>
+                    <option value="2" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="2") echo 'selected="selected"'; ?>>50</option>
+                    <option value="3" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="3") echo 'selected="selected"'; ?>>100</option>
+                    <option value="4" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="4") echo 'selected="selected"'; ?>>200</option>
+                    <option value="5" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="5") echo 'selected="selected"'; ?>>500</option>
+                    <option value="6" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="6") echo 'selected="selected"'; ?>>1000</option>
+                    <option value="7" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="7") echo 'selected="selected"'; ?>>2000</option>
+                    <option value="8" <?php if($this->arrayEmpresa[0]['numero_de_funcionario']=="8") echo 'selected="selected"'; ?>>+ de 2000</option>
+
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                Categoria: 
+            </td>
+            <td align="left">
+
+                <select tabindex="33" name="id_categoria_empresa" id="id_categoria_empresa" style="width:220px">
+                    <option value="">::.. Selecione uma Categoria ..::</option>
+                                <?php
+                                foreach ($this->categorias as $categoria){
+                                    $selected = '';
+                                    if($this->arrayEmpresa[0]['id_categoria_empresa']==$categoria['id_categoria_empresa'])
+                                        $selected = 'selected="selected"';
+                                ?>
+                                 <option <?php echo $selected?> value="<?php echo $categoria['id_categoria_empresa']?>"><?php echo $categoria['titulo']?></option>
+                                <?php
+                                }
+                                ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="left">
+                Status: 
+            </td>
+            <td align="left">
+                <label class="radio inline">
+                    <input type="radio" name="ativo" id="ativo" value="1" <?php if($this->arrayEmpresa[0]['ativo'] == 1) echo 'checked="checked"'; ?>/>&nbsp;ATIVO
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="ativo" id="ativo" value="0" <?php if( ($this->arrayEmpresa[0]['ativo'] == 0) && $this->arrayEmpresa[0]['ativo'] != "") echo 'checked="checked"'; ?>/>&nbsp;INATIVO
+                </label>
+                <p id="p_ativo" class="radio inline"><i class="icon-asterisk"></i></p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">&nbsp;
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">&nbsp;
+
+            </td>
+        </tr>
+        
+
+    </table>
+    <div align="center" class="form-actions" id="salva">
+        <input type="button" class="btn btn-success" onclick="valida();" value="Editar">
+    </div>
+    <input type="hidden" id="id_matriz" name="id_matriz" value="<?php echo $this->arrayEmpresa[0]['id_matriz']?>">
+    <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+    <div id="dialog-modal-empresa" title="Selecione uma empresa">
+        <div id="ajax_empresa" onmouseover="setTabela('empresa');"></div>
+    </div>
+
+</form>
+</div>
+
+<script>
+    varTipoEmpresa = 0;
+    
+    function tipoMatriz(){
+        varTipoEmpresa = 0;
+        document.getElementById('cnpj').readOnly = false;
+        document.getElementById('cnpj').value = "";
+    }
+    
+    $(document).ready(function() {
+        document.getElementById('nome_matriz').style.display = 'none';
+    });
+    
+    function reiniciaEstados(){
+        //reinicia os estados
+        document.getElementById('cnpj').style.borderColor = "";
+        document.getElementById('p_cnpj').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('p_empresa').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('nome_fantasia').style.borderColor = "";
+        document.getElementById('p_nome_empresa').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('razao_social').style.borderColor = "";
+        document.getElementById('p_razao_empresa').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('ativo').style.borderColor = "";
+        document.getElementById('p_ativo').innerHTML = '<i class="icon-asterisk"></i>';
+       
+    }
+    
+    function prepara(){
+        document.getElementById('cnpj').value = removeCaractere(document.getElementById('cnpj').value);
+        document.getElementById('cep').value = removeCaractere(document.getElementById('cep').value);
+        document.getElementById('telefone_1').value = removeCaractere(document.getElementById('telefone_1').value);
+        document.getElementById('telefone_2').value = removeCaractere(document.getElementById('telefone_2').value);
+        document.getElementById('celular_1').value = removeCaractere(document.getElementById('celular_1').value);
+        document.getElementById('celular_2').value = removeCaractere(document.getElementById('celular_2').value);
+        document.getElementById('fax_1').value = removeCaractere(document.getElementById('fax_1').value);
+        document.getElementById('fax_2').value = removeCaractere(document.getElementById('fax_2').value);        
+        document.getElementById('tels_contato_1').value = removeCaractere(document.getElementById('tels_contato_1').value);
+        document.getElementById('tels_contato_2').value = removeCaractere(document.getElementById('tels_contato_2').value);
+        document.getElementById('cel_contato_1').value = removeCaractere(document.getElementById('cel_contato_1').value);
+        document.getElementById('cel_contato_2').value = removeCaractere(document.getElementById('cel_contato_2').value);
+    }
+    
+    flag = 1;
+    
+    function checaCnpj(valor){
+        
+        if(varTipoEmpresa==0)
+        {
+            valor = removeCaractere(valor);
+            document.getElementById('p_cnpj').innerHTML = '&nbsp<i class="icon-asterisk"></i>';
+
+            if(ValidarCNPJ(document.getElementById('cnpj')))
+                ajax(urlAjaxValidaEmpresa+'/cnpj/'+valor, 'p_cnpj');
+
+            temp = document.getElementById('p_cnpj').innerHTML
+            if(temp.indexOf("existe") != -1)
+            {    
+                flag = 0;
+            }
+        }
+        
+    }
+    
+    function setNomeMatriz()
+    {
+        idEmpresa = document.getElementById('arrayIdTempEmpresa').value;
+        idEmpresa = idEmpresa.substr(1,idEmpresa.length-2);
+        
+        if(idEmpresa){
+            document.getElementById('nomeMatriz').value = document.getElementById('nomefantasia_'+idEmpresa).value;
+            document.getElementById('cnpj').value = document.getElementById('cnpj_'+idEmpresa).value;
+        }     
+    }
+    
+    
+    //exibe uma modal para que o usuario escolha uma empresa
+    function abreDialog(tipoEmpresa,tipo)
+    {
+        varTipoEmpresa = tipo;
+        document.getElementById('p_cnpj').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('cnpj').readOnly = true;
+        document.getElementById('nome_matriz').style.display = '';
+        url = urlAjaxEmpresa+'/escolher/1/tipoEmpresa/'+tipoEmpresa;
+        ajax(url,'ajax_empresa');
+        
+        
+        $( "#dialog-modal-empresa" ).dialog({
+            modal: true,
+            width: 822,
+            buttons: {
+                Ok: function() {
+                    temp = document.getElementsByClassName('idEmpresaTempe');
+                    if(temp.length)
+                    { 
+                        for (i = 0; i < temp.length; i++)
+                        {   
+                            if(temp[i].checked)
+                            {    
+                                document.getElementById('id_matriz').value = temp[i].value;
+                                setNomeMatriz();
+                                break;
+                            }    
+                        }
+                    }
+                    
+                    $( this ).dialog( "close" );
+                    
+                }
+            }
+        });
+    }
+        
+    function valida(){
+        flag = 1;
+        reiniciaEstados();
+        prepara();
+        //checaCnpj(document.getElementById('cnpj').value);
+        
+        if(document.getElementById('id_matriz').value == ",")
+        {
+            flag = 0;
+            document.getElementById('p_empresa').innerHTML = '<font color="#ff0000"><i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+                
+        if(!ValidarCNPJ(document.getElementById('cnpj')))
+        {
+            flag = 0;            
+        }
+        
+        if(document.getElementById('cnpj').value == "")
+        {
+            flag = 0;
+            document.getElementById('cnpj').style.borderColor = "#ff0000";
+            document.getElementById('p_cnpj').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        if(document.getElementById('nome_fantasia').value == "")
+        {
+            flag = 0;
+            document.getElementById('nome_fantasia').style.borderColor = "#ff0000";
+            document.getElementById('p_nome_empresa').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+
+        }
+        
+        if(document.getElementById('razao_social').value == "")
+        {
+            flag = 0;
+            document.getElementById('razao_social').style.borderColor = "#ff0000";
+            document.getElementById('p_razao_empresa').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+            
+        }
+        
+        radio = document.getElementsByTagName("input");
+        blnFlag = false;
+        
+        for(i=0; i<radio.length; i++) // percorre os radios e verifica qual radio está marcado
+        {
+            if (radio[i].getAttribute("type") == "radio" && radio[i].checked == true && radio[i].name == "ativo") // se for input do tipo radio e estiver marcado
+            {
+                blnFlag = true;
+            }
+        }
+        
+        if(!blnFlag)
+        {
+            flag = 0;
+            document.getElementById('ativo').style.borderColor = "#ff0000";
+            document.getElementById('p_ativo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
+        //Se validou
+        if(flag){
+            //alert('a');
+            ajaxJQuery('empresa');
+            
+            document.getElementById('cnpj').value = colocaMascaraCnpj(document.getElementById('cnpj').value);
+            document.getElementById('cep').value = colocaMascaraCep(document.getElementById('cep').value);
+            document.getElementById('telefone_1').value = colocaMascaraTel(document.getElementById('telefone_1').value);
+            document.getElementById('telefone_2').value = colocaMascaraTel(document.getElementById('telefone_2').value);
+            document.getElementById('celular_1').value = colocaMascaraTel(document.getElementById('celular_1').value);
+            document.getElementById('celular_2').value = colocaMascaraTel(document.getElementById('celular_2').value);
+            document.getElementById('fax_1').value = colocaMascaraTel(document.getElementById('fax_1').value);
+            document.getElementById('fax_2').value = colocaMascaraTel(document.getElementById('fax_2').value);        
+            document.getElementById('tels_contato_1').value = colocaMascaraTel(document.getElementById('tels_contato_1').value);
+            document.getElementById('tels_contato_2').value = colocaMascaraTel(document.getElementById('tels_contato_2').value);
+            document.getElementById('cel_contato_1').value = colocaMascaraTel(document.getElementById('cel_contato_1').value);
+            document.getElementById('cel_contato_2').value = colocaMascaraTel(document.getElementById('cel_contato_2').value);
+            
+        }
+        else
+            showAlert('Atenção','Verifique no formulário os campos indicados.');
+    }
+    
+    $(document).ready(function() {
+        flag2 = <?php if($this->arrayEmpresa[0]['id_matriz'] != 0) echo 'true'; else echo 'false'?>;
+        if(flag2){
+            document.getElementById('cnpj').readOnly = true;
+            document.getElementById('nome_matriz').style.display = '';
+        }
+    });
+</script>

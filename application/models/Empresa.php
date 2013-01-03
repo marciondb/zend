@@ -11,7 +11,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
      * @param array $parametros Array com os dados a serem gravados
      * @param Model $_endereco Model do endereco
      */
-    public function gravar($parametros,$_endereco, $update = FALSE)
+    public function gravar($parametros,$_endereco, $update = FALSE,$where=FALSE)
     {
         //ZendUtils::transmissorMsg('entrou!',  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
 
@@ -20,6 +20,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
                         "nome_fantasia" => $parametros['nome_fantasia'],
                         "razao_social" => $parametros['razao_social'],
                         "apelido" => $parametros['apelido'],
+                        "id_ramo_empresa" => $parametros['id_ramo_empresa'],
                         "cnpj" => $parametros['cnpj'],
                         "inscricao_estadual" => $parametros['inscricao_estadual'],
                         "telefone_1" => $parametros['dddTel1'].$parametros['telefone_1'],
@@ -50,27 +51,56 @@ class Application_Model_Empresa extends Application_Model_Abstract
                         "numero_de_funcionario" => $parametros['numero_de_funcionario'],
                         "ativo" => $parametros['ativo']
                         );            
-            try
-            {
-                $id_empresa = $this->save($dataEmpresa);
-            
-                $dataEndereco = array("id_empresa" => $id_empresa,
-                            "cep" => $parametros['cep'],
-                            "tipo_logradouro" => $parametros['tipo_logradouro'],
-                            "numero" => $parametros['numero'],
-                            "complemento" => $parametros['complemento'],
-                            "bairro" => $parametros['bairro'],
-                            "cidade" => $parametros['cidade'],
-                            "estado" => $parametros['estado'],
-                            "referencia" => $parametros['referencia']);
+            if(!$update)
+            {    
+                try
+                {
+                    $id_empresa = $this->save($dataEmpresa);
 
-                $_endereco->save($dataEndereco);   
-                
-                return $id_empresa;
+                    $dataEndereco = array("id_empresa" => $id_empresa,
+                                "cep" => $parametros['cep'],
+                                "tipo_logradouro" => $parametros['tipo_logradouro'],
+                                "numero" => $parametros['numero'],
+                                "complemento" => $parametros['complemento'],
+                                "bairro" => $parametros['bairro'],
+                                "cidade" => $parametros['cidade'],
+                                "estado" => $parametros['estado'],
+                                "referencia" => $parametros['referencia']);
+
+                    $_endereco->save($dataEndereco);   
+
+                    return $id_empresa;
+                }
+                catch(Exception $e)
+                {
+                    ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                }
             }
-            catch(Exception $e)
+            else
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                try
+                {
+                    $id_empresa = (int)$parametros['idEmpresa'];
+                    $this->save($dataEmpresa,$update,$where);
+
+                    $dataEndereco = array("id_empresa" => $id_empresa,
+                                "cep" => $parametros['cep'],
+                                "tipo_logradouro" => $parametros['tipo_logradouro'],
+                                "numero" => $parametros['numero'],
+                                "complemento" => $parametros['complemento'],
+                                "bairro" => $parametros['bairro'],
+                                "cidade" => $parametros['cidade'],
+                                "estado" => $parametros['estado'],
+                                "referencia" => $parametros['referencia']);
+
+                    $_endereco->save($dataEndereco,$update,$where);   
+
+                    return $id_empresa;
+                }
+                catch(Exception $e)
+                {
+                    ZendUtils::transmissorMsg('Erro ao atualizar a Empresa, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                }
             }
         
     }

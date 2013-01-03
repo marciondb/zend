@@ -526,17 +526,23 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->erros = '';
         $teste = '';
         
-        $parametros = $this->_getAllParams();
-        
+        $parametros = $this->_getAllParams();        
 
         //salva a empresa e pega o id
-        $array_id_empresa = array('id_empresa'=>$this->_empresa->gravar($parametros,$this->_endereco));
+        if($this->_request->getParam('atualizar', false))
+        {
+            $this->_empresa->gravar($parametros,$this->_endereco,$this->_request->getParam('atualizar', false),'id_empresa='.$parametros['idEmpresa']);
+        }    
+        else
+        {
+            $array_id_empresa = array('id_empresa'=>$this->_empresa->gravar($parametros,$this->_endereco));
         
-        //pega tds os id´s de td´s os usuarios que pertecem ao grupo dos administradores
-        $id_grupo = 1; //Grupo dos administradores
-        $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($id_grupo);
-        //para colocar a empresa salva na lista de empresas visiveis do grupo administrador
-        $this->_usuario_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa, false);
+            //pega tds os id´s de td´s os usuarios que pertecem ao grupo dos administradores
+            $id_grupo = 1; //Grupo dos administradores
+            $array_id_usuario_admin = $this->_usuario_grupo->getArrayIdUsuarioGrupo($id_grupo);
+            //para colocar a empresa salva na lista de empresas visiveis do grupo administrador
+            $this->_usuario_empresa_visivel->gravar($array_id_usuario_admin,$array_id_empresa, false);
+        }                
         
     }
     
@@ -770,16 +776,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->view->arrayFuncionario_tipo = $arrayCST['tipo'];
         
     }
-    
-    /***
-     * Cadastra empresa
-     */
-    public function cadastrarempresaAction()
-    {
-        $this->view->ramosEmpresa = $this->_ramo_empresa->fetchAll();
-        $this->view->operadoras = $this->_operadora_celular->fetchAll();
-        $this->view->categorias = $this->_categoria->fetchAll();
-    }
+       
     
     /***
      * Carrega a tela cadastro controle de acesso
@@ -792,7 +789,7 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
-     * Carrega a tela editar controle de acesso
+     * Carrega a tela editar funcionario
      */
     public function editarfuncionarioAction()
     {               
@@ -855,7 +852,17 @@ class Sistema_LogadoController extends Controller_Action
         
     }
     
-        /***
+    /***
+     * Cadastra empresa
+     */
+    public function cadastrarempresaAction()
+    {
+        $this->view->ramosEmpresa = $this->_ramo_empresa->fetchAll();
+        $this->view->operadoras = $this->_operadora_celular->fetchAll();
+        $this->view->categorias = $this->_categoria->fetchAll();
+    }
+    
+     /***
      * Gerencia a empresa
      */
     public function gerenciarempresaAction() {
@@ -869,35 +876,49 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     /***
+     * Carrega a tela editar funcionario
+     */
+    public function editarempresaAction()
+    {               
+        $this->view->nomeEmpresa = $this->_request->getParam('nomeEmpresa', false);        
+        $this->view->idEmpresa   = $this->_request->getParam('idEmpresa', false); 
+        
+        $this->view->arrayEmpresa = $this->_empresa->fetchAll(array('id_empresa'=>$this->_request->getParam('idEmpresa')));
+        $this->view->arrayEndereco    = $this->_endereco->fetchAll(array('id_empresa'=>$this->_request->getParam('idEmpresa')));
+        
+        $this->view->nomeMatriz   = $this->_empresa->fetchAll(array('id_empresa'=>$this->view->arrayEmpresa[0]['id_matriz']));
+        
+        $this->view->ramosEmpresa = $this->_ramo_empresa->fetchAll();
+        $this->view->operadoras = $this->_operadora_celular->fetchAll();
+        $this->view->categorias = $this->_categoria->fetchAll();
+        
+    }
+    
+    /***
      * Deleta todas as informacoes da empresa
      */
     public function deletarempresaAction() {
         $this->_helper->layout->disableLayout();
-
-        $this->_empresa->delete(array('id_empresa=?'=>(int)$this->_request->getParam('idEmpresa')));/**/
+        
         $this->_endereco->delete(array('id_empresa=?'=>(int)$this->_request->getParam('idEmpresa')));
         $arrayIdFuncionario = $this->_lotacao->getFuncionarios($this->_request->getParam('idEmpresa'));
-        
-        //$this->_funcionario->delete($arrayIdFuncionario);/**/
+               
         foreach ($arrayIdFuncionario as $funcionario){
-            $arrayIdUsuario = $this->_funcionario->getIdUsuario($funcionario['id_funcionario']);
-            
-            
-            ZendUtils::transmissorMsg($arrayIdUsuario,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
-            
-            
+            $arrayIdUsuario = $this->_funcionario->getIdUsuarioSF($funcionario['id_funcionario']);            
+            $arrayFuncionario = $this->_funcionario->fetchAll(array('id_funcionario'=>$funcionario['id_funcionario']));            
             
             $this->_usuario_time_visivel->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));        
             $this->_usuario_empresa_visivel->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
             $this->_usuario_funcionalidade->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
-            $this->_usuario_grupo->delete(array('id_usuario=?'=>(int)$arrayIdUsuario['id_usuario']));
+            $this->_usuario_grupo->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
+            $this->_usuario->delete(array('id_usuario=?'=>(int)$arrayIdUsuario[0]['id_usuario']));
 
-            $this->_lotacao->delete(array('id_funcionario=?'=>(int)$this->_request->getParam('idFuncionario')));
-
-            $this->_endereco->delete(array('id_endereco=?'=>(int)$this->_endereco->fetchAll(array('id_endereco'=>$this->view->arrayFuncionario[0]['id_endereco'])) ));
+            $this->_lotacao->delete(array('id_funcionario=?'=>(int)$funcionario['id_funcionario']));
+            $this->_endereco->delete(array('id_endereco=?'=>(int)$arrayFuncionario[0]['id_endereco']));
             $this->_funcionario->delete(array('id_funcionario=?'=>(int)$funcionario['id_funcionario']));
         }
-             
+        
+        $this->_empresa->delete(array('id_empresa=?'=>(int)$this->_request->getParam('idEmpresa')));     
     }
     
     

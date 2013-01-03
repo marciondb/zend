@@ -1193,6 +1193,25 @@ function validarSenha(senha)
     }
 }
 
+
+function colocaMascaraTel(txt){
+    if(txt.length>0)
+        txt = txt.substr(0,4)+'-'+txt.substr(4,4);
+    return txt
+}
+
+function colocaMascaraCep(txt){
+    if(txt.length>0)
+        txt = txt.substr(0,2)+'.'+txt.substr(2,3)+'-'+txt.substr(5,3);
+    return txt
+}
+
+function colocaMascaraCnpj(txt){
+    if(txt.length>0)
+        txt = txt.substr(0,2)+'.'+txt.substr(2,3)+'.'+txt.substr(5,3)+'/'+txt.substr(8,4)+'-'+txt.substr(12,2);
+    return txt
+}
+
 /*****************************************************************************
  *      FIM DE SCRIPTS PARA VALIDACAO E MASCARAS
  ****************************************************************************/
