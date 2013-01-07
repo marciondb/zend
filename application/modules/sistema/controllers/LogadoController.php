@@ -243,7 +243,8 @@ class Sistema_LogadoController extends Controller_Action
                                                 $this->_request->getParam('id_cargo', 0),
                                                 $this->_request->getParam('id_funcionario_tipo', 0),
                                                 $this->_request->getParam('listaIdFuncionarioEscolhido', 0),
-                                                $this->_request->getParam('remover', 0));
+                                                $this->_request->getParam('remover', 0),
+                                                $this->_request->getParam('ehCA', false));
     }
     
     /***

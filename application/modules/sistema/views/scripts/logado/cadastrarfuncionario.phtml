@@ -598,6 +598,7 @@
                 <label class="radio inline">
                     <input type="radio" name="status" id="status" value="0" maxlength="1" />&nbsp;INATIVO
                 </label>
+                <p id="p_ativo" class="radio inline"><i class="icon-asterisk"></i></p>
             </td>
         </tr>
         <tr>
@@ -728,14 +729,15 @@
         document.getElementById('p_tipo').innerHTML = '<i class="icon-asterisk"></i>';
         document.getElementById('email_empresa').style.borderColor = "";
         document.getElementById('p_email').innerHTML = '<i class="icon-asterisk"></i>';
+        document.getElementById('p_ativo').innerHTML = '<i class="icon-asterisk"></i>';
     }
     
     function prepara(){
         document.getElementById('tel_residencial_1').value = document.getElementById('dddTelRes1').value+document.getElementById('telefoneRes1').value;
         document.getElementById('tel_residencial_2').value = document.getElementById('dddTelRes2').value+document.getElementById('telefoneRes2').value;
-        document.getElementById('tel_residencial_1').value = document.getElementById('dddCel1').value+document.getElementById('celular1').value;
-        document.getElementById('tel_residencial_1').value = document.getElementById('dddCel2').value+document.getElementById('celular2').value;
-        document.getElementById('tel_residencial_1').value = document.getElementById('dddCel3').value+document.getElementById('celular3').value;
+        document.getElementById('celular_1').value = document.getElementById('dddCel1').value+document.getElementById('celular1').value;
+        document.getElementById('celular_2').value = document.getElementById('dddCel2').value+document.getElementById('celular2').value;
+        document.getElementById('celular_3').value = document.getElementById('dddCel3').value+document.getElementById('celular3').value;
                 
         document.getElementById('cpf').value = removeCaractere(document.getElementById('cpf').value);
         document.getElementById('data_admissao').value = converteDataMysql(document.getElementById('data_admissao').value);
@@ -796,13 +798,8 @@
             flag = 0;
             document.getElementById('p_empresa').innerHTML = '<font color="#ff0000"><i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
         }
-                
-        if(!ValidarCPF(document.getElementById('cpf')))
-        {
-            flag = 0;            
-        }
         
-        if(document.getElementById('cpf').value == "")
+        if( (document.getElementById('cpf').value == "") || (!ValidarCPF(document.getElementById('cpf'))))
         {
             flag = 0;
             document.getElementById('cpf').style.borderColor = "#ff0000";
@@ -844,10 +841,39 @@
             document.getElementById('p_tipo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
         }
         
+        radio = document.getElementsByTagName("input");
+        blnFlag = false;
+        
+        for(i=0; i<radio.length; i++) // percorre os radios e verifica qual radio está marcado
+        {
+            if (radio[i].getAttribute("type") == "radio" && radio[i].checked == true && radio[i].name == "status") // se for input do tipo radio e estiver marcado
+            {
+                blnFlag = true;
+            }
+        }
+        
+        if(!blnFlag)
+        {
+            flag = 0;
+            document.getElementById('status').style.borderColor = "#ff0000";
+            document.getElementById('p_ativo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
+        }
+        
         //Se validou
         if(flag){
             ajaxJQuery('funcionario');
             document.getElementById('salva').innerHTML = '<font color="green">Salvo!</font>';
+            
+            document.getElementById('cpf').value = colocaMascaraCpf(document.getElementById('cpf').value);
+            document.getElementById('cep').value = colocaMascaraCep(document.getElementById('cep').value);
+            document.getElementById('tel_residencial_1').value = colocaMascaraTel(document.getElementById('tel_residencial_1').value);
+            document.getElementById('tel_residencial_2').value = colocaMascaraTel(document.getElementById('tel_residencial_2').value);
+            document.getElementById('celular_1').value = colocaMascaraTel(document.getElementById('celular_1').value);
+            document.getElementById('celular_2').value = colocaMascaraTel(document.getElementById('celular_2').value);
+            document.getElementById('celular_3').value = colocaMascaraTel(document.getElementById('celular_3').value);
+            document.getElementById('data_admissao').value = converteDataTela(document.getElementById('data_admissao').value);
+            document.getElementById('data_setor').value = converteDataTela(document.getElementById('data_setor').value);
+            document.getElementById('data_nascimento').value = converteDataTela(document.getElementById('data_nascimento').value);
         }    
         else
             showAlert('Atenção','Verifique no formulário os campos indicados.');

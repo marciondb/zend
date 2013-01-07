@@ -38,7 +38,11 @@
                 <td align="center"><?php echo $funcionario['nome']; ?></td>
                 <td align="center"><?php echo $funcionario['apelido']; ?></td>
                 <td align="center"><?php echo $funcionario['nome_fantasia']; ?></td>
-                <td align="center"><?php echo $funcionario['cpf']; ?></td>
+                <?php 
+                    $cpf = $funcionario['cpf']; 
+                    $cpf = substr($cpf, 0,3).'.'.substr($cpf, 3,3).'.'.substr($cpf, 6,3).'-'.substr($cpf, 9,2);
+                ?>
+                <td align="center"><?php echo $cpf; ?></td>
                 <td align="center"><?php echo $funcionario['tel_residencial_1']; ?></td>
                 <td align="center"><?php echo $funcionario['celular_1']; ?></td>
             

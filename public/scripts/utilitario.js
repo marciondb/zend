@@ -1212,6 +1212,13 @@ function colocaMascaraCnpj(txt){
     return txt
 }
 
+function colocaMascaraCpf(txt){
+    //$cpf = substr($cpf, 0,3).'.'.substr($cpf, 3,3).'.'.substr($cpf, 6,3).'-'.substr($cpf, 9,2);
+    if(txt.length>0)
+        txt = txt.substr(0,3)+'.'+txt.substr(3,3)+'.'+txt.substr(6,3)+'-'+txt.substr(9,2);
+    return txt
+}
+
 /*****************************************************************************
  *      FIM DE SCRIPTS PARA VALIDACAO E MASCARAS
  ****************************************************************************/
@@ -1318,10 +1325,10 @@ function converteDataTela(data)
     if(data == "")
         return "";
 
-    ano = substr(data,0,4);
-    mes = substr(data,5,2);
-    dia = substr(data,8,10);
-
+    ano = data.substr(0,4);
+    mes = data.substr(5,2);
+    dia = data.substr(8,2);
+    
     return dia+'/'+mes+'/'+ano;
 
 }

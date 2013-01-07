@@ -88,7 +88,7 @@
             </td>
         </tr>
         <tr>
-            <td align="left"><label for="ie" id="ie">Inscrição Estadual:</label></td>
+            <td align="left">Inscrição Estadual:</td>
             <td align="left">
                 <input value="" tabindex="10" name="inscricao_estadual" type="text" id="inscricao_estadual" apelido size="50" maxlength="15" />
             </td>
@@ -670,12 +670,12 @@
             document.getElementById('p_empresa').innerHTML = '<font color="#ff0000"><i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
         }
                 
-        if(!ValidarCNPJ(document.getElementById('cnpj')))
+        /*if(!ValidarCNPJ(document.getElementById('cnpj')))
         {
             flag = 0;            
-        }
+        }*/
         
-        if(document.getElementById('cnpj').value == "")
+        if((document.getElementById('cnpj').value == "") || (!ValidarCNPJ(document.getElementById('cnpj'))))
         {
             flag = 0;
             document.getElementById('cnpj').style.borderColor = "#ff0000";
@@ -698,14 +698,25 @@
             
         }
         
-        if(!document.getElementById('ativo').checked )
+        radio = document.getElementsByTagName("input");
+        blnFlag = false;
+        
+        for(i=0; i<radio.length; i++) // percorre os radios e verifica qual radio está marcado
+        {
+            if (radio[i].getAttribute("type") == "radio" && radio[i].checked == true && radio[i].name == "ativo") // se for input do tipo radio e estiver marcado
+            {
+                blnFlag = true;
+            }
+        }
+        
+        if(!blnFlag)
         {
             flag = 0;
             document.getElementById('ativo').style.borderColor = "#ff0000";
             document.getElementById('p_ativo').innerHTML = '<i class="icon-asterisk"></i>&nbsp;<font color="#ff0000">Campo Obrigatório!</font>';
         }
         
-        flag=1;
+        //flag=1;
         //Se validou
         if(flag){
             //alert('a');

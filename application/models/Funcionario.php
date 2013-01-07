@@ -108,12 +108,13 @@ class Application_Model_Funcionario extends Application_Model_Abstract
     }
     
     /**
-       * Exibe tds as funcionarios visiveis.      
-       * @return Array retorna query()->fetchAll()
-       * @version 1.0
-       * @author Márcio & Marco
+    * Exibe tds as funcionarios visiveis. 
+     * @param boolean $ehCA Se for Controle de Acesso, nao deve exibir o usuario logado.    
+    * @return Array retorna query()->fetchAll()
+    * @version 1.0
+    * @author Márcio & Marco
      */
-    public function exibir($pagina,$listaIdEmpresa,$listaIdFuncionario,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo,$listaIdFuncionarioEscolhido,$remover)
+    public function exibir($pagina,$listaIdEmpresa,$listaIdFuncionario,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo,$listaIdFuncionarioEscolhido,$remover,$ehCA=false)
     {           
         $arrayIdentity = Zend_Auth::getInstance()->getIdentity();
         $perPage = Zend_Registry::get('config')->paginator->totalItemPerPage;
@@ -130,6 +131,10 @@ class Application_Model_Funcionario extends Application_Model_Abstract
                     join('usuario', 'funcionario.id_usuario = usuario.id_usuario',array('cpf'))->
                     where('usuario_time_visivel.id_usuario = ?', $arrayIdentity->id_usuario)->
                     where('lotacao.atual = 1');
+                    //Se for Controle de Acesso, nao deve exibir o usuario logado.
+                    if($ehCA)
+                        $select->where('funcionario.id_usuario <> ?', $arrayIdentity->id_usuario);
+                        
                     
             // Para melhor entendimento, vá em Controle de Acesso/Cadastrar tab Funcionário, 
             // na parte "Escolha os funcionários que receberão acessos".
