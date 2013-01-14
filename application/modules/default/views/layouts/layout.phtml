@@ -364,7 +364,7 @@
 
         function showAlert(msg)
         {
-            <?php if(isset($_REQUEST['android'])){ echo 'showAndroidToast(msg);';}else{ echo "alert(msg)";}?>
+            <?php if(isset($this->android)){ echo 'showAndroidToast(msg);';}else{ echo "alert(msg)";}?>
         }
 
     </script>
