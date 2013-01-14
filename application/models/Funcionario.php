@@ -112,7 +112,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
      * @param boolean $ehCA Se for Controle de Acesso, nao deve exibir o usuario logado.    
     * @return Array retorna query()->fetchAll()
     * @version 1.0
-    * @author Márcio & Marco
+    * @author Márcio
      */
     public function exibir($pagina,$listaIdEmpresa,$listaIdFuncionario,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo,$listaIdFuncionarioEscolhido,$remover,$ehCA=false)
     {           
@@ -171,11 +171,10 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //setMsg('ERRO','Erro ao selecionar a Funcionário, favor contactar Criweb<br>'.$e->getMessage(),0);
-            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            //setMsg('ERRO','Erro ao selecionar a Funcionário, favor contactar adminstrador<br>'.$e->getMessage(),0);
+            ZendUtils::transmissorMsg('Erro ao selecionar a Funcionário, tente novamente mais tarde. Caso o erro persista, entre em contato com a administrador!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
-        
-        
+                
         return $paginator;
         
     }
@@ -204,7 +203,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
        * Exibe tds os funcionarios os quais o usuario logado deu acesso.      
        * @return Array retorna query()->fetchAll()
        * @version 1.0
-       * @author Márcio & Marco
+       * @author Márcio 
      */
     public function exibirca($pagina,$listaIdEmpresa,$listaIdTime,$idSetor,$idCargo,$idFuncionario_tipo)
     {           

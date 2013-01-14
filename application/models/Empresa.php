@@ -112,7 +112,7 @@ class Application_Model_Empresa extends Application_Model_Abstract
        * @param  Boolean $editar : coloca um elemento um "botao" para pode editar
        * @param  Boolean $deletar : coloca um elemento um "botao" para pode deletar
        * @version 1.0
-       * @author Márcio & Marco
+       * @author Márcio
      */
     public function exibir($pagina,$cnpj,$listaIdEmpresasEscolhidas,$remover,$tipoEmpresa)
     {           

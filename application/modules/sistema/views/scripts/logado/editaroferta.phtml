@@ -1,0 +1,148 @@
+<h3>Editar de Oferta</h3>
+<hr>
+<div id="oferta">
+    <form name="formulario" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravaoferta','atualizar'=>TRUE,'id_oferta'=>$this->arrayOferta[0]['id_oferta']), null, 1); ?>" method="post">
+       
+        <div class="modal_filtro">
+            <h4>Título da oferta:</h4>
+            <div align="center" class="form-actions">
+                <input name="titulo" id="titulo" value="<?php echo $this->arrayOferta[0]['titulo'] ?>" placeholder="Escreva o título da oferta aqui">
+            </div>
+            <h4>Descrição da oferta:</h4>
+            <div align="center" class="form-actions">
+                <textarea name="descricao" id="descricao" placeholder="Descreva a sua oferta" rows="10" style="width: 400px;" ><?php echo $this->arrayOferta[0]['descricao'] ?></textarea>
+            </div>
+            <h4>Aonde fica a oferta?</h4>
+            <div align="center" class="form-actions">
+                <div id="map_canvas" style="width: 700px;height: 500px;"></div>
+            </div>
+        </div>  
+    
+        <div align="center" class="form-actions" id="salva">
+            <input type="button" class="btn btn-success" onclick="valida();" value="Editar">
+        </div>
+        <input type="hidden" value="<?php echo $this->arrayOferta[0]['id_empresa'] ?>" id="id_empresa" name="id_empresa">
+        <input type="hidden" value="<?php echo $this->arrayOferta[0]['longitude'] ?>" id="longitude" name="longitude">
+        <input type="hidden" value="<?php echo $this->arrayOferta[0]['latitude'] ?>" id="latitude" name="latitude">
+    </form>
+</div>    
+
+<script>
+    
+    var markerEstouAqui = []; //array com o marker da localizacao do user
+    var lat = -22.28736;
+    var lng = -42.533698;
+    var initialLocation;
+    
+    var browserSupportFlag =  new Boolean();
+    
+    function valida()
+    {
+        flag=1
+        textoMsgErro = '';
+
+        if(document.getElementById('titulo').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Preencha o campo título!<br>';
+        }
+        
+        if(document.getElementById('descricao').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Preencha o campo descrição!<br>';
+        }
+        
+        //Se validou
+        if(flag)
+        {            
+            
+            //grava
+            ajaxJQuery('oferta');
+        }
+        else
+            showAlert('Atenção.',textoMsgErro);
+        
+    }
+
+    function initialize() {
+
+        var myOptions = {
+          zoom: 16,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        
+        // Listener ao clicar colocar o posicao atual e faz a pesquisa nesta area
+        google.maps.event.addListener(map, 'click', function(event) {
+                                        estouAqui(event.latLng,map);
+                                                                  });
+        
+        initialLocation = new google.maps.LatLng(<?php echo $this->arrayOferta[0]['latitude'] ?>,<?php echo $this->arrayOferta[0]['longitude'] ?>);
+        map.setCenter(initialLocation);
+
+        //marca a posicao atual do usuario, ao inicializar o programa
+        estouAqui(initialLocation,map);        
+        
+      }
+
+      function loadScript() {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "http://maps.google.com/maps/api/js?sensor=false&callback=initialize";
+        document.body.appendChild(script);
+      }
+
+      window.onload = loadScript;
+      
+      //faz um marker, com a localizacao do user
+    function estouAqui(position, map) 
+    {	
+        
+        deleteOverlaysMarkerEstouAqui();
+
+        marker = new google.maps.Marker({
+                          position: position,
+                          map: map,
+                          icon: '<?php echo $this->baseUrl()?>/public/images/default/you-are-here-2.png'
+                        });
+
+        //para centralizar
+        map.panTo(position);
+
+        //atualiza as variaveis lat e lng com a position do marker
+        lat = position.lat();
+        lng = position.lng();
+        
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lng;
+        
+        //adicionar no array
+        markerEstouAqui.push(marker);
+
+        //ao clicar no marker, um balao sera exibido
+        var infowindow = new google.maps.InfoWindow({
+            content: 'Sua oferta estará aqui!'
+        });
+        
+        google.maps.event.addListener(markerEstouAqui[0], 'click', function() {
+                                        infowindow.open(map,markerEstouAqui[0]);
+        });
+               
+    }
+    
+    // Se o usuario acessa o programa pelo navegador, ele informa a sua localizacao.
+    // Porem ele pode escolher pesquisar uma outra localizacao, mas como ele so pode estar em um unico
+    // lugar por vez, a antiga marcacao tem q ser deletada.
+    // É isso q a deleteOverlaysMarkerEstouAqui() faz
+    function deleteOverlaysMarkerEstouAqui() 
+    {
+        if (markerEstouAqui[0]) 
+        {
+            markerEstouAqui[0].setMap(null);
+        }
+
+        markerEstouAqui.length = 0;		
+    }
+    
+</script>    

@@ -25,6 +25,7 @@ class Sistema_LogadoController extends Controller_Action
     protected $_categoria;
     protected $_area;
     protected $_foco;
+    protected $_oferta;
     
     
     public function init()
@@ -58,6 +59,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_lotacao = new Application_Model_Lotacao();
         $this->_area = new Application_Model_Area();
         $this->_foco = new Application_Model_Foco();
+        $this->_oferta = new Application_Model_Oferta();
         
         
         //*******************************************************************
@@ -500,17 +502,17 @@ class Sistema_LogadoController extends Controller_Action
         if($flag){
             
             $msg = "Olá ".$parametros['nome'].", seja bem-vindo(a), agora você 
-                já pode acessar o nosso Portal Pinhonline, basta clicar no link 
-                e cadastrar a sua senha: <a href='www.pinhonline.com.br/portal/index/chave/chave/".$segmd5."'>
+                já pode acessar o nosso sistema administrativo, basta clicar no link 
+                e cadastrar a sua senha: <a href='www.marciondb.com.br/sistema/index/chave/chave/".$segmd5."'>
                 Clique aqui</a><br>( caso não consiga clicar no link, basta 
                 copiar o seguinte endereço e colar na barra de endereço de seu 
-                navegador: www.pinhonline.com.br/portal/index/chave/chave/".$segmd5.")";
+                navegador: www.marciondb.com/sistema/index/chave/chave/".$segmd5.")";
             
             $mail = new Zend_Mail(); 
             $mail->setBodyHtml($msg);
-            $mail->setFrom('consultores@pinhonline.com.br', 'P&C Online');
+            $mail->setFrom('consultores@marciondb.com.br', 'PF Ofertas');
             $mail->addTo($parametros['email_empresa'], $parametros['nome']);
-            $mail->setSubject('Bem-vindo ao PinhOnline.');
+            $mail->setSubject('Bem-vindo ao Sistema Administrativo.');
             $mail->send();
         }
         
@@ -785,6 +787,7 @@ class Sistema_LogadoController extends Controller_Action
     public function cadastrarfuncionarioAction()
     {
         $this->view->operadoras = $this->_operadora_celular->fetchAll();
+        $this->view->categorias = $this->_categoria->fetchAll();
           
     
     }
@@ -1063,6 +1066,7 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->nomeUtilitario = 'Operadora';
         
     }
+    
     /***
      * Cadastrar Utilitarios: Area, cargo, categoria_empresa,familia, foco, funcionario_tipo,
      * ramo_empresa e setor
@@ -1177,6 +1181,84 @@ class Sistema_LogadoController extends Controller_Action
             $this->_operadora_celular->deletar($idTabela);
             $this->view->tabela = 'operadora_celular';
         }
+    }
+    
+    public function ajaxgravaofertaAction() {
+        
+        $this->_helper->layout->disableLayout();
+        
+        if(!$this->possuiPermissao('cadastraroferta') || !$this->possuiPermissao('editaroferta'))
+            $this->_redirect ("sistema/logado");
+        
+        $this->view->erros = '';
+        $id_oferta = '';
+        
+        $parametros = $this->_getAllParams();        
+
+        //salva a oferta
+        if($this->_request->getParam('atualizar', false))
+            $id_oferta = $this->_oferta->gravar($parametros,$parametros['atualizar'],'id_oferta='.$parametros['id_oferta']);
+        else
+            $id_oferta = $this->_oferta->gravar($parametros);
+        
+        if(is_string($id_oferta))
+            $this->view->erros .= " ".$id_oferta;
+                        
+        
+    }
+    
+    public function ajaxofertaAction() {
+        
+        $this->_helper->layout->disableLayout();        
+             
+        $parametros = $this->_getAllParams(); 
+        
+        $this->view->editar     = $this->_request->getParam('editar', false);
+        $this->view->deletar    = $this->_request->getParam('deletar', false);
+        
+        $array_id_funcionario = $this->_usuario->getIdFuncionario($this->_id_usuario);
+        $arrayLotacao     = $this->_lotacao->fetchAll(array('id_funcionario'=>$array_id_funcionario[0]['id_funcionario'],'atual'=>'1'));
+        $id_empresa_user       = $arrayLotacao[0]['id_empresa'];
+        
+       $this->view->arrayOferta = $this->_oferta->exibir($this->_request->getParam('pagina', 1),
+                                                        1);//$id_empresa_user); 
+        
+    }
+    
+    /***
+     * Cadastrar ofertas no site
+     */
+    public function cadastrarofertaAction() {
+                       
+        $array_id_funcionario = $this->_usuario->getIdFuncionario($this->_id_usuario);
+        $this->view->arrayLotacao     = $this->_lotacao->fetchAll(array('id_funcionario'=>$array_id_funcionario[0]['id_funcionario'],'atual'=>'1'));
+        $this->view->id_empresa       = $this->view->arrayLotacao[0]['id_empresa'];
+                
+    }
+    
+    public function gerenciarofertaAction() {
+        $arrayLED = $this->getLED('gerenciaroferta');
+                
+        $this->view->editar     = isset($arrayLED['editar'])?$arrayLED['editar']:false;
+        $this->view->deletar    = isset($arrayLED['deletar'])?$arrayLED['deletar']:false;
+    }
+    
+    /***
+     * Editar oferta
+     */
+    public function editarofertaAction() {
+        
+        $parametros = $this->_getAllParams();
+        
+        $this->view->arrayOferta     = $this->_oferta->fetchAll(array('id_oferta'=>$parametros['idOferta']));
+        
+    }   
+    
+    public function deletarofertaAction() {
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        
+        $this->_oferta->deletar($parametros['idOferta']);
     }
     
     public function indexAction()

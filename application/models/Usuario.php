@@ -127,7 +127,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
             }
             catch(Exception $e)
             {
-                ZendUtils::transmissorMsg('Erro ao cadastrar o Usuário, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                ZendUtils::transmissorMsg('Erro ao cadastrar o Usuário, tente novamente mais tarde. Caso o erro persista, entre em contato com a o administrador!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
                 return $e->getMessage();
             }
         }
@@ -142,7 +142,7 @@ class Application_Model_Usuario extends Application_Model_Abstract
             }
             catch(Exception $e)
             {
-                //ZendUtils::transmissorMsg('Erro ao atualizar o Usuário. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+                //ZendUtils::transmissorMsg('Erro ao atualizar o Usuário. Tente novamente mais tarde. Caso o erro persista, entre em contato com a o administrador!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
                 return $e->getMessage();
             }
         }
@@ -215,6 +215,21 @@ class Application_Model_Usuario extends Application_Model_Abstract
         $this->saveLog($retorno,$id_usuario);
         
         return $retornoAux;
+    }
+    
+    /***
+     * Pega apenas a id do funcionario do usuario logado
+     * @param int $idUsuario Id do usuario logado
+     * @return array Array fetchAll();
+     */
+    public function getIdFuncionario($idUsuario){
+        $select = $this->_dbTable->
+                    select()->
+                    setIntegrityCheck(false)->
+                    from('usuario',array('id_funcionario'))->
+                    where('id_usuario = ?',$idUsuario);
+        //ZendUtils::transmissorMsg($select,  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+        return $select->query()->fetchAll();
     }
     
     

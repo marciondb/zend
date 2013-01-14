@@ -1,0 +1,11 @@
+<?php
+    $cont=0;
+    
+    foreach ($this->arrayOferta as $resultado)    
+    {	 
+            echo "pontosLg[".$cont."] = ".$resultado['longitude'].";";
+            echo "pontosLt[".$cont."] = ".$resultado['latitude'].";";
+            echo 'html['.$cont.'] = "'.$resultado['titulo'].'<br>'.$resultado['descricao'].'";';
+            echo 'icon['.$cont.'] = "'.$this->baseUrl().'/public/images/default/supermarket.png";';
+            $cont++;
+    }

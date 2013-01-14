@@ -1,0 +1,56 @@
+<h3>Gerenciar Oferta</h3>
+<hr>
+<form name="formularioCarregaMenu" action="" method="post">
+    
+    <div id="ajax_oferta" class="modal_ajax" onmouseover="setTabela('oferta');">    
+    </div>
+        
+</form>
+<div id="temp"></div>
+
+<script type="text/javascript">      
+    
+    //set o "selectOrAdd" como 2 para não exibir
+    selectOrAdd = 2;
+    //set o "gerenciarFuncionario" para editar e deletar
+    gerenciarFuncionario = 1;
+    
+    LED = '';    
+    <?php
+        $aux = '';
+        
+        if($this->editar)
+          $aux .= '/editar/1';
+        
+        if($this->deletar)
+          $aux .= '/deletar/1' 
+    ?>
+        
+    //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
+    // ajax eh excudado
+    function setPaginator(pagina,query)
+    {  
+        if(tabelas=='oferta')
+        {
+            url = urlAjaxOferta+'/selecionar/1/pagina/'+pagina+'<?php echo $aux; ?>'+query;
+            ajax(url,'ajax_funcionario');
+        }
+    }
+            
+    
+        
+    function deletar(idOferta)
+    {
+        url = '<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'deletaroferta'), null, 1); ?>/idOferta/'+idOferta;
+        ajax(url,'temp');
+        
+        url = urlAjaxOferta+'<?php echo $aux; ?>';
+        ajax(url,'ajax_oferta');
+        
+    }    
+
+    url = urlAjaxOferta+'<?php echo $aux; ?>';
+    ajax(url,'ajax_oferta');
+    
+           
+</script>

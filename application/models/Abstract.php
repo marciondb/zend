@@ -69,7 +69,7 @@ abstract class Application_Model_Abstract {
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao salvar o LOG, favor contactar Criweb<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao salvar o LOG, favor contactar o administrador<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
 

@@ -13,6 +13,8 @@ urlAjaxFiltroSCT = '/'+host+'/sistema/logado/ajaxfiltrosct';
 urlAjaxValidaUsuario = '/'+host+'/sistema/logado/ajaxvalidausuario';
 urlAjaxValidaEmpresa = '/'+host+'/sistema/logado/ajaxvalidaempresa';
 urlAjaxUtilitario = '/'+host+'/sistema/logado/ajaxutilitario';
+urlAjaxOferta = '/'+host+'/sistema/logado/ajaxoferta';
+urlAjaxMecBusca = '/'+host+'/default/index/ajaxmecbusca';
 
 //http://www.browser-update.org/pt/
 //Browser-Update.org - Informe o seu visitante sobre atualizações do navegador
@@ -389,14 +391,14 @@ function ajaxJQuery(nomeDiv)
         success: function (request,data) {
             //alert('ok');
             if($.trim(request)!='')
-                setMsg('ERRO','Erro 1 ao processar, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'+request+data,0);
+                setMsg('ERRO','Erro 1 ao processar, tente novamente mais tarde. Caso o erro persista, entre em contato com a o administrador!<br>'+request+data,0);
             else
                 setMsg('Show','Salvo com sucesso!',1);
             divAguarde(false,nomeDiv);
         },
         error: function (request, status, error) {
-            //setMsg('ERRO','Erro ao salvar, entre em contato com a CRIWEB.!'+request.responseText,0);
-            setMsg('ERRO','Erro 2 ao processar, tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'+request,0);
+            //setMsg('ERRO','Erro ao salvar, entre em contato com a o administrador.!'+request.responseText,0);
+            setMsg('ERRO','Erro 2 ao processar, tente novamente mais tarde. Caso o erro persista, entre em contato com a o administrador!<br>'+request,0);
             divAguarde(false,nomeDiv);
         }
     });

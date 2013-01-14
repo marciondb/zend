@@ -148,7 +148,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do funcionário. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao cadastrar a funcionalidade do funcionário. Tente novamente mais tarde. Caso o erro persista, entre em contato com a o administrador!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
             return $e->getMessage();
         }
         
@@ -167,8 +167,8 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            //echo "<script>setMsg('ERRO','Erro ao retirar as funcionalidades dos usuários, favor contactar Criweb<br>".$e->getMessage()."',1)</script>";            
-            ZendUtils::transmissorMsg('Erro ao retirar as funcionalidades dos usuários. Tente novamente mais tarde. Caso o erro persista, entre em contato com a CRIWEB!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            //echo "<script>setMsg('ERRO','Erro ao retirar as funcionalidades dos usuários, favor contactar o administrador<br>".$e->getMessage()."',1)</script>";            
+            ZendUtils::transmissorMsg('Erro ao retirar as funcionalidades dos usuários. Tente novamente mais tarde. Caso o erro persista, entre em contato com a o administrador!<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
         

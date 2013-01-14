@@ -1,0 +1,62 @@
+<?php if( $this->arrayOferta->count() == 0 ){ ?>
+    <table>    
+        <tr>
+            <td colspan="2">Nenhum item encontrado</td>
+        </tr>
+    </table>
+<?php }else{ ?>
+
+<table align="center" cellspacing="1" width="100%">
+    <th class="barra_titulo">id</th>
+    <th class="barra_titulo">Título</th>
+    
+    
+    <?php
+   
+    if($this->editar)
+        echo '<th class="barra_titulo">Editar</th>';
+    if($this->deletar)
+        echo '<th class="barra_titulo">Deletar</th>';
+    
+    
+    $cont =0;
+    
+    
+    foreach ($this->arrayOferta as $oferta): ?>
+            <tr class="t_acende">
+                <td align="center"><?php echo $oferta['id_oferta']; ?></td>
+                <td align="center"><?php echo $oferta['titulo']; ?></td>
+                <?php                    
+                
+                    if($this->editar)
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'editaroferta','idOferta'=>$oferta['id_oferta']), null, 1); ?>" ><i class="icon-pencil"></i></a>
+                        </td>
+                        <?php
+                    }
+                
+                    if($this->deletar)
+                    {    
+                        ?>
+                        <td align="center" width="16%">
+                            <a class="btn" href="javascript:;" onclick="showAlertConfirm('Deletar','Tem certeza que deseja excluir esta oferta? Esta é uma ação IRREVERSÍVEL!','deletar',[ '<?php echo $oferta['id_oferta'];?>']);" ><i class="icon-trash"></i></a>
+                        </td>
+                        <?php
+                    }
+                ?>
+                        
+            </tr>
+        <?php endforeach; ?>
+        
+</table>
+<?php 
+    echo $this->paginationControl(
+                    $this->arrayOferta,
+                    'Sliding',
+                    'paginator.phtml'
+            );
+?>
+
+<?php } //if inicial?>
