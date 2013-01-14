@@ -19,12 +19,19 @@ class Default_IndexController extends Zend_Controller_Action
         //*******************************************************************
         //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
         // a banco de dados
-        //*******************************************************************   
+        //******************************************************************* 
+        
     }
 
     public function indexAction()
     {
         
+        if($this->_request->getParam('android', false)){
+            $this->view->lat = $this->_request->getParam('lat', 0);
+            $this->view->lng = $this->_request->getParam('lng', 0); 
+            $this->view->android = $this->_request->getParam('android', 0);
+        }
+         
     }
     
     public function ajaxmecbuscaAction()
