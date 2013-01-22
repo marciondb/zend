@@ -481,202 +481,7 @@
             <td align="left"><input tabindex="29" name="referencia" type="text" id="referencia" value="<?php echo $this->arrayEndereco[0]['referencia']; ?>" size="23" maxlength="100" />
             </td>
         </tr>
-        <tr><td></td></tr>
-        <tr>
-            <td align="left" bgcolor="#BBBBBB">
-                    <b>Detalhes</b>
-            </td>
-        </tr>
-        <tr><td></td></tr>
-        <tr>
-            <td align="left">
-                Serviço Correio:
-            </td>
-            <td align="left">
-                <label class="radio inline">
-                    <input tabindex="30" type="radio" name="servico_correios" id="servico_correios" value="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="1") echo 'checked="checked"';?> maxlength="1"/>&nbsp;SIM
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="servico_correios" id="servico_correios" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="0") echo 'checked="checked"';?> />&nbsp;NÃO
-                </label>
-            </td>
-                    </tr>
-        <tr>
-            <td align="left">
-                <label for="estadoCivil">Estado Civil</label>
-            </td>
-            <td align="left">
-
-                <select tabindex="31" name="estado_civil" id="estado_civil" > 
-                <option value="" <?php if($this->arrayFuncionario[0]['estado_civil']=="") echo 'selected="selected"'; ?>>::.. SELECIONE ..::</option> 
-                <option value="0" <?php if($this->arrayFuncionario[0]['estado_civil']=="0") echo 'selected="selected"'; ?>> CASADO </option>
-                <OPTION VALUE="2" <?php if($this->arrayFuncionario[0]['estado_civil']=="2") echo 'selected="selected"'; ?>> DIVORCIADO </OPTION>
-                <OPTION VALUE="4" <?php if($this->arrayFuncionario[0]['estado_civil']=="4") echo 'selected="selected"'; ?>> JUNTADO </OPTION>
-                <OPTION VALUE="5" <?php if($this->arrayFuncionario[0]['estado_civil']=="5") echo 'selected="selected"'; ?>> OUTROS </OPTION> 
-                <option value="1" <?php if($this->arrayFuncionario[0]['estado_civil']=="1") echo 'selected="selected"'; ?>> SOLTEIRO </option>                      
-                <OPTION VALUE="3" <?php if($this->arrayFuncionario[0]['estado_civil']=="3") echo 'selected="selected"'; ?>> VIUVO </OPTION> 
-            </select> 
-            </td>
-        </tr>
-       <tr>
-            <td align="left">
-                    <label for="nomeConjuge">Nome do Cônjuge (companheiro(a)):</label>
-            </td>
-            <td align="left">
-                    <input tabindex="37" name="nome_conjuge" type="text" id="nome_conjuge" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['nome_conjuge']; ?>" />
-            </td>
-        </tr>
-            <tr>
-            <td align="left">
-                <label for="temFilho">Tem filhos:</label>
-            </td>
-            <td align="left">
-                <label class="radio inline">
-                    <input tabindex="32" type="radio" name="temFilho" id="temFilho" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['servico_correios']=="1") echo 'checked="checked"';?> onclick="document.getElementById('numero_filhos').disabled = false;document.getElementById('numero_filhos').value = 1"/>&nbsp;SIM
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="temFilho" id="temFilho" value="0"  <?php if($this->arrayFuncionario[0]['servico_correios']=="0") echo 'checked="checked"';?> onclick="document.getElementById('numero_filhos').disabled = true;document.getElementById('numero_filhos').value = 0"/>&nbsp;NÃO
-                </label>    
-                &nbsp;&nbsp;
-                <input tabindex="33" name="numero_filhos" type="text" id="numero_filhos"  maxlength="2" size="25" value="<?php echo $this->arrayFuncionario[0]['numero_filhos']; ?>" placeholder="Quantos?"/>
-            </td>
-                    </tr>
-            <tr>
-                <td align="left">
-                    <label for="escolaridade">Escolaridade:</label>
-                </td>
-                <td align="left">
-
-                    <select tabindex="34" name="escolaridade" id="escolaridade"  > 
-                    <OPTION VALUE="" <?php if($this->arrayFuncionario[0]['escolaridade']=="") echo 'selected="selected"'; ?>>::.. SELECIONE ..::</OPTION> 
-                    <OPTION VALUE="0" <?php if($this->arrayFuncionario[0]['escolaridade']=="0") echo 'selected="selected"'; ?>>ENSINO FUNDAMENTAL </OPTION> 
-                    <OPTION VALUE="1" <?php if($this->arrayFuncionario[0]['escolaridade']=="1") echo 'selected="selected"'; ?>>ENSINO MÉDIO </OPTION> 
-                    <OPTION VALUE="2" <?php if($this->arrayFuncionario[0]['escolaridade']=="2") echo 'selected="selected"'; ?>>ENSINO SUPERIOR </OPTION>
-                </select> 
-                </td>
-            </tr>
-            <tr>
-                <td align="left">
-                    <label for="situcao">Situação:</label>
-                </td>
-                <td align="left">
-                <select tabindex="35" name="situacao" id="situacao"  > 
-                    <OPTION VALUE="" <?php if($this->arrayFuncionario[0]['situacao']=="") echo 'selected="selected"'; ?>>::.. SELECIONE ..::</OPTION> 
-                    <OPTION VALUE="0" <?php if($this->arrayFuncionario[0]['situacao']=="0") echo 'selected="selected"'; ?>>COMPLETO</OPTION>
-                    <OPTION VALUE="2" <?php if($this->arrayFuncionario[0]['situacao']=="2") echo 'selected="selected"'; ?>>EM CURSO</OPTION> 
-                    <OPTION VALUE="1" <?php if($this->arrayFuncionario[0]['situacao']=="1") echo 'selected="selected"'; ?>>INCOMPLETO</OPTION> 
-                </select> 
-            </td>
-            </tr>
-            <tr>
-            <td align="left">
-                    <label for="formacaoProfi">Formação Profissional:</label>
-            </td>
-            <td align="left">
-                <input tabindex="36" name="formacao" type="text" id="formacao" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['formacao']; ?>" />
-            </td>
-        </tr>
-
-        <tr>
-            <td align="left">
-                Possui Computador: 
-            </td>
-            <td align="left">
-                <label class="radio inline">
-                    <input tabindex="38" type="radio" name="possui_pc" id="possui_pc" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_pc']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="possui_pc" id="possui_pc" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_pc']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
-                </label>    
-            </td>
-                    </tr>
-        <tr>
-            <td align="left">
-                Conhecimento prático em informática: 
-            </td>
-            <td align="left">
-                <label class="radio inline">
-                    <input tabindex="39" type="radio" name="pratica_informatica" id="pratica_informatica" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['pratica_informatica']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="pratica_informatica" id="pratica_informatica" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['pratica_informatica']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
-                </label>    
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                    <label for="religiao">Religião:</label>
-            </td>
-            <td align="left">
-                    <input tabindex="40" name="religiao" type="text" id="religiao" maxlength="100" size="50" value="<?php echo $this->arrayFuncionario[0]['religiao']; ?>" />
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                Possui Bíblia: 
-            </td>
-            <td align="left">
-                <label class="radio inline">
-                    <input tabindex="41" type="radio" name="possui_biblia" id="possui_biblia" value="1" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_biblia']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="possui_biblia" id="possui_biblia" value="0" maxlength="1" <?php if($this->arrayFuncionario[0]['possui_biblia']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
-                </label>    
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                Se não, Gostaria de Ganhar uma Bíblia? 
-            </td>
-            <td align="left">
-                <label class="radio inline">
-                    <input tabindex="42" type="radio" name="quer_biblia" id="quer_biblia" value="1"  maxlength="1" <?php if($this->arrayFuncionario[0]['quer_biblia']=="1") echo 'checked="checked"';?>/>&nbsp;SIM
-                </label>
-                <label class="radio inline">
-                    <input type="radio" name="quer_biblia" id="quer_biblia" value="0"  maxlength="1" <?php if($this->arrayFuncionario[0]['quer_biblia']=="0") echo 'checked="checked"';?>/>&nbsp;NÃO
-                </label>    
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                    <label for="lazer">O que você gosta de fazer no seu Lazer?</label>
-            </td>
-            <td align="left">
-                    <textarea tabindex="43" name="lazer" id="lazer" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['lazer']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight"></span>&nbsp;<font color="#999">caracteres restantes</font>
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                    <label for="lazer">Quais são os seus Talentos/ Aptidões?</label>
-            </td>
-            <td align="left">
-                    <textarea tabindex="44" name="talentos" id="talentos" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['talentos']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight2"></span>&nbsp;<font color="#999">caracteres restantes</font>
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                    <label for="dons">Quais os seus Dons Artísticos?</label>
-            </td>
-            <td align="left">
-                    <textarea tabindex="45" name="dom_artes" id="dom_artes" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['dom_artes']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight3"></span>&nbsp;<font color="#999">caracteres restantes</font>
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                    <label for="sonhos">Qual o seu Sonho?</label>
-            </td>
-            <td align="left">
-                    <textarea tabindex="46" name="sonho" id="sonho" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['sonho']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight4"></span>&nbsp;<font color="#999">caracteres restantes</font>
-            </td>
-        </tr>
-        <tr>
-            <td align="left">
-                    <label for="sonhos">Brindes já recebidos:</label>
-            </td>
-            <td align="left">
-                    <textarea tabindex="47" name="brindes_recebidos" id="brindes_recebidos" maxlength="200" cols="39" rows="5"><?php echo $this->arrayFuncionario[0]['brindes_recebidos']; ?></textarea><br /><span style="margin-left:216px;color:#999" id="charsRight5"></span>&nbsp;<font color="#999">caracteres restantes</font>
-            </td>
-        </tr>
+        
         <tr>
             <td align="left">
                     Categoria: 
@@ -688,7 +493,7 @@
                         <?php
                         foreach ($this->categorias as $categoria){
                         $selected = '';
-                            if($this->arrayFuncionario[0]['id_categoria_empresa']==$categoria['titulo'])
+                            //if($this->arrayFuncionario[0]['id_categoria_empresa']==$categoria['titulo'])
                                 $selected = 'selected="selected"';
                             ?>
                         <option <?php echo $selected?> value="<?php echo $categoria['id_categoria_empresa']?>"><?php echo $categoria['titulo']?></option>
@@ -800,11 +605,6 @@
 <script>
     varTipoEmpresa = '';
     
-    limiteTxtArea('lazer','charsRight',200);
-    limiteTxtArea('talentos','charsRight2',200);
-    limiteTxtArea('dom_artes','charsRight3',200);
-    limiteTxtArea('sonho','charsRight4',200);
-    limiteTxtArea('brindes_recebidos','charsRight5',200);
     
     $(function() {
         $( ".showToolTip" ).tooltip({

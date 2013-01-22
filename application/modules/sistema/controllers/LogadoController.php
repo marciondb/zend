@@ -797,6 +797,8 @@ class Sistema_LogadoController extends Controller_Action
      */
     public function editarfuncionarioAction()
     {               
+        $this->view->operadoras = $this->_operadora_celular->fetchAll();
+        $this->view->categorias = $this->_categoria->fetchAll();
         $this->view->nomeFuncionario = $this->_request->getParam('nomeFuncionario', false);        
         $this->view->idFuncionario   = $this->_request->getParam('idFuncionario', false);
         
