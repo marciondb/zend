@@ -150,6 +150,11 @@ class Application_Model_Usuario extends Application_Model_Abstract
         
     }
     
+    public function alterarSenha($senha,$id_usuario) {
+        $id_usuarios = $this->save(array('senha'=>md5($senha)),true,'id_usuario='.$id_usuario);
+        return (int)$id_usuarios;
+    }
+    
     public function validaCampoUnico($nomeCampo,$valorCampo) {
         
         $select = $this->_dbTable->

@@ -1292,6 +1292,19 @@ class Sistema_LogadoController extends Controller_Action
         
     }
     
+    public function alterarsenhaAction()
+    {
+        
+    }
+    
+    public function ajaxalterarsenhaAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        
+        $teste = $this->_usuario->alterarSenha($parametros['senha'],$this->_id_usuario);
+    }
+    
     public function ajaxtesteAction()
     {
         if($this->_request->isPost())
