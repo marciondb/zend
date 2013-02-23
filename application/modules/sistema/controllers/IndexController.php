@@ -28,17 +28,17 @@ class Sistema_IndexController extends Controller_Action
         
         $msg = "Pedido de aprovação:<br>";
         
-        $msg += "nome :".$parametros['nome']."<br>";
-        $msg += "email :".$parametros['email']."<br>";
-        $msg += "cpf :".$parametros['cpf']."<br>";
-        $msg += "cep_residencial :".$parametros['cep_residencial']."<br>";
-        $msg += "numero_residencial :".$parametros['numero_residencial']."<br>";
-        $msg += "nome_fantasia :".$parametros['nome_fantasia']."<br>";
-        $msg += "razao_social :".$parametros['razao_social']."<br>";
-        $msg += "cnpj :".$parametros['cnpj']."<br>";
-        $msg += "cep_empresa :".$parametros['cep_empresa']."<br>";
-        $msg += "numero_empresa :".$parametros['numero_empresa']."<br>";
-        $msg += "breve :".$parametros['breve']."<br>";
+        $msg .= "nome :".$parametros['nome']."<br>";
+        $msg .= "email :".$parametros['email']."<br>";
+        $msg .= "cpf :".$parametros['cpf']."<br>";
+        $msg .= "cep_residencial :".$parametros['cep_residencial']."<br>";
+        $msg .= "numero_residencial :".$parametros['numero_residencial']."<br>";
+        $msg .= "nome_fantasia :".$parametros['nome_fantasia']."<br>";
+        $msg .= "razao_social :".$parametros['razao_social']."<br>";
+        $msg .= "cnpj :".$parametros['cnpj']."<br>";
+        $msg .= "cep_empresa :".$parametros['cep_empresa']."<br>";
+        $msg .= "numero_empresa :".$parametros['numero_empresa']."<br>";
+        $msg .= "breve :".$parametros['breve']."<br>";
         
         $mail = new Zend_Mail(); 
         $mail->setBodyHtml($msg);

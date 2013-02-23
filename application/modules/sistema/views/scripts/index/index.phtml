@@ -148,6 +148,9 @@
         breve = document.getElementById('breve').value;
         
         ajax(url+'/nome/'+nome+'/email/'+email+'/cpf/'+cpf+'/cep_residencial/'+cep_residencial+'/numero_residencial/'+numero_residencial+'/nome_fantasia/'+nome_fantasia+'/razao_social/'+razao_social+'/cnpj/'+cnpj+'/cep_empresa/'+cep_empresa+'/numero_empresa/'+numero_empresa+'/breve/'+breve, 'ajax');
+        $( "#criar_conta" ).dialog( "close" );
+        showAlert('Show', 'Enviado com sucesso.');
+        
     }
 </script>
 
