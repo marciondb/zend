@@ -5,6 +5,7 @@ class Default_IndexController extends Zend_Controller_Action
     
     protected $_oferta;
     protected $_estatistica_clique;
+    protected $_categoria_oferta;
     
     public function init()
     {
@@ -16,7 +17,7 @@ class Default_IndexController extends Zend_Controller_Action
         
         $this->_oferta = new Application_Model_Oferta();
         $this->_estatistica_clique = new Application_Model_EstatisticaClique();
-        
+        $this->_categoria_oferta = new Application_Model_CategoriaOferta();
         
         //*******************************************************************
         //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
@@ -31,8 +32,8 @@ class Default_IndexController extends Zend_Controller_Action
             $this->view->lat = $this->_request->getParam('lat', 0);
             $this->view->lng = $this->_request->getParam('lng', 0); 
             $this->view->android = $this->_request->getParam('android', 0);
-        }
-         
+       }
+       $this->view->categoria_oferta = $this->_categoria_oferta->fetchAll();   
     }
     
     public function ajaxmecbuscaAction()
@@ -43,7 +44,8 @@ class Default_IndexController extends Zend_Controller_Action
         
         $this->view->arrayOferta = $this->_oferta->exibirOfertaMapa($parametros['latitude'],
                                                                     $parametros['longitude'],
-                                                                    $parametros['raio']);
+                                                                    $parametros['raio'],
+                                                                    $parametros['id_categoria']);
     }
     
     public function ajaxgravaestatisticaAction()

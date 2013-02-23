@@ -22,6 +22,7 @@
         var lat = -22.28736;
         var lng = -42.533698;
         var raio = 100;// raido de pesquisa em metros
+        var id_categoria = 0;
         var circulo = '';
         var map = null;
         var markerEstouAqui = []; //array com o marker da localizacao do user
@@ -31,6 +32,15 @@
         function setRaio(paramRaio)
         {
             raio = parseInt(paramRaio);//converte string em inteiro. Na verdade, converte qq tipo em inteiro
+            initialize();
+            document.getElementById('id_categoria_oferta').value = id_categoria;
+            document.getElementById('txRaio').value = raio;
+        }
+        
+        function setFiltro(paramId_categoria){
+            id_categoria = parseInt(paramId_categoria);//converte string em inteiro. Na verdade, converte qq tipo em inteiro
+            initialize();
+            document.getElementById('id_categoria_oferta').value = id_categoria;
         }
 
         /**
@@ -61,7 +71,24 @@
             controlText.style.fontSize = '12px';
             controlText.style.paddingLeft = '4px';
             controlText.style.paddingRight = '4px';
-            controlText.innerHTML = '<input type="text" size="12"  placeholder="Raio em Metros" id="txRaio""><input type="button" value="Raio" id="btRaio" onClick="setRaio(document.getElementById(\'txRaio\').value);">';
+            controlText.innerHTML = '<input type="text" size="12"  placeholder="Raio em Metros" id="txRaio""><input type="button" value="Raio" id="btRaio" onClick="setRaio(document.getElementById(\'txRaio\').value);"><br>';
+            
+            <?php
+                $select = '';
+                $select .="<select name='id_categoria_oferta' id='id_categoria_oferta' style='width:220px' onChange='setFiltro(this.value);'>";
+                $select .=    "<option value=''>::.. Selecione uma Categoria ..::</option>";
+                
+                        foreach ($this->categoria_oferta as $categoria_oferta){
+                        
+                           $select .=" <option value='".$categoria_oferta['id_categoria_oferta']."'>".$categoria_oferta['titulo']."</option>";
+                        
+                        }                        
+            
+                $select .='</select>';
+                
+            ?>
+            
+            controlText.innerHTML += "<?php echo $select;?>";
             controlUI.appendChild(controlText);	
 
         }
@@ -284,7 +311,7 @@
 
             circulo = new google.maps.Circle(ciruloOptions);
 
-            url = urlAjaxMecBusca+'/latitude/'+lat+'/longitude/'+lng+'/raio/'+raio;
+            url = urlAjaxMecBusca+'/latitude/'+lat+'/longitude/'+lng+'/raio/'+raio+'/id_categoria/'+id_categoria;
             //inicializa a busca por ofertas
             ajax(url,'tempMap');
 
@@ -415,3 +442,4 @@
     <?php echo $this->Layout()->content; ?>    
 </body>
 </html>
+

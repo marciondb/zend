@@ -92,7 +92,7 @@ class Application_Model_Oferta extends Application_Model_Abstract
      * @param decimal $longitude A longitude do centro de quem pesquisa
      * @param int $raio Raio de busca, em metros
      */
-    public function exibirOfertaMapa($latitude,$longitude,$raio)
+    public function exibirOfertaMapa($latitude,$longitude,$raio,$id_categoria)
     {     
         
         try{
@@ -101,6 +101,9 @@ class Application_Model_Oferta extends Application_Model_Abstract
                     setIntegrityCheck(false)->
                     from('oferta')->
                     where("ACOS( COS( RADIANS( latitude ) ) * COS( RADIANS( '".$latitude."' )) * COS( RADIANS( longitude ) - RADIANS( '".$longitude."' )) + SIN( RADIANS( latitude ) ) * SIN( RADIANS( '".$latitude."' ) ) ) * 6380*1000 <= ".$raio);
+            
+            if( ($id_categoria!="") && ($id_categoria!=0))
+                        $select->where('oferta.id_categoria_oferta ='.$id_categoria);
             
             return $select->query()->fetchAll();
             
