@@ -12,6 +12,20 @@
             <div align="center" class="form-actions">
                 <textarea name="descricao" id="descricao" placeholder="Descreva a sua oferta" rows="10" style="width: 400px;" ></textarea>
             </div>
+            <h4>Categoria da Oferta:</h4>
+            <div align="center" class="form-actions">
+                <select tabindex="48" name="id_categoria_oferta" id="id_categoria_oferta" style="width:220px">
+                    <option value="">::.. Selecione uma Categoria ..::</option>
+                        <?php
+                        foreach ($this->categoria_oferta as $categoria_oferta){
+                        ?>
+                            <option value="<?php echo $categoria_oferta['id_categoria_oferta']?>"><?php echo $categoria_oferta['titulo']?></option>
+                        <?php
+                        }
+                        ?>
+
+                </select>
+            </div>
             <h4>Aonde fica a oferta?</h4>
             <div align="center" class="form-actions">
                 <div id="map_canvas" style="width: 700px;height: 500px;"></div>
@@ -51,6 +65,12 @@
         {
             flag = 0;
             textoMsgErro += 'Preencha o campo descrição!<br>';
+        }
+        
+        if(document.getElementById('id_categoria_oferta').value == "")
+        {
+            flag = 0;
+            textoMsgErro += 'Preencha o campo categoria da oferta!<br>';
         }
         
         //Se validou

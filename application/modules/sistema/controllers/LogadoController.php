@@ -1258,6 +1258,7 @@ class Sistema_LogadoController extends Controller_Action
         $array_id_funcionario = $this->_usuario->getIdFuncionario($this->_id_usuario);
         $this->view->arrayLotacao     = $this->_lotacao->fetchAll(array('id_funcionario'=>$array_id_funcionario[0]['id_funcionario'],'atual'=>'1'));
         $this->view->id_empresa       = $this->view->arrayLotacao[0]['id_empresa'];
+        $this->view->categoria_oferta = $this->_categoria_oferta->fetchAll();
                 
     }
     
@@ -1274,7 +1275,7 @@ class Sistema_LogadoController extends Controller_Action
     public function editarofertaAction() {
         
         $parametros = $this->_getAllParams();
-        
+        $this->view->categoria_oferta = $this->_categoria_oferta->fetchAll();
         $this->view->arrayOferta     = $this->_oferta->fetchAll(array('id_oferta'=>$parametros['idOferta']));
         
     }   
