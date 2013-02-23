@@ -2,20 +2,32 @@
     function loadScript() {
         var script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD_rwLMkqxBaTjKAa9h9iVk5lwhioACBvE&sensor=true&region=pt_BR&callback=<?php if(isset($this->android)){ echo 'initialize';}else{ echo "getLocation";}?>";
-        document.body.appendChild(script);
-        
-        <?php
-            //chamadas pelo android, viram por post, com as coordenadas dadas pelo GPS do aparelho
-            if(isset($this->android))
-            {
-                echo 'lat = '.$this->lat.';';        
-                echo 'lng = '.$this->lng.';';
-            }
-        ?>
-      }
+        script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD_rwLMkqxBaTjKAa9h9iVk5lwhioACBvE&sensor=true&region=pt_BR&callback=<?php
+        if (isset($this->android)) {
+            echo 'initialize';
+        } else {
+            echo "getLocation";
+        }
+        ?>";
+                document.body.appendChild(script);
 
-      window.onload = loadScript;
+        <?php
+        //chamadas pelo android, viram por post, com as coordenadas dadas pelo GPS do aparelho
+        if (isset($this->android)) {
+            echo 'lat = ' . $this->lat . ';';
+            echo 'lng = ' . $this->lng . ';';
+        }
+        ?>
+        }
+            
+        window.onload = loadScript;
+            
+        function gravaClick(id_oferta){
+            url = urlAjaxGravaEstatistica+'/id_oferta/'+id_oferta;
+            //salva o clique
+            ajax(url,'erro');
+            //alert(id_oferta);
+        }
       
 </script>
 

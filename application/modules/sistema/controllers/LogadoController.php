@@ -26,6 +26,7 @@ class Sistema_LogadoController extends Controller_Action
     protected $_area;
     protected $_foco;
     protected $_oferta;
+    protected $_estatistica_clique;
     
     
     public function init()
@@ -60,7 +61,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_area = new Application_Model_Area();
         $this->_foco = new Application_Model_Foco();
         $this->_oferta = new Application_Model_Oferta();
-        
+        $this->_estatistica_clique = new Application_Model_EstatisticaClique();
         
         //*******************************************************************
         //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
@@ -1264,6 +1265,26 @@ class Sistema_LogadoController extends Controller_Action
     }
     
     public function indexAction()
+    {
+        
+    }
+    
+    public function ajaxestatisticaAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        
+        $array_id_funcionario = $this->_usuario->getIdFuncionario($this->_id_usuario);
+        $arrayLotacao     = $this->_lotacao->fetchAll(array('id_funcionario'=>$array_id_funcionario[0]['id_funcionario'],'atual'=>'1'));
+        $id_empresa_user  = $arrayLotacao[0]['id_empresa'];
+        
+        $this->view->arrayEstatistica = $this->_estatistica_clique->exibir($this->_request->getParam('pagina', 1),
+                                                            $id_empresa_user,
+                                                            $this->_request->getParam('listaIdEmpresasEscolhidas', 0));
+        
+    }
+    
+    public function relestatisticacliqueAction()
     {
         
     }

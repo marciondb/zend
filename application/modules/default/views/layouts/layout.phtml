@@ -315,6 +315,7 @@
             pontosLt = new Array();
             html = new Array();
             icon = new Array();
+            id_oferta = new Array();
 
             //preenche esta var com os dados retornados pelo BD
             pontosDoBanco = document.getElementById('tempMap').innerHTML;
@@ -329,7 +330,7 @@
                     //monta o marker de cada orferta
                     for (var i = 0; i < pontosLg.length; i++) 
                     {
-                            criarMarcaOferta(map,pontosLt[i], pontosLg[i], html[i],i,icon[i]);
+                            criarMarcaOferta(map,pontosLt[i], pontosLg[i], html[i],i,icon[i],id_oferta[i]);
                     }
             }
             else
@@ -340,7 +341,7 @@
         }
 
         // cria um marker no mapa
-        function criarMarcaOferta(map,lat, lng, html,i, icon)
+        function criarMarcaOferta(map,lat, lng, html,i, icon,id_oferta)
         {
 
             marker = new google.maps.Marker({
@@ -359,6 +360,7 @@
             });			
             google.maps.event.addListener(markerOferta[i], 'click', function() {
                     infowindow.open(map,markerOferta[i]);
+                    gravaClick(id_oferta);
             });
         }
 

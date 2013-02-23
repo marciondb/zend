@@ -4,6 +4,7 @@ class Default_IndexController extends Zend_Controller_Action
 {
     
     protected $_oferta;
+    protected $_estatistica_clique;
     
     public function init()
     {
@@ -14,6 +15,7 @@ class Default_IndexController extends Zend_Controller_Action
         //*******************************************************************
         
         $this->_oferta = new Application_Model_Oferta();
+        $this->_estatistica_clique = new Application_Model_EstatisticaClique();
         
         
         //*******************************************************************
@@ -24,8 +26,7 @@ class Default_IndexController extends Zend_Controller_Action
     }
 
     public function indexAction()
-    {
-        
+    {        
         if($this->_request->getParam('android', false)){
             $this->view->lat = $this->_request->getParam('lat', 0);
             $this->view->lng = $this->_request->getParam('lng', 0); 
@@ -43,6 +44,19 @@ class Default_IndexController extends Zend_Controller_Action
         $this->view->arrayOferta = $this->_oferta->exibirOfertaMapa($parametros['latitude'],
                                                                     $parametros['longitude'],
                                                                     $parametros['raio']);
+    }
+    
+    public function ajaxgravaestatisticaAction()
+    {
+        //Desabilita o layout
+        $this->_helper->layout->disableLayout();
+        $parametros = $this->_getAllParams();
+        $this->view->erros = "";
+        
+        $teste = $this->_estatistica_clique->gravar($parametros['id_oferta']);
+        
+        if(is_string($teste))
+                $this->view->erros .= " ".$teste; 
     }
 
 

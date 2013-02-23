@@ -7,5 +7,6 @@
             echo "pontosLt[".$cont."] = ".$resultado['latitude'].";";
             echo 'html['.$cont.'] = "'.$resultado['titulo'].'<br>'.$resultado['descricao'].'";';
             echo 'icon['.$cont.'] = "'.$this->baseUrl().'/public/images/default/supermarket.png";';
+            echo 'id_oferta['.$cont.'] = '.$resultado['id_oferta'].';';
             $cont++;
     }

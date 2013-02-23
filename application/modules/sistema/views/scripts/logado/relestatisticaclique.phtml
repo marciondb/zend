@@ -1,0 +1,69 @@
+<h3>Oferta Acessada</h3>
+<hr>
+<form name="formularioTime" action="" method="post">
+    <div class="modal_min_auto_size">
+    
+        <h4>Filtro:</h4>
+        CNPJ: &nbsp;&nbsp;&nbsp;&nbsp;
+        <input value="" tabindex="9" name="cnpj" type="text" id="cnpj" size="20" maxlength="18" class="input-medium search-query" />
+        <input type="button" onclick="filtraCnpj();" value="Filtrar por CNPJ"  />
+        &nbsp;&nbsp;&nbsp;<input type="radio" name="todos" id="todos" onclick="setTodas();" checked="checked" /> 
+        <b>Exibir todas as empresas</b>
+        <hr>
+        <h5>Empresa</h5>
+        <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
+        </div>
+     </div>
+    <hr>
+    <h4>Ofertas Acessadas:</h4>
+    <div id="ajax_oferta" class="modal_auto_size" onmouseover="setTabela('oferta');">    
+    </div>    
+    <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
+    
+        
+</form>
+<div id="temp"></div>
+
+<script type="text/javascript">      
+    
+    //set o "selectOrAdd" para selecionar
+    selectOrAdd = 1;
+    
+    //ao clicar nos botoes do paginator, essa funcao eh chamada e um determinado
+    // ajax eh excudado
+    function setPaginator(pagina,query)
+    {  
+        if(tabelas=='empresa')
+        {    
+            url = urlAjaxEmpresa+'/selecionar/1/pagina/'+pagina+query;
+            ajax(url,'ajax_empresa');
+        }
+        if(tabelas=='oferta')
+        {    
+            url = urlAjaxEstatistica+'/pagina/'+pagina+query;
+            ajax(url,'ajax_empresa');
+        }
+    }
+    
+    function setTodas(){
+        document.getElementById('arrayIdTempEmpresa').value = ","
+        url = urlAjaxEmpresa+'/selecionar/1';
+        ajax(url,'ajax_empresa');
+    }
+    
+    function setFiltroTime(){}
+    function setFiltroFuncionario(){
+        temp = document.getElementById('arrayIdTempEmpresa').value;
+        temp = temp.substr(1,temp.length-2);
+        url = urlAjaxEstatistica+'/listaIdEmpresasEscolhidas/'+temp;
+        ajax(url,'ajax_oferta');
+    }
+    
+    url = urlAjaxEmpresa+'/selecionar/1';
+    ajax(url,'ajax_empresa');
+    
+    url = urlAjaxEstatistica;
+    ajax(url,'ajax_oferta');
+    
+   
+</script>

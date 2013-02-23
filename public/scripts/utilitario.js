@@ -15,6 +15,8 @@ urlAjaxValidaEmpresa = '/'+host+'/sistema/logado/ajaxvalidaempresa';
 urlAjaxUtilitario = '/'+host+'/sistema/logado/ajaxutilitario';
 urlAjaxOferta = '/'+host+'/sistema/logado/ajaxoferta';
 urlAjaxMecBusca = '/'+host+'/default/index/ajaxmecbusca';
+urlAjaxGravaEstatistica = '/'+host+'/default/index/ajaxgravaestatistica';
+urlAjaxEstatistica = '/'+host+'/sistema/logado/ajaxestatistica';
 
 //http://www.browser-update.org/pt/
 //Browser-Update.org - Informe o seu visitante sobre atualizações do navegador

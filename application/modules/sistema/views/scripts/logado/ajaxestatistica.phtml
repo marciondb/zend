@@ -1,0 +1,41 @@
+<?php if( $this->arrayEstatistica->count() == 0 ){ ?>
+    <table>    
+        <tr>
+            <td colspan="2">Nenhum item encontrado</td>
+        </tr>
+    </table>
+<?php }else{ ?>
+
+<table align="center" cellspacing="1" width="100%">
+    <th class="barra_titulo">id</th>
+    <th class="barra_titulo">Título</th>
+    <th class="barra_titulo">Descrição</th>
+    <th class="barra_titulo">Cliques</th>
+    
+    
+    <?php
+    //print_r($this->arrayEmpresa);
+        
+    $cont =0;
+    
+    foreach ($this->arrayEstatistica as $estatistica): ?>
+            <tr class="t_acende">
+                <td align="center"><?php echo $estatistica['id_oferta']; ?></td>
+                <td align="center"><?php echo $estatistica['titulo']; ?></td>
+                <td align="center"><?php echo $estatistica['descricao']; ?></td>                        
+                <td align="center"><?php echo $estatistica['cliques']; ?></td>
+            </tr>
+        <?php endforeach; ?>
+        
+</table>
+<?php 
+    
+    echo $this->paginationControl(
+                $this->arrayEstatistica,
+                'Sliding',
+                'paginator.phtml'
+        );
+    
+?>
+
+<?php } //if inicial?>
