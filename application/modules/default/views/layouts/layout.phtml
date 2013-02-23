@@ -97,6 +97,36 @@
             controlUI.appendChild(controlText);	
 
         }
+        
+        /***
+         * Controle com o link para criar uma conta
+         */
+        function criarConta(controlDiv, map) 
+        {	
+            // Css da DIV q contem o controle
+            controlDiv.style.padding = '5px';
+
+            // Css da borda do controle e do titulo q sera exibido ao passa o mouse sobre o controle
+            var controlUI = document.createElement('DIV');
+            controlUI.style.backgroundColor = 'white';
+            controlUI.style.borderStyle = 'solid';
+            controlUI.style.borderWidth = '2px';
+            controlUI.style.cursor = 'pointer';
+            controlUI.style.textAlign = 'center';
+            controlUI.title = 'Cadastrar Oferta';
+            controlUI.id = 'cadastarOferta';
+            controlDiv.appendChild(controlUI);
+
+            // CSS para o interior do controle
+            var controlText = document.createElement('DIV');
+            controlText.style.fontFamily = 'Arial,sans-serif';
+            controlText.style.fontSize = '12px';
+            controlText.style.paddingLeft = '4px';
+            controlText.style.paddingRight = '4px';
+            controlText.innerHTML = '<a href="javascript:;" onclick="cadastrarOferta();">Cadastar Oferta?</a>';
+            controlUI.appendChild(controlText);	
+
+        }
 
         function carregaControles(map)
         {
@@ -111,6 +141,12 @@
             var carregando      = new Carregando(carregandoDiv, map);		
             carregandoDiv.index = 2;
             map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(carregandoDiv);
+            
+            // Cria a DIV de controle para exibir o link "Cadastar Oferta?"
+            var cadastarOfertaDiv   = document.createElement('DIV');
+            var cadastarOferta      = new criarConta(cadastarOfertaDiv, map);		
+            cadastarOfertaDiv.index = 3;
+            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(cadastarOfertaDiv);
         }
 
         /*
@@ -368,7 +404,10 @@
         {
             <?php if(isset($this->android)){ echo 'showAndroidToast(msg);';}else{ echo "alert(msg)";}?>
         }
-
+        
+        function cadastrarOferta(){
+            window.location = "<?php echo $this->url(array('module' => 'sistema', 'controller' => 'index', 'action' => 'index'), null, 1); ?>"
+        }
     </script>
     <title>PF - Ofertas</title>
     </head>

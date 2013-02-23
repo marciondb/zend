@@ -24,6 +24,7 @@ class Sistema_LogadoController extends Controller_Action
     protected $_operadora_celular;
     protected $_categoria;
     protected $_area;
+    protected $_categoria_oferta;
     protected $_foco;
     protected $_oferta;
     protected $_estatistica_clique;
@@ -62,6 +63,7 @@ class Sistema_LogadoController extends Controller_Action
         $this->_foco = new Application_Model_Foco();
         $this->_oferta = new Application_Model_Oferta();
         $this->_estatistica_clique = new Application_Model_EstatisticaClique();
+        $this->_categoria_oferta = new Application_Model_CategoriaOferta();
         
         //*******************************************************************
         //  FIM Instanciando os models, para poder utilizar os metodos relacionado 
@@ -217,6 +219,11 @@ class Sistema_LogadoController extends Controller_Action
         if($idUtilitario==9){
             $this->view->arrayUtilitario = $this->_operadora_celular->exibir($this->_request->getParam('pagina', 1));
             $this->view->tabela = 'operadora_celular';
+        }
+        
+        if($idUtilitario==10){
+            $this->view->arrayUtilitario = $this->_categoria_oferta->exibir($this->_request->getParam('pagina', 1));
+            $this->view->tabela = 'categoria_oferta';
         }
     }
     
@@ -714,6 +721,8 @@ class Sistema_LogadoController extends Controller_Action
             $teste = $this->_foco->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_foco='.$idTabela);
         if($idUtilitario==9)
             $teste = $this->_operadora_celular->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_operadora_celular='.$idTabela);
+        if($idUtilitario==10)
+            $teste = $this->_categoria_oferta->gravar(array('titulo'=>strtoupper($parametros['titulo'])),$this->_request->getParam('atualizar', false),'id_categoria_oferta='.$idTabela);
         
         //$teste = $this->_area->gravar(array('titulo'=>$parametros['titulo']));
         //se houver erro, passa para a view.
@@ -1070,6 +1079,8 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->nomeUtilitario = 'Foco';
         if($idUtilitario==9)
             $this->view->nomeUtilitario = 'Operadora';
+        if($idUtilitario==10)
+            $this->view->nomeUtilitario = 'Categoria Oferta';
         
     }
     
@@ -1105,6 +1116,8 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->nomeUtilitario = 'Foco';
         if($idUtilitario==9)
             $this->view->nomeUtilitario = 'Operadora';
+        if($idUtilitario==10)
+            $this->view->nomeUtilitario = 'Categoria Oferta';
         
     }
     
@@ -1138,6 +1151,8 @@ class Sistema_LogadoController extends Controller_Action
             $this->view->nomeUtilitario = 'Foco';
         if($idUtilitario==9)
             $this->view->nomeUtilitario = 'Operadora';
+        if($idUtilitario==10)
+            $this->view->nomeUtilitario = 'Categoria Oferta';
         
         
     }
@@ -1186,6 +1201,10 @@ class Sistema_LogadoController extends Controller_Action
         if($idUtilitario==9){
             $this->_operadora_celular->deletar($idTabela);
             $this->view->tabela = 'operadora_celular';
+        }
+        if($idUtilitario==10){
+            $this->_categoria_oferta->deletar($idTabela);
+            $this->view->tabela = 'categoria_oferta';
         }
     }
     
