@@ -147,5 +147,7 @@ abstract class Controller_Action extends Zend_Controller_Action {
         $this->_usuario->efetuarLogoff();
         
         $this->_redirect($redirect);
-    }   
+    }
+    
+    
 }

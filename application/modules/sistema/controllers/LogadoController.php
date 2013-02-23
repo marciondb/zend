@@ -504,10 +504,13 @@ class Sistema_LogadoController extends Controller_Action
             
             $msg = "Olá ".$parametros['nome'].", seja bem-vindo(a), agora você 
                 já pode acessar o nosso sistema administrativo, basta clicar no link 
-                e cadastrar a sua senha: <a href='www.marciondb.com.br/sistema/index/chave/chave/".$segmd5."'>
-                Clique aqui</a><br>( caso não consiga clicar no link, basta 
+                <a href='http://177.71.184.187/sistema'>Acessar</a>
+                <br>
+                Sua senha temporária é: ".$segmd5.", para altera-la, basta ir no 
+                menu utilitário, alterar senha.
+                <br>( caso não consiga clicar no link, basta 
                 copiar o seguinte endereço e colar na barra de endereço de seu 
-                navegador: www.marciondb.com/sistema/index/chave/chave/".$segmd5.")";
+                navegador: http://177.71.184.187/sistema)";
             
             $mail = new Zend_Mail(); 
             $mail->setBodyHtml($msg);
@@ -1297,4 +1300,6 @@ class Sistema_LogadoController extends Controller_Action
         //$this->_redirect($this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'cadastrarfuncionario'), null, 1));
         }
     }
+        
+    
 }

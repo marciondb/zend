@@ -122,7 +122,8 @@ class Application_Model_Usuario extends Application_Model_Abstract
                             'login'=>$email,
                             'cpf'=>$cpf,
                             'chave_controle'=>$segmd5,
-                            'status'=>$status));
+                            'status'=>$status,
+                            'senha'=>$segmd5));
                 return (int)$id_usuario;
             }
             catch(Exception $e)
