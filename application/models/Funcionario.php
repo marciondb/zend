@@ -49,6 +49,7 @@ class Application_Model_Funcionario extends Application_Model_Abstract
         unset($arrayFuncionario['id_funcionario_tipo']);
         unset($arrayFuncionario['temFilho']);
         unset($arrayFuncionario['status']);
+        unset($arrayFuncionario['btTime']);
         
         
         if(!$update)

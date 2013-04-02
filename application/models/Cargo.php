@@ -48,7 +48,7 @@ class Application_Model_Cargo extends Application_Model_Abstract
         }
         catch(Exception $e)
         {
-            ZendUtils::transmissorMsg('Erro ao deletar o cargo, favor contactar o administrador<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
+            ZendUtils::transmissorMsg('Erro ao apagar o cargo, favor contactar o administrador<br>'.$e->getMessage(),  ZendUtils::MENSAGEM_ERRO,  ZendUtils::MENSAGEM_SEM_TEMPO);
         }
     }
     

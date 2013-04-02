@@ -505,6 +505,9 @@ class Sistema_LogadoController extends Controller_Action
         if(is_string($id_usuario)){
             $this->view->erros .= " ".$id_usuario;
             $flag = 0;
+        }
+        if(isset($parametros['atualizar'])){
+            $flag = 0;
         } 
         
         if($flag){

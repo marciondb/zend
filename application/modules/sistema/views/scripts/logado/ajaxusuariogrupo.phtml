@@ -19,7 +19,7 @@
         if($this->editar)
             echo '<th class="barra_titulo">Editar</th>';
         if($this->deletar)
-            echo '<th class="barra_titulo">Deletar</th>';
+            echo '<th class="barra_titulo">Apagar</th>';
 
         $cont=0;
         foreach ($this->arrayUsuarioGrupo as $usuarioGrupo): ?>
@@ -70,7 +70,7 @@
                         {    
                             ?>
                             <td align="center" width="16%">
-                            <a class="btn" href="javascript:;" onclick="showAlertConfirm('Deletar','Todas as funcionalidades desde grupo serão deletadas.','deletar',[ '<?php echo $usuarioGrupo['id_grupo_de_acesso'];?>']);" ><i class="icon-trash"></i></a>
+                            <a class="btn" href="javascript:;" onclick="showAlertConfirm('Deletar','Todas as funcionalidades desde grupo serão apagadas.','deletar',[ '<?php echo $usuarioGrupo['id_grupo_de_acesso'];?>']);" ><i class="icon-trash"></i></a>
                         </td>
                             <?php
                         }

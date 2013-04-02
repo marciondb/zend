@@ -40,11 +40,11 @@
         </tr>
         <tr>
             <td align="left">
-                    Nome do Time:
+                    <!--Nome do Time:-->
             </td>
             <td align="left">
-                <input disabled="disabled" name="nomeTime" id="nomeTime" type="text" value="<?php echo $this->arrayTime[0]['titulo']; ?>" maxlength="100" size="50" >&nbsp;
-                <input type="button" name="btTime" id="btTime" value="Escolher Time" onclick="abreDialogTime();" class="btn btn-info"/>
+                <input disabled="disabled" name="nomeTime" id="nomeTime" type="hidden" value="<?php echo $this->arrayTime[0]['titulo']; ?>" maxlength="100" size="50" >&nbsp;
+                <input type="hidden" name="btTime" id="btTime" value="Escolher Time" onclick="abreDialogTime();" class="btn btn-info"/>
                                 
             </td>
         </tr>
@@ -545,7 +545,7 @@
     
     <?php //campos a serem gravados  ?>
     <input type="hidden" name="id_empresa" id="id_empresa" value="<?php echo $this->arrayLotacao[0]['id_empresa']; ?>">
-    <input type="hidden" name="id_time" id="id_time" value="<?php echo $this->arrayFuncionario[0]['id_time']; ?>">
+    <input type="hidden" name="id_time" id="id_time" value=",0,">
     <input type="hidden" name="tel_residencial_1" id="tel_residencial_1" value="">
     <input type="hidden" name="tel_residencial_2" id="tel_residencial_2" value="">
     <input type="hidden" name="celular_1" id="celular_1" value="">

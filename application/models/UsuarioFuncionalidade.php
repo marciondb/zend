@@ -177,7 +177,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
         $erros = TRUE;
         
         //Verifica se o usuario logado concedeu permissoes que ele mesmo não possui
-        foreach ($this->_permissao as $value) {
+        /*foreach ($this->_permissao as $value) {
             
             if($data['id_funcionalidade'] == $value['id_funcionalidade'])
             {    
@@ -188,7 +188,7 @@ class Application_Model_UsuarioFuncionalidade extends Application_Model_Abstract
                 $erros = 'ERRO 171 - Funcionalidades';
             //vale lembrar, que pode acorre que ao salvar, o usuario pai retirou uma determinada funcionaliade do usuario logado
             // logo, nesse caso, não é um erro do tipo 171
-        }
+        }*/
                
         return $erros;
     }

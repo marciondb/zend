@@ -5,7 +5,7 @@
         <ul>
             <li><a href="#tabs-3">Funcionário</a></li>
             <li><a href="#tabs-4">Empresas Visíveis</a></li>
-            <li><a href="#tabs-5">Times Visíveis</a></li>
+            <!--<li><a href="#tabs-5">Times Visíveis</a></li>--->
             <li><a href="#tabs-6">Funcionalidades</a></li>
         </ul>
         <div id="tabs-3" class="tab_content">
@@ -21,8 +21,8 @@
                 <div id="ajax_empresa" class="modal_ajax" onmouseover="setTabela('empresa');">    
                 </div>
                 <hr>
-                <h5>Selecione um time</h5>
-                <div id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
+                <!--<h5>Selecione um time</h5>-->
+                <div style="display: none" id="ajax_time" class="modal_ajax" onmouseover="setTabela('time');">    
                 </div>
             </div>
             <br>
@@ -54,7 +54,7 @@
             </div>
 
         </div>
-        <div id="tabs-5" class="tab_content">
+        <div id="tabs-5" class="tab_content" style="display: none">
             <h4>Escolha os Times Visiveis</h4>
 
             <div id="ajax_times_visiveis" class="modal_ajax" onmouseover="setTabela('times_visiveis');">
@@ -85,10 +85,10 @@
 
         <!-- campos hidden temporarios -->
         <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
-        <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
+        <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",0,">
         <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",">
         <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
-        <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
+        <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",0,">
         <div id="ajax_id_funcionalidade" style="display: none"></div>
     
     </div>
@@ -115,11 +115,11 @@
             textoMsgErro += 'Não há Funcionários escolhidos!<br>';
         }
 
-        if(document.getElementById('arrayIdTempTimeEscolhido').value == ",")
+        /*if(document.getElementById('arrayIdTempTimeEscolhido').value == ",")
         {
             flag = 0;
             textoMsgErro += 'Não há Times Visiveis escolhidos!<br>';
-        }
+        }*/
 
         if(document.getElementById('arrayIdTempEmpresaEscolhida').value == ",")
         {
@@ -216,11 +216,11 @@
             url = urlAjaxEmpresa+'/selecionar/1/pagina/'+pagina+query;
             ajax(url,'ajax_empresa');
         }
-        else if(tabelas=='time')
+        /*else if(tabelas=='time')
         {
             url = urlAjaxTime+'/selecionar/1/pagina/'+pagina+query;
             ajax(url,'ajax_time');
-        }
+        }*/
         else if(tabelas=='funcionario')
         {
             setFiltroFuncionario(null,null,pagina);
@@ -233,17 +233,17 @@
         {
             setEmpresasVisiveis(1,pagina);
         }    
-        else if(tabelas=='times_visiveis')
+        /*else if(tabelas=='times_visiveis')
         {
             setTimesVisiveis(1,pagina);
-        }
+        }*/
     }
     
     url = urlAjaxEmpresa+'/selecionar/1';
     ajax(url,'ajax_empresa');
     
-    url = urlAjaxTime+'/selecionar/1/';
-    ajax(url,'ajax_time');
+    /*url = urlAjaxTime+'/selecionar/1/';
+    ajax(url,'ajax_time');*/
     
     url = urlAjaxFuncionario+'/adicionar/1/ehCA/true';
     ajax(url,'ajax_funcionario');
@@ -251,8 +251,8 @@
     url = urlAjaxEmpresa+'/adicionar/1';
     ajax(url,'ajax_empresas_visiveis');
     
-    url = urlAjaxTime+'/adicionar/1/';
-    ajax(url,'ajax_times_visiveis');
+    /*url = urlAjaxTime+'/adicionar/1/';
+    ajax(url,'ajax_times_visiveis');*/
     
     url = urlAjaxGrupo+'/selecionar/1/';
     ajax(url,'ajax_grupo');

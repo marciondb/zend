@@ -5,7 +5,7 @@
     <form name="formularioCarregaMenu" action="<?php echo $this->url(array('module' => 'sistema', 'controller' => 'logado', 'action' => 'ajaxgravacontroleacesso'), null, 1); ?>" method="post">
         <ul>
             <li><a href="#tabs-4">Empresas Visíveis</a></li>
-            <li><a href="#tabs-5">Times Visíveis</a></li>
+            <!--<li><a href="#tabs-5">Times Visíveis</a></li>-->
             <li><a href="#tabs-6">Funcionalidades</a></li>
         </ul>
                 
@@ -21,7 +21,7 @@
             </div>
 
         </div>
-        <div id="tabs-5" class="tab_content">
+        <div style="display: none" id="tabs-5" class="tab_content">
             <h4>Escolha os Times Visiveis</h4>
 
             <div id="ajax_times_visiveis" class="modal_ajax" onmouseover="setTabela('times_visiveis');">
@@ -52,10 +52,10 @@
 
         <!-- campos hidden temporarios -->
         <input type="hidden" name="arrayIdTempEmpresa" id="arrayIdTempEmpresa" value=",">
-        <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",">
+        <input type="hidden" name="arrayIdTempTime"    id="arrayIdTempTime" value=",0,">
         <input type="hidden" name="arrayIdTempFuncionarioEscolhido"    id="arrayIdTempFuncionarioEscolhido" value=",<?php echo $this->idFuncionario; ?>,">
         <input type="hidden" name="arrayIdTempEmpresaEscolhida"    id="arrayIdTempEmpresaEscolhida" value=",">
-        <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",">
+        <input type="hidden" name="arrayIdTempTimeEscolhido"    id="arrayIdTempTimeEscolhido" value=",0,">
         <div id="ajax_id_funcionalidade" style="display: none"></div>
     
     </div><!--<div id="tab">-->
@@ -74,11 +74,11 @@
         $listaIdEmpresa .= $linha['id_empresa'].",";
     }
     
-    $listaIdTime = ",";
-    foreach ($this->arrayIdTime as $linha)
+    $listaIdTime = ",0,";
+    /*foreach ($this->arrayIdTime as $linha)
     {    
         $listaIdTime .= $linha['id_time'].",";
-    }
+    }*/
     
 ?>
 
@@ -96,11 +96,11 @@
             textoMsgErro += 'Não há Funcionários escolhidos!<br>';
         }
 
-        if(document.getElementById('arrayIdTempTimeEscolhido').value == ",")
+        /*if(document.getElementById('arrayIdTempTimeEscolhido').value == ",")
         {
             flag = 0;
             textoMsgErro += 'Não há Times Visiveis escolhidos!<br>';
-        }
+        }*/
 
         if(document.getElementById('arrayIdTempEmpresaEscolhida').value == ",")
         {
@@ -189,25 +189,25 @@
             url = urlAjaxEmpresa+'/selecionar/1/pagina/'+pagina+query;
             ajax(url,'ajax_empresa');
         }
-        else if(tabelas=='time')
+        /*else if(tabelas=='time')
         {
             url = urlAjaxTime+'/selecionar/1/pagina/'+pagina+query;
             ajax(url,'ajax_time');
-        }else if(tabelas=='empresas_visiveis')
+        }*/else if(tabelas=='empresas_visiveis')
         {
             setEmpresasVisiveis(1,pagina);
         }    
-        else if(tabelas=='times_visiveis')
+        /*else if(tabelas=='times_visiveis')
         {
             setTimesVisiveis(1,pagina);
-        }
+        }*/
     } 
         
     url = urlAjaxEmpresa+'/adicionar/1';
     ajax(url,'ajax_empresas_visiveis');
     
-    url = urlAjaxTime+'/adicionar/1/';
-    ajax(url,'ajax_times_visiveis');
+    /*url = urlAjaxTime+'/adicionar/1/';
+    ajax(url,'ajax_times_visiveis');*/
     
     <?php
         $urlGrupo = "";
@@ -250,6 +250,6 @@
     
     document.getElementById('arrayIdTempTimeEscolhido').value = '<?php echo $listaIdTime?>';
     
-    setTimesVisiveis(1,'');
-    setTimesVisiveis('',1);
+    /*setTimesVisiveis(1,'');
+    setTimesVisiveis('',1);*/
 </script>
